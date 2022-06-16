@@ -1,8 +1,7 @@
 import * as React from "react";
-import { PackageList } from "./components";
 
 const App = () => {
-  return <PackageList />;
+  return <h1>Hello World</h1>;
 };
 
 export default App;

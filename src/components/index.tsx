@@ -1,1 +1,1 @@
-export * from "./pkglist";
+export * from "./PackageList";
