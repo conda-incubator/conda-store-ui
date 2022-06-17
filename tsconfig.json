@@ -1,0 +1,12 @@
+{
+  "$schema": "http://json.schemastore.org/tsconfig",
+  "extends": "./tsconfigbase",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "declarationDir": "./types",
+    "outDir": "lib",
+    "rootDir": "src",
+    "allowSyntheticDefaultImports":true
+  },
+  "include": ["src/**/*"]
+}
