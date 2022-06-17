@@ -5,7 +5,8 @@
     "baseUrl": ".",
     "declarationDir": "./types",
     "outDir": "lib",
-    "rootDir": "src"
+    "rootDir": "src",
+    "allowSyntheticDefaultImports":true
   },
   "include": ["src/**/*"]
 }
