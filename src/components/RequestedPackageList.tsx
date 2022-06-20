@@ -8,7 +8,7 @@ import ArrowRightRoundedIcon from "@mui/icons-material/ArrowRightRounded";
 
 const RequestedPackageList = () => {
   return (
-    <Accordion sx={{ width: 421 }}>
+    <Accordion sx={{ width: 421, boxShadow: "none" }}>
       <AccordionSummary
         sx={{
           border: "1px solid #C4C4C4",
@@ -34,7 +34,13 @@ const RequestedPackageList = () => {
           Requested Packages
         </Typography>
       </AccordionSummary>
-      <AccordionDetails>
+      <AccordionDetails
+        sx={{
+          border: "1px solid  #C4C4C4",
+          borderTop: "none",
+          borderRadius: "0px 0px 5px 5px",
+        }}
+      >
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Labore at saepe
         placeat inventore incidunt, nobis eaque similique rerum cumque corrupti
         ut mollitia sunt non nisi vero officiis doloremque accusamus alias?
