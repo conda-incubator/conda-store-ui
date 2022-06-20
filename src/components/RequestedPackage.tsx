@@ -4,7 +4,6 @@ import SquareIcon from "@mui/icons-material/Square";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import requestedPackageParser from "src/utils/helpers/requestedPackageParser";
-import { capitalize } from "@mui/material/utils";
 
 interface IRequestedPackageProps {
   requestedPackage: string;
@@ -21,7 +20,7 @@ const RequestedPackage = ({ requestedPackage }: IRequestedPackageProps) => {
           sx={{ color: "#000", width: 10, height: 10, marginRight: "12px" }}
         />
         <Typography sx={{ width: 190 }}>
-          {capitalize(name)} {version}
+          {name} {version}
         </Typography>
       </Box>
       <Typography>
