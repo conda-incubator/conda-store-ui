@@ -1,5 +1,5 @@
 const requestedPackageParser = (requestedPackageName: string) => {
-  const splittedPackageName = requestedPackageName.split(/(>=|<=|<|>|==)/g);
+  const splittedPackageName = requestedPackageName.split(/(>=|<=|<|>|=)/g);
 
   const name = splittedPackageName[0];
   let version = "";
@@ -9,6 +9,8 @@ const requestedPackageParser = (requestedPackageName: string) => {
     constraint = splittedPackageName[1];
     version = splittedPackageName[2];
   }
+
+  if (constraint === "=") constraint = "==";
 
   return { name, version, constraint };
 };
