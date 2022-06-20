@@ -7,12 +7,15 @@ import Typography from "@mui/material/Typography";
 import ArrowRightRoundedIcon from "@mui/icons-material/ArrowRightRounded";
 
 const RequestedPackageList = () => {
+  const [expanded, setExpanded] = React.useState(false);
+
   return (
     <Accordion sx={{ width: 421, boxShadow: "none" }}>
       <AccordionSummary
+        onClick={() => setExpanded((currentState) => !currentState)}
         sx={{
           border: "1px solid #C4C4C4",
-          borderRadius: "5px 5px 0px 0px",
+          borderRadius: expanded ? "5px 5px 0px 0px" : "5px",
           paddingLeft: "21px",
           paddingRight: "10px",
           height: 50,
