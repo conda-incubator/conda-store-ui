@@ -16,11 +16,11 @@ const RequestedPackage = ({ requestedPackage }: IRequestedPackageProps) => {
 
   return (
     <Box sx={{ display: "flex", alignItems: "center" }}>
-      <Box sx={{ display: "flex", alignItems: "center", marginRight: "20px" }}>
+      <Box sx={{ display: "flex", alignItems: "center" }}>
         <SquareIcon
           sx={{ color: "#000", width: 10, height: 10, marginRight: "12px" }}
         />
-        <Typography sx={{ width: 170 }}>
+        <Typography sx={{ width: 190 }}>
           {capitalize(name)} {version}
         </Typography>
       </Box>
