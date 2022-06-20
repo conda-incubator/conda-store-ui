@@ -1,4 +1,5 @@
 import * as React from "react";
+import "./index.css";
 import RequestedPackageList from "./components/RequestedPackageList";
 
 const App = () => {
