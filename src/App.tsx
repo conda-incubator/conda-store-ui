@@ -5,7 +5,14 @@ const App = () => {
   return (
     <>
       <h1>Hello World</h1>
-      <RequestedPackageList />
+      <RequestedPackageList
+        packageList={[
+          "python==3.6",
+          "pandas",
+          "ipykernel>=2.0",
+          { pip: ["blablabla"] },
+        ]}
+      />
     </>
   );
 };
