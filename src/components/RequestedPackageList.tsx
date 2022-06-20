@@ -1,13 +1,15 @@
-import * as React from "react";
+import React, { useState } from "react";
 
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import Typography from "@mui/material/Typography";
 import ArrowRightRoundedIcon from "@mui/icons-material/ArrowRightRounded";
+import RequestedPackage from "./RequestedPackage";
+import Box from "@mui/material/Box";
 
 const RequestedPackageList = () => {
-  const [expanded, setExpanded] = React.useState(false);
+  const [expanded, setExpanded] = useState(false);
 
   return (
     <Accordion sx={{ width: 421, boxShadow: "none" }}>
@@ -42,11 +44,14 @@ const RequestedPackageList = () => {
           border: "1px solid  #C4C4C4",
           borderTop: "none",
           borderRadius: "0px 0px 5px 5px",
+          padding: "11px 40px",
+          maxHeight: "90px",
+          overflowY: "scroll",
         }}
       >
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Labore at saepe
-        placeat inventore incidunt, nobis eaque similique rerum cumque corrupti
-        ut mollitia sunt non nisi vero officiis doloremque accusamus alias?
+        <Box>
+          <RequestedPackage />
+        </Box>
       </AccordionDetails>
     </Accordion>
   );
