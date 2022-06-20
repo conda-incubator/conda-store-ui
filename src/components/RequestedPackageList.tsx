@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 
 import Accordion from "@mui/material/Accordion";
 import Typography from "@mui/material/Typography";
@@ -18,7 +18,6 @@ const RequestedPackageList = ({
   packageList,
   listHeight,
 }: IRequestedPackageListProps) => {
-  const [expanded, setExpanded] = useState(false);
   const { palette } = useTheme();
 
   const filteredPackageList = packageList.filter(
@@ -29,10 +28,6 @@ const RequestedPackageList = ({
   return (
     <Accordion sx={{ width: 421, boxShadow: "none" }}>
       <StyledAccordionSummary
-        sx={{
-          borderRadius: expanded ? "5px 5px 0px 0px" : "5px",
-        }}
-        onClick={() => setExpanded((currentState) => !currentState)}
         expandIcon={
           <ArrowRightRoundedIcon
             sx={{ width: 51, height: 55, color: palette.secondary.main }}

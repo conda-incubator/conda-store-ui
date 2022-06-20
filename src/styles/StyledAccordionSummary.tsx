@@ -7,9 +7,11 @@ const StyledAccordionSummary = styled(AccordionSummary)(
     paddingRight: "10px",
     height: 50,
     border: `1px solid ${palette.primary.main}`,
+    borderRadius: "5px",
     "&.Mui-expanded": {
       minHeight: 50,
       maxHeight: 50,
+      borderRadius: "5px 5px 0px 0px",
       ".MuiAccordionSummary-expandIconWrapper": {
         transform: "rotate(90deg)",
       },
