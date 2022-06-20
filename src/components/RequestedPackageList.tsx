@@ -7,6 +7,7 @@ import RequestedPackage from "./RequestedPackage";
 import Box from "@mui/material/Box";
 import StyledAccordionSummary from "src/styles/StyledAccordionSummary";
 import StyledAccordionDetails from "src/styles/StyledAccordionDetails";
+import useTheme from "@mui/material/styles/useTheme";
 
 interface IRequestedPackageListProps {
   packageList: (string | object)[];
@@ -18,6 +19,7 @@ const RequestedPackageList = ({
   listHeight,
 }: IRequestedPackageListProps) => {
   const [expanded, setExpanded] = useState(false);
+  const { palette } = useTheme();
 
   const filteredPackageList = packageList.filter(
     (item) => typeof item !== "object"
@@ -33,7 +35,7 @@ const RequestedPackageList = ({
         onClick={() => setExpanded((currentState) => !currentState)}
         expandIcon={
           <ArrowRightRoundedIcon
-            sx={{ width: 51, height: 55, color: "#7E7E7E" }}
+            sx={{ width: 51, height: 55, color: palette.secondary.main }}
           />
         }
       >
