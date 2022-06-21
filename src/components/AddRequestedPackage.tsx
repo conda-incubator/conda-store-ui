@@ -14,8 +14,8 @@ const AddRequestedPackage = () => {
 
   const setFields = () => {
     if (name) {
-      setVersion("latest");
-      setConstraint("==");
+      setVersion("3.2");
+      setConstraint("== latest");
       return;
     }
 
@@ -60,7 +60,7 @@ const AddRequestedPackage = () => {
               width: "100px",
             }}
           >
-            {constraint} {version}
+            {constraint}
           </Typography>
           <DeleteIcon />
         </Box>
