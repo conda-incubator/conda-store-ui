@@ -3,6 +3,8 @@ import TableRow from "@mui/material/TableRow";
 import Typography from "@mui/material/Typography";
 import requestedPackageParser from "src/utils/helpers/requestedPackageParser";
 import StyledRequestedPackagesTableCell from "src/styles/StyledRequestedPackagesTableCell";
+import DeleteIcon from "@mui/icons-material/Delete";
+import Box from "@mui/material/Box";
 
 interface IRequestedPackagesTableRowProps {
   requestedPackage: string;
@@ -29,7 +31,19 @@ const RequestedPackagesTableRow = ({
         </Typography>
       </StyledRequestedPackagesTableCell>
       <StyledRequestedPackagesTableCell align="left">
-        {constraint} {version}
+        <Box sx={{ display: "flex", alignItems: "center" }}>
+          <Typography
+            sx={{
+              fontSize: "16px",
+              fontWeight: 400,
+              color: "#000",
+              width: "100px",
+            }}
+          >
+            {constraint} {version}
+          </Typography>
+          <DeleteIcon />
+        </Box>
       </StyledRequestedPackagesTableCell>
     </TableRow>
   );

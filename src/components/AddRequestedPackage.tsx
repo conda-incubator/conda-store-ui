@@ -4,6 +4,8 @@ import StyledRequestedPackagesTableCell from "src/styles/StyledRequestedPackages
 import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 const AddRequestedPackage = () => {
   const [name, setName] = useState<string | null>(null);
@@ -11,15 +13,14 @@ const AddRequestedPackage = () => {
   const [constraint, setConstraint] = useState("");
 
   const setFields = () => {
-    console.log("ran");
-
     if (name) {
       setVersion("latest");
       setConstraint("==");
-    } else {
-      setVersion("-");
-      setConstraint("");
+      return;
     }
+
+    setVersion("-");
+    setConstraint("");
   };
 
   return (
@@ -50,7 +51,19 @@ const AddRequestedPackage = () => {
         </Typography>
       </StyledRequestedPackagesTableCell>
       <StyledRequestedPackagesTableCell>
-        {constraint} {version}
+        <Box sx={{ display: "flex", alignItems: "center" }}>
+          <Typography
+            sx={{
+              fontSize: "16px",
+              fontWeight: 400,
+              color: "#000",
+              width: "100px",
+            }}
+          >
+            {constraint} {version}
+          </Typography>
+          <DeleteIcon />
+        </Box>
       </StyledRequestedPackagesTableCell>
     </TableRow>
   );
