@@ -1,8 +1,8 @@
 import React from "react";
 import TableRow from "@mui/material/TableRow";
-import TableCell from "@mui/material/TableCell";
 import Typography from "@mui/material/Typography";
 import requestedPackageParser from "src/utils/helpers/requestedPackageParser";
+import StyledRequestedPackagesTableCell from "src/styles/StyledRequestedPackagesTableCell";
 
 interface IRequestedPackagesTableRowProps {
   requestedPackage: string;
@@ -16,30 +16,21 @@ const RequestedPackagesTableRow = ({
 
   return (
     <TableRow>
-      <TableCell
-        align="left"
-        sx={{ paddingLeft: "0px", borderBottom: "0px", paddingBottom: "10px" }}
-      >
+      <StyledRequestedPackagesTableCell align="left">
         <Typography sx={{ fontSize: "16px", fontWeight: 400, color: "#000" }}>
           {name}
         </Typography>
-      </TableCell>
-      <TableCell
-        align="left"
-        sx={{ paddingLeft: "0px", borderBottom: "0px", paddingBottom: "10px" }}
-      >
+      </StyledRequestedPackagesTableCell>
+      <StyledRequestedPackagesTableCell align="left">
         <Typography
           sx={{ fontSize: "16px", fontWeight: 400, color: "#676666" }}
         >
           {version}
         </Typography>
-      </TableCell>
-      <TableCell
-        align="left"
-        sx={{ paddingLeft: "0px", borderBottom: "0px", paddingBottom: "10px" }}
-      >
+      </StyledRequestedPackagesTableCell>
+      <StyledRequestedPackagesTableCell align="left">
         {constraint} {version}
-      </TableCell>
+      </StyledRequestedPackagesTableCell>
     </TableRow>
   );
 };

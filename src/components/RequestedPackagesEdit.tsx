@@ -1,7 +1,7 @@
 import AccordionDetails from "@mui/material/AccordionDetails";
 import useTheme from "@mui/material/styles/useTheme";
 import Accordion from "@mui/material/Accordion";
-import React from "react";
+import React, { useState } from "react";
 import StyledAccordionDetails from "src/styles/StyledAccordionDetails";
 import StyledAccordionExpandIcon from "src/styles/StyledAccordionExpandIcon";
 import StyledAccordionSummary from "src/styles/StyledAccordionSummary";
@@ -13,8 +13,8 @@ import TableBody from "@mui/material/TableBody";
 import Typography from "@mui/material/Typography";
 import StyledEditPackagesTableCell from "src/styles/StyledEditPackagesTableCell";
 import RequestedPackagesTableRow from "./RequestedPackagesTableRow";
-import Button from "@mui/material/Button";
 import StyledButtonPrimary from "src/styles/StyledButtonPrimary";
+import AddRequestedPackage from "./AddRequestedPackage";
 
 interface IRequestedPackagesEditProps {
   packageList: (string | object)[];
@@ -25,6 +25,7 @@ const RequestedPackagesEdit = ({
   packageList,
   listHeight,
 }: IRequestedPackagesEditProps) => {
+  const [isAdding, setIsAdding] = useState(false);
   const { palette } = useTheme();
 
   const filteredPackageList = packageList.filter(
@@ -84,6 +85,7 @@ const RequestedPackagesEdit = ({
                 requestedPackage={`${requestedPackage}`}
               />
             ))}
+            {isAdding && <AddRequestedPackage />}
           </TableBody>
         </Table>
       </StyledAccordionDetails>
@@ -95,7 +97,10 @@ const RequestedPackagesEdit = ({
           padding: "15px 21px",
         }}
       >
-        <StyledButtonPrimary variant="contained">
+        <StyledButtonPrimary
+          variant="contained"
+          onClick={() => setIsAdding(true)}
+        >
           + Add Package
         </StyledButtonPrimary>
       </AccordionDetails>
