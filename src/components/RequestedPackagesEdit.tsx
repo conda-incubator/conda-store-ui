@@ -9,11 +9,25 @@ import StyledAccordionTitle from "src/styles/StyledAccordionTitle";
 import Table from "@mui/material/Table";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
+import TableBody from "@mui/material/TableBody";
 import Typography from "@mui/material/Typography";
 import StyledEditPackagesTableCell from "src/styles/StyledEditPackagesTableCell";
+import RequestedPackagesTableRow from "./RequestedPackagesTableRow";
 
-const RequestedPackagesEdit = () => {
+interface IRequestedPackagesEditProps {
+  packageList: (string | object)[];
+  listHeight: number;
+}
+
+const RequestedPackagesEdit = ({
+  packageList,
+  listHeight,
+}: IRequestedPackagesEditProps) => {
   const { palette } = useTheme();
+
+  const filteredPackageList = packageList.filter(
+    (item) => typeof item !== "object"
+  );
 
   return (
     <Accordion sx={{ width: 576, boxShadow: "none" }}>
@@ -21,7 +35,11 @@ const RequestedPackagesEdit = () => {
         <StyledAccordionTitle>Requested Packages</StyledAccordionTitle>
       </StyledAccordionSummary>
       <StyledAccordionDetails
-        sx={{ maxHeight: "90px", padding: "23px 21px", borderRadius: "0px" }}
+        sx={{
+          maxHeight: `${listHeight}px`,
+          padding: "23px 21px",
+          borderRadius: "0px",
+        }}
       >
         <Table aria-label="requested packages">
           <TableHead sx={{ border: "none" }}>
@@ -57,6 +75,14 @@ const RequestedPackagesEdit = () => {
               </StyledEditPackagesTableCell>
             </TableRow>
           </TableHead>
+          <TableBody>
+            {filteredPackageList.map((requestedPackage) => (
+              <RequestedPackagesTableRow
+                key={`${requestedPackage}`}
+                requestedPackage={`${requestedPackage}`}
+              />
+            ))}
+          </TableBody>
         </Table>
       </StyledAccordionDetails>
       <AccordionDetails
