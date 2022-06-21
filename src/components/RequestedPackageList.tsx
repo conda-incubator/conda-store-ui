@@ -27,7 +27,9 @@ const RequestedPackageList = ({
       <StyledAccordionSummary expandIcon={<StyledAccordionExpandIcon />}>
         <StyledAccordionTitle>Requested Packages</StyledAccordionTitle>
       </StyledAccordionSummary>
-      <StyledAccordionDetails sx={{ maxHeight: `${listHeight}px` }}>
+      <StyledAccordionDetails
+        sx={{ maxHeight: `${listHeight}px`, padding: "11px 40px" }}
+      >
         {filteredPackageList.map((item, index) => (
           <Box
             key={`${item}`}
