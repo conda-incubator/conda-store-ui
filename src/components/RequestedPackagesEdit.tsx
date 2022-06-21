@@ -13,6 +13,8 @@ import TableBody from "@mui/material/TableBody";
 import Typography from "@mui/material/Typography";
 import StyledEditPackagesTableCell from "src/styles/StyledEditPackagesTableCell";
 import RequestedPackagesTableRow from "./RequestedPackagesTableRow";
+import Button from "@mui/material/Button";
+import StyledButtonPrimary from "src/styles/StyledButtonPrimary";
 
 interface IRequestedPackagesEditProps {
   packageList: (string | object)[];
@@ -93,7 +95,9 @@ const RequestedPackagesEdit = ({
           padding: "15px 21px",
         }}
       >
-        Details 2
+        <StyledButtonPrimary variant="contained">
+          + Add Package
+        </StyledButtonPrimary>
       </AccordionDetails>
     </Accordion>
   );
