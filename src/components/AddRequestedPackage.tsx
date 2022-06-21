@@ -34,6 +34,7 @@ const AddRequestedPackage = () => {
           }}
           renderInput={(params) => (
             <TextField
+              autoFocus
               {...params}
               label="Enter package name"
               onChange={(e) => setName(e.target.value)}
