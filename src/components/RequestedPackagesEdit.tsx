@@ -6,6 +6,11 @@ import StyledAccordionDetails from "src/styles/StyledAccordionDetails";
 import StyledAccordionExpandIcon from "src/styles/StyledAccordionExpandIcon";
 import StyledAccordionSummary from "src/styles/StyledAccordionSummary";
 import StyledAccordionTitle from "src/styles/StyledAccordionTitle";
+import Table from "@mui/material/Table";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import Typography from "@mui/material/Typography";
+import StyledEditPackagesTableCell from "src/styles/StyledEditPackagesTableCell";
 
 const RequestedPackagesEdit = () => {
   const { palette } = useTheme();
@@ -18,7 +23,41 @@ const RequestedPackagesEdit = () => {
       <StyledAccordionDetails
         sx={{ maxHeight: "90px", padding: "23px 21px", borderRadius: "0px" }}
       >
-        Details
+        <Table aria-label="requested packages">
+          <TableHead sx={{ border: "none" }}>
+            <TableRow>
+              <StyledEditPackagesTableCell
+                align="left"
+                sx={{
+                  width: "120px",
+                }}
+              >
+                <Typography
+                  component="p"
+                  sx={{ fontSize: "16px", fontWeight: 500 }}
+                >
+                  Name
+                </Typography>
+              </StyledEditPackagesTableCell>
+              <StyledEditPackagesTableCell align="left">
+                <Typography
+                  component="p"
+                  sx={{ fontSize: "16px", fontWeight: 500 }}
+                >
+                  Installed Version
+                </Typography>
+              </StyledEditPackagesTableCell>
+              <StyledEditPackagesTableCell align="left">
+                <Typography
+                  component="p"
+                  sx={{ fontSize: "16px", fontWeight: 500 }}
+                >
+                  Version Constraint
+                </Typography>
+              </StyledEditPackagesTableCell>
+            </TableRow>
+          </TableHead>
+        </Table>
       </StyledAccordionDetails>
       <AccordionDetails
         sx={{
