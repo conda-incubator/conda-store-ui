@@ -61,8 +61,8 @@ const AddRequestedPackage = ({ onCancel }: IAddRequestedPackageProps) => {
           <Box sx={{ width: "154px" }}>
             {showSelect && (
               <>
-                <ConstraintSelect constraint={null} />
-                <VersionSelect version={null} />
+                <ConstraintSelect constraint={""} />
+                <VersionSelect version={""} />
               </>
             )}
           </Box>
