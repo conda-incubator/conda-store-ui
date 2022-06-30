@@ -23,7 +23,7 @@ const App = () => {
       <RequestedPackagesEdit
         packageList={[
           "numpy>=4.7",
-          "pandas>=3.8.1",
+          "pandas<=3.8.1",
           "python>=1.1",
           { pip: ["blablabla"] },
         ]}
