@@ -1,7 +1,7 @@
 import AccordionDetails from "@mui/material/AccordionDetails";
 import useTheme from "@mui/material/styles/useTheme";
 import Accordion from "@mui/material/Accordion";
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import StyledAccordionDetails from "src/styles/StyledAccordionDetails";
 import StyledAccordionExpandIcon from "src/styles/StyledAccordionExpandIcon";
 import StyledAccordionSummary from "src/styles/StyledAccordionSummary";
@@ -25,11 +25,19 @@ const RequestedPackagesEdit = ({
   packageList,
   listHeight,
 }: IRequestedPackagesEditProps) => {
+  const [data, setData] = useState(packageList);
   const [isAdding, setIsAdding] = useState(false);
   const { palette } = useTheme();
 
-  const filteredPackageList = packageList.filter(
-    (item) => typeof item !== "object"
+  const removePackage = (packageName: string) => {
+    setData((currentData) =>
+      currentData.filter((item) => item !== packageName)
+    );
+  };
+
+  const filteredPackageList = useMemo(
+    () => data.filter((item) => typeof item !== "object"),
+    [data]
   );
 
   return (
@@ -81,11 +89,12 @@ const RequestedPackagesEdit = ({
           <TableBody>
             {filteredPackageList.map((requestedPackage) => (
               <RequestedPackagesTableRow
+                onRemove={removePackage}
                 key={`${requestedPackage}`}
                 requestedPackage={`${requestedPackage}`}
               />
             ))}
-            {isAdding && <AddRequestedPackage />}
+            {isAdding && <AddRequestedPackage onCancel={setIsAdding} />}
           </TableBody>
         </Table>
       </StyledAccordionDetails>

@@ -5,13 +5,16 @@ import requestedPackageParser from "src/utils/helpers/requestedPackageParser";
 import StyledRequestedPackagesTableCell from "src/styles/StyledRequestedPackagesTableCell";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Box from "@mui/material/Box";
+import StyledIconButton from "../styles/StyledIconButton";
 
 interface IRequestedPackagesTableRowProps {
   requestedPackage: string;
+  onRemove: (packageName: string) => void;
 }
 
 const RequestedPackagesTableRow = ({
   requestedPackage,
+  onRemove,
 }: IRequestedPackagesTableRowProps) => {
   const { name, version, constraint } =
     requestedPackageParser(requestedPackage);
@@ -42,7 +45,9 @@ const RequestedPackagesTableRow = ({
           >
             {constraint} {version}
           </Typography>
-          <DeleteIcon />
+          <StyledIconButton onClick={() => onRemove(requestedPackage)}>
+            <DeleteIcon />
+          </StyledIconButton>
         </Box>
       </StyledRequestedPackagesTableCell>
     </TableRow>

@@ -6,8 +6,13 @@ import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import DeleteIcon from "@mui/icons-material/Delete";
+import StyledIconButton from "../styles/StyledIconButton";
 
-const AddRequestedPackage = () => {
+interface IAddRequestedPackageProps {
+  onCancel: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const AddRequestedPackage = ({ onCancel }: IAddRequestedPackageProps) => {
   const [name, setName] = useState<string | null>(null);
   const [version, setVersion] = useState("-");
   const [constraint, setConstraint] = useState("");
@@ -63,7 +68,9 @@ const AddRequestedPackage = () => {
           >
             {constraint}
           </Typography>
-          <DeleteIcon />
+          <StyledIconButton onClick={() => onCancel(false)}>
+            <DeleteIcon />
+          </StyledIconButton>
         </Box>
       </StyledRequestedPackagesTableCell>
     </TableRow>
