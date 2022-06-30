@@ -16,7 +16,7 @@ interface IRequestedPackagesTableRowProps {
 
 const RequestedPackagesTableRow = ({
   requestedPackage,
-  onRemove,
+  onRemove
 }: IRequestedPackagesTableRowProps) => {
   const { name, version, constraint } =
     requestedPackageParser(requestedPackage);

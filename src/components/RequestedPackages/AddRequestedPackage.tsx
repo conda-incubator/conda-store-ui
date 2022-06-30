@@ -36,12 +36,12 @@ const AddRequestedPackage = ({ onCancel }: IAddRequestedPackageProps) => {
           onChange={(e, value) => {
             setName(value);
           }}
-          renderInput={(params) => (
+          renderInput={params => (
             <TextField
               autoFocus
               {...params}
               label="Enter package name"
-              onChange={(e) => setName(e.target.value)}
+              onChange={e => setName(e.target.value)}
               onBlur={() => setFields()}
               size="small"
             />

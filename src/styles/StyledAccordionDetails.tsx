@@ -8,16 +8,16 @@ const StyledAccordionDetails = styled(AccordionDetails)(
     borderRadius: "0px 0px 5px 5px",
     overflowY: "scroll",
     "&::-webkit-scrollbar": {
-      width: "15px",
+      width: "15px"
     },
     "&::-webkit-scrollbar-track": {
-      backgroundColor: "transparent",
+      backgroundColor: "transparent"
     },
     "&::-webkit-scrollbar-thumb": {
       backgroundColor: `${palette.primary.main}`,
       borderRadius: "10px",
-      border: "1px solid #666666",
-    },
+      border: "1px solid #666666"
+    }
   })
 );
 

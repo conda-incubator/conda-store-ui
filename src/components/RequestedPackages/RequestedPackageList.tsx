@@ -15,10 +15,10 @@ interface IRequestedPackageListProps {
 
 const RequestedPackageList = ({
   packageList,
-  listHeight,
+  listHeight
 }: IRequestedPackageListProps) => {
   const filteredPackageList = packageList.filter(
-    (item) => typeof item !== "object"
+    item => typeof item !== "object"
   );
   const listLength = filteredPackageList.length;
 

@@ -15,17 +15,17 @@ const ConstraintSelect = ({ constraint }: IConstraintSelectProps) => {
       IconComponent={() => null}
       sx={{
         borderRadius: "0px",
-        width: "44px",
+        width: "44px"
       }}
       inputProps={{
         sx: {
           padding: "7px 9px !important",
           backgroundColor: "#ECECEC",
-          borderRadius: "0px",
-        },
+          borderRadius: "0px"
+        }
       }}
     >
-      {constraints.map((constraint) => (
+      {constraints.map(constraint => (
         <MenuItem key={constraint} value={constraint}>
           {constraint}
         </MenuItem>

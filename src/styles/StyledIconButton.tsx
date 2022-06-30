@@ -4,7 +4,7 @@ import { styled } from "@mui/system";
 const StyledIconButton = styled(Button)(({ theme }) => ({
   color: "#000",
   padding: "0px",
-  minWidth: "auto",
+  minWidth: "auto"
 }));
 
 export default StyledIconButton;

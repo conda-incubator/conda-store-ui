@@ -25,7 +25,7 @@ const App = () => {
           "numpy>=4.7",
           "pandas<=3.8.1",
           "python>=1.1",
-          { pip: ["test"] },
+          { pip: ["test"] }
         ]}
         listHeight={215}
       />

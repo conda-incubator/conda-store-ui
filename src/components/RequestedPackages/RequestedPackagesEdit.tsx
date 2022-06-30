@@ -23,20 +23,18 @@ interface IRequestedPackagesEditProps {
 
 const RequestedPackagesEdit = ({
   packageList,
-  listHeight,
+  listHeight
 }: IRequestedPackagesEditProps) => {
   const [data, setData] = useState(packageList);
   const [isAdding, setIsAdding] = useState(false);
   const { palette } = useTheme();
 
   const removePackage = (packageName: string) => {
-    setData((currentData) =>
-      currentData.filter((item) => item !== packageName)
-    );
+    setData(currentData => currentData.filter(item => item !== packageName));
   };
 
   const filteredPackageList = useMemo(
-    () => data.filter((item) => typeof item !== "object"),
+    () => data.filter(item => typeof item !== "object"),
     [data]
   );
 
@@ -49,7 +47,7 @@ const RequestedPackagesEdit = ({
         sx={{
           maxHeight: `${listHeight}px`,
           padding: "23px 21px",
-          borderRadius: "0px",
+          borderRadius: "0px"
         }}
       >
         <Table aria-label="requested packages">
@@ -58,7 +56,7 @@ const RequestedPackagesEdit = ({
               <StyledEditPackagesTableCell
                 align="left"
                 sx={{
-                  width: "120px",
+                  width: "120px"
                 }}
               >
                 <Typography
@@ -71,7 +69,7 @@ const RequestedPackagesEdit = ({
               <StyledEditPackagesTableCell
                 align="left"
                 sx={{
-                  width: "180px",
+                  width: "180px"
                 }}
               >
                 <Typography
@@ -92,7 +90,7 @@ const RequestedPackagesEdit = ({
             </TableRow>
           </TableHead>
           <TableBody>
-            {filteredPackageList.map((requestedPackage) => (
+            {filteredPackageList.map(requestedPackage => (
               <RequestedPackagesTableRow
                 onRemove={removePackage}
                 key={`${requestedPackage}`}
@@ -108,7 +106,7 @@ const RequestedPackagesEdit = ({
           border: `1px solid ${palette.primary.main}`,
           borderTop: "0px",
           borderRadius: "0px 0px 5px 5px",
-          padding: "15px 21px",
+          padding: "15px 21px"
         }}
       >
         <StyledButtonPrimary

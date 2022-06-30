@@ -10,7 +10,9 @@ const requestedPackageParser = (requestedPackageName: string) => {
     version = splittedPackageName[2];
   }
 
-  if (constraint === "=") constraint = "==";
+  if (constraint === "=") {
+    constraint = "==";
+  }
 
   return { name, version, constraint };
 };

@@ -5,7 +5,7 @@ const StyledAccordionExpandIcon = styled(ArrowRightRoundedIcon)(
   ({ theme: { palette } }) => ({
     width: 51,
     height: 55,
-    color: palette.secondary.main,
+    color: palette.secondary.main
   })
 );
 

@@ -12,7 +12,9 @@ const VersionSelect = ({ version }: IVersionSelectProps) => {
   const { palette } = useTheme();
   const versions = ["1.0.0", "5.8.0", "15.0.0", "20.13.15"];
 
-  if (version) versions.push(version);
+  if (version) {
+    versions.push(version);
+  }
 
   return (
     <Select
@@ -22,24 +24,24 @@ const VersionSelect = ({ version }: IVersionSelectProps) => {
           sx={{
             backgroundColor: "#ECECEC",
             height: "37px",
-            borderLeft: `2px solid  ${palette.primary.main}`,
+            borderLeft: `2px solid  ${palette.primary.main}`
           }}
         />
       )}
       sx={{
         borderRadius: "0px",
         width: "110px",
-        border: "none",
+        border: "none"
       }}
       inputProps={{
         sx: {
           padding: "7px 9px !important",
           backgroundColor: "#ECECEC",
-          borderRadius: "0px",
-        },
+          borderRadius: "0px"
+        }
       }}
     >
-      {versions.map((version) => (
+      {versions.map(version => (
         <MenuItem key={version} value={version}>
           {version}
         </MenuItem>

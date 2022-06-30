@@ -11,8 +11,8 @@ const StyledButtonPrimary = styled(Button)(({ theme: { palette } }) => ({
   boxShadow: "none",
   borderRadius: "5px",
   ":hover": {
-    boxShadow: "none",
-  },
+    boxShadow: "none"
+  }
 }));
 
 export default StyledButtonPrimary;

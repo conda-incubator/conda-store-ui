@@ -13,9 +13,9 @@ const StyledAccordionSummary = styled(AccordionSummary)(
       maxHeight: 50,
       borderRadius: "5px 5px 0px 0px",
       ".MuiAccordionSummary-expandIconWrapper": {
-        transform: "rotate(90deg)",
-      },
-    },
+        transform: "rotate(90deg)"
+      }
+    }
   })
 );
 
