@@ -23,7 +23,7 @@ const RequestedPackageList = ({
   const listLength = filteredPackageList.length;
 
   return (
-    <Accordion sx={{ width: 421, boxShadow: "none" }}>
+    <Accordion sx={{ width: 421, boxShadow: "none" }} disableGutters>
       <StyledAccordionSummary expandIcon={<StyledAccordionExpandIcon />}>
         <StyledAccordionTitle>Requested Packages</StyledAccordionTitle>
       </StyledAccordionSummary>

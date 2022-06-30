@@ -16,7 +16,7 @@ const ChannelsList = ({ listHeight, channelList }: IChannelsListProps) => {
   const listLength = channelList.length;
 
   return (
-    <Accordion sx={{ width: 421, boxShadow: "none" }}>
+    <Accordion sx={{ width: 421, boxShadow: "none" }} disableGutters>
       <StyledAccordionSummary expandIcon={<StyledAccordionExpandIcon />}>
         <StyledAccordionTitle>Channels</StyledAccordionTitle>
       </StyledAccordionSummary>
