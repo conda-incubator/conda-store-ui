@@ -68,7 +68,12 @@ const RequestedPackagesEdit = ({
                   Name
                 </Typography>
               </StyledEditPackagesTableCell>
-              <StyledEditPackagesTableCell align="left">
+              <StyledEditPackagesTableCell
+                align="left"
+                sx={{
+                  width: "180px",
+                }}
+              >
                 <Typography
                   component="p"
                   sx={{ fontSize: "16px", fontWeight: 500 }}
