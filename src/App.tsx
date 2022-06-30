@@ -6,7 +6,10 @@ const App = () => {
   return (
     <>
       <h1>Hello World</h1>
-      <ChannelsList listHeight={100} />
+      <ChannelsList
+        channelList={["conda forge", "pandas", "conda-store"]}
+        listHeight={120}
+      />
     </>
   );
 };
