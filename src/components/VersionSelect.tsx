@@ -8,7 +8,7 @@ interface IVersionSelectProps {
 }
 
 const VersionSelect = ({ version }: IVersionSelectProps) => {
-  const versions = ["1.0.0", "5.8.0", "15.0.0"];
+  const versions = ["1.0.0", "5.8.0", "15.0.0", "20.13.15"];
 
   if (version) versions.push(version);
 
@@ -26,7 +26,7 @@ const VersionSelect = ({ version }: IVersionSelectProps) => {
       )}
       sx={{
         borderRadius: "0px",
-        width: "100px",
+        width: "110px",
         border: "none",
       }}
       inputProps={{
