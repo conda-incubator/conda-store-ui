@@ -4,3 +4,4 @@ export * from "./RequestedPackagesEdit";
 export * from "./RequestedPackagesTableRow";
 export * from "./AddRequestedPackage";
 export * from "./ConstraintSelect";
+export * from './VersionSelect'

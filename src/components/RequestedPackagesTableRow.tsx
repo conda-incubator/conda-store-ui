@@ -7,6 +7,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import Box from "@mui/material/Box";
 import StyledIconButton from "../styles/StyledIconButton";
 import ConstraintSelect from "./ConstraintSelect";
+import VersionSelect from "./VersionSelect";
 
 interface IRequestedPackagesTableRowProps {
   requestedPackage: string;
@@ -37,17 +38,11 @@ const RequestedPackagesTableRow = ({
       <StyledRequestedPackagesTableCell align="left">
         <Box sx={{ display: "flex", alignItems: "center" }}>
           <ConstraintSelect constraint={constraint} />
-          <Typography
-            sx={{
-              fontSize: "16px",
-              fontWeight: 400,
-              color: "#000",
-              width: "100px",
-            }}
+          <VersionSelect version={version} />
+          <StyledIconButton
+            onClick={() => onRemove(requestedPackage)}
+            sx={{ marginLeft: "24px" }}
           >
-            {version}
-          </Typography>
-          <StyledIconButton onClick={() => onRemove(requestedPackage)}>
             <DeleteIcon />
           </StyledIconButton>
         </Box>

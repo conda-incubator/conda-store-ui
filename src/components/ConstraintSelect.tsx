@@ -19,8 +19,7 @@ const ConstraintSelect = ({ constraint }: IConstraintSelectProps) => {
       }}
       inputProps={{
         sx: {
-          padding: "5px 9px !important",
-          border: "2px solid #C4C4C4",
+          padding: "7px 9px !important",
           backgroundColor: "#ECECEC",
           borderRadius: "0px",
         },
