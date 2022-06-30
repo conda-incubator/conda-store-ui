@@ -1,6 +1,6 @@
 import * as React from "react";
 import "../style/index.css";
-import RequestedPackagesEdit from "./components/RequestedPackagesEdit";
+import RequestedPackagesEdit from "./components/RequestedPackages/RequestedPackagesEdit";
 
 const App = () => {
   return (
@@ -16,7 +16,7 @@ const App = () => {
             "package2<=5.3",
             "package3>4.0",
             "package4<2.3",
-            { pip: ["blablabla"] },
+            { pip: ["test"] },
           ]}
         /> */}
 
@@ -25,7 +25,7 @@ const App = () => {
           "numpy>=4.7",
           "pandas<=3.8.1",
           "python>=1.1",
-          { pip: ["blablabla"] },
+          { pip: ["test"] },
         ]}
         listHeight={215}
       />

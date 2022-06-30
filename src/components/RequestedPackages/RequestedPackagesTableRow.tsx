@@ -5,9 +5,9 @@ import requestedPackageParser from "src/utils/helpers/requestedPackageParser";
 import StyledRequestedPackagesTableCell from "src/styles/StyledRequestedPackagesTableCell";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Box from "@mui/material/Box";
-import StyledIconButton from "../styles/StyledIconButton";
-import ConstraintSelect from "./ConstraintSelect";
-import VersionSelect from "./VersionSelect";
+import StyledIconButton from "../../styles/StyledIconButton";
+import ConstraintSelect from "../ConstraintSelect";
+import VersionSelect from "../VersionSelect";
 
 interface IRequestedPackagesTableRowProps {
   requestedPackage: string;

@@ -6,9 +6,9 @@ import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import DeleteIcon from "@mui/icons-material/Delete";
-import StyledIconButton from "../styles/StyledIconButton";
-import ConstraintSelect from "./ConstraintSelect";
-import VersionSelect from "./VersionSelect";
+import StyledIconButton from "../../styles/StyledIconButton";
+import ConstraintSelect from "../ConstraintSelect";
+import VersionSelect from "../VersionSelect";
 
 interface IAddRequestedPackageProps {
   onCancel: React.Dispatch<React.SetStateAction<boolean>>;
