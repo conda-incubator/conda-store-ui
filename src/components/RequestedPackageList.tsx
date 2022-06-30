@@ -1,13 +1,12 @@
 import React from "react";
 
 import Accordion from "@mui/material/Accordion";
-import Typography from "@mui/material/Typography";
-import ArrowRightRoundedIcon from "@mui/icons-material/ArrowRightRounded";
 import RequestedPackage from "./RequestedPackage";
 import Box from "@mui/material/Box";
 import StyledAccordionSummary from "src/styles/StyledAccordionSummary";
 import StyledAccordionDetails from "src/styles/StyledAccordionDetails";
-import useTheme from "@mui/material/styles/useTheme";
+import StyledAccordionExpandIcon from "src/styles/StyledAccordionExpandIcon";
+import StyledAccordionTitle from "src/styles/StyledAccordionTitle";
 
 interface IRequestedPackageListProps {
   packageList: (string | object)[];
@@ -16,33 +15,21 @@ interface IRequestedPackageListProps {
 
 const RequestedPackageList = ({
   packageList,
-  listHeight,
+  listHeight
 }: IRequestedPackageListProps) => {
-  const { palette } = useTheme();
-
   const filteredPackageList = packageList.filter(
-    (item) => typeof item !== "object"
+    item => typeof item !== "object"
   );
   const listLength = filteredPackageList.length;
 
   return (
     <Accordion sx={{ width: 421, boxShadow: "none" }}>
-      <StyledAccordionSummary
-        expandIcon={
-          <ArrowRightRoundedIcon
-            sx={{ width: 51, height: 55, color: palette.secondary.main }}
-          />
-        }
-      >
-        <Typography
-          variant="h5"
-          component="h5"
-          sx={{ fontSize: "18px", fontWeight: 500 }}
-        >
-          Requested Packages
-        </Typography>
+      <StyledAccordionSummary expandIcon={<StyledAccordionExpandIcon />}>
+        <StyledAccordionTitle>Requested Packages</StyledAccordionTitle>
       </StyledAccordionSummary>
-      <StyledAccordionDetails sx={{ maxHeight: `${listHeight}px` }}>
+      <StyledAccordionDetails
+        sx={{ maxHeight: `${listHeight}px`, padding: "11px 40px" }}
+      >
         {filteredPackageList.map((item, index) => (
           <Box
             key={`${item}`}
