@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import Box from "@mui/material/Box";
@@ -9,7 +9,13 @@ import StyledAccordionDetails from "src/styles/StyledAccordionDetails";
 import StyledButtonPrimary from "src/styles/StyledButtonPrimary";
 import { useTheme } from "@mui/material";
 import ChannelsEditItem from "./ChannelsEditItem";
-import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
+import {
+  DragDropContext,
+  Draggable,
+  Droppable,
+  DropResult
+} from "react-beautiful-dnd";
+import reorderArray from "src/utils/helpers/reorderArray";
 
 interface IChannelsEditProps {
   channelsList: string[];
@@ -20,12 +26,29 @@ const ChannelsEdit = ({ listHeight, channelsList }: IChannelsEditProps) => {
   const { palette } = useTheme();
   const listLength = channelsList.length;
 
+  const [list, setList] = useState(channelsList);
+
+  const onDragEnd = (result: DropResult) => {
+    if (!result.destination) {
+      return;
+    }
+
+    const { destination, source } = result;
+    const reorderedArray = reorderArray({
+      list,
+      startIndex: source.index,
+      endIndex: destination.index
+    });
+
+    setList(reorderedArray);
+  };
+
   return (
     <Accordion sx={{ width: 421, boxShadow: "none" }} disableGutters>
       <StyledAccordionSummary expandIcon={<StyledAccordionExpandIcon />}>
         <StyledAccordionTitle>Channels</StyledAccordionTitle>
       </StyledAccordionSummary>
-      <DragDropContext onDragEnd={() => "drag end"}>
+      <DragDropContext onDragEnd={onDragEnd}>
         <Droppable droppableId="channels-edit-list">
           {provided => (
             <StyledAccordionDetails
@@ -38,7 +61,7 @@ const ChannelsEdit = ({ listHeight, channelsList }: IChannelsEditProps) => {
                 minHeight: `${listLength * 47}px`
               }}
             >
-              {channelsList.map((channel, index) => (
+              {list.map((channel, index) => (
                 <Draggable key={channel} draggableId={channel} index={index}>
                   {provided => (
                     <Box
