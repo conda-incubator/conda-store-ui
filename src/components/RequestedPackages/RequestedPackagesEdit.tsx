@@ -97,9 +97,9 @@ const RequestedPackagesEdit = ({
                 requestedPackage={`${requestedPackage}`}
               />
             ))}
-            {isAdding && <AddRequestedPackage onCancel={setIsAdding} />}
           </TableBody>
         </Table>
+        {isAdding && <AddRequestedPackage onCancel={setIsAdding} />}
       </StyledAccordionDetails>
       <AccordionDetails
         sx={{

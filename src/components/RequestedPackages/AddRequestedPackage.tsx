@@ -1,6 +1,4 @@
 import React, { useState } from "react";
-import TableRow from "@mui/material/TableRow";
-import StyledRequestedPackagesTableCell from "src/styles/StyledRequestedPackagesTableCell";
 import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
@@ -34,8 +32,8 @@ const AddRequestedPackage = ({ onCancel }: IAddRequestedPackageProps) => {
   };
 
   return (
-    <TableRow>
-      <StyledRequestedPackagesTableCell>
+    <Box sx={{ display: "flex", alignItems: "center", marginTop: "15px" }}>
+      <Box sx={{ marginRight: "160px" }}>
         <Autocomplete
           freeSolo
           options={["python", "pandas"]}
@@ -55,9 +53,8 @@ const AddRequestedPackage = ({ onCancel }: IAddRequestedPackageProps) => {
             />
           )}
         />
-      </StyledRequestedPackagesTableCell>
-      <StyledRequestedPackagesTableCell />
-      <StyledRequestedPackagesTableCell>
+      </Box>
+      <Box>
         <Box sx={{ display: "flex", alignItems: "center" }}>
           <Box sx={{ width: "154px" }}>
             {showSelect && (
@@ -74,8 +71,8 @@ const AddRequestedPackage = ({ onCancel }: IAddRequestedPackageProps) => {
             <DeleteIcon />
           </StyledIconButton>
         </Box>
-      </StyledRequestedPackagesTableCell>
-    </TableRow>
+      </Box>
+    </Box>
   );
 };
 
