@@ -33,13 +33,15 @@ const RequestedPackagesEdit = ({
     setData(currentData => currentData.filter(item => item !== packageName));
   };
 
+  const addPackage = (packageName: string) => setData([...data, packageName]);
+
   const filteredPackageList = useMemo(
     () => data.filter(item => typeof item !== "object"),
     [data]
   );
 
   return (
-    <Accordion sx={{ width: 576, boxShadow: "none" }}>
+    <Accordion sx={{ width: 576, boxShadow: "none" }} disableGutters>
       <StyledAccordionSummary expandIcon={<StyledAccordionExpandIcon />}>
         <StyledAccordionTitle>Requested Packages</StyledAccordionTitle>
       </StyledAccordionSummary>
@@ -99,7 +101,9 @@ const RequestedPackagesEdit = ({
             ))}
           </TableBody>
         </Table>
-        {isAdding && <AddRequestedPackage onCancel={setIsAdding} />}
+        {isAdding && (
+          <AddRequestedPackage onSubmit={addPackage} onCancel={setIsAdding} />
+        )}
       </StyledAccordionDetails>
       <AccordionDetails
         sx={{

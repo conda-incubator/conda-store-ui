@@ -4,30 +4,30 @@ import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import DeleteIcon from "@mui/icons-material/Delete";
 import StyledIconButton from "../../styles/StyledIconButton";
-import ConstraintSelect from "../ConstraintSelect";
-import VersionSelect from "../VersionSelect";
 
 interface IAddRequestedPackageProps {
   onCancel: React.Dispatch<React.SetStateAction<boolean>>;
+  onSubmit: (packageName: string) => void;
 }
 
-const AddRequestedPackage = ({ onCancel }: IAddRequestedPackageProps) => {
-  const [name, setName] = useState<string | null>(null);
-  const [showSelect, setShowSelect] = useState(false);
+const AddRequestedPackage = ({
+  onCancel,
+  onSubmit
+}: IAddRequestedPackageProps) => {
+  const [name, setName] = useState<string>("");
 
-  const setFields = () => {
+  const handleSubmit = (packageName: string) => {
     if (name) {
-      setShowSelect(true);
-      return;
+      onSubmit(packageName);
+      onCancel(false);
     }
-
-    setShowSelect(false);
   };
 
   const keyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
-      setFields();
-      e.currentTarget.blur();
+      if (name) {
+        handleSubmit(name);
+      }
     }
   };
 
@@ -38,7 +38,7 @@ const AddRequestedPackage = ({ onCancel }: IAddRequestedPackageProps) => {
           freeSolo
           options={["python", "pandas"]}
           onChange={(e, value) => {
-            setName(value);
+            setName(value ?? "");
           }}
           sx={{ width: "140px" }}
           renderInput={params => (
@@ -47,7 +47,7 @@ const AddRequestedPackage = ({ onCancel }: IAddRequestedPackageProps) => {
               {...params}
               label="Enter package"
               onChange={e => setName(e.target.value)}
-              onBlur={() => setFields()}
+              onBlur={() => handleSubmit(name)}
               onKeyDown={keyPress}
               size="small"
             />
@@ -56,14 +56,7 @@ const AddRequestedPackage = ({ onCancel }: IAddRequestedPackageProps) => {
       </Box>
       <Box>
         <Box sx={{ display: "flex", alignItems: "center" }}>
-          <Box sx={{ width: "154px" }}>
-            {showSelect && (
-              <>
-                <ConstraintSelect constraint={""} />
-                <VersionSelect version={""} />
-              </>
-            )}
-          </Box>
+          <Box sx={{ width: "154px" }} />
           <StyledIconButton
             onClick={() => onCancel(false)}
             sx={{ marginLeft: "24px" }}
