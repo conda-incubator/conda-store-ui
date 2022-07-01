@@ -10,7 +10,6 @@ import StyledButtonPrimary from "src/styles/StyledButtonPrimary";
 import { useTheme } from "@mui/material";
 import ChannelsEditItem from "./ChannelsEditItem";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
-import getItemStyle from "src/utils/helpers/getItemStyle";
 
 interface IChannelsEditProps {
   channelsList: string[];
@@ -26,7 +25,7 @@ const ChannelsEdit = ({ listHeight, channelsList }: IChannelsEditProps) => {
       <StyledAccordionSummary expandIcon={<StyledAccordionExpandIcon />}>
         <StyledAccordionTitle>Channels</StyledAccordionTitle>
       </StyledAccordionSummary>
-      <DragDropContext onDragEnd={() => {}}>
+      <DragDropContext onDragEnd={() => "drag end"}>
         <Droppable droppableId="channels-edit-list">
           {provided => (
             <StyledAccordionDetails
