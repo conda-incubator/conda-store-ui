@@ -1,15 +1,12 @@
 import * as React from "react";
 import "../style/index.css";
-import ChannelsList from "./components/Channels/ChannelsList";
+import ChannelsEdit from "./components/Channels/ChannelsEdit";
 
 const App = () => {
   return (
     <>
       <h1>Hello World</h1>
-      <ChannelsList
-        channelList={["conda forge", "pandas", "conda-store"]}
-        listHeight={120}
-      />
+      <ChannelsEdit listHeight={100} />
     </>
   );
 };
