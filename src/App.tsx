@@ -8,7 +8,7 @@ const App = () => {
       <h1>Hello World</h1>
       <ChannelsEdit
         channelsList={["conda-store", "default", "conda forge"]}
-        listHeight={160}
+        listHeight={170}
       />
     </>
   );
