@@ -3,7 +3,11 @@ import Box from "@mui/material/Box";
 import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
 import Typography from "@mui/material/Typography";
 
-const ChannelsEditItem = () => {
+interface IChannelsEditItemProps {
+  channelName: string;
+}
+
+const ChannelsEditItem = ({ channelName }: IChannelsEditItemProps) => {
   return (
     <Box
       sx={{
@@ -31,7 +35,7 @@ const ChannelsEditItem = () => {
           marginRight: "10px"
         }}
       />
-      <Typography sx={{ color: "#4D4D4D" }}>Defaults</Typography>
+      <Typography sx={{ color: "#4D4D4D" }}>{channelName}</Typography>
     </Box>
   );
 };

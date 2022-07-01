@@ -1,6 +1,7 @@
 import React from "react";
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
+import Box from "@mui/material/Box";
 import StyledAccordionSummary from "src/styles/StyledAccordionSummary";
 import StyledAccordionExpandIcon from "src/styles/StyledAccordionExpandIcon";
 import StyledAccordionTitle from "src/styles/StyledAccordionTitle";
@@ -10,11 +11,13 @@ import { useTheme } from "@mui/material";
 import ChannelsEditItem from "./ChannelsEditItem";
 
 interface IChannelsEditProps {
+  channelsList: string[];
   listHeight: number;
 }
 
-const ChannelsEdit = ({ listHeight }: IChannelsEditProps) => {
+const ChannelsEdit = ({ listHeight, channelsList }: IChannelsEditProps) => {
   const { palette } = useTheme();
+  const listLength = channelsList.length;
 
   return (
     <Accordion sx={{ width: 421, boxShadow: "none" }} disableGutters>
@@ -28,7 +31,14 @@ const ChannelsEdit = ({ listHeight }: IChannelsEditProps) => {
           borderRadius: "0px"
         }}
       >
-        <ChannelsEditItem />
+        {channelsList.map((channel, index) => (
+          <Box
+            key={channel}
+            sx={{ marginBottom: index === listLength - 1 ? "0px" : "20px" }}
+          >
+            <ChannelsEditItem channelName={channel} />
+          </Box>
+        ))}
       </StyledAccordionDetails>
       <AccordionDetails
         sx={{
