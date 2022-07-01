@@ -7,6 +7,7 @@ import StyledAccordionTitle from "src/styles/StyledAccordionTitle";
 import StyledAccordionDetails from "src/styles/StyledAccordionDetails";
 import StyledButtonPrimary from "src/styles/StyledButtonPrimary";
 import { useTheme } from "@mui/material";
+import ChannelsEditItem from "./ChannelsEditItem";
 
 interface IChannelsEditProps {
   listHeight: number;
@@ -27,7 +28,7 @@ const ChannelsEdit = ({ listHeight }: IChannelsEditProps) => {
           borderRadius: "0px"
         }}
       >
-        Details
+        <ChannelsEditItem />
       </StyledAccordionDetails>
       <AccordionDetails
         sx={{
