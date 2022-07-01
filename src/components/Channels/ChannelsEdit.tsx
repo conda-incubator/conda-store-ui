@@ -9,6 +9,8 @@ import StyledAccordionDetails from "src/styles/StyledAccordionDetails";
 import StyledButtonPrimary from "src/styles/StyledButtonPrimary";
 import { useTheme } from "@mui/material";
 import ChannelsEditItem from "./ChannelsEditItem";
+import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
+import getItemStyle from "src/utils/helpers/getItemStyle";
 
 interface IChannelsEditProps {
   channelsList: string[];
@@ -24,22 +26,40 @@ const ChannelsEdit = ({ listHeight, channelsList }: IChannelsEditProps) => {
       <StyledAccordionSummary expandIcon={<StyledAccordionExpandIcon />}>
         <StyledAccordionTitle>Channels</StyledAccordionTitle>
       </StyledAccordionSummary>
-      <StyledAccordionDetails
-        sx={{
-          maxHeight: `${listHeight}px`,
-          padding: "18px 20px",
-          borderRadius: "0px"
-        }}
-      >
-        {channelsList.map((channel, index) => (
-          <Box
-            key={channel}
-            sx={{ marginBottom: index === listLength - 1 ? "0px" : "20px" }}
-          >
-            <ChannelsEditItem channelName={channel} />
-          </Box>
-        ))}
-      </StyledAccordionDetails>
+      <DragDropContext onDragEnd={() => {}}>
+        <Droppable droppableId="channels-edit-list">
+          {provided => (
+            <StyledAccordionDetails
+              {...provided.droppableProps}
+              ref={provided.innerRef}
+              sx={{
+                maxHeight: `${listHeight}px`,
+                padding: "18px 20px",
+                borderRadius: "0px",
+                minHeight: `${listLength * 47}px`
+              }}
+            >
+              {channelsList.map((channel, index) => (
+                <Draggable key={channel} draggableId={channel} index={index}>
+                  {provided => (
+                    <Box
+                      {...provided.draggableProps}
+                      {...provided.dragHandleProps}
+                      ref={provided.innerRef}
+                      sx={{
+                        marginBottom: index === listLength - 1 ? "0px" : "20px"
+                      }}
+                    >
+                      <ChannelsEditItem channelName={channel} />
+                    </Box>
+                  )}
+                </Draggable>
+              ))}
+              {provided.placeholder}
+            </StyledAccordionDetails>
+          )}
+        </Droppable>
+      </DragDropContext>
       <AccordionDetails
         sx={{
           border: `1px solid ${palette.primary.main}`,
