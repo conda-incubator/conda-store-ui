@@ -3,7 +3,6 @@ import TableRow from "@mui/material/TableRow";
 import StyledRequestedPackagesTableCell from "src/styles/StyledRequestedPackagesTableCell";
 import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
-import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import DeleteIcon from "@mui/icons-material/Delete";
 import StyledIconButton from "../../styles/StyledIconButton";
@@ -27,6 +26,13 @@ const AddRequestedPackage = ({ onCancel }: IAddRequestedPackageProps) => {
     setShowSelect(false);
   };
 
+  const keyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      setFields();
+      e.currentTarget.blur();
+    }
+  };
+
   return (
     <TableRow>
       <StyledRequestedPackagesTableCell>
@@ -36,26 +42,21 @@ const AddRequestedPackage = ({ onCancel }: IAddRequestedPackageProps) => {
           onChange={(e, value) => {
             setName(value);
           }}
+          sx={{ width: "140px" }}
           renderInput={params => (
             <TextField
               autoFocus
               {...params}
-              label="Enter package name"
+              label="Enter package"
               onChange={e => setName(e.target.value)}
               onBlur={() => setFields()}
+              onKeyDown={keyPress}
               size="small"
             />
           )}
         />
       </StyledRequestedPackagesTableCell>
-      <StyledRequestedPackagesTableCell>
-        <Typography
-          component="p"
-          sx={{ fontSize: "16px", fontWeight: 400, color: "#676666" }}
-        >
-          -
-        </Typography>
-      </StyledRequestedPackagesTableCell>
+      <StyledRequestedPackagesTableCell />
       <StyledRequestedPackagesTableCell>
         <Box sx={{ display: "flex", alignItems: "center" }}>
           <Box sx={{ width: "154px" }}>
