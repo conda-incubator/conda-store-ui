@@ -1,19 +1,20 @@
+import React, { useMemo, useRef, useState } from "react";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import useTheme from "@mui/material/styles/useTheme";
 import Accordion from "@mui/material/Accordion";
-import React, { useMemo, useState } from "react";
-import StyledAccordionDetails from "src/styles/StyledAccordionDetails";
-import StyledAccordionExpandIcon from "src/styles/StyledAccordionExpandIcon";
-import StyledAccordionSummary from "src/styles/StyledAccordionSummary";
-import StyledAccordionTitle from "src/styles/StyledAccordionTitle";
 import Table from "@mui/material/Table";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import TableBody from "@mui/material/TableBody";
 import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
+import StyledAccordionDetails from "src/styles/StyledAccordionDetails";
+import StyledAccordionExpandIcon from "src/styles/StyledAccordionExpandIcon";
+import StyledAccordionSummary from "src/styles/StyledAccordionSummary";
+import StyledAccordionTitle from "src/styles/StyledAccordionTitle";
 import StyledEditPackagesTableCell from "src/styles/StyledEditPackagesTableCell";
-import RequestedPackagesTableRow from "./RequestedPackagesTableRow";
 import StyledButtonPrimary from "src/styles/StyledButtonPrimary";
+import RequestedPackagesTableRow from "./RequestedPackagesTableRow";
 import AddRequestedPackage from "./AddRequestedPackage";
 
 interface IRequestedPackagesEditProps {
@@ -28,12 +29,18 @@ const RequestedPackagesEdit = ({
   const [data, setData] = useState(packageList);
   const [isAdding, setIsAdding] = useState(false);
   const { palette } = useTheme();
+  const scrollRef = useRef<HTMLDivElement | null>(null);
 
   const removePackage = (packageName: string) => {
     setData(currentData => currentData.filter(item => item !== packageName));
   };
 
   const addPackage = (packageName: string) => setData([...data, packageName]);
+
+  const handleIsAdding = () => {
+    setIsAdding(true);
+    scrollRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
 
   const filteredPackageList = useMemo(
     () => data.filter(item => typeof item !== "object"),
@@ -101,9 +108,11 @@ const RequestedPackagesEdit = ({
             ))}
           </TableBody>
         </Table>
-        {isAdding && (
-          <AddRequestedPackage onSubmit={addPackage} onCancel={setIsAdding} />
-        )}
+        <Box ref={scrollRef}>
+          {isAdding && (
+            <AddRequestedPackage onSubmit={addPackage} onCancel={setIsAdding} />
+          )}
+        </Box>
       </StyledAccordionDetails>
       <AccordionDetails
         sx={{
@@ -113,10 +122,7 @@ const RequestedPackagesEdit = ({
           padding: "15px 21px"
         }}
       >
-        <StyledButtonPrimary
-          variant="contained"
-          onClick={() => setIsAdding(true)}
-        >
+        <StyledButtonPrimary variant="contained" onClick={handleIsAdding}>
           + Add Package
         </StyledButtonPrimary>
       </AccordionDetails>
