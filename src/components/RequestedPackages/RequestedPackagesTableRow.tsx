@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import TableRow from "@mui/material/TableRow";
 import Typography from "@mui/material/Typography";
 import requestedPackageParser from "src/utils/helpers/requestedPackageParser";
@@ -35,7 +35,9 @@ const RequestedPackagesTableRow = ({
       </StyledRequestedPackagesTableCell>
       <StyledRequestedPackagesTableCell align="left">
         <Box sx={{ display: "flex", alignItems: "center" }}>
-          <ConstraintSelect constraint={constraint} />
+          <ConstraintSelect
+            constraint={constraint === "latest" ? "" : constraint}
+          />
           <VersionSelect version={version} />
           <StyledIconButton
             onClick={() => onRemove(requestedPackage)}
@@ -49,4 +51,16 @@ const RequestedPackagesTableRow = ({
   );
 };
 
-export default RequestedPackagesTableRow;
+const compareProps = (
+  prevProps: IRequestedPackagesTableRowProps,
+  nextProps: IRequestedPackagesTableRowProps
+) => {
+  return prevProps.requestedPackage === nextProps.requestedPackage;
+};
+
+const memoizedRequestedPackagesTableRow = memo(
+  RequestedPackagesTableRow,
+  compareProps
+);
+
+export default memoizedRequestedPackagesTableRow;
