@@ -16,18 +16,10 @@ const AddRequestedPackage = ({
 }: IAddRequestedPackageProps) => {
   const [name, setName] = useState<string>("");
 
-  const handleSubmit = (packageName: string) => {
+  const handleSubmit = () => {
     if (name) {
-      onSubmit(packageName);
+      onSubmit(name);
       onCancel(false);
-    }
-  };
-
-  const keyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
-      if (name) {
-        handleSubmit(name);
-      }
     }
   };
 
@@ -47,8 +39,7 @@ const AddRequestedPackage = ({
               {...params}
               label="Enter package"
               onChange={e => setName(e.target.value)}
-              onBlur={() => handleSubmit(name)}
-              onKeyDown={keyPress}
+              onBlur={handleSubmit}
               size="small"
             />
           )}
