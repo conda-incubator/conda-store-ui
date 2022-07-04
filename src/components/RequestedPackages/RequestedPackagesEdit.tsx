@@ -1,4 +1,4 @@
-import React, { useMemo, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import useTheme from "@mui/material/styles/useTheme";
 import Accordion from "@mui/material/Accordion";
@@ -37,15 +37,16 @@ const RequestedPackagesEdit = ({
 
   const addPackage = (packageName: string) => setData([...data, packageName]);
 
-  const handleIsAdding = () => {
-    setIsAdding(true);
-    scrollRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
-
   const filteredPackageList = useMemo(
     () => data.filter(item => typeof item !== "object"),
     [data]
   );
+
+  useEffect(() => {
+    if (isAdding && scrollRef.current) {
+      scrollRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [isAdding]);
 
   return (
     <Accordion sx={{ width: 576, boxShadow: "none" }} disableGutters>
@@ -122,7 +123,10 @@ const RequestedPackagesEdit = ({
           padding: "15px 21px"
         }}
       >
-        <StyledButtonPrimary variant="contained" onClick={handleIsAdding}>
+        <StyledButtonPrimary
+          variant="contained"
+          onClick={() => setIsAdding(true)}
+        >
           + Add Package
         </StyledButtonPrimary>
       </AccordionDetails>
