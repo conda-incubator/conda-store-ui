@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import Box from "@mui/material/Box";
@@ -16,6 +16,7 @@ import {
   DropResult
 } from "react-beautiful-dnd";
 import reorderArray from "src/utils/helpers/reorderArray";
+import AddChannel from "./AddChannel";
 
 interface IChannelsEditProps {
   channelsList: string[];
@@ -24,9 +25,11 @@ interface IChannelsEditProps {
 
 const ChannelsEdit = ({ listHeight, channelsList }: IChannelsEditProps) => {
   const { palette } = useTheme();
+  const scrollRef = useRef<HTMLDivElement | null>(null);
   const listLength = channelsList.length;
 
   const [list, setList] = useState(channelsList);
+  const [isAdding, setIsAdding] = useState(false);
 
   const onDragEnd = (result: DropResult) => {
     if (!result.destination) {
@@ -42,6 +45,12 @@ const ChannelsEdit = ({ listHeight, channelsList }: IChannelsEditProps) => {
 
     setList(reorderedArray);
   };
+
+  useEffect(() => {
+    if (isAdding && scrollRef.current) {
+      scrollRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [isAdding]);
 
   return (
     <Accordion sx={{ width: 421, boxShadow: "none" }} disableGutters>
@@ -79,6 +88,7 @@ const ChannelsEdit = ({ listHeight, channelsList }: IChannelsEditProps) => {
                 </Draggable>
               ))}
               {provided.placeholder}
+              <Box ref={scrollRef}>{isAdding && <AddChannel />}</Box>
             </StyledAccordionDetails>
           )}
         </Droppable>
@@ -91,7 +101,10 @@ const ChannelsEdit = ({ listHeight, channelsList }: IChannelsEditProps) => {
           padding: "15px 21px"
         }}
       >
-        <StyledButtonPrimary variant="contained">
+        <StyledButtonPrimary
+          variant="contained"
+          onClick={() => setIsAdding(true)}
+        >
           + Add Channel
         </StyledButtonPrimary>
       </AccordionDetails>
