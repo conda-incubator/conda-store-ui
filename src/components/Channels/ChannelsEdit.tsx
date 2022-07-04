@@ -31,6 +31,10 @@ const ChannelsEdit = ({ listHeight, channelsList }: IChannelsEditProps) => {
   const [list, setList] = useState(channelsList);
   const [isAdding, setIsAdding] = useState(false);
 
+  const addNewChannel = (channelName: string) => {
+    setList([...list, channelName]);
+  };
+
   const onDragEnd = (result: DropResult) => {
     if (!result.destination) {
       return;
@@ -88,7 +92,14 @@ const ChannelsEdit = ({ listHeight, channelsList }: IChannelsEditProps) => {
                 </Draggable>
               ))}
               {provided.placeholder}
-              <Box ref={scrollRef}>{isAdding && <AddChannel />}</Box>
+              <Box ref={scrollRef}>
+                {isAdding && (
+                  <AddChannel
+                    onSubmit={addNewChannel}
+                    onCancel={() => setIsAdding(false)}
+                  />
+                )}
+              </Box>
             </StyledAccordionDetails>
           )}
         </Droppable>
