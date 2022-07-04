@@ -1,11 +1,13 @@
 import React from "react";
 import Accordion from "@mui/material/Accordion";
 import Box from "@mui/material/Box";
-import StyledAccordionSummary from "src/styles/StyledAccordionSummary";
-import StyledAccordionTitle from "src/styles/StyledAccordionTitle";
-import StyledAccordionExpandIcon from "src/styles/StyledAccordionExpandIcon";
-import StyledAccordionDetails from "src/styles/StyledAccordionDetails";
-import Channel from "./Channel";
+import { Channel } from ".";
+import {
+  StyledAccordionDetails,
+  StyledAccordionExpandIcon,
+  StyledAccordionSummary,
+  StyledAccordionTitle
+} from "src/styles";
 
 interface IChannelsListProps {
   listHeight: number;

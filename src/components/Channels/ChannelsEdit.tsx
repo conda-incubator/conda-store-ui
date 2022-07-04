@@ -2,13 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import Box from "@mui/material/Box";
-import StyledAccordionSummary from "src/styles/StyledAccordionSummary";
-import StyledAccordionExpandIcon from "src/styles/StyledAccordionExpandIcon";
-import StyledAccordionTitle from "src/styles/StyledAccordionTitle";
-import StyledAccordionDetails from "src/styles/StyledAccordionDetails";
-import StyledButtonPrimary from "src/styles/StyledButtonPrimary";
 import { useTheme } from "@mui/material";
-import ChannelsEditItem from "./ChannelsEditItem";
 import {
   DragDropContext,
   Draggable,
@@ -17,6 +11,14 @@ import {
 } from "react-beautiful-dnd";
 import reorderArray from "src/utils/helpers/reorderArray";
 import AddChannel from "./AddChannel";
+import { ChannelsEditItem } from ".";
+import {
+  StyledAccordionDetails,
+  StyledAccordionExpandIcon,
+  StyledAccordionSummary,
+  StyledAccordionTitle,
+  StyledButtonPrimary
+} from "src/styles";
 
 interface IChannelsEditProps {
   channelsList: string[];

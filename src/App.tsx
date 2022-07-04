@@ -1,7 +1,6 @@
 import * as React from "react";
 import "../style/index.css";
-import ChannelsEdit from "./components/Channels/ChannelsEdit";
-import ChannelsList from "./components/Channels/ChannelsList";
+import { ChannelsEdit, ChannelsList } from "./components";
 
 const App = () => {
   return (

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import CloseIcon from "@mui/icons-material/Close";
-import StyledIconButton from "src/styles/StyledIconButton";
+import { StyledIconButton } from "src/styles";
 
 interface IAddChannelProps {
   onCancel: () => void;
