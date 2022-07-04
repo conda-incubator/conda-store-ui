@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import Box from "@mui/material/Box";
 import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
 import Typography from "@mui/material/Typography";
@@ -40,4 +40,6 @@ const ChannelsEditItem = ({ channelName }: IChannelsEditItemProps) => {
   );
 };
 
-export default ChannelsEditItem;
+const memoizedChannelsEditItem = memo(ChannelsEditItem);
+
+export default memoizedChannelsEditItem;
