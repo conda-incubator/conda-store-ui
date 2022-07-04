@@ -11,7 +11,6 @@ const ChannelsEditItem = ({ channelName }: IChannelsEditItemProps) => {
   return (
     <Box
       sx={{
-        width: "205px",
         height: "32px",
         backgroundColor: "#D9D9D9",
         border: "1px solid #000",
