@@ -1,6 +1,6 @@
 import * as React from "react";
 import "../style/index.css";
-import ChannelsList from "./components/Channels/ChannelsList";
+import { ChannelsList } from "./components";
 
 const App = () => {
   return (

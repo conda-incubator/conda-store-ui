@@ -1,4 +1,4 @@
-export * from "./StyledAccordionSummary";
-export * from "./StyledAccordionDetails";
-export * from "./StyledAccordionTitle";
-export * from "./StyledAccordionExpandIcon";
+export { default as StyledAccordionSummary } from "./StyledAccordionSummary";
+export { default as StyledAccordionDetails } from "./StyledAccordionDetails";
+export { default as StyledAccordionTitle } from "./StyledAccordionTitle";
+export { default as StyledAccordionExpandIcon } from "./StyledAccordionExpandIcon";
