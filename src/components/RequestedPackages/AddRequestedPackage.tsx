@@ -3,7 +3,7 @@ import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import DeleteIcon from "@mui/icons-material/Delete";
-import StyledIconButton from "../../styles/StyledIconButton";
+import { StyledIconButton } from "src/styles";
 
 interface IAddRequestedPackageProps {
   onCancel: React.Dispatch<React.SetStateAction<boolean>>;

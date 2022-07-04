@@ -8,14 +8,15 @@ import TableRow from "@mui/material/TableRow";
 import TableBody from "@mui/material/TableBody";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import StyledAccordionDetails from "src/styles/StyledAccordionDetails";
-import StyledAccordionExpandIcon from "src/styles/StyledAccordionExpandIcon";
-import StyledAccordionSummary from "src/styles/StyledAccordionSummary";
-import StyledAccordionTitle from "src/styles/StyledAccordionTitle";
-import StyledEditPackagesTableCell from "src/styles/StyledEditPackagesTableCell";
-import StyledButtonPrimary from "src/styles/StyledButtonPrimary";
-import RequestedPackagesTableRow from "./RequestedPackagesTableRow";
-import AddRequestedPackage from "./AddRequestedPackage";
+import {
+  StyledAccordionDetails,
+  StyledAccordionExpandIcon,
+  StyledAccordionSummary,
+  StyledAccordionTitle,
+  StyledButtonPrimary,
+  StyledEditPackagesTableCell
+} from "src/styles";
+import { RequestedPackagesTableRow, AddRequestedPackage } from ".";
 
 interface IRequestedPackagesEditProps {
   packageList: (string | object)[];

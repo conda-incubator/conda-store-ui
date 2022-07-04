@@ -2,12 +2,10 @@ import React from "react";
 import TableRow from "@mui/material/TableRow";
 import Typography from "@mui/material/Typography";
 import requestedPackageParser from "src/utils/helpers/requestedPackageParser";
-import StyledRequestedPackagesTableCell from "src/styles/StyledRequestedPackagesTableCell";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Box from "@mui/material/Box";
-import StyledIconButton from "../../styles/StyledIconButton";
-import ConstraintSelect from "../ConstraintSelect";
-import VersionSelect from "../VersionSelect";
+import { StyledRequestedPackagesTableCell, StyledIconButton } from "src/styles";
+import { ConstraintSelect, VersionSelect } from "../";
 
 interface IRequestedPackagesTableRowProps {
   requestedPackage: string;

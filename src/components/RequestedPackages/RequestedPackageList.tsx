@@ -1,12 +1,14 @@
 import React from "react";
 
 import Accordion from "@mui/material/Accordion";
-import RequestedPackage from "./RequestedPackage";
+import { RequestedPackage } from ".";
 import Box from "@mui/material/Box";
-import StyledAccordionSummary from "src/styles/StyledAccordionSummary";
-import StyledAccordionDetails from "src/styles/StyledAccordionDetails";
-import StyledAccordionExpandIcon from "src/styles/StyledAccordionExpandIcon";
-import StyledAccordionTitle from "src/styles/StyledAccordionTitle";
+import {
+  StyledAccordionDetails,
+  StyledAccordionExpandIcon,
+  StyledAccordionSummary,
+  StyledAccordionTitle
+} from "src/styles";
 
 interface IRequestedPackageListProps {
   packageList: (string | object)[];
