@@ -41,7 +41,7 @@ const AddChannel = ({ onCancel, onSubmit }: IAddChannelProps) => {
         onKeyDown={keyPress}
         onBlur={handleSubmit}
         sx={{
-          marginRight: "20px",
+          marginRight: "15px",
           width: "207px",
           height: "34px"
         }}

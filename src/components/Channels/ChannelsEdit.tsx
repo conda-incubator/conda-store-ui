@@ -86,7 +86,7 @@ const ChannelsEdit = ({ listHeight, channelsList }: IChannelsEditProps) => {
                       ref={provided.innerRef}
                       sx={{
                         marginBottom: "20px",
-                        width: "205px"
+                        width: "260px"
                       }}
                     >
                       <ChannelsEditItem channelName={channel} />
