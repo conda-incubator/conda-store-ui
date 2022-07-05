@@ -20,12 +20,18 @@ const ChannelsEditItem = ({
   const [name, setName] = useState(channelName);
   const [isEditing, setIsEditing] = useState(false);
 
-  const handleBlur = () => {
-    if (name !== channelName) {
+  const handleSubmit = () => {
+    if (name) {
       onEdit(channelName, name);
     }
 
     setIsEditing(false);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (e.key === "Enter") {
+      handleSubmit();
+    }
   };
 
   return (
@@ -69,9 +75,10 @@ const ChannelsEditItem = ({
             autoFocus
             size="small"
             sx={{ width: "140px" }}
-            inputProps={{ style: { padding: "0px 10px" } }}
-            onBlur={handleBlur}
+            inputProps={{ style: { padding: "0px 5px" } }}
+            onBlur={handleSubmit}
             value={name}
+            onKeyDown={handleKeyDown}
             onChange={e => setName(e.target.value)}
           />
         )}
