@@ -1,8 +1,9 @@
-import React, { memo } from "react";
+import React, { memo, useState } from "react";
 import Box from "@mui/material/Box";
 import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
 import Typography from "@mui/material/Typography";
 import DeleteIcon from "@mui/icons-material/Delete";
+import TextField from "@mui/material/TextField";
 import { StyledIconButton } from "src/styles";
 
 interface IChannelsEditItemProps {
@@ -14,6 +15,9 @@ const ChannelsEditItem = ({
   channelName,
   onRemove
 }: IChannelsEditItemProps) => {
+  const [name, setName] = useState(channelName);
+  const [isEditing, setIsEditing] = useState(false);
+
   return (
     <Box sx={{ display: "flex", alignItems: "center" }}>
       <Box
@@ -42,7 +46,25 @@ const ChannelsEditItem = ({
             marginRight: "10px"
           }}
         />
-        <Typography sx={{ color: "#4D4D4D" }}>{channelName}</Typography>
+        {!isEditing && (
+          <Box
+            onClick={() => setIsEditing(true)}
+            sx={{ "&:hover": { cursor: "pointer" } }}
+          >
+            <Typography sx={{ color: "#4D4D4D" }}>{channelName}</Typography>
+          </Box>
+        )}
+        {isEditing && (
+          <TextField
+            autoFocus
+            size="small"
+            sx={{ width: "140px" }}
+            inputProps={{ style: { padding: "0px 10px" } }}
+            onBlur={() => setIsEditing(false)}
+            value={name}
+            onChange={e => setName(e.target.value)}
+          />
+        )}
       </Box>
       <StyledIconButton
         sx={{ marginLeft: "15px" }}
