@@ -28,13 +28,20 @@ interface IChannelsEditProps {
 const ChannelsEdit = ({ listHeight, channelsList }: IChannelsEditProps) => {
   const { palette } = useTheme();
   const scrollRef = useRef<HTMLDivElement | null>(null);
-  const listLength = channelsList.length;
 
   const [list, setList] = useState(channelsList);
   const [isAdding, setIsAdding] = useState(false);
 
+  const listLength = list.length;
+
   const addNewChannel = (channelName: string) => {
     setList([...list, channelName]);
+  };
+
+  const removeChannel = (channelName: string) => {
+    const filteredList = list.filter(channel => channel !== channelName);
+
+    setList(filteredList);
   };
 
   const onDragEnd = (result: DropResult) => {
@@ -89,7 +96,10 @@ const ChannelsEdit = ({ listHeight, channelsList }: IChannelsEditProps) => {
                         width: "260px"
                       }}
                     >
-                      <ChannelsEditItem channelName={channel} />
+                      <ChannelsEditItem
+                        onRemove={removeChannel}
+                        channelName={channel}
+                      />
                     </Box>
                   )}
                 </Draggable>

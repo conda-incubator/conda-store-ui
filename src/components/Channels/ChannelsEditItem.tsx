@@ -7,9 +7,13 @@ import { StyledIconButton } from "src/styles";
 
 interface IChannelsEditItemProps {
   channelName: string;
+  onRemove: (channelName: string) => void;
 }
 
-const ChannelsEditItem = ({ channelName }: IChannelsEditItemProps) => {
+const ChannelsEditItem = ({
+  channelName,
+  onRemove
+}: IChannelsEditItemProps) => {
   return (
     <Box sx={{ display: "flex", alignItems: "center" }}>
       <Box
@@ -40,7 +44,10 @@ const ChannelsEditItem = ({ channelName }: IChannelsEditItemProps) => {
         />
         <Typography sx={{ color: "#4D4D4D" }}>{channelName}</Typography>
       </Box>
-      <StyledIconButton sx={{ marginLeft: "15px" }}>
+      <StyledIconButton
+        sx={{ marginLeft: "15px" }}
+        onClick={() => onRemove(channelName)}
+      >
         <DeleteIcon />
       </StyledIconButton>
     </Box>
