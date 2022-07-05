@@ -44,6 +44,14 @@ const ChannelsEdit = ({ listHeight, channelsList }: IChannelsEditProps) => {
     setList(filteredList);
   };
 
+  const editChannel = (channelName: string, newChannelName: string) => {
+    const newChannelsList = list.map(channel =>
+      channel === channelName ? newChannelName : channel
+    );
+
+    setList(newChannelsList);
+  };
+
   const onDragEnd = (result: DropResult) => {
     if (!result.destination) {
       return;
@@ -99,6 +107,7 @@ const ChannelsEdit = ({ listHeight, channelsList }: IChannelsEditProps) => {
                       <ChannelsEditItem
                         onRemove={removeChannel}
                         channelName={channel}
+                        onEdit={editChannel}
                       />
                     </Box>
                   )}

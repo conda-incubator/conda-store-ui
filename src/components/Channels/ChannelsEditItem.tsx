@@ -9,14 +9,24 @@ import { StyledIconButton } from "src/styles";
 interface IChannelsEditItemProps {
   channelName: string;
   onRemove: (channelName: string) => void;
+  onEdit: (channelName: string, newChannelName: string) => void;
 }
 
 const ChannelsEditItem = ({
   channelName,
-  onRemove
+  onRemove,
+  onEdit
 }: IChannelsEditItemProps) => {
   const [name, setName] = useState(channelName);
   const [isEditing, setIsEditing] = useState(false);
+
+  const handleBlur = () => {
+    if (name !== channelName) {
+      onEdit(channelName, name);
+    }
+
+    setIsEditing(false);
+  };
 
   return (
     <Box sx={{ display: "flex", alignItems: "center" }}>
@@ -60,7 +70,7 @@ const ChannelsEditItem = ({
             size="small"
             sx={{ width: "140px" }}
             inputProps={{ style: { padding: "0px 10px" } }}
-            onBlur={() => setIsEditing(false)}
+            onBlur={handleBlur}
             value={name}
             onChange={e => setName(e.target.value)}
           />
