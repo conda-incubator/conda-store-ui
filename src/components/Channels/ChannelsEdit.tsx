@@ -22,10 +22,9 @@ import {
 
 interface IChannelsEditProps {
   channelsList: string[];
-  listHeight: number;
 }
 
-const ChannelsEdit = ({ listHeight, channelsList }: IChannelsEditProps) => {
+const ChannelsEdit = ({ channelsList }: IChannelsEditProps) => {
   const { palette } = useTheme();
   const scrollRef = useRef<HTMLDivElement | null>(null);
 
@@ -85,7 +84,6 @@ const ChannelsEdit = ({ listHeight, channelsList }: IChannelsEditProps) => {
               {...provided.droppableProps}
               ref={provided.innerRef}
               sx={{
-                maxHeight: `${listHeight}px`,
                 padding: "18px 20px",
                 paddingBottom: `${listLength === 0 ? "20px" : "0px"}`,
                 borderRadius: "0px"

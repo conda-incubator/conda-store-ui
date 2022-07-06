@@ -10,11 +10,10 @@ import {
 } from "src/styles";
 
 interface IChannelsListProps {
-  listHeight: number;
   channelList: string[];
 }
 
-const ChannelsList = ({ listHeight, channelList }: IChannelsListProps) => {
+const ChannelsList = ({ channelList }: IChannelsListProps) => {
   const listLength = channelList.length;
 
   return (
@@ -22,9 +21,7 @@ const ChannelsList = ({ listHeight, channelList }: IChannelsListProps) => {
       <StyledAccordionSummary expandIcon={<StyledAccordionExpandIcon />}>
         <StyledAccordionTitle>Channels</StyledAccordionTitle>
       </StyledAccordionSummary>
-      <StyledAccordionDetails
-        sx={{ maxHeight: `${listHeight}px`, padding: "11px 40px" }}
-      >
+      <StyledAccordionDetails sx={{ padding: "11px 40px" }}>
         {channelList.map((channel, index) => (
           <Box
             key={channel}
