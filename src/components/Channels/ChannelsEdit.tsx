@@ -88,8 +88,7 @@ const ChannelsEdit = ({ listHeight, channelsList }: IChannelsEditProps) => {
                 maxHeight: `${listHeight}px`,
                 padding: "18px 20px",
                 paddingBottom: `${listLength === 0 ? "20px" : "0px"}`,
-                borderRadius: "0px",
-                minHeight: `${listLength * 47}px`
+                borderRadius: "0px"
               }}
             >
               {list.map((channel, index) => (
