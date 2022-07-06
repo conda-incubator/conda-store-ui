@@ -12,13 +12,9 @@ import {
 
 interface IRequestedPackageListProps {
   packageList: (string | object)[];
-  listHeight: number;
 }
 
-const RequestedPackageList = ({
-  packageList,
-  listHeight
-}: IRequestedPackageListProps) => {
+const RequestedPackageList = ({ packageList }: IRequestedPackageListProps) => {
   const filteredPackageList = packageList.filter(
     item => typeof item !== "object"
   );
@@ -29,9 +25,7 @@ const RequestedPackageList = ({
       <StyledAccordionSummary expandIcon={<StyledAccordionExpandIcon />}>
         <StyledAccordionTitle>Requested Packages</StyledAccordionTitle>
       </StyledAccordionSummary>
-      <StyledAccordionDetails
-        sx={{ maxHeight: `${listHeight}px`, padding: "11px 40px" }}
-      >
+      <StyledAccordionDetails sx={{ padding: "11px 40px" }}>
         {filteredPackageList.map((item, index) => (
           <Box
             key={`${item}`}

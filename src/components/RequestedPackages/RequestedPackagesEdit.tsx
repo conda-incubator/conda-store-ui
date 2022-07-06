@@ -20,12 +20,10 @@ import { RequestedPackagesTableRow, AddRequestedPackage } from ".";
 
 interface IRequestedPackagesEditProps {
   packageList: (string | object)[];
-  listHeight: number;
 }
 
 const RequestedPackagesEdit = ({
-  packageList,
-  listHeight
+  packageList
 }: IRequestedPackagesEditProps) => {
   const [data, setData] = useState(packageList);
   const [isAdding, setIsAdding] = useState(false);
@@ -56,7 +54,6 @@ const RequestedPackagesEdit = ({
       </StyledAccordionSummary>
       <StyledAccordionDetails
         sx={{
-          maxHeight: `${listHeight}px`,
           padding: "23px 21px",
           borderRadius: "0px"
         }}
