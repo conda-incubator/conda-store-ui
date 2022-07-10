@@ -1,8 +1,9 @@
 import * as React from "react";
 import "../style/index.css";
-import { RequestedPackageList, RequestedPackagesEdit } from "./components";
+import { ChannelsEdit, ChannelsList, RequestedPackageList, RequestedPackagesEdit } from "./components";
 
 const App = () => {
+  const channelsList = ["conda-store", "default", "conda forge"];
   const packagesList = [
     "numpy>=4.7",
     "pandas<=3.8.1",
@@ -15,6 +16,8 @@ const App = () => {
       <h1>Hello World</h1>
       <RequestedPackageList packageList={packagesList} />
       <RequestedPackagesEdit packageList={packagesList} />
+      <ChannelsList channelList={channelsList} />
+      <ChannelsEdit channelsList={channelsList} />
     </>
   );
 };

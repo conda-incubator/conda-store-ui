@@ -11,6 +11,7 @@ const StyledAccordionSummary = styled(AccordionSummary)(
     "&.Mui-expanded": {
       minHeight: 50,
       maxHeight: 50,
+      margin: "0px",
       borderRadius: "5px 5px 0px 0px",
       ".MuiAccordionSummary-expandIconWrapper": {
         transform: "rotate(90deg)"
