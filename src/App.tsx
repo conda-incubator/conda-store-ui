@@ -1,6 +1,7 @@
 import * as React from "react";
 import "../style/index.css";
 import { RequestedPackageList, RequestedPackagesEdit } from "./components";
+import { ChannelsEdit, ChannelsList } from "./components/Channels";
 
 const App = () => {
   const packagesList = [
@@ -10,11 +11,15 @@ const App = () => {
     { pip: ["test"] }
   ];
 
+  const channelsList = ["conda-store", "default", "conda forge"];
+
   return (
     <>
       <h1>Hello World</h1>
       <RequestedPackageList packageList={packagesList} />
       <RequestedPackagesEdit packageList={packagesList} />
+      <ChannelsList channelList={channelsList} />
+      <ChannelsEdit channelsList={channelsList} />
     </>
   );
 };
