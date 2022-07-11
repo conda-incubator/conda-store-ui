@@ -1,4 +1,4 @@
-const requestedPackageParser = (requestedPackageName: string) => {
+export const requestedPackageParser = (requestedPackageName: string) => {
   const splittedPackageName = requestedPackageName.split(/(>=|<=|<|>|=)/g);
 
   const name = splittedPackageName[0];
@@ -16,5 +16,3 @@ const requestedPackageParser = (requestedPackageName: string) => {
 
   return { name, version, constraint };
 };
-
-export default requestedPackageParser;

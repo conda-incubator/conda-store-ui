@@ -1,17 +1,17 @@
-import React, { useState, useRef, useEffect } from "react";
+import { useTheme } from "@mui/material";
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import Box from "@mui/material/Box";
-import { useTheme } from "@mui/material";
+import React, { useState, useRef, useEffect } from "react";
 import {
   DragDropContext,
   Draggable,
   Droppable,
   DropResult
 } from "react-beautiful-dnd";
-import reorderArray from "src/utils/helpers/reorderArray";
-import AddChannel from "./AddChannel";
-import { ChannelsEditItem } from ".";
+
+import { AddChannel } from "./AddChannel";
+import { ChannelsEditItem } from "./ChannelsEditItem";
 import {
   StyledAccordionDetails,
   StyledAccordionExpandIcon,
@@ -19,12 +19,16 @@ import {
   StyledAccordionTitle,
   StyledButtonPrimary
 } from "src/styles";
+import { reorderArray } from "src/utils/helpers/reorderArray";
 
 interface IChannelsEditProps {
+  /**
+   * TODO: this interface needs a docstring for each param
+   */
   channelsList: string[];
 }
 
-const ChannelsEdit = ({ channelsList }: IChannelsEditProps) => {
+export const ChannelsEdit = ({ channelsList }: IChannelsEditProps) => {
   const { palette } = useTheme();
   const scrollRef = useRef<HTMLDivElement | null>(null);
 
@@ -141,5 +145,3 @@ const ChannelsEdit = ({ channelsList }: IChannelsEditProps) => {
     </Accordion>
   );
 };
-
-export default ChannelsEdit;

@@ -1,14 +1,17 @@
-import React from "react";
 import SquareIcon from "@mui/icons-material/Square";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import useTheme from "@mui/material/styles/useTheme";
+import React from "react";
 
 interface IChannelProps {
+  /**
+   * TODO: this interface needs a docstring for each param
+   */
   channelName: string;
 }
 
-const Channel = ({ channelName }: IChannelProps) => {
+export const Channel = ({ channelName }: IChannelProps) => {
   const { palette } = useTheme();
 
   return (
@@ -25,5 +28,3 @@ const Channel = ({ channelName }: IChannelProps) => {
     </Box>
   );
 };
-
-export default Channel;

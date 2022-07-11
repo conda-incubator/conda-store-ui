@@ -1,15 +1,20 @@
-import React from "react";
-
 import SquareIcon from "@mui/icons-material/Square";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import requestedPackageParser from "src/utils/helpers/requestedPackageParser";
+import React from "react";
+
+import { requestedPackageParser } from "src/utils/helpers/requestedPackageParser";
 
 interface IRequestedPackageProps {
+  /**
+   * TODO: this interface needs a docstring for each param
+   */
   requestedPackage: string;
 }
 
-const RequestedPackage = ({ requestedPackage }: IRequestedPackageProps) => {
+export const RequestedPackage = ({
+  requestedPackage
+}: IRequestedPackageProps) => {
   const { name, version, constraint } =
     requestedPackageParser(requestedPackage);
 
@@ -29,5 +34,3 @@ const RequestedPackage = ({ requestedPackage }: IRequestedPackageProps) => {
     </Box>
   );
 };
-
-export default RequestedPackage;
