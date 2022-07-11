@@ -21,7 +21,7 @@ import {
 } from "src/styles";
 import { CondaSpecificationPip } from "src/common/models";
 
-interface IRequestedPackagesEditProps {
+export interface IRequestedPackagesEditProps {
   /**
    * TODO: this interface needs a docstring for each param
    */
