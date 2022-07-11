@@ -1,6 +1,4 @@
 *.bundle.*
-lib/
-node_modules/
 *.egg-info/
 .ipynb_checkpoints
 *.tsbuildinfo
@@ -118,6 +116,14 @@ dmypy.json
 .pyre/
 
 # End of https://www.gitignore.io/api/python
+
+### javascript/typescript ###
+lib
+node_modules
+
+*.tsbuildinfo
+lerna-debug.log
+yarn-error.log
 
 # OSX files
 .DS_Store
