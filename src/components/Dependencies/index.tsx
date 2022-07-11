@@ -1,2 +1,2 @@
-export { default as Dependencies } from "./Dependencies";
-export { default as DependenciesItem } from "./DependenciesItem";
+export * from "./Dependencies";
+export * from "./DependenciesItem";

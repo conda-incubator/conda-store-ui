@@ -8,7 +8,7 @@ interface IDependenciesItemProps {
   dependency: Dependency;
 }
 
-const DependenciesItem = ({ dependency }: IDependenciesItemProps) => {
+export const DependenciesItem = ({ dependency }: IDependenciesItemProps) => {
   return (
     <Box sx={{ display: "flex", alignItems: "center" }}>
       <Box sx={{ display: "flex", alignItems: "center", width: "300px" }}>
@@ -26,5 +26,3 @@ const DependenciesItem = ({ dependency }: IDependenciesItemProps) => {
     </Box>
   );
 };
-
-export default DependenciesItem;
