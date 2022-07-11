@@ -1,18 +1,22 @@
 import React, { memo } from "react";
 import TableRow from "@mui/material/TableRow";
 import Typography from "@mui/material/Typography";
-import requestedPackageParser from "src/utils/helpers/requestedPackageParser";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Box from "@mui/material/Box";
-import { StyledRequestedPackagesTableCell, StyledIconButton } from "src/styles";
+
 import { ConstraintSelect, VersionSelect } from "../";
+import { StyledRequestedPackagesTableCell, StyledIconButton } from "src/styles";
+import { requestedPackageParser } from "src/utils/helpers/requestedPackageParser";
 
 interface IRequestedPackagesTableRowProps {
+  /**
+   * TODO: this interface needs a docstring for each param
+   */
   requestedPackage: string;
   onRemove: (packageName: string) => void;
 }
 
-const RequestedPackagesTableRow = ({
+const BaseRequestedPackagesTableRow = ({
   requestedPackage,
   onRemove
 }: IRequestedPackagesTableRowProps) => {
@@ -58,9 +62,8 @@ const compareProps = (
   return prevProps.requestedPackage === nextProps.requestedPackage;
 };
 
-const memoizedRequestedPackagesTableRow = memo(
-  RequestedPackagesTableRow,
+// TODO: use of memo here needs an explanatory comment
+export const RequestedPackagesTableRow = memo(
+  BaseRequestedPackagesTableRow,
   compareProps
 );
-
-export default memoizedRequestedPackagesTableRow;

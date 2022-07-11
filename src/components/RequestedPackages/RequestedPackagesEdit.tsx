@@ -1,13 +1,16 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
-import AccordionDetails from "@mui/material/AccordionDetails";
-import useTheme from "@mui/material/styles/useTheme";
 import Accordion from "@mui/material/Accordion";
+import AccordionDetails from "@mui/material/AccordionDetails";
+import Box from "@mui/material/Box";
 import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import TableBody from "@mui/material/TableBody";
 import Typography from "@mui/material/Typography";
-import Box from "@mui/material/Box";
+import useTheme from "@mui/material/styles/useTheme";
+import React, { useEffect, useMemo, useRef, useState } from "react";
+
+import { RequestedPackagesTableRow } from "./RequestedPackagesTableRow";
+import { AddRequestedPackage } from "./AddRequestedPackage";
 import {
   StyledAccordionDetails,
   StyledAccordionExpandIcon,
@@ -16,13 +19,15 @@ import {
   StyledButtonPrimary,
   StyledEditPackagesTableCell
 } from "src/styles";
-import { RequestedPackagesTableRow, AddRequestedPackage } from ".";
 
 interface IRequestedPackagesEditProps {
+  /**
+   * TODO: this interface needs a docstring for each param
+   */
   packageList: (string | object)[];
 }
 
-const RequestedPackagesEdit = ({
+export const RequestedPackagesEdit = ({
   packageList
 }: IRequestedPackagesEditProps) => {
   const [data, setData] = useState(packageList);
@@ -131,5 +136,3 @@ const RequestedPackagesEdit = ({
     </Accordion>
   );
 };
-
-export default RequestedPackagesEdit;

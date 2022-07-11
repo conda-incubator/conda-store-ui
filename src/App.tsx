@@ -1,8 +1,10 @@
 import * as React from "react";
-import "../style/index.css";
+
 import { ChannelsEdit, ChannelsList, RequestedPackageList, RequestedPackagesEdit } from "./components";
 
-const App = () => {
+import "../style/index.css";
+
+export const App = () => {
   const channelsList = ["conda-store", "default", "conda forge"];
   const packagesList = [
     "numpy>=4.7",
@@ -21,5 +23,3 @@ const App = () => {
     </>
   );
 };
-
-export default App;

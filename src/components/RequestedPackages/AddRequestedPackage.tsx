@@ -1,16 +1,20 @@
-import React, { useState } from "react";
-import Autocomplete from "@mui/material/Autocomplete";
-import TextField from "@mui/material/TextField";
-import Box from "@mui/material/Box";
 import DeleteIcon from "@mui/icons-material/Delete";
+import Autocomplete from "@mui/material/Autocomplete";
+import Box from "@mui/material/Box";
+import TextField from "@mui/material/TextField";
+import React, { useState } from "react";
+
 import { StyledIconButton } from "src/styles";
 
 interface IAddRequestedPackageProps {
+  /**
+   * TODO: this interface needs a docstring for each param
+   */
   onCancel: React.Dispatch<React.SetStateAction<boolean>>;
   onSubmit: (packageName: string) => void;
 }
 
-const AddRequestedPackage = ({
+export const AddRequestedPackage = ({
   onCancel,
   onSubmit
 }: IAddRequestedPackageProps) => {
@@ -59,5 +63,3 @@ const AddRequestedPackage = ({
     </Box>
   );
 };
-
-export default AddRequestedPackage;

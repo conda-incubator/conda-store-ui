@@ -3,10 +3,13 @@ import MenuItem from "@mui/material/MenuItem";
 import React from "react";
 
 interface IConstraintSelectProps {
+  /**
+   * TODO: this interface needs a docstring for each param
+   */
   constraint: string | null;
 }
 
-const ConstraintSelect = ({ constraint }: IConstraintSelectProps) => {
+export const ConstraintSelect = ({ constraint }: IConstraintSelectProps) => {
   const constraints = [">", "<", ">=", "<=", "=="];
 
   return (
@@ -33,5 +36,3 @@ const ConstraintSelect = ({ constraint }: IConstraintSelectProps) => {
     </Select>
   );
 };
-
-export default ConstraintSelect;

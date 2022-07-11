@@ -1,8 +1,8 @@
-import React from "react";
-
 import Accordion from "@mui/material/Accordion";
 import { RequestedPackage } from ".";
 import Box from "@mui/material/Box";
+import React from "react";
+
 import {
   StyledAccordionDetails,
   StyledAccordionExpandIcon,
@@ -11,10 +11,13 @@ import {
 } from "src/styles";
 
 interface IRequestedPackageListProps {
+  /**
+   * TODO: this interface needs a docstring for each param
+   */
   packageList: (string | object)[];
 }
 
-const RequestedPackageList = ({ packageList }: IRequestedPackageListProps) => {
+export const RequestedPackageList = ({ packageList }: IRequestedPackageListProps) => {
   const filteredPackageList = packageList.filter(
     item => typeof item !== "object"
   );
@@ -38,5 +41,3 @@ const RequestedPackageList = ({ packageList }: IRequestedPackageListProps) => {
     </Accordion>
   );
 };
-
-export default RequestedPackageList;

@@ -5,10 +5,13 @@ import useTheme from "@mui/material/styles/useTheme";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 
 interface IVersionSelectProps {
+  /**
+   * TODO: this interface needs a docstring for each param
+   */
   version: string | null;
 }
 
-const VersionSelect = ({ version }: IVersionSelectProps) => {
+export const VersionSelect = ({ version }: IVersionSelectProps) => {
   const { palette } = useTheme();
   const versions = ["1.0.0", "5.8.0", "15.0.0", "20.13.15"];
 
@@ -49,5 +52,3 @@ const VersionSelect = ({ version }: IVersionSelectProps) => {
     </Select>
   );
 };
-
-export default VersionSelect;
