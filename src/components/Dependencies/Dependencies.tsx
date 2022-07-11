@@ -6,6 +6,7 @@ import {
   StyledAccordionSummary,
   StyledAccordionTitle
 } from "src/styles";
+import DependenciesItem from "./DependenciesItem";
 
 const Dependencies = () => {
   return (
@@ -15,7 +16,9 @@ const Dependencies = () => {
           Packages Installed as Dependencies
         </StyledAccordionTitle>
       </StyledAccordionSummary>
-      <StyledAccordionDetails>Details</StyledAccordionDetails>
+      <StyledAccordionDetails sx={{ padding: "15px 40px" }}>
+        <DependenciesItem />
+      </StyledAccordionDetails>
     </Accordion>
   );
 };
