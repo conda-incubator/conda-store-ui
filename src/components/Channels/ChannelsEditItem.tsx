@@ -1,18 +1,22 @@
-import React, { memo, useState } from "react";
-import Box from "@mui/material/Box";
-import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
-import Typography from "@mui/material/Typography";
 import DeleteIcon from "@mui/icons-material/Delete";
+import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
+import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
+import React, { memo, useState } from "react";
+
 import { StyledIconButton } from "src/styles";
 
 interface IChannelsEditItemProps {
+  /**
+   * TODO: this interface needs a docstring for each param
+   */
   channelName: string;
   onRemove: (channelName: string) => void;
   onEdit: (channelName: string, newChannelName: string) => void;
 }
 
-const ChannelsEditItem = ({
+const BaseChannelsEditItem = ({
   channelName,
   onRemove,
   onEdit
@@ -93,6 +97,4 @@ const ChannelsEditItem = ({
   );
 };
 
-const memoizedChannelsEditItem = memo(ChannelsEditItem);
-
-export default memoizedChannelsEditItem;
+export const ChannelsEditItem = memo(BaseChannelsEditItem);

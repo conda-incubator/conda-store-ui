@@ -1,7 +1,8 @@
-import React from "react";
 import Accordion from "@mui/material/Accordion";
 import Box from "@mui/material/Box";
-import { Channel } from ".";
+import React from "react";
+
+import { Channel } from "./Channel";
 import {
   StyledAccordionDetails,
   StyledAccordionExpandIcon,
@@ -10,10 +11,13 @@ import {
 } from "src/styles";
 
 interface IChannelsListProps {
+  /**
+   * TODO: this interface needs a docstring for each param
+   */
   channelList: string[];
 }
 
-const ChannelsList = ({ channelList }: IChannelsListProps) => {
+export const ChannelsList = ({ channelList }: IChannelsListProps) => {
   const listLength = channelList.length;
 
   return (
@@ -34,5 +38,3 @@ const ChannelsList = ({ channelList }: IChannelsListProps) => {
     </Accordion>
   );
 };
-
-export default ChannelsList;

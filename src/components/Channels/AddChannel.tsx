@@ -1,15 +1,19 @@
-import React, { useState } from "react";
+import CloseIcon from "@mui/icons-material/Close";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
-import CloseIcon from "@mui/icons-material/Close";
+import React, { useState } from "react";
+
 import { StyledIconButton } from "src/styles";
 
 interface IAddChannelProps {
+  /**
+   * TODO: this interface needs a docstring for each param
+   */
   onCancel: () => void;
   onSubmit: (channelName: string) => void;
 }
 
-const AddChannel = ({ onCancel, onSubmit }: IAddChannelProps) => {
+export const AddChannel = ({ onCancel, onSubmit }: IAddChannelProps) => {
   const [name, setName] = useState("");
 
   const handleSubmit = () => {
@@ -52,5 +56,3 @@ const AddChannel = ({ onCancel, onSubmit }: IAddChannelProps) => {
     </Box>
   );
 };
-
-export default AddChannel;

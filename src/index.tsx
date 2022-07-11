@@ -2,9 +2,10 @@ import { ThemeProvider } from "@mui/material";
 import * as React from "react";
 import { createRoot } from "react-dom/client";
 import { Provider } from "react-redux";
-import App from "./App";
-import store from "./store";
-import theme from "./theme";
+
+import { App } from "./App";
+import { store } from "./store";
+import { theme } from "./theme";
 
 const container = document.createElement("div");
 const body = document.querySelector("body");
