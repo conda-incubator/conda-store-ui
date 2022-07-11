@@ -1,6 +1,11 @@
 import * as React from "react";
 
-import { ChannelsEdit, ChannelsList, RequestedPackageList, RequestedPackagesEdit } from "./components";
+import {
+  ChannelsEdit,
+  ChannelsList,
+  RequestedPackageList,
+  RequestedPackagesEdit
+} from "./components";
 
 import "../style/index.css";
 

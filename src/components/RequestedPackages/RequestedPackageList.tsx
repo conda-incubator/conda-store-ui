@@ -17,7 +17,9 @@ interface IRequestedPackageListProps {
   packageList: (string | object)[];
 }
 
-export const RequestedPackageList = ({ packageList }: IRequestedPackageListProps) => {
+export const RequestedPackageList = ({
+  packageList
+}: IRequestedPackageListProps) => {
   const filteredPackageList = packageList.filter(
     item => typeof item !== "object"
   );

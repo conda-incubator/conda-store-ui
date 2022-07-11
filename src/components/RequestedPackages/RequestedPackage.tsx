@@ -12,7 +12,9 @@ interface IRequestedPackageProps {
   requestedPackage: string;
 }
 
-export const RequestedPackage = ({ requestedPackage }: IRequestedPackageProps) => {
+export const RequestedPackage = ({
+  requestedPackage
+}: IRequestedPackageProps) => {
   const { name, version, constraint } =
     requestedPackageParser(requestedPackage);
 
