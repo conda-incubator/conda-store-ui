@@ -1,7 +1,7 @@
 import AccordionDetails from "@mui/material/AccordionDetails";
 import { styled } from "@mui/system";
 
-const StyledAccordionDetails = styled(AccordionDetails)(
+export const StyledAccordionDetails = styled(AccordionDetails)(
   ({ theme: { palette } }) => ({
     border: `1px solid ${palette.primary.main}`,
     borderTop: "none",
@@ -20,5 +20,3 @@ const StyledAccordionDetails = styled(AccordionDetails)(
     }
   })
 );
-
-export default StyledAccordionDetails;

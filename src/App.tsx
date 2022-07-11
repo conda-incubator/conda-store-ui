@@ -1,8 +1,16 @@
 import * as React from "react";
-import "../style/index.css";
-import { ChannelsEdit, ChannelsList, Dependencies } from "./components";
 
-const App = () => {
+import {
+  ChannelsEdit,
+  ChannelsList,
+  RequestedPackageList,
+  RequestedPackagesEdit,
+  Dependencies
+} from "./components";
+
+import "../style/index.css";
+
+export const App = () => {
   const channelsList = ["conda-store", "default", "conda forge"];
   const dependencies = [
     {
@@ -67,15 +75,21 @@ const App = () => {
       summary: "Specifications for callback functions passed in to an API"
     }
   ];
+  const packagesList = [
+    "numpy>=4.7",
+    "pandas<=3.8.1",
+    "python>=1.1",
+    { pip: ["test"] }
+  ];
 
   return (
     <>
       <h1>Hello World</h1>
+      <RequestedPackageList packageList={packagesList} />
+      <RequestedPackagesEdit packageList={packagesList} />
       <ChannelsList channelList={channelsList} />
       <ChannelsEdit channelsList={channelsList} />
       <Dependencies mode="edit" dependencies={dependencies} />
     </>
   );
 };
-
-export default App;

@@ -1,8 +1,8 @@
+import Accordion from "@mui/material/Accordion";
+import { RequestedPackage } from ".";
+import Box from "@mui/material/Box";
 import React from "react";
 
-import Accordion from "@mui/material/Accordion";
-import RequestedPackage from "./RequestedPackage";
-import Box from "@mui/material/Box";
 import {
   StyledAccordionDetails,
   StyledAccordionExpandIcon,
@@ -11,13 +11,14 @@ import {
 } from "src/styles";
 
 interface IRequestedPackageListProps {
+  /**
+   * TODO: this interface needs a docstring for each param
+   */
   packageList: (string | object)[];
-  listHeight: number;
 }
 
-const RequestedPackageList = ({
-  packageList,
-  listHeight
+export const RequestedPackageList = ({
+  packageList
 }: IRequestedPackageListProps) => {
   const filteredPackageList = packageList.filter(
     item => typeof item !== "object"
@@ -29,9 +30,7 @@ const RequestedPackageList = ({
       <StyledAccordionSummary expandIcon={<StyledAccordionExpandIcon />}>
         <StyledAccordionTitle>Requested Packages</StyledAccordionTitle>
       </StyledAccordionSummary>
-      <StyledAccordionDetails
-        sx={{ maxHeight: `${listHeight}px`, padding: "11px 40px" }}
-      >
+      <StyledAccordionDetails sx={{ padding: "11px 40px" }}>
         {filteredPackageList.map((item, index) => (
           <Box
             key={`${item}`}
@@ -44,5 +43,3 @@ const RequestedPackageList = ({
     </Accordion>
   );
 };
-
-export default RequestedPackageList;

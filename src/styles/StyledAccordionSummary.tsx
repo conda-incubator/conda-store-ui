@@ -1,7 +1,7 @@
 import AccordionSummary from "@mui/material/AccordionSummary";
 import { styled } from "@mui/system";
 
-const StyledAccordionSummary = styled(AccordionSummary)(
+export const StyledAccordionSummary = styled(AccordionSummary)(
   ({ theme: { palette } }) => ({
     paddingLeft: "21px",
     paddingRight: "10px",
@@ -19,5 +19,3 @@ const StyledAccordionSummary = styled(AccordionSummary)(
     }
   })
 );
-
-export default StyledAccordionSummary;
