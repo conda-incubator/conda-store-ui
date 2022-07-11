@@ -2,13 +2,18 @@ import React from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import SquareIcon from "@mui/icons-material/Square";
+import FileUploadIcon from "@mui/icons-material/FileUpload";
 import { Dependency } from "src/common/models";
+import { StyledIconButton } from "src/styles";
 
 interface IDependenciesItemProps {
   dependency: Dependency;
+  mode: "read-only" | "edit";
 }
 
-const DependenciesItem = ({ dependency }: IDependenciesItemProps) => {
+const DependenciesItem = ({ dependency, mode }: IDependenciesItemProps) => {
+  const isEditMode = mode === "edit";
+
   return (
     <Box sx={{ display: "flex", alignItems: "center" }}>
       <Box sx={{ display: "flex", alignItems: "center", width: "300px" }}>
@@ -22,7 +27,20 @@ const DependenciesItem = ({ dependency }: IDependenciesItemProps) => {
         />
         <Typography sx={{ color: "#000" }}>{dependency.name}</Typography>
       </Box>
-      <Typography sx={{ color: "#000" }}>{dependency.version}</Typography>
+      <Typography
+        sx={{
+          color: "#000",
+          width: isEditMode ? "140px" : "auto",
+          marginLeft: "20px"
+        }}
+      >
+        {dependency.version}
+      </Typography>
+      {isEditMode && (
+        <StyledIconButton>
+          <FileUploadIcon />
+        </StyledIconButton>
+      )}
     </Box>
   );
 };

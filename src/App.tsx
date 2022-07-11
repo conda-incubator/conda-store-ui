@@ -73,7 +73,7 @@ const App = () => {
       <h1>Hello World</h1>
       <ChannelsList channelList={channelsList} />
       <ChannelsEdit channelsList={channelsList} />
-      <Dependencies dependencies={dependencies} />
+      <Dependencies mode="edit" dependencies={dependencies} />
     </>
   );
 };
