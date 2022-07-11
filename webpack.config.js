@@ -16,7 +16,7 @@ const { dependencySrcMapRules, stylingRules, svgUrlRules, getContext, getOptimiz
 
 const isProd = process.env.NODE_ENV === "production";
 
-const simpleExampleConfig = {
+const basicConfig = {
   devtool: "source-map",
   entry: "src/index.tsx",
   watch: false,
@@ -65,5 +65,5 @@ const simpleExampleConfig = {
 }
 
 module.exports = [
-  simpleExampleConfig,
+  basicConfig,
 ];
