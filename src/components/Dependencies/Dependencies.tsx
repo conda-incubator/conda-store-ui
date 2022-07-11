@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Accordion from "@mui/material/Accordion";
 import Box from "@mui/material/Box";
+import CircularProgress from "@mui/material/CircularProgress";
 import InfiniteScroll from "react-infinite-scroll-component";
 import {
   StyledAccordionExpandIcon,
@@ -70,7 +71,9 @@ const Dependencies = ({ dependencies }: IDependenciesProps) => {
 
   const addDependencies = () => {
     if (list.length <= 15) {
-      setList(list.concat(nextDependencies));
+      setTimeout(() => {
+        setList(list.concat(nextDependencies));
+      }, 1000);
     }
   };
 
@@ -86,11 +89,22 @@ const Dependencies = ({ dependencies }: IDependenciesProps) => {
         sx={{ padding: "15px 40px", maxHeight: "100px" }}
       >
         <InfiniteScroll
-          hasMore={true}
-          loader={null}
+          hasMore={listLength <= 15}
+          loader={
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                marginTop: "10px"
+              }}
+            >
+              <CircularProgress />
+            </Box>
+          }
           dataLength={listLength}
           next={addDependencies}
           scrollableTarget="infScroll"
+          style={{ overflow: "hidden" }}
         >
           {list.map((dependency, index) => (
             <Box
