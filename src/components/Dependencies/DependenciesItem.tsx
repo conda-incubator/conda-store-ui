@@ -12,7 +12,7 @@ interface IDependenciesItemProps {
   onClick: (id: number) => void;
 }
 
-const DependenciesItem = ({
+export const DependenciesItem = ({
   dependency,
   mode,
   onClick
@@ -50,5 +50,3 @@ const DependenciesItem = ({
     </Box>
   );
 };
-
-export default DependenciesItem;

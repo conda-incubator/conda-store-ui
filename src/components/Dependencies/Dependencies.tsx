@@ -9,15 +9,15 @@ import {
   StyledAccordionSummary,
   StyledAccordionTitle
 } from "src/styles";
-import DependenciesItem from "./DependenciesItem";
 import { Dependency } from "src/common/models";
+import { DependenciesItem } from "./DependenciesItem";
 
 interface IDependenciesProps {
   dependencies: Dependency[];
   mode: "read-only" | "edit";
 }
 
-const Dependencies = ({ dependencies, mode }: IDependenciesProps) => {
+export const Dependencies = ({ dependencies, mode }: IDependenciesProps) => {
   const [list, setList] = useState(dependencies);
   const listLength = list.length;
 
@@ -136,5 +136,3 @@ const Dependencies = ({ dependencies, mode }: IDependenciesProps) => {
     </Accordion>
   );
 };
-
-export default Dependencies;
