@@ -9,9 +9,15 @@ import { StyledIconButton } from "src/styles";
 interface IDependenciesItemProps {
   dependency: Dependency;
   mode: "read-only" | "edit";
+  onClick: (id: number) => void;
 }
 
-const DependenciesItem = ({ dependency, mode }: IDependenciesItemProps) => {
+const DependenciesItem = ({
+  dependency,
+  mode,
+  onClick
+}: IDependenciesItemProps) => {
+  const { id, name, version } = dependency;
   const isEditMode = mode === "edit";
 
   return (
@@ -25,19 +31,19 @@ const DependenciesItem = ({ dependency, mode }: IDependenciesItemProps) => {
             marginRight: "12px"
           }}
         />
-        <Typography sx={{ color: "#000" }}>{dependency.name}</Typography>
+        <Typography sx={{ color: "#000" }}>{name}</Typography>
       </Box>
       <Typography
         sx={{
           color: "#000",
           width: isEditMode ? "140px" : "auto",
-          marginLeft: "20px"
+          marginLeft: isEditMode ? "20px" : "0px"
         }}
       >
-        {dependency.version}
+        {version}
       </Typography>
       {isEditMode && (
-        <StyledIconButton>
+        <StyledIconButton onClick={() => onClick(id)}>
           <FileUploadIcon />
         </StyledIconButton>
       )}

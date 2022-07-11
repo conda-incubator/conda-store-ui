@@ -78,6 +78,12 @@ const Dependencies = ({ dependencies, mode }: IDependenciesProps) => {
     }
   };
 
+  const handlePromote = (id: number) => {
+    const filteredList = list.filter(item => item.id !== id);
+
+    setList(filteredList);
+  };
+
   return (
     <Accordion
       sx={{
@@ -118,7 +124,11 @@ const Dependencies = ({ dependencies, mode }: IDependenciesProps) => {
               key={dependency.id}
               sx={{ marginBottom: index === listLength - 1 ? "0px" : "20px" }}
             >
-              <DependenciesItem mode={mode} dependency={dependency} />
+              <DependenciesItem
+                mode={mode}
+                dependency={dependency}
+                onClick={handlePromote}
+              />
             </Box>
           ))}
         </InfiniteScroll>
