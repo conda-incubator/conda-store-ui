@@ -1,4 +1,5 @@
-import { createTheme } from "@mui/material";
+import { createTheme, ThemeProvider } from "@mui/material";
+import * as React from "react";
 
 export const theme = createTheme({
   typography: {
@@ -13,3 +14,7 @@ export const theme = createTheme({
     }
   }
 });
+
+export const themeDecorator = (func: Function) => (
+  <ThemeProvider theme={theme}>{func()}</ThemeProvider>
+)
