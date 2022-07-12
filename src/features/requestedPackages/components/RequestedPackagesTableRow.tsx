@@ -4,9 +4,9 @@ import Typography from "@mui/material/Typography";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Box from "@mui/material/Box";
 
-import { ConstraintSelect, VersionSelect } from "../";
 import { StyledRequestedPackagesTableCell, StyledIconButton } from "src/styles";
 import { requestedPackageParser } from "src/utils/helpers/requestedPackageParser";
+import { ConstraintSelect, VersionSelect } from "src/components";
 
 interface IRequestedPackagesTableRowProps {
   /**

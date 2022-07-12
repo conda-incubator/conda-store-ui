@@ -1,13 +1,11 @@
 import * as React from "react";
 
+import "../style/index.css";
+import { ChannelsEdit, ChannelsList } from "./features/channels/components";
 import {
-  ChannelsEdit,
-  ChannelsList,
   RequestedPackageList,
   RequestedPackagesEdit
-} from "./components";
-
-import "../style/index.css";
+} from "./features/requestedPackages/components";
 
 export const App = () => {
   const channelsList = ["conda-store", "default", "conda forge"];
