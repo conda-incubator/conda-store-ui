@@ -1,5 +1,5 @@
-import { channelsSlice } from "src/features/channels/channelsSlice";
-import { requestedPackagesSlice } from "src/features/requestedPackages/requestedPackagesSlice";
+import { channelsSlice } from "src/features/channels";
+import { requestedPackagesSlice } from "src/features/requestedPackages";
 
 export const rootReducer = {
   channels: channelsSlice.reducer,
