@@ -1,18 +1,20 @@
-import { Environment } from "src/common/models";
+import { CondaSpecification } from "src/common/models";
 import { RootState } from "../store";
 
-export const selectEnvironment = (state: RootState): Environment => {
+export const selectCondaSpecification = (
+  state: RootState
+): CondaSpecification => {
   const {
     channels: { channels },
     requestedPackages: { requestedPackages }
   } = state;
 
-  const environment: Environment = {
+  const CondaSpecification: CondaSpecification = {
     name: "test",
     channels,
     dependencies: requestedPackages,
     prefix: null
   };
 
-  return environment;
+  return CondaSpecification;
 };
