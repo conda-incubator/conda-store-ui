@@ -9,12 +9,13 @@ import {
   StyledAccordionSummary,
   StyledAccordionTitle
 } from "src/styles";
+import { PipSpecification } from "src/common/models";
 
 interface IRequestedPackageListProps {
   /**
    * TODO: this interface needs a docstring for each param
    */
-  packageList: (string | object)[];
+  packageList: (string | PipSpecification)[];
 }
 
 export const RequestedPackageList = ({

@@ -1,7 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { PipSpecification } from "src/common/models";
 
 export interface IRequestedPackagesState {
-  requestedPackages: (string | object)[];
+  requestedPackages: (string | PipSpecification)[];
 }
 
 const initialState: IRequestedPackagesState = {
