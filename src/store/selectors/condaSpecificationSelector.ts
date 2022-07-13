@@ -10,9 +10,9 @@ export const selectCondaSpecification = (
   } = state;
 
   const CondaSpecification: CondaSpecification = {
-    name: "test",
     channels,
     dependencies: requestedPackages,
+    name: "test",
     prefix: null
   };
 
