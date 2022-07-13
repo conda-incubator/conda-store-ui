@@ -1,2 +1,2 @@
 export * from "./CondaSpecification";
-export * from "./PipSpecification";
+export * from "./CondaSpecificationPip";

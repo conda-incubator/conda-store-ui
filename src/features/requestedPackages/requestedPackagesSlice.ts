@@ -1,8 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { PipSpecification } from "src/common/models";
+import { CondaSpecificationPip } from "src/common/models";
 
 export interface IRequestedPackagesState {
-  requestedPackages: (string | PipSpecification)[];
+  requestedPackages: (string | CondaSpecificationPip)[];
 }
 
 const initialState: IRequestedPackagesState = {
