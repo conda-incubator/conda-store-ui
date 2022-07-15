@@ -15,6 +15,6 @@ export const theme = createTheme({
   }
 });
 
-export const themeDecorator = (func: Function) => (
+export const themeDecorator = (func: any) => (
   <ThemeProvider theme={theme}>{func()}</ThemeProvider>
-)
+);

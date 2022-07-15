@@ -11,7 +11,7 @@ const packageList = [
 ];
 
 export default {
-  component: RequestedPackagesEdit,
+  component: RequestedPackagesEdit
 } as ComponentMeta<typeof RequestedPackagesEdit>;
 
 export const Primary: ComponentStory<typeof RequestedPackagesEdit> = () => (

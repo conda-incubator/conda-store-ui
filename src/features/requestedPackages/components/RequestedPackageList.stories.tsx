@@ -1,7 +1,7 @@
-import { ComponentStory, ComponentMeta } from '@storybook/react';
-import React from 'react';
+import { ComponentStory, ComponentMeta } from "@storybook/react";
+import React from "react";
 
-import { RequestedPackageList } from './RequestedPackageList';
+import { RequestedPackageList } from "./RequestedPackageList";
 
 const packageList = [
   "numpy>=4.7",
@@ -11,7 +11,7 @@ const packageList = [
 ];
 
 export default {
-  component: RequestedPackageList,
+  component: RequestedPackageList
 } as ComponentMeta<typeof RequestedPackageList>;
 
 export const Primary: ComponentStory<typeof RequestedPackageList> = () => (
