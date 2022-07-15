@@ -44,7 +44,9 @@ export const EnvironmentDropdown = ({
           </IconButton>
         </Box>
       </StyledAccordionSummary>
-      <AccordionDetails sx={{ paddingLeft: "42px", paddingTop: "5px" }}>
+      <AccordionDetails
+        sx={{ paddingLeft: "42px", paddingTop: "5px", paddingBottom: "0px" }}
+      >
         <List sx={{ padding: "0px" }}>
           {filteredEnvironmentsList.map(environment => (
             <Box key={environment.id} sx={{ marginBottom: "20px" }}>
