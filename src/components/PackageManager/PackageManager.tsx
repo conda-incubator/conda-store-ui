@@ -9,10 +9,27 @@ interface IPackageManagerProps {
 }
 
 export const PackageManager = ({ list }: IPackageManagerProps) => {
+  const namespaces: any = {};
+
+  list.forEach(environment => {
+    if (namespaces[environment.namespace.name] === undefined) {
+      namespaces[environment.namespace.name] = environment.namespace;
+    }
+  });
+
   return (
     <Box sx={{ width: "313px" }}>
       <PackageManagerSearch />
-      <EnvironmentDropdown />
+      {Object.keys(namespaces).map(namespace => {
+        const namespaceObj = namespaces[namespace];
+        return (
+          <EnvironmentDropdown
+            list={list}
+            namespace={namespaceObj}
+            key={namespaceObj.id}
+          />
+        );
+      })}
     </Box>
   );
 };

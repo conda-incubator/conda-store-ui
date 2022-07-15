@@ -7,11 +7,28 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import List from "@mui/material/List";
+import { Environment as EnvironmentModel } from "src/common/models";
 import { Environment } from "./Environment";
 
-export const EnvironmentDropdown = () => {
+interface IEnvironmentDropdownProps {
+  list: EnvironmentModel[];
+  namespace: { id: number; name: string };
+}
+
+export const EnvironmentDropdown = ({
+  list,
+  namespace
+}: IEnvironmentDropdownProps) => {
+  const filteredEnvironmentsList = list.filter(
+    environment => environment.namespace.name === namespace.name
+  );
+
   return (
-    <Accordion sx={{ border: "none" }} elevation={0} disableGutters>
+    <Accordion
+      sx={{ border: "none", position: "initial" }}
+      elevation={0}
+      disableGutters
+    >
       <StyledAccordionSummary
         sx={{
           flexDirection: "row-reverse",
@@ -21,7 +38,7 @@ export const EnvironmentDropdown = () => {
         expandIcon={<StyledAccordionExpandIcon />}
       >
         <Box sx={{ display: "flex", alignItems: "center" }}>
-          <Typography sx={{ width: "226px" }}>Client A</Typography>
+          <Typography sx={{ width: "226px" }}>{namespace.name}</Typography>
           <IconButton>
             <AddIcon sx={{ width: "15px", height: "15px", color: "#2B2B2B" }} />
           </IconButton>
@@ -29,9 +46,11 @@ export const EnvironmentDropdown = () => {
       </StyledAccordionSummary>
       <AccordionDetails sx={{ paddingLeft: "42px", paddingTop: "5px" }}>
         <List sx={{ padding: "0px" }}>
-          <Box sx={{ marginBottom: "20px" }}>
-            <Environment />
-          </Box>
+          {filteredEnvironmentsList.map(environment => (
+            <Box key={environment.id} sx={{ marginBottom: "20px" }}>
+              <Environment environment={environment} />
+            </Box>
+          ))}
         </List>
       </AccordionDetails>
     </Accordion>

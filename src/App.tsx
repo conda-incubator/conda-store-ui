@@ -38,6 +38,16 @@ export const App = () => {
       name: "python-flask-env",
       current_build_id: 1,
       current_build: null
+    },
+    {
+      id: 3,
+      namespace: {
+        id: 1,
+        name: "default"
+      },
+      name: "test_env_2",
+      current_build_id: 3,
+      current_build: null
     }
   ];
 

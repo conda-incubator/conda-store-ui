@@ -4,8 +4,13 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import Typography from "@mui/material/Typography";
 import useTheme from "@mui/material/styles/useTheme";
 import CircleIcon from "@mui/icons-material/Circle";
+import { Environment as EnvironmentModel } from "src/common/models";
 
-export const Environment = () => {
+interface IEnvironmentProps {
+  environment: EnvironmentModel;
+}
+
+export const Environment = ({ environment }: IEnvironmentProps) => {
   const {
     palette: { primary }
   } = useTheme();
@@ -23,7 +28,7 @@ export const Environment = () => {
           }}
         />
       </ListItemIcon>
-      <Typography>Risk Analytics</Typography>
+      <Typography>{environment.name}</Typography>
     </ListItem>
   );
 };
