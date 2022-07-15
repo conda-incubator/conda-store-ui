@@ -89,7 +89,7 @@ export const App = () => {
       <RequestedPackagesEdit packageList={packagesList} />
       <ChannelsList channelList={channelsList} />
       <ChannelsEdit channelsList={channelsList} />
-      <Dependencies dependencies={dependencies} />
+      <Dependencies mode="edit" dependencies={dependencies} />
     </>
   );
 };

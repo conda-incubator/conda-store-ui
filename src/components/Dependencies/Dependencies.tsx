@@ -14,9 +14,10 @@ import { DependenciesItem } from "./DependenciesItem";
 
 interface IDependenciesProps {
   dependencies: Dependency[];
+  mode: "read-only" | "edit";
 }
 
-export const Dependencies = ({ dependencies }: IDependenciesProps) => {
+export const Dependencies = ({ dependencies, mode }: IDependenciesProps) => {
   const [list, setList] = useState(dependencies);
   const listLength = list.length;
 
@@ -63,7 +64,7 @@ export const Dependencies = ({ dependencies }: IDependenciesProps) => {
       license: "BSD-3-Clause",
       sha256:
         "ee62d6434090c1327a48551734e06bd10e65a64ef7f3b6e68719500dab0e42b9",
-      name: "backcall",
+      name: "backports.functools_lru_cache",
       version: "0.2.0",
       summary: "Specifications for callback functions passed in to an API"
     }
@@ -77,8 +78,20 @@ export const Dependencies = ({ dependencies }: IDependenciesProps) => {
     }
   };
 
+  const handlePromote = (id: number) => {
+    const filteredList = list.filter(item => item.id !== id);
+
+    setList(filteredList);
+  };
+
   return (
-    <Accordion sx={{ maxWidth: "490px", boxShadow: "none" }} disableGutters>
+    <Accordion
+      sx={{
+        maxWidth: mode === "read-only" ? "490px" : "576px",
+        boxShadow: "none"
+      }}
+      disableGutters
+    >
       <StyledAccordionSummary expandIcon={<StyledAccordionExpandIcon />}>
         <StyledAccordionTitle>
           Packages Installed as Dependencies
@@ -111,7 +124,11 @@ export const Dependencies = ({ dependencies }: IDependenciesProps) => {
               key={dependency.id}
               sx={{ marginBottom: index === listLength - 1 ? "0px" : "20px" }}
             >
-              <DependenciesItem dependency={dependency} />
+              <DependenciesItem
+                mode={mode}
+                dependency={dependency}
+                onClick={handlePromote}
+              />
             </Box>
           ))}
         </InfiniteScroll>
