@@ -32,13 +32,13 @@ export const EnvironmentDropdown = ({
       <StyledAccordionSummary
         sx={{
           flexDirection: "row-reverse",
-          paddingLeft: "0px",
+          paddingLeft: "16px",
           border: "none"
         }}
         expandIcon={<StyledAccordionExpandIcon />}
       >
         <Box sx={{ display: "flex", alignItems: "center" }}>
-          <Typography sx={{ width: "226px" }}>{namespace.name}</Typography>
+          <Typography sx={{ width: "217px" }}>{namespace.name}</Typography>
           <IconButton>
             <AddIcon sx={{ width: "15px", height: "15px", color: "#2B2B2B" }} />
           </IconButton>
