@@ -3,6 +3,7 @@ import * as React from "react";
 import {
   ChannelsEdit,
   ChannelsList,
+  PackageManager,
   RequestedPackageList,
   RequestedPackagesEdit
 } from "./components";
@@ -25,6 +26,7 @@ export const App = () => {
       <RequestedPackagesEdit packageList={packagesList} />
       <ChannelsList channelList={channelsList} />
       <ChannelsEdit channelsList={channelsList} />
+      <PackageManager />
     </>
   );
 };
