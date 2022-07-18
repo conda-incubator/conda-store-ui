@@ -62,7 +62,7 @@ export const PackageManager = ({ list }: IPackageManagerProps) => {
           }
         }}
       >
-        <Box sx={{ borderBottom: `1px solid ${primary.main}` }}>
+        <Box sx={{ minHeight: "50px" }}>
           {namespacesList.map(namespace => {
             const namespaceObj = namespaces[namespace];
 
@@ -85,7 +85,7 @@ export const PackageManager = ({ list }: IPackageManagerProps) => {
             display: "flex",
             alignItems: "center",
             marginLeft: "20px",
-            marginTop: "24px"
+            marginTop: "5px"
           }}
         >
           <Typography
