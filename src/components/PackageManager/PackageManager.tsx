@@ -32,6 +32,8 @@ export const PackageManager = ({ list }: IPackageManagerProps) => {
     }
   });
 
+  const namespacesList = Object.keys(namespaces);
+
   return (
     <Box sx={{ width: "313px", border: `1px solid ${primary.main}` }}>
       <Box sx={{ borderBottom: `1px solid ${primary.main}` }}>
@@ -61,7 +63,7 @@ export const PackageManager = ({ list }: IPackageManagerProps) => {
         }}
       >
         <Box sx={{ borderBottom: `1px solid ${primary.main}` }}>
-          {Object.keys(namespaces).map(namespace => {
+          {namespacesList.map(namespace => {
             const namespaceObj = namespaces[namespace];
 
             if (namespaceObj.name === "default") {
@@ -97,7 +99,7 @@ export const PackageManager = ({ list }: IPackageManagerProps) => {
           </Typography>
           <GroupIcon />
         </Box>
-        {Object.keys(namespaces).map(namespace => {
+        {namespacesList.map(namespace => {
           const namespaceObj = namespaces[namespace];
 
           if (namespaceObj.name !== "default") {
