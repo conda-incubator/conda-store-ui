@@ -1,7 +1,7 @@
 const basicConfigs = require("../webpack.config.js");
 
 module.exports = {
-  stories: ["../src/components/**/*.stories.@(ts|tsx)"],
+  stories: ["../src/**/*.stories.@(ts|tsx)"],
   addons: [
     "@storybook/addon-links",
     "@storybook/addon-essentials",
