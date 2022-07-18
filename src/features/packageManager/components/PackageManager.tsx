@@ -15,15 +15,15 @@ interface IPackageManagerProps {
 export const PackageManager = ({ list }: IPackageManagerProps) => {
   const [search, setSearch] = useState("");
   const [value] = useDebounce(search, 500);
+  const {
+    palette: { primary }
+  } = useTheme();
 
   const filteredList = useMemo(
     () => list.filter(item => item.name.includes(value)),
     [value]
   );
 
-  const {
-    palette: { primary }
-  } = useTheme();
   const namespaces: { [key: string]: { id: number; name: string } } = {};
 
   filteredList.forEach(environment => {
