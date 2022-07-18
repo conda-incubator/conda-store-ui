@@ -21,7 +21,7 @@ import {
 } from "src/styles";
 import { reorderArray } from "src/utils/helpers/reorderArray";
 
-interface IChannelsEditProps {
+export interface IChannelsEditProps {
   /**
    * TODO: this interface needs a docstring for each param
    */
