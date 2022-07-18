@@ -19,12 +19,13 @@ import {
   StyledButtonPrimary,
   StyledEditPackagesTableCell
 } from "src/styles";
+import { CondaSpecificationPip } from "src/common/models";
 
 interface IRequestedPackagesEditProps {
   /**
    * TODO: this interface needs a docstring for each param
    */
-  packageList: (string | object)[];
+  packageList: (string | CondaSpecificationPip)[];
 }
 
 export const RequestedPackagesEdit = ({

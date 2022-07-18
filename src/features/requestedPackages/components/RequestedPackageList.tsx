@@ -9,12 +9,13 @@ import {
   StyledAccordionSummary,
   StyledAccordionTitle
 } from "src/styles";
+import { CondaSpecificationPip } from "src/common/models";
 
 interface IRequestedPackageListProps {
   /**
    * TODO: this interface needs a docstring for each param
    */
-  packageList: (string | object)[];
+  packageList: (string | CondaSpecificationPip)[];
 }
 
 export const RequestedPackageList = ({
