@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo, useState } from "react";
 import { PackageManagerSearch } from "./PackageManagerSearch";
 import { EnvironmentDropdown } from "./EnvironmentDropdown";
 import Box from "@mui/material/Box";
@@ -6,18 +6,27 @@ import Typography from "@mui/material/Typography";
 import GroupIcon from "@mui/icons-material/Group";
 import { Environment } from "src/common/models";
 import useTheme from "@mui/material/styles/useTheme";
+import { useDebounce } from "use-debounce";
 
 interface IPackageManagerProps {
   list: Environment[];
 }
 
 export const PackageManager = ({ list }: IPackageManagerProps) => {
+  const [search, setSearch] = useState("");
+  const [value] = useDebounce(search, 500);
+
+  const filteredList = useMemo(
+    () => list.filter(item => item.name.includes(value)),
+    [value]
+  );
+
   const {
     palette: { primary }
   } = useTheme();
-  const namespaces: any = {};
+  const namespaces: { [key: string]: { id: number; name: string } } = {};
 
-  list.forEach(environment => {
+  filteredList.forEach(environment => {
     if (namespaces[environment.namespace.name] === undefined) {
       namespaces[environment.namespace.name] = environment.namespace;
     }
@@ -26,7 +35,10 @@ export const PackageManager = ({ list }: IPackageManagerProps) => {
   return (
     <Box sx={{ width: "313px", border: `1px solid ${primary.main}` }}>
       <Box sx={{ borderBottom: `1px solid ${primary.main}` }}>
-        <PackageManagerSearch />
+        <PackageManagerSearch
+          value={search}
+          onChange={e => setSearch(e.target.value)}
+        />
       </Box>
       <Box
         sx={{

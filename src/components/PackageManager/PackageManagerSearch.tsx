@@ -5,7 +5,15 @@ import Box from "@mui/material/Box";
 import InputAdornment from "@mui/material/InputAdornment";
 import SearchIcon from "@mui/icons-material/Search";
 
-export const PackageManagerSearch = () => {
+interface IPackageManagerSearchProps {
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  value: string;
+}
+
+export const PackageManagerSearch = ({
+  onChange,
+  value
+}: IPackageManagerSearchProps) => {
   return (
     <Box
       sx={{
@@ -16,6 +24,8 @@ export const PackageManagerSearch = () => {
         Package Manager
       </Typography>
       <OutlinedInput
+        value={value}
+        onChange={onChange}
         size="small"
         endAdornment={
           <InputAdornment position="end">
