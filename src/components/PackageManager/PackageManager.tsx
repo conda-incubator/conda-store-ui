@@ -45,7 +45,7 @@ export const PackageManager = ({ list }: IPackageManagerProps) => {
       <Box
         sx={{
           height: "300px",
-          maxHeight: "450px",
+          maxHeight: "862px",
           overflowY: "scroll",
           overflowX: "hidden",
           paddingRight: "0px",
