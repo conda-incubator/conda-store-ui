@@ -8,6 +8,7 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
 import { Environment } from "./Environment";
 
 interface IEnvironmentDropdownProps {
@@ -43,9 +44,13 @@ export const EnvironmentDropdown = ({
       >
         <List sx={{ padding: "0px" }}>
           {environments.map(environment => (
-            <Box key={environment.id} sx={{ marginBottom: "20px" }}>
+            <ListItem
+              key={environment.id}
+              disablePadding
+              sx={{ marginBottom: "20px" }}
+            >
               <Environment environment={environment} />
-            </Box>
+            </ListItem>
           ))}
         </List>
       </AccordionDetails>

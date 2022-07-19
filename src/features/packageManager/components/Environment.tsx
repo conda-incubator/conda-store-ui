@@ -1,5 +1,4 @@
 import React from "react";
-import ListItem from "@mui/material/ListItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import Typography from "@mui/material/Typography";
 import useTheme from "@mui/material/styles/useTheme";
@@ -16,7 +15,7 @@ export const Environment = ({ environment }: IEnvironmentProps) => {
   } = useTheme();
 
   return (
-    <ListItem disablePadding>
+    <>
       <ListItemIcon
         sx={{ width: "5px", minWidth: "auto", marginRight: "12px" }}
       >
@@ -29,6 +28,6 @@ export const Environment = ({ environment }: IEnvironmentProps) => {
         />
       </ListItemIcon>
       <Typography>{environment.name}</Typography>
-    </ListItem>
+    </>
   );
 };
