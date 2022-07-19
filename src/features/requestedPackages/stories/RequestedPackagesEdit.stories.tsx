@@ -1,7 +1,6 @@
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 import React from "react";
-
-import { RequestedPackagesEdit } from "./RequestedPackagesEdit";
+import { RequestedPackagesEdit } from "../components";
 
 const packageList = [
   "numpy>=4.7",
