@@ -10,7 +10,7 @@ import {
   StyledAccordionTitle
 } from "src/styles";
 
-interface IChannelsListProps {
+export interface IChannelsListProps {
   /**
    * TODO: this interface needs a docstring for each param
    */
