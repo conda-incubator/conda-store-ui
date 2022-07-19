@@ -7,6 +7,8 @@ import GroupIcon from "@mui/icons-material/Group";
 import { Environment } from "src/common/models";
 import useTheme from "@mui/material/styles/useTheme";
 import { useDebounce } from "use-debounce";
+import lodash from "lodash";
+import { INamespaceEnvironments } from "src/common/interfaces";
 
 interface IPackageManagerProps {
   list: Environment[];
@@ -24,15 +26,22 @@ export const PackageManager = ({ list }: IPackageManagerProps) => {
     [value]
   );
 
-  const namespaces: { [key: string]: { id: number; name: string } } = {};
+  let defaultNamespace: INamespaceEnvironments | null = null;
+  const sharedNamespaces: INamespaceEnvironments[] = [];
 
-  filteredList.forEach(environment => {
-    if (namespaces[environment.namespace.name] === undefined) {
-      namespaces[environment.namespace.name] = environment.namespace;
-    }
-  });
+  lodash(filteredList)
+    .groupBy((x: Environment) => x.namespace.name)
+    .map((value: Environment[], key: string) => {
+      const obj = { namespace: key, environments: value };
 
-  const namespacesList = Object.keys(namespaces);
+      if (obj.namespace === "default") {
+        defaultNamespace = obj;
+        return;
+      }
+
+      sharedNamespaces.push(obj);
+    })
+    .value();
 
   return (
     <Box sx={{ width: "313px", border: `1px solid ${primary.main}` }}>
@@ -63,23 +72,8 @@ export const PackageManager = ({ list }: IPackageManagerProps) => {
         }}
       >
         <Box sx={{ minHeight: "50px" }}>
-          {namespacesList.map(namespace => {
-            const namespaceObj = namespaces[namespace];
-
-            if (namespaceObj.name === "default") {
-              return (
-                <EnvironmentDropdown
-                  list={list}
-                  namespace={namespaceObj}
-                  key={namespaceObj.id}
-                />
-              );
-            }
-
-            return null;
-          })}
+          {defaultNamespace && <EnvironmentDropdown data={defaultNamespace} />}
         </Box>
-
         <Box
           sx={{
             display: "flex",
@@ -99,21 +93,9 @@ export const PackageManager = ({ list }: IPackageManagerProps) => {
           </Typography>
           <GroupIcon />
         </Box>
-        {namespacesList.map(namespace => {
-          const namespaceObj = namespaces[namespace];
-
-          if (namespaceObj.name !== "default") {
-            return (
-              <EnvironmentDropdown
-                list={list}
-                namespace={namespaceObj}
-                key={namespaceObj.id}
-              />
-            );
-          }
-
-          return null;
-        })}
+        {sharedNamespaces.map(namespace => (
+          <EnvironmentDropdown key={namespace.namespace} data={namespace} />
+        ))}
       </Box>
     </Box>
   );
