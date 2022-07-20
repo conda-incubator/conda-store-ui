@@ -11,10 +11,6 @@ module.exports = {
     collectCoverage: true,
     collectCoverageFrom: [
         "<rootDir>/src/**/*.{ts,tsx}",
-        "!<rootDir>/src/common/**",
-        "!<rootDir>/src/components/**",
-        "!<rootDir>/src/store/**",
-        "!<rootDir>/src/styles/**",
     ],
     testEnvironment: "jsdom",
     moduleDirectories: ["node_modules", __dirname],

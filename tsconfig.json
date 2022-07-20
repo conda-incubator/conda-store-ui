@@ -4,18 +4,6 @@
   "compilerOptions": {
     "baseUrl": ".",
     "outDir": "lib",
-    "rootDir": "src",
-    "jsx": "react",
-    "lib": ["dom", "esnext"],
-    "module": "esnext",
-    "esModuleInterop": true,
-    "allowJs": true 
   },
-  "include": ["src/**/*"],
-  "exclude": [
-    "node_modules",
-    "build",
-    "dist",
-    "lib"
-  ]
+  "include": ["src/**/*"]
 }

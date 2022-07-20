@@ -1,11 +1,14 @@
-import React from "react";
 import { render } from "@testing-library/react";
-import { Dependencies } from "../Dependencies";
-import { mockTheme } from "src/utils/helpers/mockTheme";
+import React from "react";
 
-test.skip("<Dependencies />", () => {
-  const { container } = render(
-    mockTheme(<Dependencies mode="read-only" dependencies={[]} />)
-  );
-  console.log(container);
+import { Dependencies } from "../src/features/dependencies";
+import { mockTheme } from "./testutils";
+
+describe("<Dependencies />", () => {
+  it("should render when empty", () => {
+    const { container } = render(
+      mockTheme(<Dependencies mode="read-only" dependencies={[]} />)
+    );
+    console.log(container);
+  });
 });
