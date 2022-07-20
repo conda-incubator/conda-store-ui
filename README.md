@@ -15,3 +15,9 @@ yarn install
 yarn run build
 yarn run start
 ```
+
+## Run unit testing using Jest
+```
+yarn test     // find every test with the .test.[tsx|ts] extension
+yarn report   // show coverage collected after running the first command in the browser
+```

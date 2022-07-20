@@ -128,6 +128,9 @@ yarn-error.log
 # storybook
 storybook-static/
 
+# unit testing - Jest
+coverage
+
 # OSX files
 .DS_Store
 
