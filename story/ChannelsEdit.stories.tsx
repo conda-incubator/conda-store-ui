@@ -1,7 +1,7 @@
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 import React from "react";
 
-import { ChannelsEdit } from "./ChannelsEdit";
+import { ChannelsEdit } from "../src/features/channels";
 
 const channelsList = ["conda-store", "default", "conda forge"];
 
