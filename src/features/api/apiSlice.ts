@@ -6,7 +6,7 @@ const baseQuery = fetchBaseQuery({
 
 export const apiSlice = createApi({
   reducerPath: "api",
-  tagTypes: [], //when needed add the models that we get from the api here so they can be put in cache
+  tagTypes: [], //add tag types when needed to utilize the cache, see https://redux-toolkit.js.org/rtk-query/api/createApi#tagtypes
   endpoints: () => ({}),
   baseQuery
 });
