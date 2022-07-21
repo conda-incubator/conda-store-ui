@@ -3,6 +3,7 @@
   "extends": "./tsconfig",
   "include": [
     "src/**/*",
+    "story/**/*",
     "test/**/*",
   ]
 }
