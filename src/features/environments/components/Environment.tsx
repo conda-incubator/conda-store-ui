@@ -6,6 +6,9 @@ import CircleIcon from "@mui/icons-material/Circle";
 import { Environment as EnvironmentModel } from "src/common/models";
 
 interface IEnvironmentProps {
+  /**
+   * @param environment environment to display
+   */
   environment: EnvironmentModel;
 }
 

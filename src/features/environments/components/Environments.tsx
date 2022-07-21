@@ -7,6 +7,9 @@ import { debounce } from "lodash";
 import { EnvironmentsSearch } from "./EnvironmentsSearch";
 
 interface IEnvironmentsProps {
+  /**
+   * @param list this is the list of environments that we want to display
+   */
   list: Environment[];
 }
 

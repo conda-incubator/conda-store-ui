@@ -6,6 +6,9 @@ import InputAdornment from "@mui/material/InputAdornment";
 import SearchIcon from "@mui/icons-material/Search";
 
 interface IEnvironmentsSearchProps {
+  /**
+   * @param onChange change handler that will trigger when we search for environment
+   */
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 

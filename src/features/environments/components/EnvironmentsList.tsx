@@ -9,6 +9,9 @@ import { INamespaceEnvironments } from "src/common/interfaces";
 import lodash from "lodash";
 
 interface IEnvironmentsListProps {
+  /**
+   * @param environmentsList this is the list of environments
+   */
   environmentsList: Environment[];
 }
 

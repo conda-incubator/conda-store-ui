@@ -12,6 +12,9 @@ import ListItem from "@mui/material/ListItem";
 import { Environment } from "./Environment";
 
 interface IEnvironmentDropdownProps {
+  /**
+   * @param data this is the object containing the namespace information and the list of environments that belong to it
+   */
   data: INamespaceEnvironments;
 }
 
