@@ -7,7 +7,7 @@ import {
   RequestedPackagesEdit
 } from "src/features/requestedPackages";
 import { Dependencies } from "src/features/dependencies";
-import { PackageManager } from "./features/packageManager";
+import { Environments } from "./features/environments";
 
 export const App = () => {
   const channelsList = ["conda-store", "default", "conda forge"];
@@ -121,7 +121,7 @@ export const App = () => {
       <ChannelsList channelList={channelsList} />
       <ChannelsEdit channelsList={channelsList} />
       <Dependencies mode="edit" dependencies={dependencies} />
-      <PackageManager list={packageManagerData} />
+      <Environments list={packageManagerData} />
     </>
   );
 };

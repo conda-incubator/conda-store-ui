@@ -1,16 +1,16 @@
 import React, { useMemo, useState } from "react";
 import Box from "@mui/material/Box";
 import useTheme from "@mui/material/styles/useTheme";
-import { PackageManagerSearch } from "./PackageManagerSearch";
 import EnvironmentsList from "./EnvironmentsList";
 import { Environment } from "src/common/models";
 import { debounce } from "lodash";
+import { EnvironmentsSearch } from "./EnvironmentsSearch";
 
-interface IPackageManagerProps {
+interface IEnvironmentsProps {
   list: Environment[];
 }
 
-export const PackageManager = ({ list }: IPackageManagerProps) => {
+export const Environments = ({ list }: IEnvironmentsProps) => {
   const [search, setSearch] = useState("");
   const {
     palette: { primary }
@@ -28,7 +28,7 @@ export const PackageManager = ({ list }: IPackageManagerProps) => {
   return (
     <Box sx={{ width: "313px", border: `1px solid ${primary.main}` }}>
       <Box sx={{ borderBottom: `1px solid ${primary.main}` }}>
-        <PackageManagerSearch onChange={e => handleChange(e.target.value)} />
+        <EnvironmentsSearch onChange={e => handleChange(e.target.value)} />
       </Box>
       <EnvironmentsList environmentsList={filteredList} />
     </Box>

@@ -5,13 +5,11 @@ import Box from "@mui/material/Box";
 import InputAdornment from "@mui/material/InputAdornment";
 import SearchIcon from "@mui/icons-material/Search";
 
-interface IPackageManagerSearchProps {
+interface IEnvironmentsSearchProps {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-export const PackageManagerSearch = ({
-  onChange
-}: IPackageManagerSearchProps) => {
+export const EnvironmentsSearch = ({ onChange }: IEnvironmentsSearchProps) => {
   return (
     <Box
       sx={{
