@@ -4,7 +4,7 @@ import useTheme from "@mui/material/styles/useTheme";
 import { PackageManagerSearch } from "./PackageManagerSearch";
 import EnvironmentsList from "./EnvironmentsList";
 import { Environment } from "src/common/models";
-import { useDebounce } from "use-debounce";
+import { debounce } from "lodash";
 
 interface IPackageManagerProps {
   list: Environment[];
@@ -12,23 +12,23 @@ interface IPackageManagerProps {
 
 export const PackageManager = ({ list }: IPackageManagerProps) => {
   const [search, setSearch] = useState("");
-  const [value] = useDebounce(search, 500);
   const {
     palette: { primary }
   } = useTheme();
 
+  const handleChange = debounce((value: string) => {
+    setSearch(value);
+  }, 500);
+
   const filteredList = useMemo(
-    () => list.filter(item => item.name.includes(value)),
-    [value]
+    () => list.filter(item => item.name.includes(search)),
+    [search]
   );
 
   return (
     <Box sx={{ width: "313px", border: `1px solid ${primary.main}` }}>
       <Box sx={{ borderBottom: `1px solid ${primary.main}` }}>
-        <PackageManagerSearch
-          value={search}
-          onChange={e => setSearch(e.target.value)}
-        />
+        <PackageManagerSearch onChange={e => handleChange(e.target.value)} />
       </Box>
       <EnvironmentsList environmentsList={filteredList} />
     </Box>

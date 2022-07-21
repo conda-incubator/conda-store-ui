@@ -7,12 +7,10 @@ import SearchIcon from "@mui/icons-material/Search";
 
 interface IPackageManagerSearchProps {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  value: string;
 }
 
 export const PackageManagerSearch = ({
-  onChange,
-  value
+  onChange
 }: IPackageManagerSearchProps) => {
   return (
     <Box
@@ -24,7 +22,6 @@ export const PackageManagerSearch = ({
         Package Manager
       </Typography>
       <OutlinedInput
-        value={value}
         onChange={onChange}
         size="small"
         endAdornment={

@@ -39,11 +39,9 @@
     "react-dom": "^18.0.0",
     "react-infinite-scroll-component": "^6.1.0",
     "react-redux": "^8.0.2",
-    "redux": "^4.2.0",
-    "use-debounce": "^8.0.2"
+    "redux": "^4.2.0"
   },
   "devDependencies": {
-    "@types/lodash": "^4.14.182",
     "@storybook/addon-a11y": "^6.5.9",
     "@storybook/addon-actions": "^6.5.9",
     "@storybook/addon-essentials": "^6.5.9",
@@ -53,6 +51,7 @@
     "@storybook/manager-webpack5": "^6.5.9",
     "@storybook/node-logger": "^6.5.9",
     "@storybook/react": "^6.5.9",
+    "@types/lodash": "^4.14.182",
     "@types/react-beautiful-dnd": "^13.1.2",
     "css-loader": "^6.7.1",
     "css-minimizer-webpack-plugin": "^3.4.1",
