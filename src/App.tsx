@@ -7,6 +7,7 @@ import {
   RequestedPackagesEdit
 } from "src/features/requestedPackages";
 import { Dependencies } from "src/features/dependencies";
+import { ArtifactsList } from "src/features/artifacts";
 
 export const App = () => {
   const channelsList = ["conda-store", "default", "conda forge"];
@@ -79,12 +80,30 @@ export const App = () => {
     "python>=1.1",
     { pip: ["test"] }
   ];
-
+  const linkList = [
+    {
+      name: "Link to lockfile",
+      route: "/api/v1/build/{build_id}/lockfile/"
+    },
+    {
+      name: "Link to yml file",
+      route: "/api/v1/build/{build_id}/yaml/"
+    },
+    {
+      name: "Link to archive",
+      route: "/api/v1/build/{build_id}/archive/"
+    },
+    {
+      name: "Conda Env {build_id} log",
+      route: "/api/v1/build/{build_id}/logs"
+    }
+  ];
   return (
     <>
       <h1>Hello World</h1>
       <RequestedPackageList packageList={packagesList} />
       <RequestedPackagesEdit packageList={packagesList} />
+      <ArtifactsList linkList={linkList} />
       <ChannelsList channelList={channelsList} />
       <ChannelsEdit channelsList={channelsList} />
       <Dependencies mode="edit" dependencies={dependencies} />
