@@ -5,7 +5,9 @@ import "../style/index.css";
 export const App = () => {
   return (
     <>
-      <Typography>Hello World</Typography>
+      <Typography sx={{ fontSize: "25px", textAlign: "center" }}>
+        Hello World
+      </Typography>
     </>
   );
 };
