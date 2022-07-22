@@ -1,7 +1,7 @@
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 import React from "react";
 
-import { Dependencies } from "../components";
+import { Dependencies, IDependenciesProps } from "../components";
 
 const dependencies = [
   {
@@ -67,6 +67,13 @@ export default {
   component: Dependencies
 } as ComponentMeta<typeof Dependencies>;
 
-export const Primary: ComponentStory<typeof Dependencies> = () => (
-  <Dependencies dependencies={dependencies} mode="read-only" />
+const Template = (args: IDependenciesProps) => (
+  <Dependencies mode={args.mode} dependencies={args.dependencies} />
 );
+
+export const Primary: ComponentStory<typeof Dependencies> = Template.bind({});
+
+Primary.args = {
+  mode: "edit",
+  dependencies
+};
