@@ -10,7 +10,8 @@ import { ConstraintSelect, VersionSelect } from "src/components";
 
 interface IRequestedPackagesTableRowProps {
   /**
-   * TODO: this interface needs a docstring for each param
+   * @param requestedPackage requested package
+   * @param onRemove handler that will run when delete icon is clicked
    */
   requestedPackage: string;
   onRemove: (packageName: string) => void;
@@ -62,7 +63,7 @@ const compareProps = (
   return prevProps.requestedPackage === nextProps.requestedPackage;
 };
 
-// TODO: use of memo here needs an explanatory comment
+// memoize the component, rerender only when requestedPackage prop has changed
 export const RequestedPackagesTableRow = memo(
   BaseRequestedPackagesTableRow,
   compareProps

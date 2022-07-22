@@ -4,7 +4,7 @@ import React from "react";
 
 interface IConstraintSelectProps {
   /**
-   * TODO: this interface needs a docstring for each param
+   * @param constraint package version constraint
    */
   constraint: string | null;
 }

@@ -7,7 +7,7 @@ import { requestedPackageParser } from "src/utils/helpers/requestedPackageParser
 
 interface IRequestedPackageProps {
   /**
-   * TODO: this interface needs a docstring for each param
+   * @param requestedPackage requested package
    */
   requestedPackage: string;
 }

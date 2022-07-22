@@ -6,7 +6,7 @@ import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 
 interface IVersionSelectProps {
   /**
-   * TODO: this interface needs a docstring for each param
+   * @param version package version
    */
   version: string | null;
 }

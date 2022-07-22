@@ -13,7 +13,7 @@ import { CondaSpecificationPip } from "src/common/models";
 
 export interface IRequestedPackageListProps {
   /**
-   * TODO: this interface needs a docstring for each param
+   * @param packageList list of packages that we get from the API
    */
   packageList: (string | CondaSpecificationPip)[];
 }
