@@ -80,7 +80,7 @@ export const App = () => {
     "python>=1.1",
     { pip: ["test"] }
   ];
-  const packageManagerData = [
+  const environmentsData = [
     {
       id: 2,
       namespace: {
@@ -121,7 +121,7 @@ export const App = () => {
       <ChannelsList channelList={channelsList} />
       <ChannelsEdit channelsList={channelsList} />
       <Dependencies mode="edit" dependencies={dependencies} />
-      <Environments list={packageManagerData} />
+      <Environments list={environmentsData} />
     </>
   );
 };
