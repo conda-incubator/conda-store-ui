@@ -10,7 +10,7 @@ import lodash from "lodash";
 
 interface IEnvironmentsListProps {
   /**
-   * @param environmentsList this is the list of environments
+   * @param environmentsList environments list
    */
   environmentsList: Environment[];
 }

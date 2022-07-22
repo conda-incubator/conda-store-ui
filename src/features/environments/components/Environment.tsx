@@ -7,7 +7,7 @@ import { Environment as EnvironmentModel } from "src/common/models";
 
 interface IEnvironmentProps {
   /**
-   * @param environment environment to display
+   * @param environment environment
    */
   environment: EnvironmentModel;
 }

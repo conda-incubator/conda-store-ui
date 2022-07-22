@@ -13,7 +13,7 @@ import { Environment } from "./Environment";
 
 interface IEnvironmentDropdownProps {
   /**
-   * @param data this is the object containing the namespace information and the list of environments that belong to it
+   * @param data object containing the namespace information and the list of environments that belong to it
    */
   data: INamespaceEnvironments;
 }
