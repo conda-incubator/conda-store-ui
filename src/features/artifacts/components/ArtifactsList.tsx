@@ -1,22 +1,13 @@
-import Accordion from "@mui/material/Accordion";
 import Box from "@mui/material/Box";
 import React from "react";
-
-import { LogsArtifacts } from "./Artifacts";
-import {
-  StyledAccordionDetails,
-  StyledAccordionSummary,
-  StyledAccordionTitle,
-  StyledAccordionExpandIcon
-} from "src/styles";
-
+import { Artifact } from "./Artifact";
 import { Artifacts } from "src/common/models";
-import { StyledBox } from "src/styles/StyledBox";
-
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import Divider from "@mui/material/Divider";
 import ListItemText from "@mui/material/ListItemText";
+import Typography from "@mui/material/Typography";
+import useTheme from "@mui/material/styles/useTheme";
 
 export interface IArtifactsProps {
   /**
@@ -27,39 +18,44 @@ export interface IArtifactsProps {
 
 export const ArtifactsList = ({ linkList }: IArtifactsProps) => {
   const listLength = linkList.length;
-
+  const { typography, palette } = useTheme();
   return (
-    // <Accordion sx={{ width: 421, boxShadow: "none" }} disableGutters>
-    <StyledBox>
-      <List
-        sx={{
-          width: "100%",
-          bgcolor: "background.paper"
-        }}
-      >
+    <Box
+      sx={{
+        border: 1,
+        width: 1000,
+        marginTop: "25px",
+        boxShadow: "none"
+      }}
+    >
+      <List>
         <ListItem>
-          <ListItemText primary="Logs and Artifacts" />
+          <ListItemText
+            primary={
+              <Typography sx={{ fontSize: "21px", fontWeight: 400 }}>
+                Logs and Artifacts
+              </Typography>
+            }
+          ></ListItemText>
         </ListItem>
-        <Divider
-          sx={{
-            color: "#000000"
-          }}
-        />
-        {linkList.map((option, index) => (
-          <ListItem>
-            {/* <StyledAccordionDetails sx={{ padding: "11px 40px" }}> */}
+        <Divider sx={{ bgcolor: palette.primary.main }} />
+        {linkList.map((link, index) => (
+          <ListItem
+            key={link.name}
+            sx={{
+              padding: "11px 40px",
+              fontFamily: typography.fontFamily
+            }}
+          >
             <Box
-              key={option.name}
-              sx={{
-                marginBottom: index === listLength - 1 ? "0px" : "10px",
-                width: 1
-              }}
+              key={link.name}
+              sx={{ marginBottom: index === listLength - 1 ? "0px" : "10px" }}
             >
-              <LogsArtifacts linkOption={option} />
+              <Artifact linkOption={link} />
             </Box>
           </ListItem>
         ))}
       </List>
-    </StyledBox>
+    </Box>
   );
 };

@@ -1,7 +1,6 @@
 import SquareIcon from "@mui/icons-material/Square";
 import Box from "@mui/material/Box";
 import Link from "@mui/material/Link";
-import useTheme from "@mui/material/styles/useTheme";
 import React from "react";
 import { Artifacts } from "src/common/models";
 
@@ -12,9 +11,7 @@ interface IArtifactsProps {
   linkOption: Artifacts;
 }
 
-export const LogsArtifacts = ({ linkOption }: IArtifactsProps) => {
-  const { palette } = useTheme();
-
+export const Artifact = ({ linkOption }: IArtifactsProps) => {
   return (
     <Box sx={{ display: "flex", alignItems: "center" }}>
       <SquareIcon
@@ -25,7 +22,7 @@ export const LogsArtifacts = ({ linkOption }: IArtifactsProps) => {
           marginRight: "12px"
         }}
       />
-      <Link href={linkOption.route} underline="none" sx={{ color: "#4D4D4D" }}>
+      <Link href={linkOption.route} underline="none" sx={{ color: "#000" }}>
         {linkOption.name}
       </Link>
     </Box>

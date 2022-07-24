@@ -103,10 +103,10 @@ export const App = () => {
       <h1>Hello World</h1>
       <RequestedPackageList packageList={packagesList} />
       <RequestedPackagesEdit packageList={packagesList} />
-      <ArtifactsList linkList={linkList} />
       <ChannelsList channelList={channelsList} />
       <ChannelsEdit channelsList={channelsList} />
       <Dependencies mode="edit" dependencies={dependencies} />
+      <ArtifactsList linkList={linkList} />
     </>
   );
 };
