@@ -2,16 +2,16 @@ import SquareIcon from "@mui/icons-material/Square";
 import Box from "@mui/material/Box";
 import Link from "@mui/material/Link";
 import React from "react";
-import { Artifacts } from "src/common/models";
+import { Artifact } from "src/common/models";
 
 interface IArtifactsProps {
   /**
-   * TODO: this interface needs a docstring for each param
+   * @param artifact type with the name and route properties
    */
-  linkOption: Artifacts;
+  artifact: Artifact;
 }
 
-export const Artifact = ({ linkOption }: IArtifactsProps) => {
+export const ArtifactItem = ({ artifact }: IArtifactsProps) => {
   return (
     <Box sx={{ display: "flex", alignItems: "center" }}>
       <SquareIcon
@@ -22,8 +22,8 @@ export const Artifact = ({ linkOption }: IArtifactsProps) => {
           marginRight: "12px"
         }}
       />
-      <Link href={linkOption.route} underline="none" sx={{ color: "#000" }}>
-        {linkOption.name}
+      <Link href={artifact.route} underline="none" sx={{ color: "#000" }}>
+        {artifact.name}
       </Link>
     </Box>
   );

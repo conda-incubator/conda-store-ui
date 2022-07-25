@@ -1,4 +1,4 @@
 export * from "./CondaSpecification";
 export * from "./CondaSpecificationPip";
 export * from "./Dependency";
-export * from "./Artifacts";
+export * from "./Artifact";

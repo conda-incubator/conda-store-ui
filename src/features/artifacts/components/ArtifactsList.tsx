@@ -1,7 +1,7 @@
 import Box from "@mui/material/Box";
 import React from "react";
-import { Artifact } from "./Artifact";
-import { Artifacts } from "src/common/models";
+import { ArtifactItem } from "./ArtifactsItem";
+import { Artifact } from "src/common/models";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import Divider from "@mui/material/Divider";
@@ -11,13 +11,13 @@ import useTheme from "@mui/material/styles/useTheme";
 
 export interface IArtifactsProps {
   /**
-   * TODO: this interface needs a docstring for each param
+   * @param artifacts list of artifacts
    */
-  linkList: Artifacts[];
+  artifacts: Artifact[];
 }
 
-export const ArtifactsList = ({ linkList }: IArtifactsProps) => {
-  const listLength = linkList.length;
+export const ArtifactsList = ({ artifacts }: IArtifactsProps) => {
+  const listLength = artifacts.length;
   const { typography, palette } = useTheme();
   return (
     <Box
@@ -39,7 +39,7 @@ export const ArtifactsList = ({ linkList }: IArtifactsProps) => {
           ></ListItemText>
         </ListItem>
         <Divider sx={{ bgcolor: palette.primary.main }} />
-        {linkList.map((link, index) => (
+        {artifacts.map((link, index) => (
           <ListItem
             key={link.name}
             sx={{
@@ -51,7 +51,7 @@ export const ArtifactsList = ({ linkList }: IArtifactsProps) => {
               key={link.name}
               sx={{ marginBottom: index === listLength - 1 ? "0px" : "10px" }}
             >
-              <Artifact linkOption={link} />
+              <ArtifactItem artifact={link} />
             </Box>
           </ListItem>
         ))}

@@ -80,7 +80,7 @@ export const App = () => {
     "python>=1.1",
     { pip: ["test"] }
   ];
-  const linkList = [
+  const artifactsList = [
     {
       name: "Link to lockfile",
       route: "/api/v1/build/{build_id}/lockfile/"
@@ -106,7 +106,7 @@ export const App = () => {
       <ChannelsList channelList={channelsList} />
       <ChannelsEdit channelsList={channelsList} />
       <Dependencies mode="edit" dependencies={dependencies} />
-      <ArtifactsList linkList={linkList} />
+      <ArtifactsList artifacts={artifactsList} />
     </>
   );
 };
