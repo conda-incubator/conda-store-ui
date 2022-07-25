@@ -12,7 +12,7 @@ import {
 import { Dependency } from "src/common/models";
 import { DependenciesItem } from "./DependenciesItem";
 
-interface IDependenciesProps {
+export interface IDependenciesProps {
   dependencies: Dependency[];
   mode: "read-only" | "edit";
 }
