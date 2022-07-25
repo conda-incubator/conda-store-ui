@@ -23,7 +23,7 @@ import { reorderArray } from "src/utils/helpers/reorderArray";
 
 export interface IChannelsEditProps {
   /**
-   * TODO: this interface needs a docstring for each param
+   * @param channelsList list of channels
    */
   channelsList: string[];
 }

@@ -7,7 +7,8 @@ import { StyledIconButton } from "src/styles";
 
 interface IAddChannelProps {
   /**
-   * TODO: this interface needs a docstring for each param
+   * @param onCancel handler that will run when close icon is clicked
+   * @param onSubmit handler that will run when the input looses focus or when enter key is pressed
    */
   onCancel: () => void;
   onSubmit: (channelName: string) => void;

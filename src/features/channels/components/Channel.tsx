@@ -6,7 +6,7 @@ import React from "react";
 
 interface IChannelProps {
   /**
-   * TODO: this interface needs a docstring for each param
+   * @param channelName name of the channel
    */
   channelName: string;
 }
