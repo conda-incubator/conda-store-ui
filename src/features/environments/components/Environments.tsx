@@ -6,7 +6,7 @@ import { Environment } from "src/common/models";
 import { debounce } from "lodash";
 import { EnvironmentsSearch } from "./EnvironmentsSearch";
 
-interface IEnvironmentsProps {
+export interface IEnvironmentsProps {
   /**
    * @param list environments list
    */
