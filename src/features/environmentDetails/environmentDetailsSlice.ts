@@ -1,11 +1,16 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
+export enum EnvironmentDetailsModes {
+  "READ" = "read-only",
+  "EDIT" = "edit"
+}
+
 export interface IEnvironmentDetailsState {
-  mode: "read-only" | "edit";
+  mode: EnvironmentDetailsModes;
 }
 
 const initialState: IEnvironmentDetailsState = {
-  mode: "read-only"
+  mode: EnvironmentDetailsModes.READ
 };
 
 export const environmentDetailsSlice = createSlice({

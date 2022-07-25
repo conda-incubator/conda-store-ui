@@ -4,7 +4,10 @@ import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import { StyledButtonPrimary } from "src/styles";
 import { useAppDispatch, useAppSelector } from "src/hooks";
-import { modeChanged } from "../environmentDetailsSlice";
+import {
+  EnvironmentDetailsModes,
+  modeChanged
+} from "../environmentDetailsSlice";
 
 export const EnvironmentDetailsHeader = () => {
   const { mode } = useAppSelector(state => state.environmentDetails);
@@ -19,17 +22,19 @@ export const EnvironmentDetailsHeader = () => {
         marginBottom: "19px"
       }}
     >
-      {mode === "read-only" && (
+      {mode === EnvironmentDetailsModes.READ && (
         <>
           <Typography sx={{ fontSize: "24px", color: "#000" }}>
             Machine Learning
           </Typography>
-          <StyledButtonPrimary onClick={() => dispatch(modeChanged("edit"))}>
+          <StyledButtonPrimary
+            onClick={() => dispatch(modeChanged(EnvironmentDetailsModes.EDIT))}
+          >
             Edit
           </StyledButtonPrimary>
         </>
       )}
-      {mode === "edit" && (
+      {mode === EnvironmentDetailsModes.EDIT && (
         <>
           <TextField
             sx={{
