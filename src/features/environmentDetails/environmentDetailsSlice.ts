@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export interface IEnvironmentDetailsState {
   mode: "read-only" | "edit";
@@ -11,5 +11,14 @@ const initialState: IEnvironmentDetailsState = {
 export const environmentDetailsSlice = createSlice({
   name: "environmentDetails",
   initialState,
-  reducers: {}
+  reducers: {
+    modeChanged: (
+      state,
+      action: PayloadAction<IEnvironmentDetailsState["mode"]>
+    ) => {
+      state.mode = action.payload;
+    }
+  }
 });
+
+export const { modeChanged } = environmentDetailsSlice.actions;
