@@ -8,7 +8,8 @@ import { StyledIconButton } from "src/styles";
 
 interface IAddRequestedPackageProps {
   /**
-   * TODO: this interface needs a docstring for each param
+   * @param onCancel handler that will run when delete icon is clicked
+   * @param onSubmit handler that will run when input losses focus
    */
   onCancel: React.Dispatch<React.SetStateAction<boolean>>;
   onSubmit: (packageName: string) => void;
