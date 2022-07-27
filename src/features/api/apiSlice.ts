@@ -20,11 +20,11 @@ export const apiSlice = createApi({
     getBuild: builder.query<any, void>({
       query: () => "/build/1"
     }),
-    getVersion: builder.query<any, void>({
+    getStatus: builder.query<any, void>({
       query: () => "/"
     })
   }),
   baseQuery
 });
 
-export const { useGetBuildQuery, useGetVersionQuery } = apiSlice;
+export const { useGetBuildQuery, useGetStatusQuery } = apiSlice;

@@ -2,16 +2,16 @@ import * as React from "react";
 import Typography from "@mui/material/Typography";
 import "../style/index.css";
 import { EnvironmentDetails } from "src/features/environmentDetails";
-import { useGetBuildQuery, useGetVersionQuery } from "./features/api";
+import { useGetBuildQuery, useGetStatusQuery } from "./features/api";
 
 export const App = () => {
   // tried creating a basic request using fetch API, still the same error
 
   const { data } = useGetBuildQuery();
-  const { data: versionResponse } = useGetVersionQuery();
+  const { data: statusResponse } = useGetStatusQuery();
 
   console.log(data);
-  console.log(versionResponse);
+  console.log(statusResponse);
 
   return (
     <>
