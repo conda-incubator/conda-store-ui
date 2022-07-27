@@ -2,7 +2,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 const baseQuery = fetchBaseQuery({
   baseUrl: "http://localhost:5000/conda-store/api/v1",
-  // token add from http://localhost:5000/conda-store/user/
+  // token added from http://localhost:5000/conda-store/user/
   prepareHeaders: headers => {
     headers.set(
       "Authorization",
