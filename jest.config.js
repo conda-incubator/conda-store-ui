@@ -11,11 +11,13 @@ module.exports = {
     collectCoverage: true,
     collectCoverageFrom: [
         "<rootDir>/src/**/*.{ts,tsx}",
+        "!<rootDir>/src/**/*.stories.{ts,tsx}", // storybook files
     ],
     testEnvironment: "jsdom",
     moduleDirectories: ["node_modules", __dirname],
     modulePathIgnorePatterns: ["<rootDir>/lib/"],
     transformIgnorePatterns: [
         "node_modules/@mui/material/styles/useTheme/",
-    ]
+    ],
+    setupFilesAfterEnv: ['<rootDir>/setupTests.ts']
 };
