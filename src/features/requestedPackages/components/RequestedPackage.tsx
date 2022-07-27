@@ -2,8 +2,7 @@ import SquareIcon from "@mui/icons-material/Square";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import React from "react";
-
-import { requestedPackageParser } from "src/utils/helpers/requestedPackageParser";
+import { requestedPackageParser } from "src/utils/helpers";
 
 interface IRequestedPackageProps {
   /**
