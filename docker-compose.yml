@@ -79,3 +79,5 @@ services:
       conda-store-server:
         condition: service_healthy
     platform: linux/amd64
+    volumes:
+      - .:/usr/src/app
