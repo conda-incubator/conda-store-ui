@@ -3,8 +3,8 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import SquareIcon from "@mui/icons-material/Square";
 import FileUploadIcon from "@mui/icons-material/FileUpload";
-import { Dependency } from "src/common/models";
-import { StyledIconButton } from "src/styles";
+import { Dependency } from "../../../common/models";
+import { StyledIconButton } from "../../../styles";
 
 interface IDependenciesItemProps {
   dependency: Dependency;
