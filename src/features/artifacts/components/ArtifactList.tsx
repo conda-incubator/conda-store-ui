@@ -8,6 +8,7 @@ import Divider from "@mui/material/Divider";
 import ListItemText from "@mui/material/ListItemText";
 import Typography from "@mui/material/Typography";
 import useTheme from "@mui/material/styles/useTheme";
+import { StyledBox } from "src/styles";
 
 export interface IArtifactsProps {
   /**
@@ -16,18 +17,11 @@ export interface IArtifactsProps {
   artifacts: Artifact[];
 }
 
-export const ArtifactsList = ({ artifacts }: IArtifactsProps) => {
+export const ArtifactList = ({ artifacts }: IArtifactsProps) => {
   const listLength = artifacts.length;
   const { typography, palette } = useTheme();
   return (
-    <Box
-      sx={{
-        border: 1,
-        width: 1000,
-        marginTop: "25px",
-        boxShadow: "none"
-      }}
-    >
+    <StyledBox>
       <List>
         <ListItem>
           <ListItemText
@@ -56,6 +50,6 @@ export const ArtifactsList = ({ artifacts }: IArtifactsProps) => {
           </ListItem>
         ))}
       </List>
-    </Box>
+    </StyledBox>
   );
 };
