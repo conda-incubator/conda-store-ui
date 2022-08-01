@@ -5,19 +5,25 @@ import { Dependencies } from "src/features/dependencies";
 import { RequestedPackagesEdit } from "src/features/requestedPackages";
 import { BlockContainer } from "src/components";
 import { StyledButtonPrimary } from "src/styles";
+import { useAppSelector } from "src/hooks";
 
 export const SpecificationEdit = () => {
+  const { requestedPackages } = useAppSelector(
+    state => state.requestedPackages
+  );
+  const { channels } = useAppSelector(state => state.channels);
+
   return (
     <BlockContainer title="Specification">
       <Box sx={{ padding: "13px 19px" }}>
         <Box sx={{ marginBottom: "30px" }}>
-          <RequestedPackagesEdit packageList={[]} />
+          <RequestedPackagesEdit packageList={requestedPackages} />
         </Box>
         <Box sx={{ marginBottom: "30px" }}>
           <Dependencies mode="edit" dependencies={[]} />
         </Box>
         <Box sx={{ margiBottom: "30px" }}>
-          <ChannelsEdit channelsList={[]} />
+          <ChannelsEdit channelsList={channels} />
         </Box>
         <Box
           sx={{

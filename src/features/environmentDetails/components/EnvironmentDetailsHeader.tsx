@@ -10,7 +10,7 @@ import {
 } from "../environmentDetailsSlice";
 
 export const EnvironmentDetailsHeader = () => {
-  const { mode } = useAppSelector(state => state.environmentDetails);
+  const { mode, name } = useAppSelector(state => state.environmentDetails);
   const dispatch = useAppDispatch();
 
   return (
@@ -25,7 +25,7 @@ export const EnvironmentDetailsHeader = () => {
       {mode === EnvironmentDetailsModes.READ && (
         <>
           <Typography sx={{ fontSize: "24px", color: "#000" }}>
-            Machine Learning
+            {name}
           </Typography>
           <StyledButtonPrimary
             onClick={() => dispatch(modeChanged(EnvironmentDetailsModes.EDIT))}
@@ -51,7 +51,7 @@ export const EnvironmentDetailsHeader = () => {
               }
             }}
             variant="filled"
-            defaultValue="Machine Learning"
+            defaultValue={name}
           />
           <StyledButtonPrimary>Archive</StyledButtonPrimary>
         </>
