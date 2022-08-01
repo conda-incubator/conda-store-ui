@@ -16,7 +16,7 @@ export const Build = ({ builds }: IBuildProps) => {
   return (
     <Select
       sx={{ marginLeft: "13px" }}
-      defaultValue={builds ? builds[0] : null}
+      defaultValue={builds ? builds[builds.length - 1] : null}
       IconComponent={() => (
         <ArrowDropDownIcon
           sx={{

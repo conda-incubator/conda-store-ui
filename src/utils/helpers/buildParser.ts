@@ -1,4 +1,4 @@
-import moment from "moment";
+import { format } from "date-fns";
 interface IBuildParser {
   status: string;
   data: {
@@ -21,7 +21,7 @@ interface IBuildParser {
 export const buildParser = ({ data }: IBuildParser): any => {
   const build_data = data.map((data: any) => {
     const status = data.status;
-    const date = moment(data.ended_on).format("MMMM Do, YYYY - h:mm");
+    const date = format(new Date(data.ended_on), "MMMM do, yyyy - h:mm");
     return `${date} - ${status}`;
   });
   return build_data;

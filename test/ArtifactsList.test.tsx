@@ -1,5 +1,5 @@
 import React from "react";
-import { fireEvent, getByTestId, render, screen } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { ArtifactList } from "../src/features/artifacts/components/ArtifactList";
 import { mockTheme } from "./testutils";
 
