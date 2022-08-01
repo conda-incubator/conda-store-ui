@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { environmentDetailsApiSlice } from "./environmentDetailsApiSlice";
 
 export enum EnvironmentDetailsModes {
   "READ" = "read-only",
@@ -7,10 +8,14 @@ export enum EnvironmentDetailsModes {
 
 export interface IEnvironmentDetailsState {
   mode: EnvironmentDetailsModes;
+  name: string;
+  prefix: string | null | undefined;
 }
 
 const initialState: IEnvironmentDetailsState = {
-  mode: EnvironmentDetailsModes.READ
+  mode: EnvironmentDetailsModes.READ,
+  name: "",
+  prefix: null
 };
 
 export const environmentDetailsSlice = createSlice({
@@ -23,6 +28,26 @@ export const environmentDetailsSlice = createSlice({
     ) => {
       state.mode = action.payload;
     }
+  },
+  extraReducers: builder => {
+    builder.addMatcher(
+      environmentDetailsApiSlice.endpoints.getBuild.matchFulfilled,
+      (
+        state,
+        {
+          payload: {
+            data: {
+              specification: {
+                spec: { name, prefix }
+              }
+            }
+          }
+        }
+      ) => {
+        state.name = name;
+        state.prefix = prefix;
+      }
+    );
   }
 });
 
