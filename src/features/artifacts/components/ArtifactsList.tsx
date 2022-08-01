@@ -23,7 +23,7 @@ export const ArtifactsList = ({ artifacts }: IArtifactsProps) => {
     <Box
       sx={{
         border: 1,
-        width: 1000,
+        minWidth: 1000,
         marginTop: "25px",
         boxShadow: "none"
       }}
