@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { CondaSpecificationPip } from "src/common/models";
-import { environmentDetailsApiSlice } from "../environmentDetails/environmentDetailsApiSlice";
+import { environmentDetailsApiSlice } from "../environmentDetails";
 
 export interface IRequestedPackagesState {
   requestedPackages: (string | CondaSpecificationPip)[];

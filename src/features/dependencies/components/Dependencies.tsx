@@ -11,6 +11,7 @@ import {
 } from "src/styles";
 import { Dependency } from "src/common/models";
 import { DependenciesItem } from "./DependenciesItem";
+import { useGetBuildPackagesQuery } from "../dependenciesApiSlice";
 
 export interface IDependenciesProps {
   dependencies: Dependency[];
@@ -18,6 +19,8 @@ export interface IDependenciesProps {
 }
 
 export const Dependencies = ({ dependencies, mode }: IDependenciesProps) => {
+  const { data } = useGetBuildPackagesQuery({ buildId: 1, page: 1, size: 100 });
+
   const [list, setList] = useState(dependencies);
   const listLength = list.length;
 

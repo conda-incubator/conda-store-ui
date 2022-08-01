@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { environmentDetailsApiSlice } from "../environmentDetails/environmentDetailsApiSlice";
+import { environmentDetailsApiSlice } from "../environmentDetails";
 
 export interface IChannelsState {
   channels: string[];
