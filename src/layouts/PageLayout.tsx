@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 import { Environments } from "src/features/environments";
 import { mockEnvironments } from "src/features/environments/mocks";
 import { ArtifactsList } from "src/features/artifacts";
-import { IconButton, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
 import { StyledTab } from "src/styles";
 import { StyledTabs } from "src/styles/StyledTabs";
 import CloseIcon from "@mui/icons-material/Close";
@@ -50,18 +50,9 @@ export const PageLayout = () => {
           <StyledTab
             label="Item One"
             icon={
-              <IconButton>
+              <span style={{ marginTop: "5px" }}>
                 <CloseIcon sx={{ color: "#000" }} />
-              </IconButton>
-            }
-            iconPosition="end"
-          />
-          <StyledTab
-            label="Item Two"
-            icon={
-              <IconButton>
-                <CloseIcon />
-              </IconButton>
+              </span>
             }
             iconPosition="end"
           />

@@ -4,6 +4,8 @@ import Typography from "@mui/material/Typography";
 import useTheme from "@mui/material/styles/useTheme";
 import CircleIcon from "@mui/icons-material/Circle";
 import { Environment as EnvironmentModel } from "src/common/models";
+import { IconButton } from "@mui/material";
+import { StyledIconButton } from "src/styles";
 
 interface IEnvironmentProps {
   /**
@@ -30,7 +32,11 @@ export const Environment = ({ environment }: IEnvironmentProps) => {
           }}
         />
       </ListItemIcon>
-      <Typography>{environment.name}</Typography>
+      <StyledIconButton
+        sx={{ textTransform: "none", fontSize: "16px", fontWeight: 400 }}
+      >
+        {environment.name}
+      </StyledIconButton>
     </>
   );
 };
