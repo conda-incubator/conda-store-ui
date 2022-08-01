@@ -7,3 +7,4 @@ export * from "./StyledRequestedPackagesTableCell";
 export * from "./StyledIconButton";
 export * from "./StyledAccordionExpandIcon";
 export * from "./StyledScrollContainer";
+export * from "./StyledTab";
