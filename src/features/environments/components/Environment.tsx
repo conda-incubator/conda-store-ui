@@ -1,11 +1,11 @@
 import React from "react";
 import ListItemIcon from "@mui/material/ListItemIcon";
-import Typography from "@mui/material/Typography";
 import useTheme from "@mui/material/styles/useTheme";
 import CircleIcon from "@mui/icons-material/Circle";
 import { Environment as EnvironmentModel } from "src/common/models";
-import { IconButton } from "@mui/material";
 import { StyledIconButton } from "src/styles";
+import { useAppDispatch } from "src/hooks";
+import { environmentOpened } from "src/features/tabs";
 
 interface IEnvironmentProps {
   /**
@@ -18,6 +18,7 @@ export const Environment = ({ environment }: IEnvironmentProps) => {
   const {
     palette: { primary }
   } = useTheme();
+  const dispatch = useAppDispatch();
 
   return (
     <>
@@ -34,6 +35,7 @@ export const Environment = ({ environment }: IEnvironmentProps) => {
       </ListItemIcon>
       <StyledIconButton
         sx={{ textTransform: "none", fontSize: "16px", fontWeight: 400 }}
+        onClick={() => dispatch(environmentOpened(environment))}
       >
         {environment.name}
       </StyledIconButton>

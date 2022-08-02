@@ -1,12 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
 import Box from "@mui/material/Box";
 import { Environments } from "src/features/environments";
 import { mockEnvironments } from "src/features/environments/mocks";
 import { ArtifactsList } from "src/features/artifacts";
 import { Typography } from "@mui/material";
-import { StyledTab } from "src/styles";
-import { StyledTabs } from "src/styles/StyledTabs";
-import CloseIcon from "@mui/icons-material/Close";
+import { PageTabs } from "src/features/tabs";
 
 const artifactsList = [
   {
@@ -28,35 +26,11 @@ const artifactsList = [
 ];
 
 export const PageLayout = () => {
-  const [value, setValue] = useState(0);
-
-  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-    setValue(newValue);
-  };
-
   return (
     <Box sx={{ display: "flex" }}>
       <Environments list={mockEnvironments} />
       <Box sx={{ borderTop: "1px solid #A7A7A7", width: "100%" }}>
-        <StyledTabs
-          TabIndicatorProps={{
-            style: {
-              transition: "none"
-            }
-          }}
-          value={value}
-          onChange={handleChange}
-        >
-          <StyledTab
-            label="Item One"
-            icon={
-              <span style={{ marginTop: "5px" }}>
-                <CloseIcon sx={{ color: "#000" }} />
-              </span>
-            }
-            iconPosition="end"
-          />
-        </StyledTabs>
+        <PageTabs />
         <Box
           sx={{
             border: "1px solid #000",
