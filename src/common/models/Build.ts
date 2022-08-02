@@ -1,3 +1,5 @@
+import { BuildArtifact } from "./BuildArtifact";
+import { BuildPackage } from "./BuildPackage";
 import { CondaSpecification } from "./CondaSpecification";
 
 export type Build = {
@@ -10,11 +12,11 @@ export type Build = {
     sha256: string;
     created_on: string;
   };
-  packages: any; // it is not clear what type this attribute is
+  packages: BuildPackage[];
   status: string;
   size: number;
   scheduled_on: string;
   started_on: string;
   ended_on: string;
-  build_artifacts: { id: number; artifact_type: string; key: string }[];
+  build_artifacts: BuildArtifact[];
 };
