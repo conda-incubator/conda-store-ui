@@ -1,18 +1,17 @@
-import React, { useState } from "react";
+import React from "react";
 import { StyledTab } from "src/styles";
 import { StyledTabs } from "src/styles/StyledTabs";
 import CloseIcon from "@mui/icons-material/Close";
 import { useAppDispatch, useAppSelector } from "src/hooks";
-import { environmentClosed } from "../tabsSlice";
+import { environmentClosed, valueChanged } from "../tabsSlice";
 
 export const PageTabs = () => {
-  const { selectedEnvironments } = useAppSelector(state => state.tabs);
-  const [value, setValue] = useState(0);
+  const { selectedEnvironments, value } = useAppSelector(state => state.tabs);
 
   const dispatch = useAppDispatch();
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-    setValue(newValue);
+    dispatch(valueChanged(newValue));
   };
 
   return (
@@ -34,7 +33,10 @@ export const PageTabs = () => {
             <span
               style={{ marginTop: "5px" }}
               role="button"
-              onClick={() => dispatch(environmentClosed(env.id))}
+              onClick={e => {
+                e.stopPropagation();
+                dispatch(environmentClosed(env.id));
+              }}
             >
               <CloseIcon sx={{ color: "#000" }} />
             </span>
