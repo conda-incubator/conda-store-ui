@@ -18,6 +18,7 @@ export const tabsSlice = createSlice({
   initialState,
   reducers: {
     environmentOpened: (state, action: PayloadAction<Environment>) => {
+      // handle when the same env is opened multiple times
       state.selectedEnvironment = action.payload;
       state.value = action.payload.id;
       state.selectedEnvironments.push(action.payload);
