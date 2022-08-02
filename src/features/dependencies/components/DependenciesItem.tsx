@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import SquareIcon from "@mui/icons-material/Square";
@@ -17,7 +17,7 @@ interface IDependenciesItemProps {
   onClick: (id: number) => void;
 }
 
-export const DependenciesItem = ({
+const BaseDependenciesItem = ({
   dependency,
   mode,
   onClick
@@ -55,3 +55,13 @@ export const DependenciesItem = ({
     </Box>
   );
 };
+
+const compareProps = (
+  prevProps: IDependenciesItemProps,
+  nextProps: IDependenciesItemProps
+) => {
+  return prevProps.dependency.id === nextProps.dependency.id;
+};
+
+// memoize the component, rerender only when dependency prop id has changed
+export const DependenciesItem = memo(BaseDependenciesItem, compareProps);

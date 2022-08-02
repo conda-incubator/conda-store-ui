@@ -12,8 +12,8 @@ export const EnvironmentDetails = () => {
   const { mode } = useAppSelector(state => state.environmentDetails);
   const { page } = useAppSelector(state => state.dependencies);
 
-  useGetBuildQuery(1);
-  useGetBuildPackagesQuery({ buildId: 1, page, size: 100 });
+  useGetBuildQuery(1); //replace this number with redux state when we implement that part
+  useGetBuildPackagesQuery({ buildId: 1, page, size: 100 }); //replace buildId with redux state when we implement that pa
 
   const artifactsList = [
     //replace {build_id} with redux value when we implement that logic
