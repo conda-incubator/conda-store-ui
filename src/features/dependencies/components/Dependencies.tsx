@@ -13,6 +13,12 @@ import { Dependency } from "src/common/models";
 import { DependenciesItem } from "./DependenciesItem";
 
 export interface IDependenciesProps {
+  /**
+   * @param dependencies list of dependencies
+   * @param mode change whether the component only displays the list or we are able to edit it
+   * @param hasMore needed for infinite scroll, if this is true next function will be called
+   * @param next handler which will be called when we scoll at the current bottom of the infinite scroll lists
+   */
   dependencies: Dependency[];
   mode: "read-only" | "edit";
   hasMore: boolean;
@@ -23,7 +29,7 @@ export const Dependencies = ({
   mode,
   dependencies,
   hasMore,
-  next = () => {}
+  next = () => null
 }: IDependenciesProps) => {
   const listLength = dependencies.length;
 
@@ -70,7 +76,7 @@ export const Dependencies = ({
               <DependenciesItem
                 mode={mode}
                 dependency={dependency}
-                onClick={() => {}}
+                onClick={() => null}
               />
             </Box>
           ))}

@@ -1,10 +1,10 @@
-import { ApiResponse } from "src/common/interfaces";
+import { IApiResponse } from "src/common/interfaces";
 import { Build } from "src/common/models/Build";
 import { apiSlice } from "../api";
 
 export const environmentDetailsApiSlice = apiSlice.injectEndpoints({
   endpoints: builder => ({
-    getBuild: builder.query<ApiResponse<Build>, number>({
+    getBuild: builder.query<IApiResponse<Build>, number>({
       query: buildId => `/build/${buildId}`
     })
   })

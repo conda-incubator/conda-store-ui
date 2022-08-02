@@ -1,11 +1,11 @@
-import { ApiResponse } from "src/common/interfaces";
+import { IApiResponse } from "src/common/interfaces";
 import { Dependency } from "src/common/models";
 import { apiSlice } from "../api";
 
 export const dependenciesApiSlice = apiSlice.injectEndpoints({
   endpoints: builder => ({
     getBuildPackages: builder.query<
-      ApiResponse<Dependency[]>,
+      IApiResponse<Dependency[]>,
       { buildId: number; page: number; size: number }
     >({
       query: dto =>

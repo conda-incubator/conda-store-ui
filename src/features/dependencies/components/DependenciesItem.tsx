@@ -7,6 +7,11 @@ import { Dependency } from "../../../common/models";
 import { StyledIconButton } from "../../../styles";
 
 interface IDependenciesItemProps {
+  /**
+   * @param dependency single dependency
+   * @param mode change whether we are only able to read this dependency or edit it
+   * @param onClick click handler
+   */
   dependency: Dependency;
   mode: "read-only" | "edit";
   onClick: (id: number) => void;
