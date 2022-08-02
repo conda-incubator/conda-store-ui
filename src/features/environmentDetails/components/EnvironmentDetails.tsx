@@ -5,10 +5,14 @@ import { useAppSelector } from "src/hooks";
 import { EnvironmentDetailsHeader } from "./EnvironmentDetailsHeader";
 import { Specification } from "./Specification";
 import { useGetBuildQuery } from "../environmentDetailsApiSlice";
+import { useGetBuildPackagesQuery } from "src/features/dependencies";
 
 export const EnvironmentDetails = () => {
   const { mode } = useAppSelector(state => state.environmentDetails);
+  const { page } = useAppSelector(state => state.dependencies);
+
   useGetBuildQuery(1);
+  useGetBuildPackagesQuery({ buildId: 1, page, size: 100 });
 
   return (
     <Box sx={{ border: "1px solid #000", padding: "18px 12px" }}>

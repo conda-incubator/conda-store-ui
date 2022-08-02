@@ -9,7 +9,11 @@ export default {
 } as ComponentMeta<typeof Dependencies>;
 
 const Template = (args: IDependenciesProps) => (
-  <Dependencies mode={args.mode} dependencies={args.dependencies} />
+  <Dependencies
+    hasMore={false}
+    mode={args.mode}
+    dependencies={args.dependencies}
+  />
 );
 
 export const Primary: ComponentStory<typeof Dependencies> = Template.bind({});

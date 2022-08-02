@@ -9,5 +9,5 @@ export const rootReducer = {
   channels: channelsSlice.reducer,
   requestedPackages: requestedPackagesSlice.reducer,
   environmentDetails: environmentDetailsSlice.reducer,
-  dependenciesSlice: dependenciesSlice.reducer
+  dependencies: dependenciesSlice.reducer
 };
