@@ -9,7 +9,9 @@ import { StyledIconButton } from "src/styles";
 
 interface IChannelsEditItemProps {
   /**
-   * TODO: this interface needs a docstring for each param
+   * @param channelName list of channels
+   * @param onRemove handler that will run when delete button is clicked
+   * @param onEdit handler that will run when editing is finished
    */
   channelName: string;
   onRemove: (channelName: string) => void;

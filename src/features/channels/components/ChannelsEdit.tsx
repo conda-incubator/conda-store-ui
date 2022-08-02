@@ -19,11 +19,11 @@ import {
   StyledAccordionTitle,
   StyledButtonPrimary
 } from "src/styles";
-import { reorderArray } from "src/utils/helpers/reorderArray";
+import { reorderArray } from "src/utils/helpers";
 
 export interface IChannelsEditProps {
   /**
-   * TODO: this interface needs a docstring for each param
+   * @param channelsList list of channels
    */
   channelsList: string[];
 }

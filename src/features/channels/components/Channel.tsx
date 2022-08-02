@@ -6,7 +6,7 @@ import React from "react";
 
 interface IChannelProps {
   /**
-   * TODO: this interface needs a docstring for each param
+   * @param channelName name of the channel
    */
   channelName: string;
 }
@@ -15,7 +15,7 @@ export const Channel = ({ channelName }: IChannelProps) => {
   const { palette } = useTheme();
 
   return (
-    <Box sx={{ display: "flex", alignItems: "center" }}>
+    <Box className="box" sx={{ display: "flex", alignItems: "center" }}>
       <SquareIcon
         sx={{
           color: palette.primary.main,
@@ -24,7 +24,9 @@ export const Channel = ({ channelName }: IChannelProps) => {
           marginRight: "12px"
         }}
       />
-      <Typography sx={{ color: "#4D4D4D" }}>{channelName}</Typography>
+      <Typography className="typography" sx={{ color: "#4D4D4D" }}>
+        {channelName}
+      </Typography>
     </Box>
   );
 };

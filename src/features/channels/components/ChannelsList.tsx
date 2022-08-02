@@ -12,7 +12,7 @@ import {
 
 export interface IChannelsListProps {
   /**
-   * TODO: this interface needs a docstring for each param
+   * @param channelList list of channels
    */
   channelList: string[];
 }
