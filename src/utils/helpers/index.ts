@@ -1,3 +1,3 @@
 export * from "./reorderArray";
 export * from "./requestedPackageParser";
-export * from "./buildParser";
+export * from "./buildMapper";

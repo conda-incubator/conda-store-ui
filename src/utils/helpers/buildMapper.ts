@@ -1,5 +1,5 @@
 import { format } from "date-fns";
-interface IBuildParser {
+interface IBuildMapper {
   status: string;
   data: {
     id: number;
@@ -18,11 +18,11 @@ interface IBuildParser {
   size: number;
   count: number;
 }
-export const buildParser = ({ data }: IBuildParser): any => {
-  const build_data = data.map((data: any) => {
+
+export const buildMapper = ({ data }: IBuildMapper): any => {
+  return data.map((data: any) => {
     const status = data.status;
     const date = format(new Date(data.ended_on), "MMMM do, yyyy - h:mm");
     return `${date} - ${status}`;
   });
-  return build_data;
 };

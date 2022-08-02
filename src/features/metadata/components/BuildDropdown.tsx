@@ -26,6 +26,7 @@ export const Build = ({ builds }: IBuildProps) => {
         />
       )}
       inputProps={{
+        "data-testid": "test-select",
         sx: {
           padding: "7px 9px !important"
         }

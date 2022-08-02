@@ -2,7 +2,7 @@ import * as React from "react";
 import Typography from "@mui/material/Typography";
 import "../style/index.css";
 import { EnvMetadata } from "./features/metadata";
-import { buildParser } from "./utils/helpers/buildParser";
+import { buildMapper } from "./utils/helpers/buildMapper";
 import { ArtifactList } from "src/features/artifacts";
 
 export const App = () => {
@@ -59,7 +59,7 @@ export const App = () => {
     count: 2
   };
 
-  const builds = buildParser(build_response);
+  const builds = buildMapper(build_response);
 
   return (
     <>
