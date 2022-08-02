@@ -18,7 +18,7 @@ export const SpecificationEdit = () => {
 
   const dispatch = useAppDispatch();
 
-  const hasMore = !(size * page >= count);
+  const hasMore = size * page <= count;
 
   return (
     <BlockContainer title="Specification">
