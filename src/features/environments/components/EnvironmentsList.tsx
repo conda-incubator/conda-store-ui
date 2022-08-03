@@ -36,8 +36,7 @@ const EnvironmentsList = ({ environmentsList }: IEnvironmentsListProps) => {
   return (
     <StyledScrollContainer
       sx={{
-        height: "550px",
-        maxHeight: "862px"
+        height: "762px"
       }}
     >
       <Box sx={{ minHeight: "50px" }}>
