@@ -13,8 +13,7 @@ export const StyledTab = styled(Tab)(({ theme: { palette } }) => ({
   "&.Mui-selected": {
     color: "#000",
     fontWeight: 500,
-    borderTop: "1px solid #000",
-    borderLeft: "1px solid #000",
-    borderRight: "1px solid #000"
+    border: "1px solid #000",
+    borderBottom: "1px solid #fff"
   }
 }));

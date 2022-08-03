@@ -18,7 +18,7 @@ export const PageTabs = () => {
     <StyledTabs
       TabIndicatorProps={{
         style: {
-          transition: "none"
+          display: "none"
         }
       }}
       value={value}
