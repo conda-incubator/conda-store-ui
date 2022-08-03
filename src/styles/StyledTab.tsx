@@ -8,7 +8,7 @@ export const StyledTab = styled(Tab)(({ theme: { palette } }) => ({
   fontSize: "20px",
   minHeight: "48px",
   maxHeight: "48px",
-  width: "340px",
+  maxWidth: "340px",
   justifyContent: "space-between",
   "&.Mui-selected": {
     color: "#000",

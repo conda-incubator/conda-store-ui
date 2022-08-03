@@ -27,7 +27,7 @@ const artifactsList = [
 
 export const PageLayout = () => {
   return (
-    <Box sx={{ display: "flex" }}>
+    <Box sx={{ display: "flex", width: "100%" }}>
       <Environments list={mockEnvironments} />
       <Box sx={{ borderTop: "1px solid #A7A7A7", width: "100%" }}>
         <PageTabs />

@@ -23,12 +23,14 @@ export const PageTabs = () => {
       }}
       value={value}
       onChange={handleChange}
+      variant="fullWidth"
     >
       {selectedEnvironments.map(env => (
         <StyledTab
           key={env.id}
           label={env.name}
           value={env.id}
+          wrapped
           icon={
             <span
               style={{ marginTop: "5px" }}
