@@ -4,8 +4,6 @@ import useTheme from "@mui/material/styles/useTheme";
 import CircleIcon from "@mui/icons-material/Circle";
 import { Environment as EnvironmentModel } from "src/common/models";
 import { StyledIconButton } from "src/styles";
-import { useAppDispatch } from "src/hooks";
-import { environmentOpened } from "src/features/tabs";
 
 interface IEnvironmentProps {
   /**
