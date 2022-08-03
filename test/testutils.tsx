@@ -40,6 +40,14 @@ export const PACKAGE_LIST = [
   { pip: ["test"] }
 ];
 
+export const ENVIRONMENT = {
+  id: 1,
+  namespace: { id: 1, name: "default" },
+  name: "env1",
+  current_build_id: 1,
+  current_build: 1
+};
+
 export const mockTheme = (children: any) => {
   return <ThemeProvider theme={theme}>{children}</ThemeProvider>;
 };

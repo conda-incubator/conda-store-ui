@@ -10,15 +10,16 @@ import { environmentOpened } from "src/features/tabs";
 interface IEnvironmentProps {
   /**
    * @param environment environment
+   * @param onClick click handler
    */
   environment: EnvironmentModel;
+  onClick: () => void;
 }
 
-export const Environment = ({ environment }: IEnvironmentProps) => {
+export const Environment = ({ environment, onClick }: IEnvironmentProps) => {
   const {
     palette: { primary }
   } = useTheme();
-  const dispatch = useAppDispatch();
 
   return (
     <>
@@ -35,7 +36,7 @@ export const Environment = ({ environment }: IEnvironmentProps) => {
       </ListItemIcon>
       <StyledIconButton
         sx={{ textTransform: "none", fontSize: "16px", fontWeight: 400 }}
-        onClick={() => dispatch(environmentOpened(environment))}
+        onClick={onClick}
       >
         {environment.name}
       </StyledIconButton>
