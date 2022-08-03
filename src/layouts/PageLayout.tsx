@@ -44,7 +44,7 @@ export const PageLayout = () => {
               }}
             >
               <Box sx={{ padding: "12px" }}>
-                <Box sx={{ height: "500px" }}>
+                <Box sx={{ height: "300px" }}>
                   <Typography>Environment Details</Typography>
                 </Box>
                 <ArtifactsList artifacts={artifactsList} />
