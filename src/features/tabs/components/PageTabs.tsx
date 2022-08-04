@@ -3,7 +3,7 @@ import { StyledTab } from "src/styles";
 import { StyledTabs } from "src/styles/StyledTabs";
 import CloseIcon from "@mui/icons-material/Close";
 import { useAppDispatch, useAppSelector } from "src/hooks";
-import { environmentClosed, valueChanged } from "../tabsSlice";
+import { environmentClosed, tabChanged } from "../tabsSlice";
 
 export const PageTabs = () => {
   const { selectedEnvironments, value } = useAppSelector(state => state.tabs);
@@ -11,7 +11,7 @@ export const PageTabs = () => {
   const dispatch = useAppDispatch();
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-    dispatch(valueChanged(newValue));
+    dispatch(tabChanged(newValue));
   };
 
   return (

@@ -43,7 +43,7 @@ export const tabsSlice = createSlice({
         ? state.selectedEnvironments[0].id
         : 0;
     },
-    valueChanged: (state, action: PayloadAction<number>) => {
+    tabChanged: (state, action: PayloadAction<number>) => {
       const environment = state.selectedEnvironments.find(
         env => env.id === action.payload
       );
@@ -57,5 +57,5 @@ export const tabsSlice = createSlice({
   }
 });
 
-export const { environmentOpened, environmentClosed, valueChanged } =
+export const { environmentOpened, environmentClosed, tabChanged } =
   tabsSlice.actions;
