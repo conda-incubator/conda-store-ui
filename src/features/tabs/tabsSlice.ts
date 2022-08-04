@@ -30,12 +30,13 @@ export const tabsSlice = createSlice({
     },
     environmentClosed: (state, action: PayloadAction<number>) => {
       const currentlySelectedEnvironment = state.selectedEnvironment;
+      const closedEnvironmentId = action.payload;
 
       state.selectedEnvironments = state.selectedEnvironments.filter(
-        env => env.id !== action.payload
+        env => env.id !== closedEnvironmentId
       );
 
-      if (currentlySelectedEnvironment?.id === action.payload) {
+      if (currentlySelectedEnvironment?.id === closedEnvironmentId) {
         state.selectedEnvironment = state.selectedEnvironments[0];
       }
 
@@ -44,11 +45,13 @@ export const tabsSlice = createSlice({
         : 0;
     },
     tabChanged: (state, action: PayloadAction<number>) => {
+      const tabValue = action.payload;
+
       const environment = state.selectedEnvironments.find(
-        env => env.id === action.payload
+        env => env.id === tabValue
       );
 
-      state.value = action.payload;
+      state.value = tabValue;
 
       if (environment) {
         state.selectedEnvironment = environment;
