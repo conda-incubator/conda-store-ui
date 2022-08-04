@@ -1,5 +1,5 @@
 import Box from "@mui/material/Box";
-import React from "react";
+import React, { memo } from "react";
 import { ArtifactItem } from "./ArtifactsItem";
 import { Artifact } from "src/common/models";
 import List from "@mui/material/List";
@@ -16,7 +16,7 @@ export interface IArtifactsProps {
   artifacts: Artifact[];
 }
 
-export const ArtifactsList = ({ artifacts }: IArtifactsProps) => {
+const BaseArtifactsList = ({ artifacts }: IArtifactsProps) => {
   const listLength = artifacts.length;
   const { typography, palette } = useTheme();
   return (
@@ -59,3 +59,16 @@ export const ArtifactsList = ({ artifacts }: IArtifactsProps) => {
     </Box>
   );
 };
+
+// memoize the component, rerender only when the arrays from props are different
+// use JSON.stringify to turn arrays into string for === check to work propertly
+const compareProps = (
+  prevProps: IArtifactsProps,
+  nextProps: IArtifactsProps
+) => {
+  return (
+    JSON.stringify(prevProps.artifacts) === JSON.stringify(nextProps.artifacts)
+  );
+};
+
+export const ArtifactsList = memo(BaseArtifactsList, compareProps);
