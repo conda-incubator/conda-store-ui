@@ -5,11 +5,12 @@ import { BlockContainer } from "../src/components";
 describe("<BlockContainer />", () => {
   let component: RenderResult;
   const title = "Test";
+  const childrenText = "Hello World";
 
   beforeEach(() => {
     component = render(
       <BlockContainer title={title}>
-        <p data-testid="block-container-children">Hello World</p>
+        <p data-testid="block-container-children">{childrenText}</p>
       </BlockContainer>
     );
   });
@@ -22,6 +23,6 @@ describe("<BlockContainer />", () => {
     expect(text).toHaveTextContent(title);
 
     expect(children).toBeVisible();
-    expect(children).toHaveTextContent("Hello World");
+    expect(children).toHaveTextContent(childrenText);
   });
 });
