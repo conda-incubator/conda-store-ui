@@ -31,18 +31,26 @@ export const tabsSlice = createSlice({
     environmentClosed: (state, action: PayloadAction<number>) => {
       const currentlySelectedEnvironment = state.selectedEnvironment;
       const closedEnvironmentId = action.payload;
+      const index = state.selectedEnvironments.findIndex(
+        env => env.id === closedEnvironmentId
+      );
+      const listLength = state.selectedEnvironments.length;
 
       state.selectedEnvironments = state.selectedEnvironments.filter(
         env => env.id !== closedEnvironmentId
       );
 
       if (currentlySelectedEnvironment?.id === closedEnvironmentId) {
-        state.selectedEnvironment = state.selectedEnvironments[0];
-      }
+        if (listLength > 1) {
+          const prevIndex = index - 1;
 
-      state.value = state.selectedEnvironments[0]
-        ? state.selectedEnvironments[0].id
-        : 0;
+          state.selectedEnvironment = state.selectedEnvironments[prevIndex];
+          state.value = state.selectedEnvironments[prevIndex].id;
+        } else {
+          state.selectedEnvironment = null;
+          state.value = 0;
+        }
+      }
     },
     tabChanged: (state, action: PayloadAction<number>) => {
       const tabValue = action.payload;
