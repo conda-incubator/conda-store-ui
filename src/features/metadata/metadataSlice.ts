@@ -23,7 +23,7 @@ export const enviromentsSlice = createSlice({
   extraReducers: builder => {
     builder.addMatcher(
       environmentsApiSlice.endpoints.getEnviroments.matchFulfilled,
-      (state, { payload: { data, page, size, count } }) => {
+      (state, { payload: { data } }) => {
         state.enviroments.push(...data);
       }
     );

@@ -5,8 +5,8 @@ const baseQuery = fetchBaseQuery({
   prepareHeaders: headers => {
     headers.set(
       "Authorization",
-      "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NTk1OTY4MjEsInByaW1hcnlfbmFtZXNwYWNlIjoiYWRtaW4iLCJyb2xlX2JpbmRpbmdzIjp7ImRlZmF1bHQvKiI6WyJ2aWV3ZXIiXSwiZmlsZXN5c3RlbS8qIjpbInZpZXdlciJdLCIqLyoiOlsiYWRtaW4iXX19.Z6HRxZ7lMTayQppox5WEzq1OeeWeww4Z-uEoOD__Mdo"
-    ); // how to create a new token?
+      "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NTk3MjM3NjYsInByaW1hcnlfbmFtZXNwYWNlIjoianVhbmpvIiwicm9sZV9iaW5kaW5ncyI6eyJkZWZhdWx0LyoiOlsidmlld2VyIl0sImZpbGVzeXN0ZW0vKiI6WyJ2aWV3ZXIiXSwiKi8qIjpbImFkbWluIl19fQ.88CYzHnhCeppKFZHj-pS5idBnnQKhTIC7zNqlLP0T7M"
+    );
 
     return headers;
   }

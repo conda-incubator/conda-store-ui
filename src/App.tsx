@@ -2,11 +2,14 @@ import * as React from "react";
 import Typography from "@mui/material/Typography";
 import "../style/index.css";
 import { ArtifactsList } from "src/features/artifacts";
-import { useGetEnviromentQuery } from "src/features/metadata/metadataApiSlice";
+import {
+  useGetEnviromentQuery,
+  useGetEnviromentsQuery
+} from "src/features/metadata/metadataApiSlice";
 
 export const App = () => {
-  const result = useGetEnviromentQuery(1); // rejected
-  console.log(result);
+  const { data, isFetching } = useGetEnviromentsQuery(); // rejected
+  console.log(data);
 
   const artifactsList = [
     {
