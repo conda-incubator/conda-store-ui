@@ -11,9 +11,16 @@ import { ArtifactsList } from "src/features/artifacts";
 export const EnvironmentDetails = () => {
   const { mode } = useAppSelector(state => state.environmentDetails);
   const { page } = useAppSelector(state => state.dependencies);
+  const { selectedEnvironment } = useAppSelector(state => state.tabs);
 
-  useGetBuildQuery(1); //replace this number with redux state when we implement that part
-  useGetBuildPackagesQuery({ buildId: 1, page, size: 100 }); //replace buildId with redux state when we implement that pa
+  if (selectedEnvironment) {
+    useGetBuildQuery(selectedEnvironment.current_build_id);
+    useGetBuildPackagesQuery({
+      buildId: selectedEnvironment.current_build_id,
+      page,
+      size: 100
+    });
+  }
 
   const artifactsList = [
     {
