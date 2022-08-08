@@ -36,7 +36,7 @@ export const EnvironmentDetails = () => {
 
   // replace <Typography>Environment Metadata</Typography> part with actual environment metadata component when it's done
   return (
-    <Box sx={{ border: "1px solid #000", padding: "18px 12px" }}>
+    <Box sx={{ padding: "14px 12px" }}>
       <EnvironmentDetailsHeader />
       <Box sx={{ marginBottom: "30px" }}>
         <Typography>Environment Metadata</Typography>
