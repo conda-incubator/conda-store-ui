@@ -1,15 +1,15 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { Environment } from "src/common/models";
+import { Build } from "src/common/models";
 import { environmentsApiSlice } from "./metadataApiSlice";
 
-export interface IEnvironmentState {
-  enviroments: Environment[];
+export interface IBuildState {
+  enviroments: Build[];
   page: number;
   count: number;
   size: number;
 }
 
-const initialState: IEnvironmentState = {
+const initialState: IBuildState = {
   enviroments: [],
   page: 1,
   count: 0,

@@ -1,28 +1,17 @@
 import { format } from "date-fns";
-interface IBuildMapper {
-  status: string;
-  data: {
-    id: number;
-    environment_id: number;
-    specification: null;
-    packages: null;
-    status: string;
-    size: number;
-    scheduled_on: string;
-    started_on: string;
-    ended_on: string;
-    build_artifacts: null;
-  }[];
-  message: null;
-  page: number;
-  size: number;
-  count: number;
-}
+import { IApiResponse } from "src/common/interfaces";
+import { Build } from "src/common/models";
 
-export const buildMapper = ({ data }: IBuildMapper): any => {
-  return data.map((data: any) => {
-    const status = data.status;
-    const date = format(new Date(data.ended_on), "MMMM do, yyyy - h:mm");
-    return `${date} - ${status}`;
+const STATUS_OPTIONS: any = {
+  COMPLETED: "Available",
+  QUEUED: "Building",
+  FAILED: "Failed",
+  BUILDING: "Building"
+};
+
+export const buildMapper = ({ data }: IApiResponse<Build[]>) => {
+  return data.map(({ status, ended_on }: any) => {
+    const date = format(new Date(ended_on), "MMMM do, yyyy - h:mm");
+    return `${date} - ${STATUS_OPTIONS[status]}`;
   });
 };
