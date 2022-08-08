@@ -6,7 +6,7 @@ import { EnvironmentDetailsHeader } from "./EnvironmentDetailsHeader";
 import { Specification } from "./Specification";
 import { useGetBuildQuery } from "../environmentDetailsApiSlice";
 import { useGetBuildPackagesQuery } from "src/features/dependencies";
-import { ArtifactsList } from "src/features/artifacts";
+import { ArtifactList } from "src/features/artifacts";
 
 export const EnvironmentDetails = () => {
   const { mode } = useAppSelector(state => state.environmentDetails);
@@ -15,7 +15,7 @@ export const EnvironmentDetails = () => {
   useGetBuildQuery(1); //replace this number with redux state when we implement that part
   useGetBuildPackagesQuery({ buildId: 1, page, size: 100 }); //replace buildId with redux state when we implement that pa
 
-  const artifactsList = [
+  const artifactList = [
     {
       name: "Link to lockfile",
       route: "/api/v1/build/1/lockfile/"
@@ -46,7 +46,7 @@ export const EnvironmentDetails = () => {
       </Box>
       {mode === "read-only" && (
         <Box>
-          <ArtifactsList artifacts={artifactsList} />
+          <ArtifactList artifacts={artifactList} />
         </Box>
       )}
     </Box>

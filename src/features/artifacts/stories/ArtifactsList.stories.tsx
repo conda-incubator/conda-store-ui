@@ -1,8 +1,8 @@
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 import React from "react";
-import { ArtifactsList } from "../components";
+import { ArtifactList } from "../components";
 
-const artifactsList = [
+const artifactList = [
   {
     name: "Link to lockfile",
     route: "/api/v1/build/1/lockfile/"
@@ -22,9 +22,9 @@ const artifactsList = [
 ];
 
 export default {
-  component: ArtifactsList
-} as ComponentMeta<typeof ArtifactsList>;
+  component: ArtifactList
+} as ComponentMeta<typeof ArtifactList>;
 
-export const Primary: ComponentStory<typeof ArtifactsList> = () => (
-  <ArtifactsList artifacts={artifactsList} />
+export const Primary: ComponentStory<typeof ArtifactList> = () => (
+  <ArtifactList artifacts={artifactList} />
 );
