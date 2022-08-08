@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Dependency } from "src/common/models";
+import { environmentClosed, environmentOpened, tabChanged } from "../tabs";
 import { dependenciesApiSlice } from "./dependenciesApiSlice";
 
 export interface IChannelsState {
@@ -25,6 +26,24 @@ export const dependenciesSlice = createSlice({
     }
   },
   extraReducers: builder => {
+    builder.addCase(tabChanged.type, (state, action) => {
+      state.dependencies = [];
+      state.page = 1;
+      state.count = 0;
+      state.size = 0;
+    });
+    builder.addCase(environmentOpened.type, (state, action) => {
+      state.dependencies = [];
+      state.page = 1;
+      state.count = 0;
+      state.size = 0;
+    });
+    builder.addCase(environmentClosed.type, (state, action) => {
+      state.dependencies = [];
+      state.page = 1;
+      state.count = 0;
+      state.size = 0;
+    });
     builder.addMatcher(
       dependenciesApiSlice.endpoints.getBuildPackages.matchFulfilled,
       (state, { payload: { data, page, size, count } }) => {
