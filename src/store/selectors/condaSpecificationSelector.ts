@@ -6,15 +6,16 @@ export const selectCondaSpecification = (
 ): CondaSpecification => {
   const {
     channels: { channels },
-    requestedPackages: { requestedPackages }
+    requestedPackages: { requestedPackages },
+    environmentDetails: { name, prefix }
   } = state;
 
-  const CondaSpecification: CondaSpecification = {
+  const condaSpecification: CondaSpecification = {
     channels,
     dependencies: requestedPackages,
-    name: "test",
-    prefix: null
+    name,
+    prefix
   };
 
-  return CondaSpecification;
+  return condaSpecification;
 };

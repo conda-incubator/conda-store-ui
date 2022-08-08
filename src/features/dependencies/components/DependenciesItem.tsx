@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import SquareIcon from "@mui/icons-material/Square";
@@ -7,12 +7,17 @@ import { Dependency } from "../../../common/models";
 import { StyledIconButton } from "../../../styles";
 
 interface IDependenciesItemProps {
+  /**
+   * @param dependency single dependency
+   * @param mode change whether we are only able to read this dependency or edit it
+   * @param onClick click handler
+   */
   dependency: Dependency;
   mode: "read-only" | "edit";
   onClick: (id: number) => void;
 }
 
-export const DependenciesItem = ({
+const BaseDependenciesItem = ({
   dependency,
   mode,
   onClick
@@ -50,3 +55,13 @@ export const DependenciesItem = ({
     </Box>
   );
 };
+
+const compareProps = (
+  prevProps: IDependenciesItemProps,
+  nextProps: IDependenciesItemProps
+) => {
+  return prevProps.dependency.id === nextProps.dependency.id;
+};
+
+// memoize the component, rerender only when dependency prop id has changed
+export const DependenciesItem = memo(BaseDependenciesItem, compareProps);
