@@ -8,7 +8,10 @@ interface IBuildProps {
   /**
    * @param builds list of builds
    */
-  builds: string[] | null;
+  builds: {
+    id: number;
+    name: string;
+  }[];
 }
 
 export const Build = ({ builds }: IBuildProps) => {
@@ -16,7 +19,7 @@ export const Build = ({ builds }: IBuildProps) => {
   return (
     <Select
       sx={{ marginLeft: "13px" }}
-      defaultValue={builds ? builds[builds.length - 1] : null}
+      defaultValue={builds ? builds[0].name : null}
       IconComponent={() => (
         <ArrowDropDownIcon
           sx={{
@@ -34,8 +37,8 @@ export const Build = ({ builds }: IBuildProps) => {
     >
       {builds
         ? builds.map(build => (
-            <MenuItem key={build} value={build}>
-              {build}
+            <MenuItem key={build.id} value={build.name}>
+              {build.name}
             </MenuItem>
           ))
         : null}

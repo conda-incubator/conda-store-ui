@@ -10,8 +10,11 @@ const STATUS_OPTIONS: any = {
 };
 
 export const buildMapper = ({ data }: IApiResponse<Build[]>) => {
-  return data.map(({ status, ended_on }: any) => {
+  return data.map(({ id, status, ended_on }: Build) => {
     const date = format(new Date(ended_on), "MMMM do, yyyy - h:mm");
-    return `${date} - ${STATUS_OPTIONS[status]}`;
+    return {
+      id,
+      name: `${date} - ${STATUS_OPTIONS[status]}`
+    };
   });
 };

@@ -13,7 +13,10 @@ export interface IEnvMetadataProps {
   /**
    * @param builds list of builds
    */
-  builds: string[] | null;
+  builds: {
+    id: number;
+    name: string;
+  }[];
 }
 
 export const EnvMetadata = ({ builds }: IEnvMetadataProps) => {
