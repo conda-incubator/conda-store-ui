@@ -4,10 +4,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 const baseQuery = fetchBaseQuery({
   baseUrl: process.env.REACT_APP_API_URL,
   prepareHeaders: headers => {
-    headers.set(
-      "Authorization",
-      "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NTk2ODM3NDEsInByaW1hcnlfbmFtZXNwYWNlIjoiYWRtaW4iLCJyb2xlX2JpbmRpbmdzIjp7ImRlZmF1bHQvKiI6WyJ2aWV3ZXIiXSwiZmlsZXN5c3RlbS8qIjpbInZpZXdlciJdLCIqLyoiOlsiYWRtaW4iXX19.ix4dD6Z70MVxfK7uPELlHQ2ebOI7UXLhW-d2fW600MY"
-    );
+    headers.set("Authorization", `Bearer ${process.env.REACT_APP_AUTH_TOKEN}`);
 
     return headers;
   }

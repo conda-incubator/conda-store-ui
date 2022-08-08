@@ -16,22 +16,21 @@ export const EnvironmentDetails = () => {
   useGetBuildPackagesQuery({ buildId: 1, page, size: 100 }); //replace buildId with redux state when we implement that pa
 
   const artifactsList = [
-    //replace {build_id} with redux value when we implement that logic
     {
       name: "Link to lockfile",
-      route: "/api/v1/build/{build_id}/lockfile/"
+      route: "/api/v1/build/1/lockfile/"
     },
     {
       name: "Link to yml file",
-      route: "/api/v1/build/{build_id}/yaml/"
+      route: "/api/v1/build/1/yaml/"
     },
     {
       name: "Link to archive",
-      route: "/api/v1/build/{build_id}/archive/"
+      route: "/api/v1/build/1/archive/"
     },
     {
-      name: "Conda Env {build_id} log",
-      route: "/api/v1/build/{build_id}/logs"
+      name: "Conda Env 1 log",
+      route: "/api/v1/build/1/logs"
     }
   ];
 
