@@ -34,5 +34,5 @@ yarn report test/AddChannel.test.tsx     // run a single test instead of all
 
 In order to setup the environment variables correctly, you should create a .env file and inside copy the contents of the .env.example file.
 REACT_APP_API_URL - base API url that will be used when creating RTK Query queries
-REACT_APP_AUTH_TOKEN - authentication token required for access on certain endpoints
+REACT_APP_AUTH_TOKEN - authentication token required for access to certain endpoints
 REACT_APP_AUTH_METHOD - see https://github.com/Quansight/conda-store-ui/issues/53
