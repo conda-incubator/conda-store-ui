@@ -36,21 +36,21 @@ export const tabsSlice = createSlice({
       );
       const listLength = state.selectedEnvironments.length;
 
-      state.selectedEnvironments = state.selectedEnvironments.filter(
-        env => env.id !== closedEnvironmentId
-      );
-
       if (currentlySelectedEnvironment?.id === closedEnvironmentId) {
         if (listLength > 1) {
-          const prevIndex = index - 1;
+          const nextIndex = index === 0 ? index + 1 : index - 1;
 
-          state.selectedEnvironment = state.selectedEnvironments[prevIndex];
-          state.value = state.selectedEnvironments[prevIndex].id;
+          state.selectedEnvironment = state.selectedEnvironments[nextIndex];
+          state.value = state.selectedEnvironments[nextIndex].id;
         } else {
           state.selectedEnvironment = null;
           state.value = 0;
         }
       }
+
+      state.selectedEnvironments = state.selectedEnvironments.filter(
+        env => env.id !== closedEnvironmentId
+      );
     },
     tabChanged: (state, action: PayloadAction<number>) => {
       const tabValue = action.payload;
