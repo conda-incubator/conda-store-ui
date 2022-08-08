@@ -1,12 +1,20 @@
 import React from "react";
-import { fireEvent, render, waitFor } from "@testing-library/react";
+import { fireEvent, render } from "@testing-library/react";
 import { Dependencies } from "../src/features/dependencies";
 import { DEPENDENCIES, mockTheme } from "./testutils";
 
 describe("<Dependencies />", () => {
+  let mockNext: () => void;
+
+  beforeEach(() => {
+    mockNext = jest.fn();
+  });
+
   it("should render the component in read-only mode", () => {
     const { container } = render(
-      mockTheme(<Dependencies mode="read-only" dependencies={[]} />)
+      mockTheme(
+        <Dependencies hasMore={false} mode="read-only" dependencies={[]} />
+      )
     );
 
     expect(container).toHaveTextContent("Packages Installed as Dependencies");
@@ -14,28 +22,41 @@ describe("<Dependencies />", () => {
 
   it("should render component in edit mode", async () => {
     const component = render(
-      mockTheme(<Dependencies mode="edit" dependencies={DEPENDENCIES} />)
+      mockTheme(
+        <Dependencies
+          hasMore={true}
+          next={mockNext}
+          mode="edit"
+          dependencies={DEPENDENCIES}
+        />
+      )
     );
 
     const scrollSection = component.container.querySelector("#infScroll");
-    fireEvent.scroll(scrollSection, { target: { scrollY: 1000 } });
+    if (scrollSection) {
+      fireEvent.scroll(scrollSection, { target: { scrollY: 1000 } });
+    }
 
-    await waitFor(
-      () => expect(component.container).toHaveTextContent("backcall"),
-      {
-        timeout: 2000
-      }
-    );
+    expect(mockNext).toHaveBeenCalled();
   });
 
-  it("should render component in edit mode", async () => {
+  it("should not call next function when hasMore is false", () => {
     const component = render(
-      mockTheme(<Dependencies mode="edit" dependencies={DEPENDENCIES} />)
+      mockTheme(
+        <Dependencies
+          hasMore={false}
+          next={mockNext}
+          mode="edit"
+          dependencies={DEPENDENCIES}
+        />
+      )
     );
 
-    const [promoteIcons] = component.getAllByTestId("FileUploadIcon");
-    fireEvent.click(promoteIcons);
+    const scrollSection = component.container.querySelector("#infScroll");
+    if (scrollSection) {
+      fireEvent.scroll(scrollSection, { target: { scrollY: 1000 } });
+    }
 
-    expect(component.container).not.toHaveTextContent(DEPENDENCIES[0].name);
+    expect(mockNext).not.toHaveBeenCalled();
   });
 });
