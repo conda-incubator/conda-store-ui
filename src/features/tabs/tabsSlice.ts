@@ -38,10 +38,11 @@ export const tabsSlice = createSlice({
 
       if (currentlySelectedEnvironment?.id === closedEnvironmentId) {
         if (listLength > 1) {
-          const nextIndex = index === 0 ? index + 1 : index - 1;
+          const rightItem = state.selectedEnvironments[index + 1];
+          const leftItem = state.selectedEnvironments[index - 1];
 
-          state.selectedEnvironment = state.selectedEnvironments[nextIndex];
-          state.value = state.selectedEnvironments[nextIndex].id;
+          state.selectedEnvironment = rightItem ?? leftItem;
+          state.value = state.selectedEnvironment.id;
         } else {
           state.selectedEnvironment = null;
           state.value = 0;
