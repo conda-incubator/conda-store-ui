@@ -7,12 +7,21 @@
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const path = require("path");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const Dotenv = require("dotenv-webpack");
 
 // const TsconfigPathsPlugin = require("tsconfig-paths-webpack-plugin");
 // To improve build times for large projects enable fork-ts-checker-webpack-plugin
 // const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 
-const { dependencySrcMapRules, stylingRules, svgUrlRules, getContext, getOptimization, getResolve, tsRules } = require("./webpack.rules");
+const {
+  dependencySrcMapRules,
+  stylingRules,
+  svgUrlRules,
+  getContext,
+  getOptimization,
+  getResolve,
+  tsRules
+} = require("./webpack.rules");
 
 const isProd = process.env.NODE_ENV === "production";
 
@@ -32,12 +41,12 @@ const basicConfig = {
       ...dependencySrcMapRules,
       ...stylingRules,
       ...svgUrlRules,
-      ...tsRules,
-    ],
+      ...tsRules
+    ]
   },
 
   resolve: {
-    ...getResolve(__dirname),
+    ...getResolve(__dirname)
   },
 
   // devServer: {
@@ -54,16 +63,15 @@ const basicConfig = {
       title: "simple tree-finder example"
     }),
     new MiniCssExtractPlugin(),
+    new Dotenv()
   ],
 
-  mode: isProd ? "production": "development",
+  mode: isProd ? "production" : "development",
 
   optimization: {
     minimize: isProd,
-    ...isProd && getOptimization(),
-  },
-}
+    ...(isProd && getOptimization())
+  }
+};
 
-module.exports = [
-  basicConfig,
-];
+module.exports = [basicConfig];
