@@ -68,18 +68,29 @@ export const Dependencies = ({
           scrollableTarget="infScroll"
           style={{ overflow: "hidden" }}
         >
-          {dependencies.map((dependency, index) => (
+          {listLength > 0 &&
+            dependencies.map((dependency, index) => (
+              <Box
+                key={dependency.id}
+                sx={{ marginBottom: index === listLength - 1 ? "0px" : "20px" }}
+              >
+                <DependenciesItem
+                  mode={mode}
+                  dependency={dependency}
+                  onClick={() => null}
+                />
+              </Box>
+            ))}
+          {listLength === 0 && (
             <Box
-              key={dependency.id}
-              sx={{ marginBottom: index === listLength - 1 ? "0px" : "20px" }}
+              sx={{
+                display: "flex",
+                justifyContent: "center"
+              }}
             >
-              <DependenciesItem
-                mode={mode}
-                dependency={dependency}
-                onClick={() => null}
-              />
+              <CircularProgress />
             </Box>
-          ))}
+          )}
         </InfiniteScroll>
       </StyledAccordionDetails>
     </Accordion>
