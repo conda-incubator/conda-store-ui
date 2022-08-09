@@ -28,23 +28,21 @@ export const dependenciesSlice = createSlice({
   extraReducers: builder => {
     builder.addCase(tabChanged.type, state => {
       state.page = 1;
-      state.dependencies = [];
-      state.count = 0;
     });
     builder.addCase(environmentOpened.type, state => {
       state.page = 1;
-      state.dependencies = [];
-      state.count = 0;
     });
     builder.addCase(environmentClosed.type, state => {
       state.page = 1;
-      state.dependencies = [];
-      state.count = 0;
     });
     builder.addMatcher(
       dependenciesApiSlice.endpoints.getBuildPackages.matchFulfilled,
-      (state, { payload: { data, size, count } }) => {
-        state.dependencies.push(...data);
+      (state, { payload: { data, size, count, page } }) => {
+        if (page === 1) {
+          state.dependencies = data;
+        } else {
+          state.dependencies.push(...data);
+        }
         state.size = size;
         state.count = count;
       }
