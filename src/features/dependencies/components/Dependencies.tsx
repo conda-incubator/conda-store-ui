@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import Accordion from "@mui/material/Accordion";
 import Box from "@mui/material/Box";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -11,8 +11,6 @@ import {
 } from "src/styles";
 import { Dependency } from "src/common/models";
 import { DependenciesItem } from "./DependenciesItem";
-import { useAppDispatch, useAppSelector } from "src/hooks";
-import { environmentChanged } from "../dependenciesSlice";
 
 export interface IDependenciesProps {
   /**
@@ -33,14 +31,7 @@ export const Dependencies = ({
   hasMore,
   next = () => null
 }: IDependenciesProps) => {
-  const { selectedEnvironment } = useAppSelector(state => state.tabs);
-
   const listLength = dependencies.length;
-  const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    dispatch(environmentChanged());
-  }, [selectedEnvironment?.id]);
 
   return (
     <Accordion

@@ -18,7 +18,7 @@ export const EnvironmentDetails = () => {
     useGetBuildPackagesQuery({
       buildId: selectedEnvironment.current_build_id,
       page,
-      size: 100
+      size: 50
     });
   }
 
