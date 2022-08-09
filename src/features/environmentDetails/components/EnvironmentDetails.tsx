@@ -25,19 +25,19 @@ export const EnvironmentDetails = () => {
   const artifactList = [
     {
       name: "Link to lockfile",
-      route: "/api/v1/build/1/lockfile/"
+      route: `/api/v1/build/${selectedEnvironment?.id}/lockfile/`
     },
     {
       name: "Link to yml file",
-      route: "/api/v1/build/1/yaml/"
+      route: `/api/v1/build/${selectedEnvironment?.id}/yaml/`
     },
     {
       name: "Link to archive",
-      route: "/api/v1/build/1/archive/"
+      route: `/api/v1/build/${selectedEnvironment?.id}/archive/`
     },
     {
-      name: "Conda Env 1 log",
-      route: "/api/v1/build/1/logs"
+      name: `Conda Env ${selectedEnvironment?.id} log`,
+      route: `/api/v1/build/${selectedEnvironment?.id}/logs`
     }
   ];
 
