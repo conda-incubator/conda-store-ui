@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
@@ -12,6 +12,12 @@ import {
 export const EnvironmentDetailsHeader = () => {
   const { mode, name } = useAppSelector(state => state.environmentDetails);
   const dispatch = useAppDispatch();
+
+  const [value, setValue] = useState("");
+
+  useEffect(() => {
+    setValue(name);
+  }, [name]);
 
   return (
     <Box
@@ -51,7 +57,8 @@ export const EnvironmentDetailsHeader = () => {
               }
             }}
             variant="filled"
-            defaultValue={name}
+            value={value}
+            onChange={e => setValue(e.target.value)}
           />
           <StyledButtonPrimary>Archive</StyledButtonPrimary>
         </>
