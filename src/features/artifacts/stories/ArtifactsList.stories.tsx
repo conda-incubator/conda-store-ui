@@ -2,7 +2,7 @@ import { ComponentStory, ComponentMeta } from "@storybook/react";
 import React from "react";
 import { ArtifactsList } from "../components";
 
-const artifactsList = [
+const artifactList = [
   {
     name: "Link to lockfile",
     route: "/api/v1/build/1/lockfile/"
@@ -26,5 +26,5 @@ export default {
 } as ComponentMeta<typeof ArtifactsList>;
 
 export const Primary: ComponentStory<typeof ArtifactsList> = () => (
-  <ArtifactsList artifacts={artifactsList} />
+  <ArtifactsList artifacts={artifactList} />
 );

@@ -18,11 +18,11 @@ export const EnvironmentDetails = () => {
     useGetBuildPackagesQuery({
       buildId: selectedEnvironment.current_build_id,
       page,
-      size: 100
+      size: 50
     });
   }
 
-  const artifactsList = [
+  const artifactList = [
     {
       name: "Link to lockfile",
       route: "/api/v1/build/1/lockfile/"
@@ -53,7 +53,7 @@ export const EnvironmentDetails = () => {
       </Box>
       {mode === "read-only" && (
         <Box>
-          <ArtifactsList artifacts={artifactsList} />
+          <ArtifactsList artifacts={artifactList} />
         </Box>
       )}
     </Box>
