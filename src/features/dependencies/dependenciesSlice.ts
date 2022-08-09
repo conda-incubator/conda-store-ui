@@ -32,9 +32,17 @@ export const dependenciesSlice = createSlice({
     builder.addCase(environmentOpened.type, state => {
       state.page = 1;
     });
-    builder.addCase(environmentClosed.type, state => {
-      state.page = 1;
-    });
+    builder.addCase(
+      environmentClosed.type,
+      (
+        state,
+        action: PayloadAction<{ envId: number; selectedEnvironmentId: number }>
+      ) => {
+        if (action.payload.envId === action.payload.selectedEnvironmentId) {
+          state.page = 1;
+        }
+      }
+    );
     builder.addMatcher(
       dependenciesApiSlice.endpoints.getBuildPackages.matchFulfilled,
       (state, { payload: { data, size, count, page } }) => {

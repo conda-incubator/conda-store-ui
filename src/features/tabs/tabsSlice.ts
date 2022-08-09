@@ -28,15 +28,17 @@ export const tabsSlice = createSlice({
         state.selectedEnvironments.push(openedEnvironment);
       }
     },
-    environmentClosed: (state, action: PayloadAction<number>) => {
-      const currentlySelectedEnvironment = state.selectedEnvironment;
-      const closedEnvironmentId = action.payload;
+    environmentClosed: (
+      state,
+      action: PayloadAction<{ envId: number; selectedEnvironmentId: number }>
+    ) => {
+      const closedEnvironmentId = action.payload.envId;
       const index = state.selectedEnvironments.findIndex(
         env => env.id === closedEnvironmentId
       );
       const listLength = state.selectedEnvironments.length;
 
-      if (currentlySelectedEnvironment?.id === closedEnvironmentId) {
+      if (action.payload.selectedEnvironmentId === closedEnvironmentId) {
         if (listLength > 1) {
           const rightItem = state.selectedEnvironments[index + 1];
           const leftItem = state.selectedEnvironments[index - 1];

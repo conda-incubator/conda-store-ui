@@ -6,7 +6,9 @@ import { useAppDispatch, useAppSelector } from "src/hooks";
 import { environmentClosed, tabChanged } from "../tabsSlice";
 
 export const PageTabs = () => {
-  const { selectedEnvironments, value } = useAppSelector(state => state.tabs);
+  const { selectedEnvironments, value, selectedEnvironment } = useAppSelector(
+    state => state.tabs
+  );
 
   const dispatch = useAppDispatch();
 
@@ -37,7 +39,12 @@ export const PageTabs = () => {
               role="button"
               onClick={e => {
                 e.stopPropagation();
-                dispatch(environmentClosed(env.id));
+                dispatch(
+                  environmentClosed({
+                    envId: env.id,
+                    selectedEnvironmentId: selectedEnvironment!.id
+                  })
+                );
               }}
             >
               <CloseIcon sx={{ color: "#000" }} />
