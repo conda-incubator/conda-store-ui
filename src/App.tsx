@@ -4,6 +4,10 @@ import "../style/index.css";
 import { EnvMetadata } from "./features/metadata";
 import { buildMapper } from "./utils/helpers/buildMapper";
 import { ArtifactList } from "src/features/artifacts";
+import { LoginPage } from "./features/login";
+import { BrowserRouter as Router, Link as RouterLink } from "react-router-dom";
+import { Route, Routes } from "react-router";
+import Link from "@mui/material/Link";
 
 export const App = () => {
   const artifactList = [
@@ -63,6 +67,14 @@ export const App = () => {
 
   return (
     <>
+      <Router>
+        <Link component={RouterLink} to="/login" color="primary">
+          Sign in
+        </Link>
+        <Routes>
+          <Route path="/login" element={<LoginPage />} />
+        </Routes>
+      </Router>
       <Typography sx={{ fontSize: "25px", textAlign: "center" }}>
         Hello World
       </Typography>
