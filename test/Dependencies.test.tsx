@@ -2,18 +2,23 @@ import React from "react";
 import { fireEvent, render } from "@testing-library/react";
 import { Dependencies } from "../src/features/dependencies";
 import { DEPENDENCIES, mockTheme } from "./testutils";
+import { store } from "../src/store";
+import { Provider } from "react-redux";
 
 describe("<Dependencies />", () => {
   let mockNext: () => void;
 
   beforeEach(() => {
+    window.HTMLElement.prototype.scrollTo = jest.fn();
     mockNext = jest.fn();
   });
 
   it("should render the component in read-only mode", () => {
     const { container } = render(
       mockTheme(
-        <Dependencies hasMore={false} mode="read-only" dependencies={[]} />
+        <Provider store={store}>
+          <Dependencies hasMore={false} mode="read-only" dependencies={[]} />
+        </Provider>
       )
     );
 
@@ -23,12 +28,14 @@ describe("<Dependencies />", () => {
   it("should render component in edit mode", async () => {
     const component = render(
       mockTheme(
-        <Dependencies
-          hasMore={true}
-          next={mockNext}
-          mode="edit"
-          dependencies={DEPENDENCIES}
-        />
+        <Provider store={store}>
+          <Dependencies
+            hasMore={true}
+            next={mockNext}
+            mode="edit"
+            dependencies={DEPENDENCIES}
+          />
+        </Provider>
       )
     );
 
@@ -43,12 +50,14 @@ describe("<Dependencies />", () => {
   it("should not call next function when hasMore is false", () => {
     const component = render(
       mockTheme(
-        <Dependencies
-          hasMore={false}
-          next={mockNext}
-          mode="edit"
-          dependencies={DEPENDENCIES}
-        />
+        <Provider store={store}>
+          <Dependencies
+            hasMore={false}
+            next={mockNext}
+            mode="edit"
+            dependencies={DEPENDENCIES}
+          />
+        </Provider>
       )
     );
 
