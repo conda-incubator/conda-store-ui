@@ -14,7 +14,6 @@ export const SpecificationReadOnly = () => {
   const { dependencies, size, count, page } = useAppSelector(
     state => state.dependencies
   );
-  const { selectedEnvironment } = useAppSelector(state => state.tabs);
 
   const dispatch = useAppDispatch();
 
@@ -28,7 +27,6 @@ export const SpecificationReadOnly = () => {
         </Box>
         <Box sx={{ marginBottom: "30px" }}>
           <Dependencies
-            key={selectedEnvironment?.id}
             mode="read-only"
             dependencies={dependencies}
             hasMore={hasMore}

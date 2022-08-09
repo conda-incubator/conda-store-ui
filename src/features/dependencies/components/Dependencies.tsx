@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import Accordion from "@mui/material/Accordion";
 import Box from "@mui/material/Box";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -11,6 +11,7 @@ import {
 } from "src/styles";
 import { Dependency } from "src/common/models";
 import { DependenciesItem } from "./DependenciesItem";
+import { useAppSelector } from "src/hooks";
 
 export interface IDependenciesProps {
   /**
@@ -31,7 +32,13 @@ export const Dependencies = ({
   hasMore,
   next = () => null
 }: IDependenciesProps) => {
+  const { selectedEnvironment } = useAppSelector(state => state.tabs);
   const listLength = dependencies.length;
+  const scrollRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    scrollRef.current?.scrollTo(0, 0);
+  }, [selectedEnvironment?.id]);
 
   return (
     <Accordion
@@ -49,6 +56,7 @@ export const Dependencies = ({
       <StyledAccordionDetails
         id="infScroll"
         sx={{ padding: "15px 40px", maxHeight: "100px" }}
+        ref={scrollRef}
       >
         <InfiniteScroll
           hasMore={hasMore}

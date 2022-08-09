@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Dependency } from "src/common/models";
+import { Dependency, Environment } from "src/common/models";
 import { environmentClosed, environmentOpened, tabChanged } from "../tabs";
 import { dependenciesApiSlice } from "./dependenciesApiSlice";
 
@@ -29,9 +29,25 @@ export const dependenciesSlice = createSlice({
     builder.addCase(tabChanged.type, state => {
       state.page = 1;
     });
-    builder.addCase(environmentOpened.type, state => {
-      state.page = 1;
-    });
+    builder.addCase(
+      environmentOpened.type,
+      (
+        state,
+        {
+          payload: { environment, selectedEnvironmentId }
+        }: PayloadAction<{
+          environment: Environment;
+          selectedEnvironmentId: number | undefined;
+        }>
+      ) => {
+        if (
+          !selectedEnvironmentId ||
+          environment.id !== selectedEnvironmentId
+        ) {
+          state.page = 1;
+        }
+      }
+    );
     builder.addCase(
       environmentClosed.type,
       (

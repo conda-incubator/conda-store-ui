@@ -17,9 +17,15 @@ export const tabsSlice = createSlice({
   name: "tabs",
   initialState,
   reducers: {
-    environmentOpened: (state, action: PayloadAction<Environment>) => {
+    environmentOpened: (
+      state,
+      action: PayloadAction<{
+        environment: Environment;
+        selectedEnvironmentId: number | undefined;
+      }>
+    ) => {
       const environments = state.selectedEnvironments;
-      const openedEnvironment = action.payload;
+      const openedEnvironment = action.payload.environment;
 
       state.selectedEnvironment = openedEnvironment;
       state.value = openedEnvironment.id;
