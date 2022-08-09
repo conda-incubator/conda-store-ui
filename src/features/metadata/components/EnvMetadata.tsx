@@ -8,6 +8,8 @@ import useTheme from "@mui/material/styles/useTheme";
 import { Build } from "src/features/metadata/components/BuildDropdown";
 import { StyledBox } from "src/styles";
 import { StyledMetadataItem } from "src/styles/StyledMetadataItem";
+import { useGetEnviromentsQuery } from "src/features/metadata";
+import { buildMapper } from "src/utils/helpers/buildMapper";
 
 export interface IEnvMetadataProps {
   /**
@@ -19,8 +21,10 @@ export interface IEnvMetadataProps {
   }[];
 }
 
-export const EnvMetadata = ({ builds }: IEnvMetadataProps) => {
+export const EnvMetadata = () => {
+  const { data: enviromentData } = useGetEnviromentsQuery();
   const { palette } = useTheme();
+
   return (
     <StyledBox>
       <List>
@@ -43,7 +47,7 @@ export const EnvMetadata = ({ builds }: IEnvMetadataProps) => {
       <StyledMetadataItem>
         <b>Build</b>
       </StyledMetadataItem>
-      <Build builds={builds} />
+      {enviromentData && <Build builds={buildMapper(enviromentData)} />}
       <StyledMetadataItem>
         <b>Status:</b> Completed/Building/Failed
       </StyledMetadataItem>
