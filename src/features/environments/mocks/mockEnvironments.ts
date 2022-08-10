@@ -5,7 +5,7 @@ export const mockEnvironments = [
       id: 1,
       name: "default"
     },
-    name: "test_env_1",
+    name: "python-flask-env-2",
     current_build_id: 2,
     current_build: null
   },
@@ -17,16 +17,6 @@ export const mockEnvironments = [
     },
     name: "python-flask-env",
     current_build_id: 1,
-    current_build: null
-  },
-  {
-    id: 3,
-    namespace: {
-      id: 1,
-      name: "default"
-    },
-    name: "test_env_2",
-    current_build_id: 3,
     current_build: null
   }
 ];

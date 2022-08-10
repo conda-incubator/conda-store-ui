@@ -1,45 +1,51 @@
 import React from "react";
 import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
 import { useAppSelector } from "src/hooks";
 import { EnvironmentDetailsHeader } from "./EnvironmentDetailsHeader";
 import { Specification } from "./Specification";
 import { useGetBuildQuery } from "../environmentDetailsApiSlice";
 import { useGetBuildPackagesQuery } from "src/features/dependencies";
 import { ArtifactList } from "src/features/artifacts";
+import { EnvMetadata } from "src/features/metadata";
 
 export const EnvironmentDetails = () => {
   const { mode } = useAppSelector(state => state.environmentDetails);
   const { page } = useAppSelector(state => state.dependencies);
+  const { selectedEnvironment } = useAppSelector(state => state.tabs);
 
-  useGetBuildQuery(1); //replace this number with redux state when we implement that part
-  useGetBuildPackagesQuery({ buildId: 1, page, size: 100 }); //replace buildId with redux state when we implement that pa
+  if (selectedEnvironment) {
+    useGetBuildQuery(selectedEnvironment.current_build_id);
+    useGetBuildPackagesQuery({
+      buildId: selectedEnvironment.current_build_id,
+      page,
+      size: 100
+    });
+  }
 
   const artifactList = [
     {
       name: "Link to lockfile",
-      route: "/api/v1/build/1/lockfile/"
+      route: `/api/v1/build/${selectedEnvironment?.id}/lockfile/`
     },
     {
       name: "Link to yml file",
-      route: "/api/v1/build/1/yaml/"
+      route: `/api/v1/build/${selectedEnvironment?.id}/yaml/`
     },
     {
       name: "Link to archive",
-      route: "/api/v1/build/1/archive/"
+      route: `/api/v1/build/${selectedEnvironment?.id}/archive/`
     },
     {
-      name: "Conda Env 1 log",
-      route: "/api/v1/build/1/logs"
+      name: `Conda Env ${selectedEnvironment?.id} log`,
+      route: `/api/v1/build/${selectedEnvironment?.id}/logs`
     }
   ];
 
-  // replace <Typography>Environment Metadata</Typography> part with actual environment metadata component when it's done
   return (
-    <Box sx={{ border: "1px solid #000", padding: "18px 12px" }}>
+    <Box sx={{ padding: "14px 12px" }}>
       <EnvironmentDetailsHeader />
       <Box sx={{ marginBottom: "30px" }}>
-        <Typography>Environment Metadata</Typography>
+        <EnvMetadata />
       </Box>
       <Box sx={{ marginBottom: "30px" }}>
         <Specification />

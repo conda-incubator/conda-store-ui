@@ -10,6 +10,8 @@ import AccordionDetails from "@mui/material/AccordionDetails";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import { Environment } from "./Environment";
+import { useAppDispatch, useAppSelector } from "src/hooks";
+import { environmentOpened } from "src/features/tabs";
 
 interface IEnvironmentDropdownProps {
   /**
@@ -21,6 +23,9 @@ interface IEnvironmentDropdownProps {
 export const EnvironmentDropdown = ({
   data: { namespace, environments }
 }: IEnvironmentDropdownProps) => {
+  const { selectedEnvironment } = useAppSelector(state => state.tabs);
+  const dispatch = useAppDispatch();
+
   return (
     <Accordion
       sx={{ border: "none", position: "initial" }}
@@ -52,7 +57,17 @@ export const EnvironmentDropdown = ({
               disablePadding
               sx={{ marginBottom: "20px" }}
             >
-              <Environment environment={environment} />
+              <Environment
+                onClick={() =>
+                  dispatch(
+                    environmentOpened({
+                      environment,
+                      selectedEnvironmentId: selectedEnvironment?.id
+                    })
+                  )
+                }
+                environment={environment}
+              />
             </ListItem>
           ))}
         </List>

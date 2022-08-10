@@ -19,7 +19,10 @@ export const EnvironmentsSearch = ({ onChange }: IEnvironmentsSearchProps) => {
         padding: "15px 12px"
       }}
     >
-      <Typography sx={{ marginBottom: "16px", textAlign: "center" }}>
+      <Typography
+        data-testid="env-search-title"
+        sx={{ marginBottom: "16px", textAlign: "center" }}
+      >
         Package Manager
       </Typography>
       <OutlinedInput

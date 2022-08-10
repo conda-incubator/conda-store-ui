@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Dependency } from "src/common/models";
+import { Dependency, Environment } from "src/common/models";
+import { environmentClosed, environmentOpened, tabChanged } from "../tabs";
 import { dependenciesApiSlice } from "./dependenciesApiSlice";
 
 export interface IChannelsState {
@@ -25,11 +26,47 @@ export const dependenciesSlice = createSlice({
     }
   },
   extraReducers: builder => {
+    builder.addCase(tabChanged.type, state => {
+      state.page = 1;
+    });
+    builder.addCase(
+      environmentOpened.type,
+      (
+        state,
+        {
+          payload: { environment, selectedEnvironmentId }
+        }: PayloadAction<{
+          environment: Environment;
+          selectedEnvironmentId: number | undefined;
+        }>
+      ) => {
+        if (
+          !selectedEnvironmentId ||
+          environment.id !== selectedEnvironmentId
+        ) {
+          state.page = 1;
+        }
+      }
+    );
+    builder.addCase(
+      environmentClosed.type,
+      (
+        state,
+        action: PayloadAction<{ envId: number; selectedEnvironmentId: number }>
+      ) => {
+        if (action.payload.envId === action.payload.selectedEnvironmentId) {
+          state.page = 1;
+        }
+      }
+    );
     builder.addMatcher(
       dependenciesApiSlice.endpoints.getBuildPackages.matchFulfilled,
-      (state, { payload: { data, page, size, count } }) => {
-        state.dependencies.push(...data);
-        state.page = page;
+      (state, { payload: { data, size, count, page } }) => {
+        if (page === 1) {
+          state.dependencies = data;
+        } else {
+          state.dependencies.push(...data);
+        }
         state.size = size;
         state.count = count;
       }
