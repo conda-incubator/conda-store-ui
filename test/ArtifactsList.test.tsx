@@ -1,6 +1,6 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
-import { ArtifactList } from "../src/features/artifacts/components/ArtifactList";
+import { ArtifactList } from "../src/features/artifacts/components";
 import { mockTheme } from "./testutils";
 
 const artifactList = [

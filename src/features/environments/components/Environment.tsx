@@ -1,18 +1,20 @@
 import React from "react";
 import ListItemIcon from "@mui/material/ListItemIcon";
-import Typography from "@mui/material/Typography";
 import useTheme from "@mui/material/styles/useTheme";
 import CircleIcon from "@mui/icons-material/Circle";
 import { Environment as EnvironmentModel } from "src/common/models";
+import { StyledIconButton } from "src/styles";
 
 interface IEnvironmentProps {
   /**
    * @param environment environment
+   * @param onClick click handler
    */
   environment: EnvironmentModel;
+  onClick: () => void;
 }
 
-export const Environment = ({ environment }: IEnvironmentProps) => {
+export const Environment = ({ environment, onClick }: IEnvironmentProps) => {
   const {
     palette: { primary }
   } = useTheme();
@@ -30,7 +32,12 @@ export const Environment = ({ environment }: IEnvironmentProps) => {
           }}
         />
       </ListItemIcon>
-      <Typography>{environment.name}</Typography>
+      <StyledIconButton
+        sx={{ textTransform: "none", fontSize: "16px", fontWeight: 400 }}
+        onClick={onClick}
+      >
+        {environment.name}
+      </StyledIconButton>
     </>
   );
 };

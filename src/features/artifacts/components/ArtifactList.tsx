@@ -1,5 +1,5 @@
 import Box from "@mui/material/Box";
-import React from "react";
+import React, { memo } from "react";
 import { ArtifactItem } from "./ArtifactsItem";
 import { Artifact } from "src/common/models";
 import List from "@mui/material/List";
@@ -20,6 +20,7 @@ export interface IArtifactsProps {
 export const ArtifactList = ({ artifacts }: IArtifactsProps) => {
   const listLength = artifacts.length;
   const { typography, palette } = useTheme();
+
   return (
     <StyledBox>
       <List>

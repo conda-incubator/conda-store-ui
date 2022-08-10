@@ -9,7 +9,8 @@ export const dependenciesApiSlice = apiSlice.injectEndpoints({
       { buildId: number; page: number; size: number }
     >({
       query: dto =>
-        `/build/${dto.buildId}/packages?page=${dto.page}&size=${dto.size}`
+        `/build/${dto.buildId}/packages?page=${dto.page}&size=${dto.size}`,
+      keepUnusedDataFor: 0
     })
   })
 });
