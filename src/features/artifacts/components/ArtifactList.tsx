@@ -17,7 +17,7 @@ export interface IArtifactsProps {
   artifacts: Artifact[];
 }
 
-const BaseArtifactsList = ({ artifacts }: IArtifactsProps) => {
+export const ArtifactsList = ({ artifacts }: IArtifactsProps) => {
   const listLength = artifacts.length;
   const { typography, palette } = useTheme();
 
@@ -54,16 +54,3 @@ const BaseArtifactsList = ({ artifacts }: IArtifactsProps) => {
     </StyledBox>
   );
 };
-
-// memoize the component, rerender only when the arrays from props are different
-// use JSON.stringify to turn arrays into string for === check to work propertly
-const compareProps = (
-  prevProps: IArtifactsProps,
-  nextProps: IArtifactsProps
-) => {
-  return (
-    JSON.stringify(prevProps.artifacts) === JSON.stringify(nextProps.artifacts)
-  );
-};
-
-export const ArtifactsList = memo(BaseArtifactsList, compareProps);
