@@ -9,14 +9,23 @@ import { useLoginMutation } from "src/features/login/loginApiSlice";
 export const LoginPage = () => {
   const navigate = useNavigate();
   const [login] = useLoginMutation();
+
   const [error, setError] = useState({
     message: "",
     visible: false
   });
 
   const loginUser = async (user: any) => {
+    const { username, password } = user;
+
+    if (!username || !password) {
+      setError({
+        message: "Complete all requiered fields",
+        visible: true
+      });
+      return;
+    }
     try {
-      const { username, password } = user;
       await login({ username, password }).unwrap();
     } catch (err) {
       if (err.status === 403) {
