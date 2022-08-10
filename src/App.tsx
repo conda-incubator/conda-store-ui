@@ -1,13 +1,13 @@
 import * as React from "react";
-import Typography from "@mui/material/Typography";
-import "../style/index.css";
-import { EnvMetadata } from "./features/metadata";
-import { buildMapper } from "./utils/helpers/buildMapper";
-import { ArtifactList } from "src/features/artifacts";
-import { LoginPage } from "./features/login";
 import { BrowserRouter as Router, Link as RouterLink } from "react-router-dom";
 import { Route, Routes } from "react-router";
+import Typography from "@mui/material/Typography";
 import Link from "@mui/material/Link";
+import { ArtifactList } from "src/features/artifacts";
+import { EnvMetadata } from "./features/metadata";
+import { buildMapper } from "./utils/helpers/buildMapper";
+import { LoginPage } from "./features/login/components";
+import "../style/index.css";
 
 export const App = () => {
   const artifactList = [

@@ -12,7 +12,7 @@ interface IFormProps {
 
 export const LoginForm = ({ onSubmitForm }: IFormProps) => {
   const { palette } = useTheme();
-  const [username, setUsername] = useState("juanjo");
+  const [username, setUsername] = useState("admin");
   const [password, setPassword] = useState("password");
 
   return (
