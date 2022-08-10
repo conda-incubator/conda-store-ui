@@ -12,8 +12,8 @@ interface IFormProps {
 
 export const LoginForm = ({ onSubmitForm }: IFormProps) => {
   const { palette } = useTheme();
-  const [username] = useState("juanjo");
-  const [password] = useState("password");
+  const [username, setUsername] = useState("juanjo");
+  const [password, setPassword] = useState("password");
 
   return (
     <form
@@ -29,6 +29,7 @@ export const LoginForm = ({ onSubmitForm }: IFormProps) => {
         variant="outlined"
         label="Username"
         defaultValue={username}
+        onChange={e => setUsername(e.target.value)}
         fullWidth
         style={{
           marginBottom: "20px"
@@ -39,6 +40,7 @@ export const LoginForm = ({ onSubmitForm }: IFormProps) => {
         label="Password"
         type="password"
         defaultValue={password}
+        onChange={e => setPassword(e.target.value)}
         fullWidth
         style={{
           marginBottom: "20px"
