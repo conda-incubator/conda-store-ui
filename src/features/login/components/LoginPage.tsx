@@ -3,15 +3,14 @@ import { useNavigate } from "react-router-dom";
 import { Container } from "@mui/system";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
-import Alert from "@mui/material/Alert";
-import { LoginForm } from "./LoginForm";
+import { LoginForm, LoginAlert } from "./index";
 import { useLoginMutation } from "src/features/login/loginApiSlice";
 
 export const LoginPage = () => {
   const navigate = useNavigate();
   const [login] = useLoginMutation();
   const [error, setError] = useState({
-    message: undefined,
+    message: "",
     visible: false
   });
 
@@ -49,17 +48,11 @@ export const LoginPage = () => {
           >
             Please sign in
           </Typography>
-
-          {error.visible && (
-            <Alert
-              severity="error"
-              sx={{
-                marginBottom: "20px"
-              }}
-            >
-              {error.message}
-            </Alert>
-          )}
+          <LoginAlert
+            severity="error"
+            visible={error.visible}
+            message={error.message}
+          />
           <LoginForm onSubmitForm={loginUser} />
         </Grid>
       </Grid>
