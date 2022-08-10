@@ -1,6 +1,6 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
-import { ArtifactsList } from "../src/features/artifacts/components/ArtifactList";
+import { ArtifactList } from "../src/features/artifacts/components";
 import { mockTheme } from "./testutils";
 
 const artifactList = [
@@ -16,7 +16,7 @@ const artifactList = [
 
 describe("<ArtifactList />", () => {
   it("should render component", () => {
-    render(mockTheme(<ArtifactsList artifacts={artifactList} />));
+    render(mockTheme(<ArtifactList artifacts={artifactList} />));
 
     expect(screen.getByText("Logs and Artifacts")).toBeInTheDocument();
 

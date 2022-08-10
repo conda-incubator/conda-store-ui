@@ -17,7 +17,7 @@ export interface IArtifactsProps {
   artifacts: Artifact[];
 }
 
-export const ArtifactsList = ({ artifacts }: IArtifactsProps) => {
+export const ArtifactList = ({ artifacts }: IArtifactsProps) => {
   const listLength = artifacts.length;
   const { typography, palette } = useTheme();
 

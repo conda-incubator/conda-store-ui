@@ -5,7 +5,7 @@ import { EnvironmentDetailsHeader } from "./EnvironmentDetailsHeader";
 import { Specification } from "./Specification";
 import { useGetBuildQuery } from "../environmentDetailsApiSlice";
 import { useGetBuildPackagesQuery } from "src/features/dependencies";
-import { ArtifactsList } from "src/features/artifacts";
+import { ArtifactList } from "src/features/artifacts";
 import { EnvMetadata } from "src/features/metadata";
 import { buildMapper } from "src/utils/helpers";
 
@@ -87,7 +87,7 @@ export const EnvironmentDetails = () => {
       </Box>
       {mode === "read-only" && (
         <Box>
-          <ArtifactsList artifacts={artifactList} />
+          <ArtifactList artifacts={artifactList} />
         </Box>
       )}
     </Box>
