@@ -10,41 +10,16 @@ import {
 } from "@testing-library/react";
 import "@testing-library/jest-dom/extend-expect";
 
-const build_response = {
-  status: "ok",
-  data: [
-    {
-      id: 2,
-      environment_id: 2,
-      specification: null,
-      packages: null,
-      status: "COMPLETED",
-      size: 315875085,
-      scheduled_on: "2022-07-14T12:38:42.932219",
-      started_on: "2022-07-14T12:38:44.116409",
-      ended_on: "2022-07-14T12:39:48.185573",
-      build_artifacts: null
-    },
-    {
-      id: 3,
-      environment_id: 2,
-      specification: null,
-      packages: null,
-      status: "COMPLETED",
-      size: 315875075,
-      scheduled_on: "2022-07-14T12:40:38.095584",
-      started_on: "2022-07-14T12:40:38.330526",
-      ended_on: "2022-07-14T12:41:33.092302",
-      build_artifacts: null
-    }
-  ],
-  message: null,
-  page: 1,
-  size: 100,
-  count: 2
-};
-
-const builds = buildMapper(build_response);
+const builds = [
+  {
+    id: 1,
+    name: "August 5th, 2022 - 4:04 - Available"
+  },
+  {
+    id: 2,
+    name: "August 5th, 2022 - 3:57 - Available"
+  }
+];
 
 describe("<BuildDropdown />", () => {
   window.HTMLElement.prototype.scrollIntoView = jest.fn();
@@ -56,17 +31,15 @@ describe("<BuildDropdown />", () => {
 
   it("should render component", () => {
     expect(component.container).toHaveTextContent(
-      "July 14th, 2022 - 12:41 - COMPLETED​"
+      builds[builds.length - 1].name
     );
   });
 
   it("should display builds in the dropdown", () => {
     const select = screen.getByTestId("test-select");
     fireEvent.change(select, {
-      target: { value: "July 14th, 2022 - 12:39 - COMPLETED" }
+      target: { value: builds[0].name }
     });
-    expect(component.container).toHaveTextContent(
-      "July 14th, 2022 - 12:39 - COMPLETED​"
-    );
+    expect(component.container).toHaveTextContent(builds[0].name);
   });
 });
