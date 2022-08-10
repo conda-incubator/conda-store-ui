@@ -2,7 +2,6 @@ import React from "react";
 import { render } from "@testing-library/react";
 import "@testing-library/jest-dom/extend-expect";
 import { EnvMetadata } from "../src/features/metadata/components/EnvMetadata";
-import { buildMapper } from "../src/utils/helpers/buildMapper";
 import { mockTheme } from "./testutils";
 
 const build_response = {
@@ -39,11 +38,13 @@ const build_response = {
   count: 2
 };
 
-const builds = buildMapper(build_response);
+jest.mock("../src/features/metadata", () => ({
+  useGetEnviromentsQuery: jest.fn(() => Promise.resolve(build_response))
+}));
 
 describe("<EnvMetadata />", () => {
   it("should render component", () => {
-    const component = render(mockTheme(<EnvMetadata builds={builds} />));
+    const component = render(mockTheme(<EnvMetadata />));
 
     expect(component.container).toHaveTextContent("Environment Metadata");
 
