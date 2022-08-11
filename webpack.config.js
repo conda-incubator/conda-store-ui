@@ -33,7 +33,8 @@ const basicConfig = {
 
   output: {
     path: path.resolve(__dirname, "dist"),
-    filename: "[name].js"
+    filename: "[name].js",
+    publicPath: "/"
   },
 
   module: {
@@ -47,6 +48,10 @@ const basicConfig = {
 
   resolve: {
     ...getResolve(__dirname)
+  },
+
+  devServer: {
+    historyApiFallback: true
   },
 
   // devServer: {
