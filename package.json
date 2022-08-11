@@ -9,7 +9,7 @@
     "clean:slate": "yarn run clean && rimraf node_modules",
     "eslint": "eslint . --ext .ts,.tsx --fix",
     "eslint:check": "eslint . --ext .ts,.tsx",
-    "start": "webpack server",
+    "start": "webpack server --history-api-fallback",
     "start:chromium": "webpack serve --open 'chromium'",
     "start:prod": "NODE_ENV=production webpack serve",
     "storybook": "start-storybook -p 6006",
