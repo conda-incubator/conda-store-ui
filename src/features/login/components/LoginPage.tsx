@@ -29,14 +29,21 @@ export const LoginPage = () => {
       await login({ username, password }).unwrap();
     } catch (err) {
       if (err.status === 403) {
+        // Invalid authentication credentials
         setError({
           message: err.data?.message,
           visible: true
         });
         return;
+      } else if (err.status === "PARSING_ERROR") {
+        // Even if the login process is successful, it will response with 303 status code.
+        navigate("/");
       }
-      // Even if the login process is successful, it will response with 303 status code.
-      navigate("/");
+
+      setError({
+        message: "An error occurred while processing your request",
+        visible: true
+      });
     }
   };
 
