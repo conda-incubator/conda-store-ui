@@ -42,7 +42,7 @@ export const PageTabs = () => {
                 dispatch(
                   environmentClosed({
                     envId: env.id,
-                    selectedEnvironmentId: selectedEnvironment!.id
+                    selectedEnvironmentId: selectedEnvironment?.id
                   })
                 );
               }}

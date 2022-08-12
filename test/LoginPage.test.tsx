@@ -2,7 +2,6 @@ import React from "react";
 import { render, fireEvent } from "@testing-library/react";
 import "@testing-library/jest-dom/extend-expect";
 import { LoginPage } from "../src/features/login/components";
-import { useLoginMutation } from "../src/features/login/loginApiSlice";
 
 const mockUseNavigate = jest.fn();
 
@@ -48,6 +47,4 @@ describe("<EnvMetadata />", () => {
       "Complete all requiered fields"
     );
   });
-
-  xit("should show an error alert if login fails", () => {});
 });
