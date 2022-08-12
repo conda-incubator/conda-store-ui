@@ -42,7 +42,8 @@ export const PageTabs = () => {
                 dispatch(
                   environmentClosed({
                     envId: env.id,
-                    selectedEnvironmentId: selectedEnvironment?.id
+                    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                    selectedEnvironmentId: selectedEnvironment!.id
                   })
                 );
               }}
