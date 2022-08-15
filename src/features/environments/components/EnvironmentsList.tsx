@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo, useRef } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -15,17 +15,22 @@ interface IEnvironmentsListProps {
    * @param environmentsList environments list
    * @param hasMore indicates whether there are more items to fetch
    * @param next function that will run on the bottom of the inf scroll
+   * @param search current search
    */
   environmentsList: Environment[];
   hasMore: boolean;
   next: () => void;
+  search: string;
 }
 
 const EnvironmentsList = ({
   environmentsList,
   hasMore,
-  next
+  next,
+  search
 }: IEnvironmentsListProps) => {
+  const scrollRef = useRef<HTMLDivElement | null>(null);
+
   const { defaultNamespace, sharedNamespaces } = useMemo(() => {
     let defaultNamespace: INamespaceEnvironments | null = null;
     const sharedNamespaces: INamespaceEnvironments[] = [];
@@ -47,12 +52,17 @@ const EnvironmentsList = ({
     return { defaultNamespace, sharedNamespaces };
   }, [environmentsList]);
 
+  useEffect(() => {
+    scrollRef.current?.scrollTo(0, 0);
+  }, [search]);
+
   return (
     <StyledScrollContainer
       sx={{
         height: "550px"
       }}
       id="environmentsScroll"
+      ref={scrollRef}
     >
       <InfiniteScroll
         scrollableTarget="environmentsScroll"

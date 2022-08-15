@@ -22,20 +22,24 @@ export const Environments = () => {
 
   const handleChange = debounce(async (value: string) => {
     const { data } = await triggerQuery({ page: 1, size, search: value });
+
     if (data) {
       setData(data.data);
       setCount(data.count);
     }
+
     setPage(1);
     setSearch(value);
   }, 500);
 
   const next = async () => {
     const { data } = await triggerQuery({ page: page + 1, size, search });
+
     if (data) {
       setData(currData => currData?.concat(data.data));
       setCount(data.count);
     }
+
     setPage(currPage => currPage + 1);
   };
 
@@ -43,6 +47,7 @@ export const Environments = () => {
     (async () => {
       const { data } = await triggerQuery({ page, size, search });
       setData(data?.data);
+
       if (data?.count) {
         setCount(data.count);
       }
@@ -60,6 +65,7 @@ export const Environments = () => {
             next={next}
             hasMore={size * page < count}
             environmentsList={data}
+            search={search}
           />
         )}
       </Box>
