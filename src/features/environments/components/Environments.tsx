@@ -8,18 +8,20 @@ import { useFetchEnvironmentsQuery } from "../environmentsApiSlice";
 
 export const Environments = () => {
   const [search, setSearch] = useState("");
+  const [page, setPage] = useState(1);
   const {
     palette: { primary }
   } = useTheme();
 
   const { data } = useFetchEnvironmentsQuery({
-    page: 1,
+    page,
     size: 100,
     search
   });
 
   const handleChange = debounce((value: string) => {
     setSearch(value);
+    setPage(1);
   }, 500);
 
   return (
@@ -28,7 +30,13 @@ export const Environments = () => {
         <EnvironmentsSearch onChange={e => handleChange(e.target.value)} />
       </Box>
       <Box sx={{ height: "550px" }}>
-        {data && <EnvironmentsList environmentsList={data.data} />}
+        {data && (
+          <EnvironmentsList
+            next={() => setPage(currPage => currPage + 1)}
+            hasMore={data.size * data.page <= data.count}
+            environmentsList={data.data}
+          />
+        )}
       </Box>
     </Box>
   );
