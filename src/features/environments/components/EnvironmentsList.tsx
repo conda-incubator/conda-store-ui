@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import GroupIcon from "@mui/icons-material/Group";
@@ -16,22 +16,26 @@ interface IEnvironmentsListProps {
 }
 
 const EnvironmentsList = ({ environmentsList }: IEnvironmentsListProps) => {
-  let defaultNamespace: INamespaceEnvironments | null = null;
-  const sharedNamespaces: INamespaceEnvironments[] = [];
+  const { defaultNamespace, sharedNamespaces } = useMemo(() => {
+    let defaultNamespace: INamespaceEnvironments | null = null;
+    const sharedNamespaces: INamespaceEnvironments[] = [];
 
-  lodash(environmentsList)
-    .groupBy((x: Environment) => x.namespace.name)
-    .map((value: Environment[], key: string) => {
-      const obj = { namespace: key, environments: value };
+    lodash(environmentsList)
+      .groupBy((x: Environment) => x.namespace.name)
+      .map((value: Environment[], key: string) => {
+        const obj = { namespace: key, environments: value };
 
-      if (obj.namespace === "default") {
-        defaultNamespace = obj;
-        return;
-      }
+        if (obj.namespace === "default") {
+          defaultNamespace = obj;
+          return;
+        }
 
-      sharedNamespaces.push(obj);
-    })
-    .value();
+        sharedNamespaces.push(obj);
+      })
+      .value();
+
+    return { defaultNamespace, sharedNamespaces };
+  }, [environmentsList]);
 
   return (
     <StyledScrollContainer
