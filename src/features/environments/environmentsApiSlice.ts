@@ -14,4 +14,4 @@ export const environmentsApiSlice = apiSlice.injectEndpoints({
   })
 });
 
-export const { useFetchEnvironmentsQuery } = environmentsApiSlice;
+export const { useLazyFetchEnvironmentsQuery } = environmentsApiSlice;
