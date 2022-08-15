@@ -21,25 +21,8 @@ export const EnvironmentDetails = () => {
       size: 100
     });
   }
-
-  const artifactList = [
-    {
-      name: "Link to lockfile",
-      route: `/api/v1/build/${selectedEnvironment?.id}/lockfile/`
-    },
-    {
-      name: "Link to yml file",
-      route: `/api/v1/build/${selectedEnvironment?.id}/yaml/`
-    },
-    {
-      name: "Link to archive",
-      route: `/api/v1/build/${selectedEnvironment?.id}/archive/`
-    },
-    {
-      name: `Conda Env ${selectedEnvironment?.id} log`,
-      route: `/api/v1/build/${selectedEnvironment?.id}/logs`
-    }
-  ];
+  const buildId =
+    selectedEnvironment?.id === undefined ? -1 : selectedEnvironment.id;
 
   return (
     <Box sx={{ padding: "14px 12px" }}>
@@ -52,7 +35,7 @@ export const EnvironmentDetails = () => {
       </Box>
       {mode === "read-only" && (
         <Box>
-          <ArtifactList artifacts={artifactList} />
+          <ArtifactList build_id={buildId} />
         </Box>
       )}
     </Box>
