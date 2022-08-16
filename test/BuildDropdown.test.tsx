@@ -1,7 +1,6 @@
 import React from "react";
 import { Build } from "../src/features/metadata/components/BuildDropdown";
 import { mockTheme } from "./testutils";
-import { buildMapper } from "../src/utils/helpers/buildMapper";
 import {
   fireEvent,
   render,

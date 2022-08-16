@@ -21,23 +21,24 @@ export const EnvironmentDetails = () => {
       size: 100
     });
   }
+  const apiURL = process.env.REACT_APP_API_URL;
 
   const artifactList = [
     {
       name: "Link to lockfile",
-      route: `/api/v1/build/${selectedEnvironment?.id}/lockfile/`
+      route: `${apiURL}/build/${selectedEnvironment?.id}/lockfile/`
     },
     {
       name: "Link to yml file",
-      route: `/api/v1/build/${selectedEnvironment?.id}/yaml/`
+      route: `${apiURL}/build/${selectedEnvironment?.id}/yaml/`
     },
     {
       name: "Link to archive",
-      route: `/api/v1/build/${selectedEnvironment?.id}/archive/`
+      route: `${apiURL}/build/${selectedEnvironment?.id}/archive/`
     },
     {
       name: `Conda Env ${selectedEnvironment?.id} log`,
-      route: `/api/v1/build/${selectedEnvironment?.id}/logs`
+      route: `${apiURL}/build/${selectedEnvironment?.id}/logs`
     }
   ];
 
