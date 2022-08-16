@@ -4,7 +4,7 @@ import { Container } from "@mui/system";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import { LoginForm, LoginAlert } from "./index";
-import { useLoginMutation } from "src/features/login/loginApiSlice";
+import { useLoginMutation } from "src/features/login/authApiSlice";
 
 export const LoginPage = () => {
   const navigate = useNavigate();

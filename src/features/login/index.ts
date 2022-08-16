@@ -1,3 +1,3 @@
 export * from "./components";
-export * from "./loginApiSlice";
-export * from "./loginSlice";
+export * from "./authApiSlice";
+export * from "./authSlice";

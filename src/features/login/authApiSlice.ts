@@ -5,7 +5,7 @@ const baseQuery = fetchBaseQuery({
   credentials: "include"
 });
 
-export const loginApiSlice = createApi({
+export const authApiSlice = createApi({
   reducerPath: "login",
   baseQuery,
   endpoints: builder => ({
@@ -19,4 +19,4 @@ export const loginApiSlice = createApi({
   })
 });
 
-export const { useLoginMutation } = loginApiSlice;
+export const { useLoginMutation } = authApiSlice;

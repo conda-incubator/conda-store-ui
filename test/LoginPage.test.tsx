@@ -9,7 +9,7 @@ jest.mock("react-router-dom", () => ({
   useNavigate: () => mockUseNavigate
 }));
 
-jest.mock("../src/features/login/loginApiSlice", () => ({
+jest.mock("../src/features/login/authApiSlice", () => ({
   useLoginMutation: jest.fn(() => [
     {
       login: jest.fn
