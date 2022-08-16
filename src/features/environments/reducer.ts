@@ -8,7 +8,7 @@ export enum ActionTypes {
 
 interface IInitialState {
   page: number;
-  data: Environment[] | undefined;
+  data: Environment[];
   count: number;
   search: string;
 }
@@ -29,12 +29,12 @@ type Action =
 
 export const initialState: IInitialState = {
   page: 1,
-  data: undefined,
+  data: [],
   count: 0,
   search: ""
 };
 
-export const reducer = (state: IInitialState, action: Action) => {
+export const environmentsReducer = (state: IInitialState, action: Action) => {
   switch (action.type) {
     case ActionTypes.DATA_FETCHED: {
       const { count, data } = action.payload;

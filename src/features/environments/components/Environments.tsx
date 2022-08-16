@@ -1,15 +1,15 @@
-import React, { useEffect, useReducer } from "react";
+import React, { memo, useEffect, useReducer } from "react";
 import Box from "@mui/material/Box";
 import useTheme from "@mui/material/styles/useTheme";
-import EnvironmentsList from "./EnvironmentsList";
+import { EnvironmentsList } from "./EnvironmentsList";
 import { debounce } from "lodash";
 import { EnvironmentsSearch } from "./EnvironmentsSearch";
 import { useLazyFetchEnvironmentsQuery } from "../environmentsApiSlice";
-import { ActionTypes, initialState, reducer } from "../reducer";
+import { ActionTypes, initialState, environmentsReducer } from "../reducer";
 
-export const Environments = () => {
+const BaseEnvironments = () => {
   const size = 100;
-  const [state, dispatch] = useReducer(reducer, initialState);
+  const [state, dispatch] = useReducer(environmentsReducer, initialState);
 
   const {
     palette: { primary }
@@ -75,3 +75,5 @@ export const Environments = () => {
     </Box>
   );
 };
+
+export const Environments = memo(BaseEnvironments);

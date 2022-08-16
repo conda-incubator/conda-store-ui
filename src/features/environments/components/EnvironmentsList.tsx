@@ -23,7 +23,7 @@ interface IEnvironmentsListProps {
   search: string;
 }
 
-const EnvironmentsList = ({
+export const EnvironmentsList = ({
   environmentsList,
   hasMore,
   next,
@@ -111,5 +111,3 @@ const EnvironmentsList = ({
     </StyledScrollContainer>
   );
 };
-
-export default EnvironmentsList;
