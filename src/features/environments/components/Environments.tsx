@@ -20,11 +20,12 @@ const BaseEnvironments = () => {
   const handleChange = debounce(async (value: string) => {
     const { data } = await triggerQuery({ page: 1, size, search: value });
 
-    if (data)
+    if (data) {
       dispatch({
         type: ActionTypes.SEARCHED,
         payload: { data: data.data, count: data.count, search: value }
       });
+    }
   }, 500);
 
   const next = async () => {
@@ -34,11 +35,12 @@ const BaseEnvironments = () => {
       search: state.search
     });
 
-    if (data)
+    if (data) {
       dispatch({
         type: ActionTypes.NEXT_FETCHED,
         payload: { data: data.data, count: data.count }
       });
+    }
   };
 
   useEffect(() => {
@@ -49,11 +51,12 @@ const BaseEnvironments = () => {
         search: state.search
       });
 
-      if (data)
+      if (data) {
         dispatch({
           type: ActionTypes.DATA_FETCHED,
           payload: { data: data.data, count: data.count }
         });
+      }
     })();
   }, []);
 
