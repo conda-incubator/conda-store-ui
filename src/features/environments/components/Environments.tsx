@@ -1,18 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useReducer } from "react";
 import Box from "@mui/material/Box";
 import useTheme from "@mui/material/styles/useTheme";
 import EnvironmentsList from "./EnvironmentsList";
 import { debounce } from "lodash";
 import { EnvironmentsSearch } from "./EnvironmentsSearch";
 import { useLazyFetchEnvironmentsQuery } from "../environmentsApiSlice";
-import { Environment } from "src/common/models";
+import { ActionTypes, initialState, reducer } from "../reducer";
 
 export const Environments = () => {
   const size = 100;
-  const [page, setPage] = useState(1);
-  const [data, setData] = useState<Environment[] | undefined>(undefined);
-  const [count, setCount] = useState(0);
-  const [search, setSearch] = useState("");
+  const [state, dispatch] = useReducer(reducer, initialState);
 
   const {
     palette: { primary }
@@ -23,34 +20,40 @@ export const Environments = () => {
   const handleChange = debounce(async (value: string) => {
     const { data } = await triggerQuery({ page: 1, size, search: value });
 
-    if (data) {
-      setData(data.data);
-      setCount(data.count);
-    }
-
-    setPage(1);
-    setSearch(value);
+    if (data)
+      dispatch({
+        type: ActionTypes.SEARCHED,
+        payload: { data: data.data, count: data.count, search: value }
+      });
   }, 500);
 
   const next = async () => {
-    const { data } = await triggerQuery({ page: page + 1, size, search });
+    const { data } = await triggerQuery({
+      page: state.page + 1,
+      size,
+      search: state.search
+    });
 
-    if (data) {
-      setData(currData => currData?.concat(data.data));
-      setCount(data.count);
-    }
-
-    setPage(currPage => currPage + 1);
+    if (data)
+      dispatch({
+        type: ActionTypes.NEXT_FETCHED,
+        payload: { data: data.data, count: data.count }
+      });
   };
 
   useEffect(() => {
     (async () => {
-      const { data } = await triggerQuery({ page, size, search });
-      setData(data?.data);
+      const { data } = await triggerQuery({
+        page: state.page,
+        size,
+        search: state.search
+      });
 
-      if (data?.count) {
-        setCount(data.count);
-      }
+      if (data)
+        dispatch({
+          type: ActionTypes.DATA_FETCHED,
+          payload: { data: data.data, count: data.count }
+        });
     })();
   }, []);
 
@@ -60,12 +63,12 @@ export const Environments = () => {
         <EnvironmentsSearch onChange={e => handleChange(e.target.value)} />
       </Box>
       <Box sx={{ height: "550px" }}>
-        {data && (
+        {state.data && (
           <EnvironmentsList
             next={next}
-            hasMore={size * page < count}
-            environmentsList={data}
-            search={search}
+            hasMore={size * state.page < state.count}
+            environmentsList={state.data}
+            search={state.search}
           />
         )}
       </Box>
