@@ -46,7 +46,7 @@ export const EnvironmentDetails = () => {
     <Box sx={{ padding: "14px 12px" }}>
       <EnvironmentDetailsHeader />
       <Box sx={{ marginBottom: "30px" }}>
-        <EnvMetadata />
+        <EnvMetadata mode={mode} />
       </Box>
       <Box sx={{ marginBottom: "30px" }}>
         <Specification />
