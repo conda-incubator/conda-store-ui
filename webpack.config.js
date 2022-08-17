@@ -60,7 +60,7 @@ const basicConfig = {
 
   plugins: [
     new HtmlWebpackPlugin({
-      title: "simple tree-finder example"
+      title: "conda-store"
     }),
     new MiniCssExtractPlugin(),
     new Dotenv()
