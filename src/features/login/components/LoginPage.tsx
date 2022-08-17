@@ -38,12 +38,12 @@ export const LoginPage = () => {
       } else if (err.status === "PARSING_ERROR") {
         // Even if the login process is successful, it will response with 303 status code.
         navigate("/");
+      } else {
+        setError({
+          message: "An error occurred while processing your request",
+          visible: true
+        });
       }
-
-      setError({
-        message: "An error occurred while processing your request",
-        visible: true
-      });
     }
   };
 
