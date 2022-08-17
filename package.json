@@ -9,7 +9,7 @@
     "clean:slate": "yarn run clean && rimraf node_modules",
     "eslint": "eslint . --ext .ts,.tsx --fix",
     "eslint:check": "eslint . --ext .ts,.tsx",
-    "start": "webpack server",
+    "start": "webpack server --history-api-fallback",
     "start:chromium": "webpack serve --open 'chromium'",
     "start:prod": "NODE_ENV=production webpack serve",
     "storybook": "start-storybook -p 6006",
@@ -43,6 +43,7 @@
     "react-dom": "^18.0.0",
     "react-infinite-scroll-component": "^6.1.0",
     "react-redux": "^8.0.2",
+    "react-router-dom": "^6.3.0",
     "redux": "^4.2.0"
   },
   "devDependencies": {

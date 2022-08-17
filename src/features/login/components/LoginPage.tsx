@@ -1,0 +1,77 @@
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Container } from "@mui/system";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
+import { LoginForm, LoginAlert } from "./index";
+import { useLoginMutation } from "src/features/login/authApiSlice";
+
+export const LoginPage = () => {
+  const navigate = useNavigate();
+  const [login] = useLoginMutation();
+
+  const [error, setError] = useState({
+    message: "",
+    visible: false
+  });
+
+  const loginUser = async (user: any) => {
+    const { username, password } = user;
+
+    if (!username || !password) {
+      setError({
+        message: "Complete all requiered fields",
+        visible: true
+      });
+      return;
+    }
+    try {
+      await login({ username, password }).unwrap();
+    } catch (err) {
+      if (err.status === 403) {
+        // Invalid authentication credentials
+        setError({
+          message: err.data?.message,
+          visible: true
+        });
+        return;
+      } else if (err.status === "PARSING_ERROR") {
+        // Even if the login process is successful, it will response with 303 status code.
+        navigate("/");
+      }
+
+      setError({
+        message: "An error occurred while processing your request",
+        visible: true
+      });
+    }
+  };
+
+  return (
+    <Container maxWidth="md">
+      <Grid
+        container
+        justifyContent="center"
+        alignItems="center"
+        minHeight="100vh"
+      >
+        <Grid item sm={12} md={10}>
+          <Typography
+            variant="h2"
+            component="h2"
+            className="typography"
+            sx={{ marginBottom: "20px", color: "#4D4D4D", textAlign: "center" }}
+          >
+            Please sign in
+          </Typography>
+          <LoginAlert
+            severity="error"
+            visible={error.visible}
+            message={error.message}
+          />
+          <LoginForm onSubmitForm={loginUser} />
+        </Grid>
+      </Grid>
+    </Container>
+  );
+};
