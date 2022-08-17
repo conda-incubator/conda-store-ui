@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState } from "react";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
@@ -5,7 +6,7 @@ import Divider from "@mui/material/Divider";
 import ListItemText from "@mui/material/ListItemText";
 import Typography from "@mui/material/Typography";
 import useTheme from "@mui/material/styles/useTheme";
-import { Build, Description } from "src/features/metadata";
+import { Build, Description } from "src/features/metadata/components";
 import { StyledBox } from "src/styles";
 import { StyledMetadataItem } from "src/styles/StyledMetadataItem";
 import {
@@ -32,6 +33,7 @@ export const EnvMetadata = ({ mode }: IEnvMetadataProps) => {
     "Description (this area will hold metadata): This area will hold the meta data: Lorem ipsum dolor sit amet. Non iure sunt id aliquam asperiores sed blanditiis vero et dolores placeat est pariatur nulla."
   );
 
+  /* istanbul ignore next */
   const onUpdateEnvironmentDescription = async () => {
     try {
       const namespace = selectedEnvironment?.namespace.name;
