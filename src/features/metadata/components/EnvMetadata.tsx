@@ -8,22 +8,39 @@ import useTheme from "@mui/material/styles/useTheme";
 import { Build, Description } from "src/features/metadata";
 import { StyledBox } from "src/styles";
 import { StyledMetadataItem } from "src/styles/StyledMetadataItem";
-import { useGetEnviromentsQuery } from "src/features/metadata";
+import {
+  useGetEnviromentsQuery,
+  useUpdateEnvironmentMutation
+} from "src/features/metadata";
+import { useAppSelector } from "src/hooks";
 import { buildMapper } from "src/utils/helpers/buildMapper";
 
 interface IEnvMetadataProps {
   /**
-   * @param mode change whether the component only displays the list or we are able to edit it
+   * @param mode change whether the component only displays the list of builds or edit the environment description
    */
   mode: "read-only" | "edit";
 }
 
 export const EnvMetadata = ({ mode }: IEnvMetadataProps) => {
-  const { data: enviromentData } = useGetEnviromentsQuery();
   const { palette } = useTheme();
+  const { selectedEnvironment } = useAppSelector(state => state.tabs);
+  const { data: enviromentData } = useGetEnviromentsQuery();
+  const [updateEnvironment] = useUpdateEnvironmentMutation();
+
   const [description, setDescription] = useState(
     "Description (this area will hold metadata): This area will hold the meta data: Lorem ipsum dolor sit amet. Non iure sunt id aliquam asperiores sed blanditiis vero et dolores placeat est pariatur nulla."
   );
+
+  const onUpdateEnvironmentDescription = async () => {
+    try {
+      const namespace = selectedEnvironment?.namespace.name;
+      const name = selectedEnvironment?.name;
+      await updateEnvironment({ namespace, name, description }).unwrap();
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   return (
     <StyledBox>
