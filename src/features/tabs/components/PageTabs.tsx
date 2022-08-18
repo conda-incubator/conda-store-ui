@@ -16,6 +16,22 @@ export const PageTabs = () => {
     dispatch(tabChanged(newValue));
   };
 
+  const handleClick = (
+    e: React.MouseEvent<HTMLSpanElement, MouseEvent>,
+    envId: number
+  ) => {
+    e.stopPropagation();
+
+    if (selectedEnvironment) {
+      dispatch(
+        environmentClosed({
+          envId,
+          selectedEnvironmentId: selectedEnvironment.id
+        })
+      );
+    }
+  };
+
   return (
     <StyledTabs
       TabIndicatorProps={{
@@ -37,16 +53,7 @@ export const PageTabs = () => {
             <span
               style={{ marginTop: "5px" }}
               role="button"
-              onClick={e => {
-                e.stopPropagation();
-                dispatch(
-                  environmentClosed({
-                    envId: env.id,
-                    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-                    selectedEnvironmentId: selectedEnvironment!.id
-                  })
-                );
-              }}
+              onClick={e => handleClick(e, env.id)}
             >
               <CloseIcon sx={{ color: "#000" }} />
             </span>
