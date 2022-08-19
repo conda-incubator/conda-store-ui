@@ -23,7 +23,6 @@ export const EnvironmentDetails = () => {
   }
   const buildId =
     selectedEnvironment?.id === undefined ? -1 : selectedEnvironment.id;
-
   return (
     <Box sx={{ padding: "14px 12px" }}>
       <EnvironmentDetailsHeader />

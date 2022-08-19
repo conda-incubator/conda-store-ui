@@ -4,6 +4,9 @@ import OutlinedInput from "@mui/material/OutlinedInput";
 import Box from "@mui/material/Box";
 import InputAdornment from "@mui/material/InputAdornment";
 import SearchIcon from "@mui/icons-material/Search";
+import Link from "@mui/material/Link";
+import { Link as RouterLink } from "react-router-dom";
+import PersonIcon from "@mui/icons-material/Person";
 
 interface IEnvironmentsSearchProps {
   /**
@@ -13,10 +16,29 @@ interface IEnvironmentsSearchProps {
 }
 
 export const EnvironmentsSearch = ({ onChange }: IEnvironmentsSearchProps) => {
+  const authMethod =
+    process.env.REACT_APP_AUTH_METHOD === "cookie" ? true : false;
+  let login;
+  if (authMethod) {
+    login = (
+      <Link
+        component={RouterLink}
+        to="/login"
+        sx={{
+          position: "absolute",
+          right: 0,
+          top: 0
+        }}
+      >
+        <PersonIcon sx={{ color: "black" }} />
+      </Link>
+    );
+  }
   return (
     <Box
       sx={{
-        padding: "15px 12px"
+        padding: "15px 12px",
+        position: "relative"
       }}
     >
       <Typography
@@ -25,6 +47,7 @@ export const EnvironmentsSearch = ({ onChange }: IEnvironmentsSearchProps) => {
       >
         Package Manager
       </Typography>
+      {login}
       <OutlinedInput
         onChange={onChange}
         size="small"

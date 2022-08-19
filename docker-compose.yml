@@ -10,7 +10,12 @@ services:
       conda-store-server:
         condition: service_healthy
     platform: linux/amd64
-    command: ['conda-store-worker', '--config', '/opt/conda_store/conda_store_config.py']
+    command:
+      [
+        "conda-store-worker",
+        "--config",
+        "/opt/conda_store/conda_store_config.py"
+      ]
 
   conda-store-server:
     image: quansight/conda-store-server:latest
@@ -22,12 +27,18 @@ services:
     volumes:
       - ./docker/assets/conda_store_config.py:/opt/conda_store/conda_store_config.py:ro
     healthcheck:
-      test: ["CMD", "curl", "--fail", "http://localhost:5000/conda-store/api/v1/"]
+      test:
+        ["CMD", "curl", "--fail", "http://localhost:5000/conda-store/api/v1/"]
       interval: 10s
       timeout: 5s
       retries: 5
     platform: linux/amd64
-    command: ['conda-store-server', '--config', '/opt/conda_store/conda_store_config.py']
+    command:
+      [
+        "conda-store-server",
+        "--config",
+        "/opt/conda_store/conda_store_config.py"
+      ]
     ports:
       - "5000:5000"
 
@@ -63,7 +74,7 @@ services:
   redis:
     image: bitnami/redis
     healthcheck:
-      test: ["CMD", "redis-cli","ping"]
+      test: ["CMD", "redis-cli", "ping"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -72,7 +83,7 @@ services:
 
   conda-store-ui:
     build: .
-    command: "yarn webpack-dev-server --port 80"
+    command: "yarn webpack-dev-server --port 80 --history-api-fallback"
     ports:
       - "80:80"
     depends_on:

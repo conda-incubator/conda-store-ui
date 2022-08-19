@@ -1,5 +1,5 @@
 import Box from "@mui/material/Box";
-import React, { memo } from "react";
+import React from "react";
 import { ArtifactItem } from "./ArtifactsItem";
 import { Artifact } from "src/common/models";
 import List from "@mui/material/List";
