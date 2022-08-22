@@ -24,7 +24,9 @@ const BaseRequestedPackagesTableRow = ({
 }: IRequestedPackagesTableRowProps) => {
   const { packageVersions } = useAppSelector(state => state.requestedPackages);
 
-  let { name, version, constraint } = requestedPackageParser(requestedPackage);
+  const result = requestedPackageParser(requestedPackage);
+  let { version } = result;
+  const { constraint, name } = result;
 
   if (constraint === "latest") {
     version = packageVersions[name];
