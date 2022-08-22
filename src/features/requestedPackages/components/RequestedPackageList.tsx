@@ -1,8 +1,7 @@
 import Accordion from "@mui/material/Accordion";
 import { RequestedPackage } from ".";
 import Box from "@mui/material/Box";
-import React from "react";
-
+import React, { useEffect, useMemo } from "react";
 import {
   StyledAccordionDetails,
   StyledAccordionExpandIcon,
@@ -10,6 +9,8 @@ import {
   StyledAccordionTitle
 } from "src/styles";
 import { CondaSpecificationPip } from "src/common/models";
+import { useAppDispatch, useAppSelector } from "src/hooks";
+import { packageVersionAdded } from "../requestedPackagesSlice";
 
 export interface IRequestedPackageListProps {
   /**
@@ -21,10 +22,29 @@ export interface IRequestedPackageListProps {
 export const RequestedPackageList = ({
   packageList
 }: IRequestedPackageListProps) => {
-  const filteredPackageList = packageList.filter(
-    item => typeof item !== "object"
+  const { dependencies } = useAppSelector(state => state.dependencies);
+  const { packagesWithLatestVersions } = useAppSelector(
+    state => state.requestedPackages
+  );
+  const dispatch = useAppDispatch();
+
+  const filteredPackageList = useMemo(
+    () => packageList.filter(item => typeof item !== "object"),
+    [packageList]
   );
   const listLength = filteredPackageList.length;
+
+  useEffect(() => {
+    dependencies.forEach(dep => {
+      const foundPackage = packagesWithLatestVersions[dep.name];
+
+      if (foundPackage) {
+        dispatch(
+          packageVersionAdded({ packageName: dep.name, version: dep.version })
+        );
+      }
+    });
+  }, [packageList, dependencies]);
 
   return (
     <Accordion sx={{ width: 421, boxShadow: "none" }} disableGutters>
