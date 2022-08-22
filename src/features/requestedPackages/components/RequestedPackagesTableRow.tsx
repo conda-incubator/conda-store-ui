@@ -7,6 +7,7 @@ import Box from "@mui/material/Box";
 import { StyledRequestedPackagesTableCell, StyledIconButton } from "src/styles";
 import { ConstraintSelect, VersionSelect } from "src/components";
 import { requestedPackageParser } from "src/utils/helpers";
+import { useAppSelector } from "src/hooks";
 
 interface IRequestedPackagesTableRowProps {
   /**
@@ -21,8 +22,13 @@ const BaseRequestedPackagesTableRow = ({
   requestedPackage,
   onRemove
 }: IRequestedPackagesTableRowProps) => {
-  const { name, version, constraint } =
-    requestedPackageParser(requestedPackage);
+  const { packageVersions } = useAppSelector(state => state.requestedPackages);
+
+  let { name, version, constraint } = requestedPackageParser(requestedPackage);
+
+  if (constraint === "latest") {
+    version = packageVersions[name];
+  }
 
   return (
     <TableRow>
