@@ -3,33 +3,33 @@ import { render, fireEvent } from "@testing-library/react";
 import "@testing-library/jest-dom/extend-expect";
 import { LoginPage } from "../src/features/login/components";
 
-const mockUseNavigate = jest.fn();
+const mockedUsedNavigate = jest.fn();
 
 jest.mock("react-router-dom", () => ({
-  useNavigate: () => mockUseNavigate
+  useNavigate: () => mockedUsedNavigate
 }));
 
 jest.mock("../src/features/login/authApiSlice", () => ({
-  useLoginMutation: jest.fn(() => [
-    {
-      login: jest.fn
-    }
-  ])
+  useLoginMutation: () => [
+    () => ({
+      unwrap: () =>
+        new Promise((resolve, reject) => {
+          const newError = {
+            ...new Error(),
+            status: "PARSING_ERROR"
+          };
+          reject(newError);
+        })
+    }),
+    {}
+  ]
 }));
 
-describe("<EnvMetadata />", () => {
+describe("<LoginPage />", () => {
   it("should render component", () => {
     const component = render(<LoginPage />);
 
     expect(component.container).toHaveTextContent("Please sign in");
-  });
-
-  it("should redirect if login is successful", () => {
-    const component = render(<LoginPage />);
-    const loginButton = component.getByText("Sign In");
-    fireEvent.click(loginButton);
-
-    expect(mockUseNavigate).toHaveBeenCalled();
   });
 
   it("should show an error alert if fields are not filled", () => {
@@ -46,5 +46,13 @@ describe("<EnvMetadata />", () => {
     expect(component.container).toHaveTextContent(
       "Complete all requiered fields"
     );
+  });
+
+  it("should redirect if login is successful", async () => {
+    const component = render(<LoginPage />);
+    const loginButton = component.getByText("Sign In");
+
+    await fireEvent.click(loginButton);
+    expect(mockedUsedNavigate).toHaveBeenCalledWith("/");
   });
 });
