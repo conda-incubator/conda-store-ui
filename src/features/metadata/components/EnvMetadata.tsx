@@ -6,21 +6,25 @@ import Divider from "@mui/material/Divider";
 import ListItemText from "@mui/material/ListItemText";
 import Typography from "@mui/material/Typography";
 import useTheme from "@mui/material/styles/useTheme";
-import { Build, Description } from "src/features/metadata/components";
+import { EnvBuilds, Description } from "src/features/metadata/components";
 import { StyledBox } from "src/styles";
-import { StyledMetadataItem } from "src/styles/StyledMetadataItem";
 import {
   useGetEnviromentsQuery,
   useUpdateEnvironmentMutation
 } from "src/features/metadata";
 import { useAppSelector } from "src/hooks";
-import { buildMapper } from "src/utils/helpers/buildMapper";
+
+export enum EnvironmentDetailsModes {
+  "CREAT" = "creat",
+  "READ" = "read-only",
+  "EDIT" = "edit"
+}
 
 interface IEnvMetadataProps {
   /**
-   * @param mode change whether the component only displays the list of builds or edit the environment description
+   * @param mode change whether the component only displays the list of builds, edit the environment description or create a new description
    */
-  mode: "read-only" | "edit";
+  mode: "create" | "read-only" | "edit";
 }
 
 export const EnvMetadata = ({ mode }: IEnvMetadataProps) => {
@@ -63,13 +67,11 @@ export const EnvMetadata = ({ mode }: IEnvMetadataProps) => {
         description={description}
         onChangeDescription={setDescription}
       />
-      <StyledMetadataItem>
-        <b>Build</b>
-      </StyledMetadataItem>
-      {enviromentData && <Build builds={buildMapper(enviromentData)} />}
-      <StyledMetadataItem>
-        <b>Status:</b> Completed/Building/Failed
-      </StyledMetadataItem>
+      {enviromentData &&
+        (mode === EnvironmentDetailsModes.READ ||
+          mode === EnvironmentDetailsModes.EDIT) && (
+          <EnvBuilds data={enviromentData} />
+        )}
     </StyledBox>
   );
 };

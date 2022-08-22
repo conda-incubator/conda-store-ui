@@ -2,12 +2,13 @@ import React from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import { StyledMetadataItem } from "src/styles/StyledMetadataItem";
+import { EnvironmentDetailsModes } from "./EnvMetadata";
 
 interface IDescriptionProps {
   /**
    * @param mode change whether the component only displays the list or we are able to edit it
    */
-  mode: "read-only" | "edit";
+  mode: "create" | "read-only" | "edit";
   description: string;
   onChangeDescription: (description: string) => void;
 }
@@ -19,7 +20,7 @@ export const Description = ({
 }: IDescriptionProps) => {
   return (
     <Box>
-      {mode === "read-only" ? (
+      {mode === EnvironmentDetailsModes.READ ? (
         <StyledMetadataItem>{description}</StyledMetadataItem>
       ) : (
         <>
