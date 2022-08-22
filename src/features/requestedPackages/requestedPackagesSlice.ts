@@ -48,6 +48,7 @@ export const requestedPackagesSlice = createSlice({
         dependencies.forEach(dep => {
           if (typeof dep === "string") {
             const { constraint, name } = requestedPackageParser(dep);
+
             if (constraint === "latest") {
               state.packagesWithLatestVersions[name] = dep;
             }
