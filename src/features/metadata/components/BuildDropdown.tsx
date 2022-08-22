@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import useTheme from "@mui/material/styles/useTheme";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import IconButton from "@mui/material/IconButton";
 
 interface IBuildProps {
   /**
@@ -16,17 +17,27 @@ interface IBuildProps {
 
 export const Build = ({ builds }: IBuildProps) => {
   const { palette } = useTheme();
+  const [open, setOpen] = useState(false);
+
   return (
     <Select
+      open={open}
+      onClose={() => setOpen(false)}
+      onOpen={() => setOpen(true)}
       sx={{ marginLeft: "13px" }}
       defaultValue={builds ? builds[builds.length - 1].name : null}
       IconComponent={() => (
-        <ArrowDropDownIcon
-          sx={{
-            height: "37px",
-            borderLeft: `1px solid  ${palette.primary.main}`
-          }}
-        />
+        <IconButton
+          sx={{ padding: "0px" }}
+          onClick={() => setOpen(currState => !currState)}
+        >
+          <ArrowDropDownIcon
+            sx={{
+              height: "37px",
+              borderLeft: `1px solid  ${palette.primary.main}`
+            }}
+          />
+        </IconButton>
       )}
       inputProps={{
         "data-testid": "test-select",
