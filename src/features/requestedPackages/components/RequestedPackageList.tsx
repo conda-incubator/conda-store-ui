@@ -36,13 +36,13 @@ export const RequestedPackageList = ({
   useEffect(() => {
     filteredPackageList.forEach(packageName => {
       if (typeof packageName === "string") {
-        const { name, constraint, version } =
-          requestedPackageParser(packageName);
+        const { name, constraint } = requestedPackageParser(packageName);
 
         if (constraint === "latest") {
           const packageInDependencies = dependencies.find(
             dep => dep.name === name
           );
+
           if (packageInDependencies) {
             dispatch(
               packageVersionAdded({
@@ -54,7 +54,7 @@ export const RequestedPackageList = ({
         }
       }
     });
-  }, [packageList]);
+  }, [packageList, dependencies]);
 
   return (
     <Accordion sx={{ width: 421, boxShadow: "none" }} disableGutters>

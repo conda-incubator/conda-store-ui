@@ -47,7 +47,7 @@ const BaseRequestedPackagesTableRow = ({
       <StyledRequestedPackagesTableCell align="left">
         <Box sx={{ display: "flex", alignItems: "center" }}>
           <ConstraintSelect
-            constraint={constraint === "latest" ? "" : constraint}
+            constraint={constraint === "latest" ? ">=" : constraint}
           />
           <VersionSelect version={version} />
           <StyledIconButton
