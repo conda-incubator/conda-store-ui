@@ -1,15 +1,18 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { CondaSpecificationPip } from "src/common/models";
+import { requestedPackageParser } from "src/utils/helpers";
 import { environmentDetailsApiSlice } from "../environmentDetails";
 
 export interface IRequestedPackagesState {
   requestedPackages: (string | CondaSpecificationPip)[];
   packageVersions: { [key: string]: string };
+  packagesWithLatestVersions: { [key: string]: string };
 }
 
 const initialState: IRequestedPackagesState = {
   requestedPackages: [],
-  packageVersions: {}
+  packageVersions: {},
+  packagesWithLatestVersions: {}
 };
 
 export const requestedPackagesSlice = createSlice({
@@ -41,6 +44,15 @@ export const requestedPackagesSlice = createSlice({
         }
       ) => {
         state.requestedPackages = dependencies;
+
+        dependencies.forEach(dep => {
+          if (typeof dep === "string") {
+            const { constraint, name } = requestedPackageParser(dep);
+            if (constraint === "latest") {
+              state.packagesWithLatestVersions[name] = dep;
+            }
+          }
+        });
       }
     );
   }
