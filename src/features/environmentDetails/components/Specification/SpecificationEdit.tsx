@@ -17,7 +17,6 @@ export const SpecificationEdit = () => {
   const { dependencies, size, count, page } = useAppSelector(
     state => state.dependencies
   );
-
   const dispatch = useAppDispatch();
 
   const hasMore = size * page <= count;
@@ -34,20 +33,30 @@ export const SpecificationEdit = () => {
     addEnvironment(code);
   };
 
-  const testcode: any = `
-  channels:
-  - conda-forge
-  dependencies:
-  - python ==3.9
-  - flask
-  - pandas
-  - pip:
-    - nothing
-  - ipykernel
-  description: test description
-  name: python-flask-env-test
-  prefix: null
-  `;
+  const channelsToYAMLFormat = (channels: any) => {
+    if (!channels.length) {
+      return;
+    }
+    const formattingChannels = channels.map((channel: any) => {
+      return `- ${channel}\n`;
+    });
+    return `channels:\n${formattingChannels.join("")}`;
+  };
+
+  // const testcode: any = `
+  // channels:
+  // - conda-forge
+  // dependencies:
+  // - python ==3.9
+  // - flask
+  // - pandas
+  // - pip:
+  //   - nothing
+  // - ipykernel
+  // description: test description
+  // name: python-flask-env-test
+  // prefix: null
+  // `;
   return (
     <BlockContainerEditMode
       title="Specification"
@@ -56,7 +65,7 @@ export const SpecificationEdit = () => {
     >
       <Box sx={{ padding: "13px 19px" }}>
         {show ? (
-          <CodeEditor code={testcode} />
+          <CodeEditor code={channelsToYAMLFormat(channels)} />
         ) : (
           <div>
             <Box sx={{ marginBottom: "30px" }}>
