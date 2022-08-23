@@ -7,38 +7,42 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 interface IBlockContainerProps {
   title: string;
   children: React.ReactNode;
-  toggle: any;
-  show: any;
+  onToggleEditMode: (show: boolean) => void;
+  isEditMode: boolean;
 }
 
 export const BlockContainerEditMode = ({
   title,
   children,
-  toggle,
-  show
+  onToggleEditMode,
+  isEditMode
 }: IBlockContainerProps) => {
-  const showYaml = () => toggle(!show);
-
   return (
     <Box sx={{ border: "1px solid #000" }}>
       <Box sx={{ padding: "17px 19px", borderBottom: "1px solid #A7A7A7" }}>
-        <Typography
-          data-testid="block-container-title"
-          sx={{
-            fontSize: "20px",
-            fontWeight: 400,
-            color: "#000",
-            display: "flex",
-            justifyContent: "space-between"
-          }}
-        >
-          {title}
+        <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+          <Typography
+            data-testid="block-container-title"
+            sx={{
+              fontSize: "20px",
+              fontWeight: 400,
+              color: "#000"
+            }}
+          >
+            {title}
+          </Typography>
           <FormControlLabel
-            control={<Switch />}
-            label={show ? "Switch to Standard View" : "Switch to YAML Editor"}
-            onClick={showYaml}
+            control={
+              <Switch
+                checked={isEditMode}
+                onClick={e => onToggleEditMode(!isEditMode)}
+              />
+            }
+            label={
+              isEditMode ? "Switch to Standard View" : "Switch to YAML Editor"
+            }
           />
-        </Typography>
+        </Box>
       </Box>
       {children}
     </Box>

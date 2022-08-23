@@ -49,7 +49,11 @@ export const SpecificationEdit = () => {
   prefix: null
   `;
   return (
-    <BlockContainerEditMode title="Specification" toggle={setShow} show={show}>
+    <BlockContainerEditMode
+      title="Specification"
+      onToggleEditMode={setShow}
+      isEditMode={show}
+    >
       <Box sx={{ padding: "13px 19px" }}>
         {show ? (
           <CodeEditor code={testcode} />
