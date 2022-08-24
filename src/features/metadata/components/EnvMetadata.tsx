@@ -10,6 +10,7 @@ import { StyledBox } from "src/styles";
 import { StyledMetadataItem } from "src/styles/StyledMetadataItem";
 import { useGetEnviromentsQuery } from "src/features/metadata";
 import { buildMapper } from "src/utils/helpers/buildMapper";
+import { useAppSelector } from "src/hooks";
 
 export interface IEnvMetadataProps {
   /**
@@ -23,6 +24,7 @@ export interface IEnvMetadataProps {
 
 export const EnvMetadata = () => {
   const { data: enviromentData } = useGetEnviromentsQuery();
+  const { selectedEnvironment } = useAppSelector(state => state.tabs);
   const { palette } = useTheme();
 
   return (
@@ -40,9 +42,8 @@ export const EnvMetadata = () => {
         <Divider sx={{ bgcolor: palette.primary.main }} />
       </List>
       <StyledMetadataItem>
-        <b>Description (this area will hold metadata):</b> This area will hold
-        the meta data: Lorem ipsum dolor sit amet. Non iure sunt id aliquam
-        asperiores sed blanditiis vero et dolores placeat est pariatur nulla.
+        <b>Description (this area will hold metadata):</b>{" "}
+        {selectedEnvironment?.description}
       </StyledMetadataItem>
       <StyledMetadataItem>
         <b>Build</b>
