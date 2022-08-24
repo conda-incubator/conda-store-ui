@@ -10,21 +10,16 @@ import { StyledBox } from "src/styles";
 import { StyledMetadataItem } from "src/styles/StyledMetadataItem";
 import { useGetEnviromentsQuery } from "src/features/metadata";
 import { buildMapper } from "src/utils/helpers/buildMapper";
-import { useAppSelector } from "src/hooks";
 
 export interface IEnvMetadataProps {
   /**
-   * @param builds list of builds
+   * @param description description of the selected environment
    */
-  builds: {
-    id: number;
-    name: string;
-  }[];
+  description: string;
 }
 
-export const EnvMetadata = () => {
+export const EnvMetadata = ({ description }: IEnvMetadataProps) => {
   const { data: enviromentData } = useGetEnviromentsQuery();
-  const { selectedEnvironment } = useAppSelector(state => state.tabs);
   const { palette } = useTheme();
 
   return (
@@ -42,8 +37,7 @@ export const EnvMetadata = () => {
         <Divider sx={{ bgcolor: palette.primary.main }} />
       </List>
       <StyledMetadataItem>
-        <b>Description (this area will hold metadata):</b>{" "}
-        {selectedEnvironment?.description}
+        <b>Description (this area will hold metadata):</b> {description}
       </StyledMetadataItem>
       <StyledMetadataItem>
         <b>Build</b>

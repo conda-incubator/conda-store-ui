@@ -44,7 +44,7 @@ jest.mock("../src/features/metadata", () => ({
 
 describe("<EnvMetadata />", () => {
   it("should render component", () => {
-    const component = render(mockTheme(<EnvMetadata />));
+    const component = render(mockTheme(<EnvMetadata description="test" />));
 
     expect(component.container).toHaveTextContent("Environment Metadata");
 
@@ -55,5 +55,7 @@ describe("<EnvMetadata />", () => {
     expect(component.container).toHaveTextContent(
       "Status: Completed/Building/Failed"
     );
+
+    expect(component.container).toHaveTextContent("test");
   });
 });
