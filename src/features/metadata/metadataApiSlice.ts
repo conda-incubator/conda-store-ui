@@ -9,24 +9,9 @@ export const environmentsApiSlice = apiSlice.injectEndpoints({
     }),
     getEnviroment: builder.query<IApiResponse<Build>, number>({
       query: environmentId => `/build/?environment_id=${environmentId}`
-    }),
-    updateEnvironment: builder.mutation({
-      query(data) {
-        const { namespace, name, description } = data;
-        return {
-          url: `/environment/${namespace}/${name}/`,
-          method: "PUT",
-          body: {
-            description
-          }
-        };
-      }
     })
   })
 });
 
-export const {
-  useGetEnviromentsQuery,
-  useGetEnviromentQuery,
-  useUpdateEnvironmentMutation
-} = environmentsApiSlice;
+export const { useGetEnviromentsQuery, useGetEnviromentQuery } =
+  environmentsApiSlice;
