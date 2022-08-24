@@ -11,6 +11,7 @@ import { useAddEnvironmentMutation } from "src/features/yamlEditor/createEnviron
 import { defineYAMLStructure } from "src/utils/helpers/yaml";
 
 export const SpecificationEdit = () => {
+  const { selectedEnvironment } = useAppSelector(state => state.tabs);
   const { requestedPackages } = useAppSelector(
     state => state.requestedPackages
   );
@@ -23,14 +24,18 @@ export const SpecificationEdit = () => {
   const dispatch = useAppDispatch();
   const hasMore = size * page <= count;
 
-  const code = {
-    specification:
-      "channels:\n- conda-forge\ndependencies:\n- python ==3.9\n- flask\n- pandas\n- pip:\n  - nothing\n- ipykernel\ndescription: test description\nname: testNewEnv\nprefix: null",
-    namespace: "test-api"
-  };
+  const yamlCode = defineYAMLStructure(channels, requestedPackages);
 
-  const sendData = () => {
-    addEnvironment(code);
+  const onUpdateEnvironment = () => {
+    const description = "Updated description!";
+    const name = selectedEnvironment?.name;
+    const namespace = selectedEnvironment?.namespace.name;
+
+    const environmentInfo = {
+      specification: `${yamlCode}\ndescription: ${description}\nname: ${name}\nprefix: null`,
+      namespace
+    };
+    addEnvironment(environmentInfo);
   };
 
   return (
@@ -41,7 +46,7 @@ export const SpecificationEdit = () => {
     >
       <Box sx={{ padding: "13px 19px" }}>
         {show ? (
-          <CodeEditor code={defineYAMLStructure(channels, requestedPackages)} />
+          <CodeEditor code={yamlCode} />
         ) : (
           <div>
             <Box sx={{ marginBottom: "30px" }}>
@@ -68,7 +73,10 @@ export const SpecificationEdit = () => {
             marginBottom: "10px"
           }}
         >
-          <StyledButtonPrimary sx={{ padding: "5px 60px" }} onClick={sendData}>
+          <StyledButtonPrimary
+            sx={{ padding: "5px 60px" }}
+            onClick={onUpdateEnvironment}
+          >
             Create
           </StyledButtonPrimary>
         </Box>

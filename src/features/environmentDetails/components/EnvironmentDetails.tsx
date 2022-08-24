@@ -1,5 +1,6 @@
 import React from "react";
 import Box from "@mui/material/Box";
+import Alert from "@mui/material/Alert";
 import { useAppSelector } from "src/hooks";
 import { EnvironmentDetailsHeader } from "./EnvironmentDetailsHeader";
 import { Specification } from "./Specification";
@@ -45,6 +46,7 @@ export const EnvironmentDetails = () => {
   return (
     <Box sx={{ padding: "14px 12px" }}>
       <EnvironmentDetailsHeader />
+      <Alert severity="error">This is an error alert — check it out!</Alert>
       <Box sx={{ marginBottom: "30px" }}>
         <EnvMetadata />
       </Box>

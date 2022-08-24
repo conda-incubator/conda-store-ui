@@ -8,9 +8,10 @@ const yamlFormat = (name: string, array: any) => {
   }
   const formattingChannels = array.map((element: any) => {
     if (typeof element === "object") {
-      return;
+      const key = Object.keys(element)[0];
+      return `- ${key}:\n  - ${element[key][0]}\n`;
     }
-    return `\t- ${element}\n`;
+    return `- ${element}\n`;
   });
   return `${name}:\n${formattingChannels.join("")}`;
 };
