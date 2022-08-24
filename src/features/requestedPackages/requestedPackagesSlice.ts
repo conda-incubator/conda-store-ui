@@ -26,6 +26,16 @@ export const requestedPackagesSlice = createSlice({
       const { packageName, version } = action.payload;
 
       state.packageVersions[packageName] = version;
+    },
+    addPackage: (state, action) => {
+      const newPackage = action.payload;
+      state.requestedPackages.push(newPackage);
+    },
+    deletePackage: (state, action) => {
+      const packateToRemove = action.payload;
+      state.requestedPackages = state.requestedPackages.filter(
+        channel => channel !== packateToRemove
+      );
     }
   },
   extraReducers: builder => {
@@ -59,4 +69,5 @@ export const requestedPackagesSlice = createSlice({
   }
 });
 
-export const { packageVersionAdded } = requestedPackagesSlice.actions;
+export const { packageVersionAdded, addPackage, deletePackage } =
+  requestedPackagesSlice.actions;

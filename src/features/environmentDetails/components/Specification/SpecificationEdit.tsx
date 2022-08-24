@@ -8,6 +8,7 @@ import { StyledButtonPrimary } from "src/styles";
 import { useAppDispatch, useAppSelector } from "src/hooks";
 import { CodeEditor } from "src/features/yamlEditor";
 import { useAddEnvironmentMutation } from "src/features/yamlEditor/createEnvironmentApiSlice";
+import { defineYAMLStructure } from "src/utils/helpers/yaml";
 
 export const SpecificationEdit = () => {
   const { requestedPackages } = useAppSelector(
@@ -17,12 +18,11 @@ export const SpecificationEdit = () => {
   const { dependencies, size, count, page } = useAppSelector(
     state => state.dependencies
   );
-  const dispatch = useAppDispatch();
-
-  const hasMore = size * page <= count;
   const [show, setShow] = useState(false);
-
   const [addEnvironment] = useAddEnvironmentMutation();
+  const dispatch = useAppDispatch();
+  const hasMore = size * page <= count;
+
   const code = {
     specification:
       "channels:\n- conda-forge\ndependencies:\n- python ==3.9\n- flask\n- pandas\n- pip:\n  - nothing\n- ipykernel\ndescription: test description\nname: testNewEnv\nprefix: null",
@@ -33,30 +33,6 @@ export const SpecificationEdit = () => {
     addEnvironment(code);
   };
 
-  const channelsToYAMLFormat = (channels: any) => {
-    if (!channels.length) {
-      return;
-    }
-    const formattingChannels = channels.map((channel: any) => {
-      return `- ${channel}\n`;
-    });
-    return `channels:\n${formattingChannels.join("")}`;
-  };
-
-  // const testcode: any = `
-  // channels:
-  // - conda-forge
-  // dependencies:
-  // - python ==3.9
-  // - flask
-  // - pandas
-  // - pip:
-  //   - nothing
-  // - ipykernel
-  // description: test description
-  // name: python-flask-env-test
-  // prefix: null
-  // `;
   return (
     <BlockContainerEditMode
       title="Specification"
@@ -65,7 +41,7 @@ export const SpecificationEdit = () => {
     >
       <Box sx={{ padding: "13px 19px" }}>
         {show ? (
-          <CodeEditor code={channelsToYAMLFormat(channels)} />
+          <CodeEditor code={defineYAMLStructure(channels, requestedPackages)} />
         ) : (
           <div>
             <Box sx={{ marginBottom: "30px" }}>

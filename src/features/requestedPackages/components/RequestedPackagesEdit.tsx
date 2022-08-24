@@ -1,3 +1,4 @@
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import Box from "@mui/material/Box";
@@ -7,10 +8,10 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Typography from "@mui/material/Typography";
 import useTheme from "@mui/material/styles/useTheme";
-import React, { useEffect, useMemo, useRef, useState } from "react";
-
+import { useAppDispatch } from "src/hooks";
 import { RequestedPackagesTableRow } from "./RequestedPackagesTableRow";
 import { AddRequestedPackage } from "./AddRequestedPackage";
+import { addPackage, deletePackage } from "../requestedPackagesSlice";
 import {
   StyledAccordionDetails,
   StyledAccordionExpandIcon,
@@ -31,6 +32,7 @@ export interface IRequestedPackagesEditProps {
 export const RequestedPackagesEdit = ({
   packageList
 }: IRequestedPackagesEditProps) => {
+  const dispatch = useAppDispatch();
   const [data, setData] = useState(packageList);
   const [isAdding, setIsAdding] = useState(false);
   const { palette } = useTheme();
@@ -38,9 +40,13 @@ export const RequestedPackagesEdit = ({
 
   const removePackage = (packageName: string) => {
     setData(currentData => currentData.filter(item => item !== packageName));
+    dispatch(deletePackage(packageName));
   };
 
-  const addPackage = (packageName: string) => setData([...data, packageName]);
+  const addNewPackage = (packageName: string) => {
+    setData([...data, packageName]);
+    dispatch(addPackage(packageName));
+  };
 
   const filteredPackageList = useMemo(
     () => data.filter(item => typeof item !== "object"),
@@ -115,7 +121,10 @@ export const RequestedPackagesEdit = ({
         </Table>
         <Box ref={scrollRef}>
           {isAdding && (
-            <AddRequestedPackage onSubmit={addPackage} onCancel={setIsAdding} />
+            <AddRequestedPackage
+              onSubmit={addNewPackage}
+              onCancel={setIsAdding}
+            />
           )}
         </Box>
       </StyledAccordionDetails>
