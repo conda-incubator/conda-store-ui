@@ -3,17 +3,26 @@ import { StyledTab } from "src/styles";
 import { StyledTabs } from "src/styles/StyledTabs";
 import CloseIcon from "@mui/icons-material/Close";
 import { useAppDispatch, useAppSelector } from "src/hooks";
-import { environmentClosed, tabChanged } from "../tabsSlice";
+import {
+  environmentClosed,
+  tabChanged,
+  closeCreateNewEnvironmentTab,
+  toggleNewEnvironmentView
+} from "../tabsSlice";
 
 export const PageTabs = () => {
-  const { selectedEnvironments, value, selectedEnvironment } = useAppSelector(
-    state => state.tabs
-  );
+  const { selectedEnvironments, value, selectedEnvironment, newEnvironment } =
+    useAppSelector(state => state.tabs);
 
   const dispatch = useAppDispatch();
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-    dispatch(tabChanged(newValue));
+    if (typeof newValue === "number") {
+      dispatch(toggleNewEnvironmentView(false));
+      dispatch(tabChanged(newValue));
+    } else {
+      dispatch(toggleNewEnvironmentView(true));
+    }
   };
 
   const handleClick = (
@@ -22,14 +31,18 @@ export const PageTabs = () => {
   ) => {
     e.stopPropagation();
 
-    if (selectedEnvironment) {
-      dispatch(
-        environmentClosed({
-          envId,
-          selectedEnvironmentId: selectedEnvironment.id
-        })
-      );
-    }
+    dispatch(
+      environmentClosed({
+        envId,
+        selectedEnvironmentId: selectedEnvironment
+          ? selectedEnvironment.id
+          : envId
+      })
+    );
+  };
+
+  const closeNewEnvironment = () => {
+    dispatch(closeCreateNewEnvironmentTab());
   };
 
   return (
@@ -61,6 +74,24 @@ export const PageTabs = () => {
           iconPosition="end"
         />
       ))}
+      {newEnvironment.isOpen && (
+        <StyledTab
+          key="create"
+          label="Create Environment"
+          value="create"
+          wrapped
+          icon={
+            <span
+              style={{ marginTop: "5px" }}
+              role="button"
+              onClick={e => closeNewEnvironment()}
+            >
+              <CloseIcon sx={{ color: "#000" }} />
+            </span>
+          }
+          iconPosition="end"
+        />
+      )}
     </StyledTabs>
   );
 };

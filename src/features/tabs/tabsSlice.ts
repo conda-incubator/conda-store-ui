@@ -1,16 +1,27 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Environment } from "src/common/models";
 
+interface INewEnv {
+  isOpen: boolean;
+  isActive: boolean;
+  namespace: string;
+}
 export interface ITabsState {
   selectedEnvironments: Environment[];
   selectedEnvironment: Environment | null;
-  value: number;
+  value: number | string;
+  newEnvironment: INewEnv;
 }
 
 const initialState: ITabsState = {
   selectedEnvironments: [],
   selectedEnvironment: null,
-  value: 0
+  value: 0,
+  newEnvironment: {
+    isOpen: false,
+    isActive: false,
+    namespace: ""
+  }
 };
 
 export const tabsSlice = createSlice({
@@ -51,6 +62,10 @@ export const tabsSlice = createSlice({
 
           state.selectedEnvironment = rightItem ?? leftItem;
           state.value = state.selectedEnvironment.id;
+        } else if (listLength === 1 && state.newEnvironment.isOpen) {
+          state.value = "create";
+          state.selectedEnvironment = null;
+          state.newEnvironment.isActive = true;
         } else {
           state.selectedEnvironment = null;
           state.value = 0;
@@ -73,9 +88,37 @@ export const tabsSlice = createSlice({
       if (environment) {
         state.selectedEnvironment = environment;
       }
+    },
+    openCreateNewEnvironmentTab: (state, action) => {
+      state.newEnvironment.namespace = action.payload;
+      state.value = "create";
+      state.selectedEnvironment = null;
+      state.newEnvironment.isOpen = true;
+      state.newEnvironment.isActive = true;
+    },
+    closeCreateNewEnvironmentTab: state => {
+      const listLength = state.selectedEnvironments.length;
+      const lastEnv = state.selectedEnvironments[listLength - 1];
+
+      state.value = lastEnv ? lastEnv.id : 0;
+      state.selectedEnvironment = lastEnv ? lastEnv : null;
+      state.newEnvironment.isOpen = false;
+      state.newEnvironment.isActive = false;
+    },
+    toggleNewEnvironmentView: (state, action) => {
+      state.newEnvironment.isActive = action.payload;
+      if (action.payload) {
+        state.selectedEnvironment = null;
+      }
     }
   }
 });
 
-export const { environmentOpened, environmentClosed, tabChanged } =
-  tabsSlice.actions;
+export const {
+  environmentOpened,
+  environmentClosed,
+  tabChanged,
+  openCreateNewEnvironmentTab,
+  closeCreateNewEnvironmentTab,
+  toggleNewEnvironmentView
+} = tabsSlice.actions;
