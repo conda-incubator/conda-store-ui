@@ -1,29 +1,34 @@
-import React from "react";
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import React, { useState } from "react";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import Divider from "@mui/material/Divider";
 import ListItemText from "@mui/material/ListItemText";
 import Typography from "@mui/material/Typography";
 import useTheme from "@mui/material/styles/useTheme";
-import { Build } from "src/features/metadata/components/BuildDropdown";
+import { EnvBuilds, Description } from "src/features/metadata/components";
 import { StyledBox } from "src/styles";
-import { StyledMetadataItem } from "src/styles/StyledMetadataItem";
 import { useGetEnviromentsQuery } from "src/features/metadata";
-import { buildMapper } from "src/utils/helpers/buildMapper";
+import { useAppSelector } from "src/hooks";
 
-export interface IEnvMetadataProps {
-  /**
-   * @param builds list of builds
-   */
-  builds: {
-    id: number;
-    name: string;
-  }[];
+export enum EnvironmentDetailsModes {
+  "CREAT" = "creat",
+  "READ" = "read-only",
+  "EDIT" = "edit"
 }
 
-export const EnvMetadata = () => {
-  const { data: enviromentData } = useGetEnviromentsQuery();
+interface IEnvMetadataProps {
+  /**
+   * @param mode change whether the component only displays the list of builds, edit the environment description or create a new description
+   */
+  mode: "create" | "read-only" | "edit";
+}
+
+export const EnvMetadata = ({ mode }: IEnvMetadataProps) => {
   const { palette } = useTheme();
+  const { data: enviromentData } = useGetEnviromentsQuery();
+
+  const [description, setDescription] = useState("");
 
   return (
     <StyledBox>
@@ -39,18 +44,16 @@ export const EnvMetadata = () => {
         </ListItem>
         <Divider sx={{ bgcolor: palette.primary.main }} />
       </List>
-      <StyledMetadataItem>
-        <b>Description (this area will hold metadata):</b> This area will hold
-        the meta data: Lorem ipsum dolor sit amet. Non iure sunt id aliquam
-        asperiores sed blanditiis vero et dolores placeat est pariatur nulla.
-      </StyledMetadataItem>
-      <StyledMetadataItem>
-        <b>Build</b>
-      </StyledMetadataItem>
-      {enviromentData && <Build builds={buildMapper(enviromentData)} />}
-      <StyledMetadataItem>
-        <b>Status:</b> Completed/Building/Failed
-      </StyledMetadataItem>
+      <Description
+        mode={mode}
+        description={description}
+        onChangeDescription={setDescription}
+      />
+      {enviromentData &&
+        (mode === EnvironmentDetailsModes.READ ||
+          mode === EnvironmentDetailsModes.EDIT) && (
+          <EnvBuilds data={enviromentData} />
+        )}
     </StyledBox>
   );
 };
