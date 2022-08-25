@@ -106,10 +106,11 @@ export const tabsSlice = createSlice({
       state.newEnvironment.isActive = false;
     },
     toggleNewEnvironmentView: (state, action) => {
-      state.newEnvironment.isActive = action.payload;
       if (action.payload) {
+        state.value = "create";
         state.selectedEnvironment = null;
       }
+      state.newEnvironment.isActive = action.payload;
     }
   }
 });

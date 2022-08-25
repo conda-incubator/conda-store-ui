@@ -9,7 +9,8 @@ import {
   Droppable,
   DropResult
 } from "react-beautiful-dnd";
-
+import { useAppDispatch } from "src/hooks";
+import { addChannel, deleteChannel } from "src/features/channels";
 import { AddChannel } from "./AddChannel";
 import { ChannelsEditItem } from "./ChannelsEditItem";
 import {
@@ -31,6 +32,7 @@ export interface IChannelsEditProps {
 export const ChannelsEdit = ({ channelsList }: IChannelsEditProps) => {
   const { palette } = useTheme();
   const scrollRef = useRef<HTMLDivElement | null>(null);
+  const dispatch = useAppDispatch();
 
   const [list, setList] = useState(channelsList);
   const [isAdding, setIsAdding] = useState(false);
@@ -39,12 +41,14 @@ export const ChannelsEdit = ({ channelsList }: IChannelsEditProps) => {
 
   const addNewChannel = (channelName: string) => {
     setList([...list, channelName]);
+    dispatch(addChannel(channelName));
   };
 
   const removeChannel = (channelName: string) => {
     const filteredList = list.filter(channel => channel !== channelName);
 
     setList(filteredList);
+    dispatch(deleteChannel(channelName));
   };
 
   const editChannel = (channelName: string, newChannelName: string) => {

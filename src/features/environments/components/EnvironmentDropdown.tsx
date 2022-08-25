@@ -16,6 +16,10 @@ import {
   openCreateNewEnvironmentTab,
   toggleNewEnvironmentView
 } from "src/features/tabs";
+import {
+  modeChanged,
+  EnvironmentDetailsModes
+} from "src/features/environmentDetails";
 
 interface IEnvironmentDropdownProps {
   /**
@@ -31,6 +35,7 @@ export const EnvironmentDropdown = ({
   const dispatch = useAppDispatch();
 
   const onCreateNewEnvironmentTab = (namespace: string) => {
+    dispatch(modeChanged(EnvironmentDetailsModes.CREATE));
     dispatch(openCreateNewEnvironmentTab(namespace));
   };
 
@@ -73,6 +78,7 @@ export const EnvironmentDropdown = ({
                       selectedEnvironmentId: selectedEnvironment?.id
                     })
                   );
+                  dispatch(modeChanged(EnvironmentDetailsModes.READ));
                   dispatch(toggleNewEnvironmentView(false));
                 }}
                 environment={environment}

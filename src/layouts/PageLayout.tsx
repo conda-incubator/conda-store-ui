@@ -5,6 +5,7 @@ import { Typography } from "@mui/material";
 import { PageTabs } from "src/features/tabs";
 import { useAppSelector } from "src/hooks";
 import { EnvironmentDetails } from "src/features/environmentDetails";
+import { EnvironmentCreate } from "src/features/EnvironmentCreate";
 
 export const PageLayout = () => {
   const { selectedEnvironment, newEnvironment } = useAppSelector(
@@ -39,7 +40,7 @@ export const PageLayout = () => {
                   marginTop: "-1px"
                 }}
               >
-                Create new env!
+                <EnvironmentCreate />
               </Box>
             )}
           </>

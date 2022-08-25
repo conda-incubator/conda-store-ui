@@ -60,7 +60,7 @@ export const EnvironmentDetailsHeader = () => {
             value={value}
             onChange={e => setValue(e.target.value)}
           />
-          <StyledButtonPrimary>Archive</StyledButtonPrimary>
+          {/* <StyledButtonPrimary>Archive</StyledButtonPrimary> */}
         </>
       )}
     </Box>

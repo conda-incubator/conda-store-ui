@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { environmentDetailsApiSlice } from "./environmentDetailsApiSlice";
 
 export enum EnvironmentDetailsModes {
+  "CREATE" = "creat",
   "READ" = "read-only",
   "EDIT" = "edit"
 }

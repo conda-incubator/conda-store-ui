@@ -8,7 +8,8 @@ import TableRow from "@mui/material/TableRow";
 import Typography from "@mui/material/Typography";
 import useTheme from "@mui/material/styles/useTheme";
 import React, { useEffect, useMemo, useRef, useState } from "react";
-
+import { useAppDispatch } from "src/hooks";
+import { addPackage, deletePackage } from "../requestedPackagesSlice";
 import { RequestedPackagesTableRow } from "./RequestedPackagesTableRow";
 import { AddRequestedPackage } from "./AddRequestedPackage";
 import {
@@ -35,12 +36,17 @@ export const RequestedPackagesEdit = ({
   const [isAdding, setIsAdding] = useState(false);
   const { palette } = useTheme();
   const scrollRef = useRef<HTMLDivElement | null>(null);
+  const dispatch = useAppDispatch();
 
   const removePackage = (packageName: string) => {
     setData(currentData => currentData.filter(item => item !== packageName));
+    dispatch(deletePackage(packageName));
   };
 
-  const addPackage = (packageName: string) => setData([...data, packageName]);
+  const addNewPackage = (packageName: string) => {
+    setData([...data, packageName]);
+    dispatch(addPackage(packageName));
+  };
 
   const filteredPackageList = useMemo(
     () => data.filter(item => typeof item !== "object"),
@@ -115,7 +121,10 @@ export const RequestedPackagesEdit = ({
         </Table>
         <Box ref={scrollRef}>
           {isAdding && (
-            <AddRequestedPackage onSubmit={addPackage} onCancel={setIsAdding} />
+            <AddRequestedPackage
+              onSubmit={addNewPackage}
+              onCancel={setIsAdding}
+            />
           )}
         </Box>
       </StyledAccordionDetails>

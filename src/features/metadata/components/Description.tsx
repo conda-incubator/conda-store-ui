@@ -2,7 +2,7 @@ import React from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import { StyledMetadataItem } from "src/styles/StyledMetadataItem";
-import { EnvironmentDetailsModes } from "./EnvMetadata";
+import { EnvironmentDetailsModes } from "src/features/environmentDetails";
 
 interface IDescriptionProps {
   /**
