@@ -9,7 +9,7 @@ export const environmentsApiSlice = apiSlice.injectEndpoints({
       { page: number; size: number; search: string }
     >({
       query: dto =>
-        `/environment?page=${dto.page}&size=${dto.size}&search=${dto.search}`
+        `/api/v1/environment?page=${dto.page}&size=${dto.size}&search=${dto.search}`
     })
   })
 });
