@@ -40,7 +40,7 @@ export const Description = ({
             <TextField
               multiline
               value={description}
-              placeholder="Environment description"
+              placeholder="Enter here the description of your environment"
               sx={{
                 backgroundColor: "#ECECEC",
                 width: "100%"

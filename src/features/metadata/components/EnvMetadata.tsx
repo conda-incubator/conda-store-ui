@@ -28,9 +28,7 @@ export const EnvMetadata = ({ mode }: IEnvMetadataProps) => {
   const { palette } = useTheme();
   const { data: enviromentData } = useGetEnviromentsQuery();
 
-  const [description, setDescription] = useState(
-    "Description (this area will hold metadata): This area will hold the meta data: Lorem ipsum dolor sit amet. Non iure sunt id aliquam asperiores sed blanditiis vero et dolores placeat est pariatur nulla."
-  );
+  const [description, setDescription] = useState("");
 
   return (
     <StyledBox>
