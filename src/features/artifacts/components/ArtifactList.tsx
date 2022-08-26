@@ -12,7 +12,7 @@ import { StyledBox } from "src/styles";
 
 export interface IArtifactsProps {
   /**
-   * @param build_id build Id
+   * @param build_id Id of the buiild that will be active and displayed
    */
   build_id: number;
 }
