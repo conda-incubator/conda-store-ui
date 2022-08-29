@@ -7,7 +7,8 @@ const baseQuery = fetchBaseQuery({
     headers.set("Authorization", `Bearer ${process.env.REACT_APP_AUTH_TOKEN}`);
 
     return headers;
-  }
+  },
+  credentials: "include"
 });
 
 export const apiSlice = createApi({

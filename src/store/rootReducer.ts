@@ -1,5 +1,5 @@
 import { apiSlice } from "src/features/api";
-import { authSlice } from "src/features/login";
+import { authSlice } from "src/features/auth";
 import { channelsSlice } from "src/features/channels";
 import { dependenciesSlice } from "src/features/dependencies";
 import { environmentDetailsSlice } from "src/features/environmentDetails";
@@ -15,5 +15,5 @@ export const rootReducer = {
   enviroments: enviromentsSlice.reducer,
   environmentDetails: environmentDetailsSlice.reducer,
   dependencies: dependenciesSlice.reducer,
-  login: authSlice.reducer
+  auth: authSlice.reducer
 };
