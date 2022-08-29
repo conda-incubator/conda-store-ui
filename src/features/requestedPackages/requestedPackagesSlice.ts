@@ -27,6 +27,10 @@ export const requestedPackagesSlice = createSlice({
 
       state.packageVersions[packageName] = version;
     },
+    updatePackages: (state, action) => {
+      const packages = action.payload;
+      state.requestedPackages = packages;
+    },
     addPackage: (state, action) => {
       const newPackage = action.payload;
       state.requestedPackages.push(newPackage);
@@ -69,5 +73,9 @@ export const requestedPackagesSlice = createSlice({
   }
 });
 
-export const { packageVersionAdded, addPackage, deletePackage } =
-  requestedPackagesSlice.actions;
+export const {
+  packageVersionAdded,
+  updatePackages,
+  addPackage,
+  deletePackage
+} = requestedPackagesSlice.actions;

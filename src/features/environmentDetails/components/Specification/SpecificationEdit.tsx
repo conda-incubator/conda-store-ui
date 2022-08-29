@@ -1,14 +1,22 @@
 import React, { useState } from "react";
 import Box from "@mui/material/Box";
-import { ChannelsEdit } from "src/features/channels";
+import { ChannelsEdit, updateChannels } from "src/features/channels";
 import { Dependencies, pageChanged } from "src/features/dependencies";
-import { RequestedPackagesEdit } from "src/features/requestedPackages";
+import {
+  RequestedPackagesEdit,
+  updatePackages
+} from "src/features/requestedPackages";
 import { BlockContainerEditMode } from "src/components";
 import { StyledButtonPrimary } from "src/styles";
 import { useAppDispatch, useAppSelector } from "src/hooks";
 import { CodeEditor } from "src/features/yamlEditor";
 import { useCreateOrUpdateMutation } from "../../environmentDetailsApiSlice";
-import { defineYAMLStructure } from "src/utils/helpers/yaml";
+import { stringify } from "yaml";
+
+interface ISpecificationState {
+  channels: string[];
+  dependencies: any[];
+}
 
 export const SpecificationEdit = () => {
   const { selectedEnvironment } = useAppSelector(state => state.tabs);
@@ -24,7 +32,10 @@ export const SpecificationEdit = () => {
   const dispatch = useAppDispatch();
   const hasMore = size * page <= count;
 
-  const yamlCode = defineYAMLStructure(channels, requestedPackages);
+  const yamlCode = stringify({
+    channels,
+    dependencies: requestedPackages
+  });
 
   const onUpdateEnvironment = () => {
     const description = "Updated description";
@@ -38,6 +49,18 @@ export const SpecificationEdit = () => {
     createOrUpdate(environmentInfo);
   };
 
+  const onUpdateEditor = ({
+    channels: newChannels,
+    dependencies: newPackages
+  }: ISpecificationState) => {
+    if (JSON.stringify(newChannels) !== JSON.stringify(channels)) {
+      dispatch(updateChannels(newChannels));
+    }
+    if (JSON.stringify(newPackages) !== JSON.stringify(requestedPackages)) {
+      dispatch(updatePackages(newPackages));
+    }
+  };
+
   return (
     <BlockContainerEditMode
       title="Specification"
@@ -46,7 +69,7 @@ export const SpecificationEdit = () => {
     >
       <Box sx={{ padding: "13px 19px" }}>
         {show ? (
-          <CodeEditor code={yamlCode} />
+          <CodeEditor code={yamlCode} onChangeEditor={onUpdateEditor} />
         ) : (
           <>
             <Box sx={{ marginBottom: "30px" }}>

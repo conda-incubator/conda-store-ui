@@ -5,8 +5,9 @@ import { RequestedPackagesEdit } from "src/features/requestedPackages";
 import { BlockContainerEditMode } from "src/components";
 import { StyledButtonPrimary } from "src/styles";
 import { useAppSelector } from "src/hooks";
+import { CodeEditor } from "src/features/yamlEditor";
 import { useCreateOrUpdateMutation } from "src/features/environmentDetails";
-import { defineYAMLStructure } from "src/utils/helpers/yaml";
+import { stringify } from "yaml";
 
 export const SpecificationCreate = () => {
   const { newEnvironment } = useAppSelector(state => state.tabs);
@@ -15,7 +16,10 @@ export const SpecificationCreate = () => {
   const [requestedPackages] = useState([]);
   const [createOrUpdate] = useCreateOrUpdateMutation();
 
-  const yamlCode = defineYAMLStructure(channels, requestedPackages);
+  const yamlCode = stringify({
+    channels,
+    dependencies: requestedPackages
+  });
 
   const onUpdateEnvironment = () => {
     // TODO: Retrieve this info from inputs
@@ -37,12 +41,18 @@ export const SpecificationCreate = () => {
       isEditMode={show}
     >
       <Box sx={{ padding: "13px 19px" }}>
-        <Box sx={{ marginBottom: "30px" }}>
-          <RequestedPackagesEdit packageList={requestedPackages} />
-        </Box>
-        <Box sx={{ margiBottom: "30px" }}>
-          <ChannelsEdit channelsList={channels} />
-        </Box>
+        {show ? (
+          <CodeEditor code={yamlCode} onChangeEditor={() => ({})} />
+        ) : (
+          <>
+            <Box sx={{ marginBottom: "30px" }}>
+              <RequestedPackagesEdit packageList={requestedPackages} />
+            </Box>
+            <Box sx={{ margiBottom: "30px" }}>
+              <ChannelsEdit channelsList={channels} />
+            </Box>
+          </>
+        )}
         <Box
           sx={{
             display: "flex",
