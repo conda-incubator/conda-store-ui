@@ -62,6 +62,7 @@ export const tabsSlice = createSlice({
 
           state.selectedEnvironment = rightItem ?? leftItem;
           state.value = state.selectedEnvironment.id;
+          state.newEnvironment.isActive = false;
         } else if (listLength === 1 && state.newEnvironment.isOpen) {
           state.value = "create";
           state.selectedEnvironment = null;

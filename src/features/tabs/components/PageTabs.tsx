@@ -36,7 +36,7 @@ export const PageTabs = () => {
     envId: number
   ) => {
     e.stopPropagation();
-
+    dispatch(modeChanged(EnvironmentDetailsModes.READ));
     dispatch(
       environmentClosed({
         envId,
