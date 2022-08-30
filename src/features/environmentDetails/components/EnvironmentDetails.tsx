@@ -51,10 +51,8 @@ export const EnvironmentDetails = () => {
         visible: false
       });
       await createOrUpdate(environmentInfo).unwrap();
-      console.log(environmentInfo);
-      console.log("Environment updated");
-      // TODO: add new env to sidebar envs
-      // Open the tab?
+
+      // TODO: add new env to sidebar envs... Open a new tab?
     } catch ({ data }) {
       setError({
         message: data.message,

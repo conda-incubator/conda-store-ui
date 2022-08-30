@@ -34,8 +34,7 @@ export const EnvironmentCreate = () => {
         visible: false
       });
       await createOrUpdate(environmentInfo).unwrap();
-      // TODO Add new env to sidebar envs
-      // Open in a new tab?
+      // TODO: add new env to sidebar envs... Open a new tab?
     } catch ({ data }) {
       setError({
         message: data.message,
