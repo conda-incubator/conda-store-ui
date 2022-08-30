@@ -8,7 +8,7 @@ export const EnvironmentCreate = () => {
     <Box sx={{ padding: "14px 12px" }}>
       <EnvironmentCreateHeader />
       <Box sx={{ marginBottom: "30px" }}>
-        <EnvMetadata mode="create" />
+        {/* <EnvMetadata mode="create" envDescription="" /> */}
       </Box>
       <Box sx={{ marginBottom: "30px" }}>
         <SpecificationCreate />

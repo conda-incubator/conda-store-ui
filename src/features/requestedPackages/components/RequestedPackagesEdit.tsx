@@ -41,8 +41,9 @@ export const RequestedPackagesEdit = ({
   const removePackage = (packageName: string) => {
     const filteredList = (currentData: string[]) =>
       currentData.filter(item => item !== packageName);
+
     setData(filteredList);
-    updatePackages(filteredList);
+    updatePackages(data.filter(item => item !== packageName));
   };
 
   const addNewPackage = (packageName: string) => {

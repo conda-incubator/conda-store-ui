@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import Divider from "@mui/material/Divider";
@@ -23,13 +23,16 @@ interface IEnvMetadataProps {
    */
   envDescription: string;
   mode: "create" | "read-only" | "edit";
+  onUpdateDescription: (value: any) => void;
 }
 
-export const EnvMetadata = ({ envDescription, mode }: IEnvMetadataProps) => {
+export const EnvMetadata = ({
+  envDescription,
+  mode,
+  onUpdateDescription
+}: IEnvMetadataProps) => {
   const { data: enviromentData } = useGetEnviromentsQuery();
   const { palette } = useTheme();
-
-  const [description, setDescription] = useState(envDescription);
 
   return (
     <StyledBox>
@@ -47,8 +50,8 @@ export const EnvMetadata = ({ envDescription, mode }: IEnvMetadataProps) => {
       </List>
       <Description
         mode={mode}
-        description={description}
-        onChangeDescription={setDescription}
+        description={envDescription}
+        onChangeDescription={onUpdateDescription}
       />
       {enviromentData &&
         (mode === EnvironmentDetailsModes.READ ||

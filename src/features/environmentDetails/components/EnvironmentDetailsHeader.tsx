@@ -9,15 +9,21 @@ import {
   modeChanged
 } from "../environmentDetailsSlice";
 
-export const EnvironmentDetailsHeader = () => {
-  const { mode, name } = useAppSelector(state => state.environmentDetails);
+interface IEnvironmentDetailsHeaderProps {
+  /**
+   * @param envName name of the selected environment
+   * @param onUpdateName change whether the component only displays the list of builds, edit the environment description or create a new description
+   */
+  envName: string;
+  onUpdateName: (value: any) => void;
+}
+
+export const EnvironmentDetailsHeader = ({
+  envName,
+  onUpdateName
+}: IEnvironmentDetailsHeaderProps) => {
+  const { mode } = useAppSelector(state => state.environmentDetails);
   const dispatch = useAppDispatch();
-
-  const [value, setValue] = useState("");
-
-  useEffect(() => {
-    setValue(name);
-  }, [name]);
 
   return (
     <Box
@@ -31,7 +37,7 @@ export const EnvironmentDetailsHeader = () => {
       {mode === EnvironmentDetailsModes.READ && (
         <>
           <Typography sx={{ fontSize: "24px", color: "#000" }}>
-            {name}
+            {envName}
           </Typography>
           <StyledButtonPrimary
             onClick={() => dispatch(modeChanged(EnvironmentDetailsModes.EDIT))}
@@ -57,8 +63,8 @@ export const EnvironmentDetailsHeader = () => {
               }
             }}
             variant="filled"
-            value={value}
-            onChange={e => setValue(e.target.value)}
+            value={envName}
+            onChange={e => onUpdateName(e.target.value)}
           />
           {/* <StyledButtonPrimary>Archive</StyledButtonPrimary> */}
         </>

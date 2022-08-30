@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import { useAppSelector } from "src/hooks";
 import { EnvironmentDetailsHeader } from "./EnvironmentDetailsHeader";
@@ -15,6 +15,10 @@ export const EnvironmentDetails = () => {
   const { mode } = useAppSelector(state => state.environmentDetails);
   const { page } = useAppSelector(state => state.dependencies);
   const { selectedEnvironment } = useAppSelector(state => state.tabs);
+  const environmentName = selectedEnvironment?.name || "";
+  const [name, setName] = useState(environmentName);
+  const environmentDescription = selectedEnvironment?.description || "";
+  const [description, setDescription] = useState(environmentDescription);
   const [createOrUpdate] = useCreateOrUpdateMutation();
 
   if (selectedEnvironment) {
@@ -27,9 +31,7 @@ export const EnvironmentDetails = () => {
   }
 
   const updateEnvironment = (code: any) => {
-    const name = selectedEnvironment?.name;
     const namespace = selectedEnvironment?.namespace.name;
-    const description = "Updated description";
 
     const environmentInfo = {
       specification: `${stringify(
@@ -38,24 +40,28 @@ export const EnvironmentDetails = () => {
       namespace
     };
 
-    // createOrUpdate(environmentInfo);
+    createOrUpdate(environmentInfo);
     console.log(environmentInfo);
 
-    //TODO: retrieve info from metadata description and name
-    // 1. Get from EnvironmentDetailsHeader new name to update it: Ximena
-    // 2. Get Description from EnvMetadata to update it: Juan
+    //TODO:
     // 4. SpecificationEdit Refactor - Types
     // 3. Refactor EnvironmentCreate
     // 5. Feedback errores
   };
 
+  useEffect(() => {
+    setName(environmentName);
+    setDescription(environmentDescription);
+  }, [selectedEnvironment]);
+
   return (
     <Box sx={{ padding: "14px 12px" }}>
-      <EnvironmentDetailsHeader />
+      <EnvironmentDetailsHeader envName={name} onUpdateName={setName} />
       <Box sx={{ marginBottom: "30px" }}>
         <EnvMetadata
-          envDescription={selectedEnvironment?.description || ""}
+          envDescription={description}
           mode={mode}
+          onUpdateDescription={setDescription}
         />
       </Box>
       <Box sx={{ marginBottom: "30px" }}>
