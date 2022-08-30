@@ -20,11 +20,11 @@ export const EnvironmentDetails = () => {
   const [description, setDescription] = useState(
     selectedEnvironment?.description || ""
   );
+  const [createOrUpdate] = useCreateOrUpdateMutation();
   const [error, setError] = useState({
     message: "",
     visible: false
   });
-  const [createOrUpdate] = useCreateOrUpdateMutation();
 
   if (selectedEnvironment) {
     useGetBuildQuery(selectedEnvironment.current_build_id);
@@ -53,6 +53,8 @@ export const EnvironmentDetails = () => {
       await createOrUpdate(environmentInfo).unwrap();
       console.log(environmentInfo);
       console.log("Environment updated");
+      // TODO: add new env to sidebar envs
+      // Open the tab?
     } catch ({ data }) {
       setError({
         message: data.message,
