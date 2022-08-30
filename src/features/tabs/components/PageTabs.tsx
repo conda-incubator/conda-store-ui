@@ -45,6 +45,9 @@ export const PageTabs = () => {
           : envId
       })
     );
+    if (selectedEnvironments.length === 1 && newEnvironment.isOpen) {
+      dispatch(modeChanged(EnvironmentDetailsModes.CREATE));
+    }
   };
 
   const closeNewEnvironment = (
