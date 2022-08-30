@@ -50,12 +50,11 @@ export const EnvironmentDetails = () => {
         message: "",
         visible: false
       });
-      await createOrUpdate(environmentInfo).unwrap();
-
-      // TODO: add new env to sidebar envs... Open a new tab?
-    } catch ({ data }) {
+      const { data } = await createOrUpdate(environmentInfo).unwrap();
+      console.log(`New build id: ${data.build_id}`);
+    } catch (e) {
       setError({
-        message: data.message,
+        message: e?.data?.message ?? e.status,
         visible: true
       });
     }

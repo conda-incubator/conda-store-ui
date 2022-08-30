@@ -33,8 +33,8 @@ export const EnvironmentCreate = () => {
         message: "",
         visible: false
       });
-      await createOrUpdate(environmentInfo).unwrap();
-      // TODO: add new env to sidebar envs... Open a new tab?
+      const { data } = await createOrUpdate(environmentInfo).unwrap();
+      console.log(`New build id: ${data.build_id}`);
     } catch ({ data }) {
       setError({
         message: data.message,

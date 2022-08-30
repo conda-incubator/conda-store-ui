@@ -34,20 +34,24 @@ export const EnvironmentDetailsHeader = ({
         marginBottom: "19px"
       }}
     >
-      {mode === EnvironmentDetailsModes.READ && (
+      {(mode === EnvironmentDetailsModes.READ ||
+        mode === EnvironmentDetailsModes.EDIT) && (
         <>
           <Typography sx={{ fontSize: "24px", color: "#000" }}>
             {envName}
           </Typography>
-          <StyledButtonPrimary
-            onClick={() => dispatch(modeChanged(EnvironmentDetailsModes.EDIT))}
-          >
-            Edit
-          </StyledButtonPrimary>
+          {mode === EnvironmentDetailsModes.READ && (
+            <StyledButtonPrimary
+              onClick={() =>
+                dispatch(modeChanged(EnvironmentDetailsModes.EDIT))
+              }
+            >
+              Edit
+            </StyledButtonPrimary>
+          )}
         </>
       )}
-      {(mode === EnvironmentDetailsModes.EDIT ||
-        mode === EnvironmentDetailsModes.CREATE) && (
+      {mode === EnvironmentDetailsModes.CREATE && (
         <>
           <TextField
             sx={{
