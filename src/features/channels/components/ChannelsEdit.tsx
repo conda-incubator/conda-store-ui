@@ -26,7 +26,7 @@ export interface IChannelsEditProps {
    * @param updateChannels notify the parent if there are changes in channelsList array.
    */
   channelsList: string[];
-  updateChannels: (isAdded: boolean, channels: string) => void;
+  updateChannels: (channels: string[]) => void;
 }
 
 export const ChannelsEdit = ({
@@ -42,15 +42,15 @@ export const ChannelsEdit = ({
   const listLength = list.length;
 
   const addNewChannel = (channelName: string) => {
-    updateChannels(true, channelName);
     setList([...list, channelName]);
+    updateChannels([...list, channelName]);
   };
 
   const removeChannel = (channelName: string) => {
     const filteredList = list.filter(channel => channel !== channelName);
 
-    updateChannels(false, channelName);
     setList(filteredList);
+    updateChannels(filteredList);
   };
 
   const editChannel = (channelName: string, newChannelName: string) => {

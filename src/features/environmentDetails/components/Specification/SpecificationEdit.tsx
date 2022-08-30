@@ -2,16 +2,10 @@ import React, { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import { ChannelsEdit } from "src/features/channels";
 import { Dependencies, pageChanged } from "src/features/dependencies";
-import {
-  addChannel,
-  updateChannels,
-  deleteChannel
-} from "src/features/channels";
+import { updateChannels } from "src/features/channels";
 import {
   RequestedPackagesEdit,
-  updatePackages,
-  addPackage,
-  deletePackage
+  updatePackages
 } from "src/features/requestedPackages";
 import { BlockContainerEditMode } from "src/components";
 import { StyledButtonPrimary } from "src/styles";
@@ -44,25 +38,21 @@ export const SpecificationEdit = ({ onUpdateEnvironment }: any) => {
     });
   }, [channels, requestedPackages]);
 
-  const onUpdatePackages = (isAdded: boolean, packageName: any) => {
-    if (isAdded) {
-      dispatch(addPackage(packageName));
-    } else {
-      dispatch(deletePackage(packageName));
-    }
+  const onUpdatePackages = (packages: any) => {
+    dispatch(updatePackages(packages));
+    setNewPackages(packages);
   };
 
-  const onUpdateChannels = (isAdded: boolean, channelName: any) => {
-    if (isAdded) {
-      dispatch(addChannel(channelName));
-    } else {
-      dispatch(deleteChannel(channelName));
-    }
+  const onUpdateChannels = (channels: any) => {
+    console.log(channels);
+    dispatch(updateChannels(channels));
+    setNewChannels(channels);
   };
 
-  const onUpdateEditor = (code: any) => {
-    setNewChannels(code.channels);
-    setNewPackages(code.dependencies);
+  const onUpdateEditor = (newCode: any) => {
+    setNewChannels(newCode.channels);
+    setNewPackages(newCode.dependencies);
+    console.log(newCode);
   };
 
   const onToggleEditorView = (value: boolean) => {
@@ -78,13 +68,12 @@ export const SpecificationEdit = ({ onUpdateEnvironment }: any) => {
       // If user is using the yaml editor, before make the request update the store
       dispatch(updateChannels(newChannels));
       dispatch(updatePackages(newPackages));
-      onUpdateEnvironment({
-        channels: newChannels,
-        dependencies: newPackages
-      });
-    } else {
-      onUpdateEnvironment(code);
     }
+
+    onUpdateEnvironment({
+      channels: newChannels,
+      dependencies: newPackages
+    });
   };
 
   return (

@@ -26,7 +26,7 @@ export interface IRequestedPackagesEditProps {
    * @param updatePackages notify the parent if there are changes in packageList array.
    */
   packageList: (string | CondaSpecificationPip)[];
-  updatePackages: (isAdded: boolean, packageName: string) => void;
+  updatePackages: (packages: any) => void;
 }
 
 export const RequestedPackagesEdit = ({
@@ -39,13 +39,15 @@ export const RequestedPackagesEdit = ({
   const scrollRef = useRef<HTMLDivElement | null>(null);
 
   const removePackage = (packageName: string) => {
-    setData(currentData => currentData.filter(item => item !== packageName));
-    updatePackages(false, packageName);
+    const filteredList = (currentData: string[]) =>
+      currentData.filter(item => item !== packageName);
+    setData(filteredList);
+    updatePackages(filteredList);
   };
 
   const addNewPackage = (packageName: string) => {
     setData([...data, packageName]);
-    updatePackages(true, packageName);
+    updatePackages([...data, packageName]);
   };
 
   const filteredPackageList = useMemo(
