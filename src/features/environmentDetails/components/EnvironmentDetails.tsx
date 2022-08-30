@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
+import Alert from "@mui/material/Alert";
 import { useAppSelector } from "src/hooks";
 import { EnvironmentDetailsHeader } from "./EnvironmentDetailsHeader";
 import { SpecificationEdit, SpecificationReadOnly } from "./Specification";
@@ -15,10 +16,14 @@ export const EnvironmentDetails = () => {
   const { mode } = useAppSelector(state => state.environmentDetails);
   const { page } = useAppSelector(state => state.dependencies);
   const { selectedEnvironment } = useAppSelector(state => state.tabs);
-  const environmentName = selectedEnvironment?.name || "";
-  const [name, setName] = useState(environmentName);
-  const environmentDescription = selectedEnvironment?.description || "";
-  const [description, setDescription] = useState(environmentDescription);
+  const [name, setName] = useState(selectedEnvironment?.name || "");
+  const [description, setDescription] = useState(
+    selectedEnvironment?.description || ""
+  );
+  const [error, setError] = useState({
+    message: "",
+    visible: false
+  });
   const [createOrUpdate] = useCreateOrUpdateMutation();
 
   if (selectedEnvironment) {
@@ -30,7 +35,7 @@ export const EnvironmentDetails = () => {
     });
   }
 
-  const updateEnvironment = (code: any) => {
+  const updateEnvironment = async (code: any) => {
     const namespace = selectedEnvironment?.namespace.name;
 
     const environmentInfo = {
@@ -40,23 +45,40 @@ export const EnvironmentDetails = () => {
       namespace
     };
 
-    createOrUpdate(environmentInfo);
-    console.log(environmentInfo);
-
-    //TODO:
-    // 4. SpecificationEdit Refactor - Types
-    // 3. Refactor EnvironmentCreate
-    // 5. Feedback errores
+    try {
+      setError({
+        message: "",
+        visible: false
+      });
+      await createOrUpdate(environmentInfo).unwrap();
+      console.log(environmentInfo);
+      console.log("Environment updated");
+    } catch ({ data }) {
+      setError({
+        message: data.message,
+        visible: true
+      });
+    }
   };
 
   useEffect(() => {
-    setName(environmentName);
-    setDescription(environmentDescription);
+    setName(selectedEnvironment?.name || "");
+    setDescription(selectedEnvironment?.description || "");
   }, [selectedEnvironment]);
 
   return (
     <Box sx={{ padding: "14px 12px" }}>
       <EnvironmentDetailsHeader envName={name} onUpdateName={setName} />
+      {error.visible && (
+        <Alert
+          severity="error"
+          sx={{
+            mb: "20px"
+          }}
+        >
+          {error.message}
+        </Alert>
+      )}
       <Box sx={{ marginBottom: "30px" }}>
         <EnvMetadata
           envDescription={description}

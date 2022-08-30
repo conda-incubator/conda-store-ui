@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
@@ -12,10 +12,10 @@ import {
 interface IEnvironmentDetailsHeaderProps {
   /**
    * @param envName name of the selected environment
-   * @param onUpdateName change whether the component only displays the list of builds, edit the environment description or create a new description
+   * @param onUpdateName change environment name
    */
   envName: string;
-  onUpdateName: (value: any) => void;
+  onUpdateName: (value: string) => void;
 }
 
 export const EnvironmentDetailsHeader = ({

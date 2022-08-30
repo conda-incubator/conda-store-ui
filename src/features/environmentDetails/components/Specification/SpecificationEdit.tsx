@@ -31,19 +31,12 @@ export const SpecificationEdit = ({ onUpdateEnvironment }: any) => {
   const [newChannels, setNewChannels] = useState(channels);
   const [newPackages, setNewPackages] = useState(requestedPackages);
 
-  useEffect(() => {
-    setCode({
-      channels,
-      dependencies: requestedPackages
-    });
-  }, [channels, requestedPackages]);
-
-  const onUpdatePackages = (packages: any) => {
+  const onUpdatePackages = (packages: string[]) => {
     dispatch(updatePackages(packages));
     setNewPackages(packages);
   };
 
-  const onUpdateChannels = (channels: any) => {
+  const onUpdateChannels = (channels: string[]) => {
     dispatch(updateChannels(channels));
     setNewChannels(channels);
   };
@@ -74,6 +67,13 @@ export const SpecificationEdit = ({ onUpdateEnvironment }: any) => {
       dependencies: newPackages
     });
   };
+
+  useEffect(() => {
+    setCode({
+      channels,
+      dependencies: requestedPackages
+    });
+  }, [channels, requestedPackages]);
 
   return (
     <BlockContainerEditMode

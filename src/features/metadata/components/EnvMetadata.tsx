@@ -20,10 +20,11 @@ interface IEnvMetadataProps {
   /**
    * @param envDescription description of the selected environment
    * @param mode change whether the component only displays the list of builds, edit the environment description or create a new description
+   * @param onUpdateDescription change environment description
    */
   envDescription: string;
   mode: "create" | "read-only" | "edit";
-  onUpdateDescription: (value: any) => void;
+  onUpdateDescription: (description: string) => void;
 }
 
 export const EnvMetadata = ({
