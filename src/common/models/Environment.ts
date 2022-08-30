@@ -4,4 +4,5 @@ export type Environment = {
   name: string;
   current_build_id: number;
   current_build: number | null;
+  description: string;
 };

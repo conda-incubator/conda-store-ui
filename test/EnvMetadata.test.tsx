@@ -55,14 +55,18 @@ jest.mock("../src/hooks", () => ({
 
 describe("<EnvMetadata />", () => {
   it("should render component in read-only mode", () => {
-    const component = render(mockTheme(<EnvMetadata mode="read-only" />));
+    const component = render(
+      mockTheme(<EnvMetadata mode="read-only" envDescription="test" />)
+    );
 
     expect(component.container).toHaveTextContent("Environment Metadata");
     expect(component.container).toHaveTextContent("Build");
   });
 
   it("should render component in edit mode", () => {
-    const component = render(mockTheme(<EnvMetadata mode="edit" />));
+    const component = render(
+      mockTheme(<EnvMetadata mode="edit" envDescription="test" />)
+    );
     const newDescription = "Awesome new description";
 
     const textarea = component.getByPlaceholderText("Environment description");
