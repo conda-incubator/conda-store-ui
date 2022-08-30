@@ -46,10 +46,16 @@ export const SpecificationCreate = () => {
         ) : (
           <>
             <Box sx={{ marginBottom: "30px" }}>
-              <RequestedPackagesEdit packageList={requestedPackages} />
+              <RequestedPackagesEdit
+                packageList={requestedPackages}
+                updatePackages={() => ({})}
+              />
             </Box>
             <Box sx={{ margiBottom: "30px" }}>
-              <ChannelsEdit channelsList={channels} />
+              <ChannelsEdit
+                channelsList={channels}
+                updateChannels={() => ({})}
+              />
             </Box>
           </>
         )}

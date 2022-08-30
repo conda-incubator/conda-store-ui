@@ -11,12 +11,7 @@ export interface ICodeEditor {
 
 export const CodeEditor = ({ code, onChangeEditor }: ICodeEditor) => {
   const convertToJSON = (e: string) => {
-    try {
-      // return parse(e);
-      onChangeEditor(parse(e));
-    } catch (e) {
-      onChangeEditor("");
-    }
+    onChangeEditor(parse(e));
   };
   return (
     <CodeMirror

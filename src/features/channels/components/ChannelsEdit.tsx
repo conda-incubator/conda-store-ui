@@ -9,8 +9,6 @@ import {
   Droppable,
   DropResult
 } from "react-beautiful-dnd";
-import { useAppDispatch } from "src/hooks";
-import { addChannel, deleteChannel } from "src/features/channels";
 import { AddChannel } from "./AddChannel";
 import { ChannelsEditItem } from "./ChannelsEditItem";
 import {
@@ -25,14 +23,18 @@ import { reorderArray } from "src/utils/helpers";
 export interface IChannelsEditProps {
   /**
    * @param channelsList list of channels
+   * @param updateChannels notify the parent if there are changes in channelsList array.
    */
   channelsList: string[];
+  updateChannels: (isAdded: boolean, channels: string) => void;
 }
 
-export const ChannelsEdit = ({ channelsList }: IChannelsEditProps) => {
+export const ChannelsEdit = ({
+  channelsList,
+  updateChannels
+}: IChannelsEditProps) => {
   const { palette } = useTheme();
   const scrollRef = useRef<HTMLDivElement | null>(null);
-  const dispatch = useAppDispatch();
 
   const [list, setList] = useState(channelsList);
   const [isAdding, setIsAdding] = useState(false);
@@ -40,15 +42,15 @@ export const ChannelsEdit = ({ channelsList }: IChannelsEditProps) => {
   const listLength = list.length;
 
   const addNewChannel = (channelName: string) => {
+    updateChannels(true, channelName);
     setList([...list, channelName]);
-    dispatch(addChannel(channelName));
   };
 
   const removeChannel = (channelName: string) => {
     const filteredList = list.filter(channel => channel !== channelName);
 
+    updateChannels(false, channelName);
     setList(filteredList);
-    dispatch(deleteChannel(channelName));
   };
 
   const editChannel = (channelName: string, newChannelName: string) => {

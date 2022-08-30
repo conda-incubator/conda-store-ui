@@ -8,8 +8,6 @@ import TableRow from "@mui/material/TableRow";
 import Typography from "@mui/material/Typography";
 import useTheme from "@mui/material/styles/useTheme";
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import { useAppDispatch } from "src/hooks";
-import { addPackage, deletePackage } from "../requestedPackagesSlice";
 import { RequestedPackagesTableRow } from "./RequestedPackagesTableRow";
 import { AddRequestedPackage } from "./AddRequestedPackage";
 import {
@@ -25,27 +23,29 @@ import { CondaSpecificationPip } from "src/common/models";
 export interface IRequestedPackagesEditProps {
   /**
    * @param packageList list of packages that we get from the API
+   * @param updatePackages notify the parent if there are changes in packageList array.
    */
   packageList: (string | CondaSpecificationPip)[];
+  updatePackages: (isAdded: boolean, packageName: string) => void;
 }
 
 export const RequestedPackagesEdit = ({
-  packageList
+  packageList,
+  updatePackages
 }: IRequestedPackagesEditProps) => {
   const [data, setData] = useState(packageList);
   const [isAdding, setIsAdding] = useState(false);
   const { palette } = useTheme();
   const scrollRef = useRef<HTMLDivElement | null>(null);
-  const dispatch = useAppDispatch();
 
   const removePackage = (packageName: string) => {
     setData(currentData => currentData.filter(item => item !== packageName));
-    dispatch(deletePackage(packageName));
+    updatePackages(false, packageName);
   };
 
   const addNewPackage = (packageName: string) => {
     setData([...data, packageName]);
-    dispatch(addPackage(packageName));
+    updatePackages(true, packageName);
   };
 
   const filteredPackageList = useMemo(
