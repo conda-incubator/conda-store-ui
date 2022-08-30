@@ -46,7 +46,8 @@ export const EnvironmentDetailsHeader = ({
           </StyledButtonPrimary>
         </>
       )}
-      {mode === EnvironmentDetailsModes.EDIT && (
+      {(mode === EnvironmentDetailsModes.EDIT ||
+        mode === EnvironmentDetailsModes.CREATE) && (
         <>
           <TextField
             sx={{
@@ -64,6 +65,7 @@ export const EnvironmentDetailsHeader = ({
             }}
             variant="filled"
             value={envName}
+            placeholder="Environment name"
             onChange={e => onUpdateName(e.target.value)}
           />
           {/* <StyledButtonPrimary>Archive</StyledButtonPrimary> */}
