@@ -44,20 +44,19 @@ export const SpecificationEdit = ({ onUpdateEnvironment }: any) => {
   };
 
   const onUpdateChannels = (channels: any) => {
-    console.log(channels);
     dispatch(updateChannels(channels));
     setNewChannels(channels);
   };
 
-  const onUpdateEditor = (newCode: any) => {
-    setNewChannels(newCode.channels);
-    setNewPackages(newCode.dependencies);
-    console.log(newCode);
+  const onUpdateEditor = ({ channels, dependencies }: any) => {
+    setNewChannels(channels);
+    setNewPackages(dependencies);
   };
 
   const onToggleEditorView = (value: boolean) => {
     setShow(value);
     if (!value) {
+      // If user want to switch the yaml editor view, let's send this info to the component
       dispatch(updateChannels(newChannels));
       dispatch(updatePackages(newPackages));
     }
