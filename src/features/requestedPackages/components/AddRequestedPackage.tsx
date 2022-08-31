@@ -6,6 +6,7 @@ import TextField from "@mui/material/TextField";
 import { BuildPackage } from "src/common/models";
 import { StyledIconButton } from "src/styles";
 import { useLazyGetPackageSuggestionsQuery } from "../requestedPackagesApiSlice";
+import { debounce } from "lodash";
 
 interface IAddRequestedPackageProps {
   /**
@@ -20,8 +21,10 @@ export const AddRequestedPackage = ({
   onCancel,
   onSubmit
 }: IAddRequestedPackageProps) => {
+  const size = 100;
   const [name, setName] = useState<string>("");
   const [data, setData] = useState<BuildPackage[]>([]);
+  const [page, setPage] = useState(1);
   const [triggerQuery] = useLazyGetPackageSuggestionsQuery();
 
   const uniqueList = useMemo(() => {
@@ -48,6 +51,17 @@ export const AddRequestedPackage = ({
     }
   };
 
+  const handleSearch = debounce(async (value: string) => {
+    setName(value);
+    setPage(1);
+
+    const { data } = await triggerQuery({ page, size, search: value });
+
+    if (data) {
+      setData(data.data);
+    }
+  }, 200);
+
   const handleScroll = (event: React.SyntheticEvent) => {
     const listboxNode = event.currentTarget;
     if (
@@ -60,9 +74,8 @@ export const AddRequestedPackage = ({
 
   useEffect(() => {
     (async () => {
-      const { data } = await triggerQuery({ page: 1, search: "", size: 100 });
+      const { data } = await triggerQuery({ page, search: "", size });
       if (data) {
-        console.log(data);
         setData(data.data);
       }
     })();
@@ -72,11 +85,17 @@ export const AddRequestedPackage = ({
     <Box sx={{ display: "flex", alignItems: "center", marginTop: "15px" }}>
       <Box sx={{ marginRight: "160px" }}>
         <Autocomplete
+          onInputChange={(event, value, reason) => {
+            if (reason === "clear") {
+              setName("");
+              setPage(1);
+              return;
+            }
+
+            handleSearch(value);
+          }}
           freeSolo
           options={uniqueList}
-          onChange={(e, value) => {
-            setName(value ?? "");
-          }}
           sx={{ width: "140px" }}
           ListboxProps={{
             onScroll: handleScroll
@@ -86,7 +105,6 @@ export const AddRequestedPackage = ({
               autoFocus
               {...params}
               label="Enter package"
-              onChange={e => setName(e.target.value)}
               onBlur={handleSubmit}
               size="small"
             />
