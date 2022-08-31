@@ -1,2 +1,2 @@
 export * from "./EnvironmentCreate";
-export * from "./SpecificationCreate";
+export * from "./Specification";

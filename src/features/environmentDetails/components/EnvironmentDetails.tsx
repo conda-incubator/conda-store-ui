@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import Alert from "@mui/material/Alert";
-import Snackbar from "@mui/material/Snackbar";
 import { useAppDispatch, useAppSelector } from "src/hooks";
 import { EnvironmentDetailsHeader } from "./EnvironmentDetailsHeader";
+import { Popup } from "src/components";
 import { SpecificationEdit, SpecificationReadOnly } from "./Specification";
 import { useGetBuildQuery } from "../environmentDetailsApiSlice";
 import { useGetBuildPackagesQuery } from "src/features/dependencies";
@@ -105,16 +105,11 @@ export const EnvironmentDetails = () => {
           <ArtifactList artifacts={artifactList(selectedEnvironment?.id)} />
         </Box>
       )}
-      <Snackbar
-        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-        autoHideDuration={3000}
-        open={isEnvUpdated}
-        onClose={() => setIsEnvUpdated(false)}
-      >
-        <Alert severity="success" sx={{ width: "100%" }}>
-          Environment has been updated
-        </Alert>
-      </Snackbar>
+      <Popup
+        isVisible={isEnvUpdated}
+        description="Environment has been updated"
+        onClose={setIsEnvUpdated}
+      />
     </Box>
   );
 };

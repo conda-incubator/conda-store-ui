@@ -2,9 +2,10 @@ import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import Alert from "@mui/material/Alert";
 import { EnvironmentDetailsHeader } from "src/features/environmentDetails";
+import { Popup } from "src/components";
 import { useAppSelector } from "src/hooks";
 import { EnvMetadata } from "src/features/metadata";
-import { SpecificationCreate } from "./SpecificationCreate";
+import { SpecificationCreate } from "./Specification/SpecificationCreate";
 import { useCreateOrUpdateMutation } from "src/features/environmentDetails";
 import { stringify } from "yaml";
 
@@ -16,6 +17,7 @@ export const EnvironmentCreate = () => {
     message: "",
     visible: false
   });
+  const [isEnvCreated, setIsEnvCreated] = useState(false);
   const [createOrUpdate] = useCreateOrUpdateMutation();
 
   const createEnvironment = async (code: any) => {
@@ -34,6 +36,7 @@ export const EnvironmentCreate = () => {
         visible: false
       });
       const { data } = await createOrUpdate(environmentInfo).unwrap();
+      setIsEnvCreated(true);
       console.log(`New build id: ${data.build_id}`);
     } catch ({ data }) {
       setError({
@@ -66,6 +69,11 @@ export const EnvironmentCreate = () => {
       <Box sx={{ marginBottom: "30px" }}>
         <SpecificationCreate onCreateEnvironment={createEnvironment} />
       </Box>
+      <Popup
+        isVisible={isEnvCreated}
+        description={`${name} environment is being created`}
+        onClose={setIsEnvCreated}
+      />
     </Box>
   );
 };
