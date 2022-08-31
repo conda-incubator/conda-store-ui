@@ -1,10 +1,11 @@
+import React, { useEffect, useMemo, useState } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Autocomplete from "@mui/material/Autocomplete";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
-import React, { useState } from "react";
-
+import { BuildPackage } from "src/common/models";
 import { StyledIconButton } from "src/styles";
+import { useLazyGetPackageSuggestionsQuery } from "../requestedPackagesApiSlice";
 
 interface IAddRequestedPackageProps {
   /**
@@ -20,6 +21,25 @@ export const AddRequestedPackage = ({
   onSubmit
 }: IAddRequestedPackageProps) => {
   const [name, setName] = useState<string>("");
+  const [data, setData] = useState<BuildPackage[]>([]);
+  const [triggerQuery] = useLazyGetPackageSuggestionsQuery();
+
+  const uniqueList = useMemo(() => {
+    const packageNames = new Set();
+    const result: string[] = [];
+
+    data.forEach(buildPackage => {
+      const packageName = buildPackage.name;
+      const hasPackageName = packageNames.has(packageName);
+
+      if (!hasPackageName) {
+        result.push(packageName);
+        packageNames.add(packageName);
+      }
+    });
+
+    return result;
+  }, [data]);
 
   const handleSubmit = () => {
     if (name) {
@@ -38,12 +58,22 @@ export const AddRequestedPackage = ({
     }
   };
 
+  useEffect(() => {
+    (async () => {
+      const { data } = await triggerQuery({ page: 1, search: "", size: 100 });
+      if (data) {
+        console.log(data);
+        setData(data.data);
+      }
+    })();
+  }, []);
+
   return (
     <Box sx={{ display: "flex", alignItems: "center", marginTop: "15px" }}>
       <Box sx={{ marginRight: "160px" }}>
         <Autocomplete
           freeSolo
-          options={["python", "pandas"]}
+          options={uniqueList}
           onChange={(e, value) => {
             setName(value ?? "");
           }}
