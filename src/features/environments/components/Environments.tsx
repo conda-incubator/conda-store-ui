@@ -65,7 +65,7 @@ const BaseEnvironments = () => {
       <Box sx={{ borderBottom: `1px solid ${primary.main}` }}>
         <EnvironmentsSearch onChange={e => handleChange(e.target.value)} />
       </Box>
-      <Box sx={{ height: "550px" }}>
+      <Box sx={{ height: "calc(100vh - 103px)" }}>
         {state.data && (
           <EnvironmentsList
             next={next}

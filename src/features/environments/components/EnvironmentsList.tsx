@@ -59,7 +59,7 @@ export const EnvironmentsList = ({
   return (
     <StyledScrollContainer
       sx={{
-        height: "550px"
+        height: "100%"
       }}
       id="environmentsScroll"
       ref={scrollRef}
