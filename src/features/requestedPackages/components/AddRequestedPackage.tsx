@@ -7,6 +7,7 @@ import { BuildPackage } from "src/common/models";
 import { StyledIconButton } from "src/styles";
 import { useLazyGetPackageSuggestionsQuery } from "../requestedPackagesApiSlice";
 import { debounce } from "lodash";
+import { CircularProgress } from "@mui/material";
 
 interface IAddRequestedPackageProps {
   /**
@@ -25,6 +26,7 @@ export const AddRequestedPackage = ({
   const [name, setName] = useState<string>("");
   const [data, setData] = useState<BuildPackage[]>([]);
   const [page, setPage] = useState(1);
+  const [loading, setLoading] = useState(false);
   const [triggerQuery] = useLazyGetPackageSuggestionsQuery();
 
   const uniqueList = useMemo(() => {
@@ -52,6 +54,7 @@ export const AddRequestedPackage = ({
   };
 
   const handleSearch = debounce(async (value: string) => {
+    setLoading(true);
     setName(value);
     setPage(1);
 
@@ -60,6 +63,7 @@ export const AddRequestedPackage = ({
     if (data) {
       setData(data.data);
     }
+    setLoading(false);
   }, 200);
 
   const handleScroll = (event: React.SyntheticEvent) => {
@@ -74,10 +78,12 @@ export const AddRequestedPackage = ({
 
   useEffect(() => {
     (async () => {
+      setLoading(true);
       const { data } = await triggerQuery({ page, search: "", size });
       if (data) {
         setData(data.data);
       }
+      setLoading(false);
     })();
   }, []);
 
@@ -104,6 +110,18 @@ export const AddRequestedPackage = ({
             <TextField
               autoFocus
               {...params}
+              InputProps={{
+                ...params.InputProps,
+                endAdornment: (
+                  <React.Fragment>
+                    {loading ? (
+                      <CircularProgress color="inherit" size={10} />
+                    ) : (
+                      params.InputProps.endAdornment
+                    )}
+                  </React.Fragment>
+                )
+              }}
               label="Enter package"
               onBlur={handleSubmit}
               size="small"
