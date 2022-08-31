@@ -28,6 +28,16 @@ export const AddRequestedPackage = ({
     }
   };
 
+  const handleScroll = (event: React.SyntheticEvent) => {
+    const listboxNode = event.currentTarget;
+    if (
+      listboxNode.scrollTop + listboxNode.clientHeight ===
+      listboxNode.scrollHeight
+    ) {
+      return true;
+    }
+  };
+
   return (
     <Box sx={{ display: "flex", alignItems: "center", marginTop: "15px" }}>
       <Box sx={{ marginRight: "160px" }}>
@@ -38,6 +48,9 @@ export const AddRequestedPackage = ({
             setName(value ?? "");
           }}
           sx={{ width: "140px" }}
+          ListboxProps={{
+            onScroll: handleScroll
+          }}
           renderInput={params => (
             <TextField
               autoFocus
