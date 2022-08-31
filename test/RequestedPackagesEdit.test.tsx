@@ -1,5 +1,7 @@
 import React from "react";
+import { Provider } from "react-redux";
 import { fireEvent, render, RenderResult } from "@testing-library/react";
+import { store } from "../src/store";
 import { RequestedPackagesEdit } from "../src/features/requestedPackages/components/RequestedPackagesEdit";
 import { PACKAGE_LIST, mockTheme } from "./testutils";
 
@@ -9,7 +11,14 @@ describe("<RequestedPackagesEdit />", () => {
 
   beforeEach(() => {
     component = render(
-      mockTheme(<RequestedPackagesEdit packageList={PACKAGE_LIST} />)
+      mockTheme(
+        <Provider store={store}>
+          <RequestedPackagesEdit
+            packageList={PACKAGE_LIST}
+            updatePackages={() => ({})}
+          />
+        </Provider>
+      )
     );
   });
 

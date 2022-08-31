@@ -56,7 +56,13 @@ jest.mock("../src/hooks", () => ({
 describe("<EnvMetadata />", () => {
   it("should render component in read-only mode", () => {
     const component = render(
-      mockTheme(<EnvMetadata mode="read-only" envDescription="test" />)
+      mockTheme(
+        <EnvMetadata
+          mode="read-only"
+          envDescription="test"
+          onUpdateDescription={() => ({})}
+        />
+      )
     );
 
     expect(component.container).toHaveTextContent("Environment Metadata");
@@ -64,15 +70,24 @@ describe("<EnvMetadata />", () => {
   });
 
   it("should render component in edit mode", () => {
+    let description;
     const component = render(
-      mockTheme(<EnvMetadata mode="edit" envDescription="test" />)
+      mockTheme(
+        <EnvMetadata
+          mode="edit"
+          envDescription="test"
+          onUpdateDescription={e => (description = e)}
+        />
+      )
     );
     const newDescription = "Awesome new description";
 
-    const textarea = component.getByPlaceholderText("Environment description");
+    const textarea = component.getByPlaceholderText(
+      "Enter here the description of your environment"
+    );
     fireEvent.change(textarea, { target: { value: newDescription } });
 
     expect(textarea).toBeInTheDocument();
-    expect(textarea).toHaveValue(newDescription);
+    expect(description).toBe(newDescription);
   });
 });
