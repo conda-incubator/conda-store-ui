@@ -124,7 +124,9 @@ export const RequestedPackagesEdit = ({
           border: `1px solid ${palette.primary.main}`,
           borderTop: "0px",
           borderRadius: "0px 0px 5px 5px",
-          padding: "15px 21px"
+          padding: "15px 21px",
+          display: "flex",
+          justifyContent: "center"
         }}
       >
         <StyledButtonPrimary
