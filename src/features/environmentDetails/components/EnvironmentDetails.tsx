@@ -1,18 +1,24 @@
 import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import Alert from "@mui/material/Alert";
-import { useAppSelector } from "src/hooks";
+import Snackbar from "@mui/material/Snackbar";
+import { useAppDispatch, useAppSelector } from "src/hooks";
 import { EnvironmentDetailsHeader } from "./EnvironmentDetailsHeader";
 import { SpecificationEdit, SpecificationReadOnly } from "./Specification";
 import { useGetBuildQuery } from "../environmentDetailsApiSlice";
 import { useGetBuildPackagesQuery } from "src/features/dependencies";
 import { ArtifactList } from "src/features/artifacts";
 import { EnvMetadata } from "src/features/metadata";
-import { useCreateOrUpdateMutation } from "src/features/environmentDetails";
+import {
+  EnvironmentDetailsModes,
+  useCreateOrUpdateMutation,
+  modeChanged
+} from "src/features/environmentDetails";
 import artifactList from "src/utils/helpers/artifact";
 import { stringify } from "yaml";
 
 export const EnvironmentDetails = () => {
+  const dispatch = useAppDispatch();
   const { mode } = useAppSelector(state => state.environmentDetails);
   const { page } = useAppSelector(state => state.dependencies);
   const { selectedEnvironment } = useAppSelector(state => state.tabs);
@@ -25,6 +31,7 @@ export const EnvironmentDetails = () => {
     message: "",
     visible: false
   });
+  const [isEnvUpdated, setIsEnvUpdated] = useState(false);
 
   if (selectedEnvironment) {
     useGetBuildQuery(selectedEnvironment.current_build_id);
@@ -51,6 +58,8 @@ export const EnvironmentDetails = () => {
         visible: false
       });
       const { data } = await createOrUpdate(environmentInfo).unwrap();
+      setIsEnvUpdated(true);
+      dispatch(modeChanged(EnvironmentDetailsModes.READ));
       console.log(`New build id: ${data.build_id}`);
     } catch (e) {
       setError({
@@ -96,6 +105,16 @@ export const EnvironmentDetails = () => {
           <ArtifactList artifacts={artifactList(selectedEnvironment?.id)} />
         </Box>
       )}
+      <Snackbar
+        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+        autoHideDuration={3000}
+        open={isEnvUpdated}
+        onClose={() => setIsEnvUpdated(false)}
+      >
+        <Alert severity="success" sx={{ width: "100%" }}>
+          Environment has been updated
+        </Alert>
+      </Snackbar>
     </Box>
   );
 };
