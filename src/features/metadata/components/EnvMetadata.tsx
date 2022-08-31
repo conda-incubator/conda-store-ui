@@ -11,7 +11,7 @@ import { StyledBox } from "src/styles";
 import { useGetEnviromentsQuery } from "src/features/metadata";
 
 export enum EnvironmentDetailsModes {
-  "CREAT" = "creat",
+  "CREATE" = "create",
   "READ" = "read-only",
   "EDIT" = "edit"
 }
