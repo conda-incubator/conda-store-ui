@@ -70,16 +70,18 @@ export const AddRequestedPackage = ({
 
   const handleScroll = async (event: React.SyntheticEvent) => {
     const listboxNode = event.currentTarget;
+
     if (
-      listboxNode.scrollTop + listboxNode.clientHeight ===
+      listboxNode.scrollTop + listboxNode.clientHeight >=
       listboxNode.scrollHeight
     ) {
       const hasMore = size * page <= count;
 
-      if (!hasMore) return;
+      if (!hasMore) {
+        return;
+      }
 
       setLoading(true);
-
       const { data } = await triggerQuery({
         page: page + 1,
         size,
