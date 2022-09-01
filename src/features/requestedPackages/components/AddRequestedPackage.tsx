@@ -30,7 +30,7 @@ export const AddRequestedPackage = ({
   const [loading, setLoading] = useState(false);
   const [triggerQuery] = useLazyGetPackageSuggestionsQuery();
 
-  const uniqueList = useMemo(() => {
+  const uniquePackageNamesList = useMemo(() => {
     const packageNames = new Set();
     const result: string[] = [];
 
@@ -127,7 +127,7 @@ export const AddRequestedPackage = ({
             handleSearch(value);
           }}
           freeSolo
-          options={uniqueList}
+          options={uniquePackageNamesList}
           sx={{ width: "140px" }}
           ListboxProps={{
             onScroll: handleScroll

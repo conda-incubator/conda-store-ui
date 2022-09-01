@@ -23,7 +23,7 @@ export const VersionSelect = ({ version }: IVersionSelectProps) => {
 
   return (
     <Select
-      defaultValue={version}
+      defaultValue={version ?? ""}
       open={open}
       onClose={() => setOpen(false)}
       onOpen={() => setOpen(true)}
