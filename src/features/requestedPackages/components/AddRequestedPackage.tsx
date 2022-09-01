@@ -26,6 +26,7 @@ export const AddRequestedPackage = ({
   const [name, setName] = useState<string>("");
   const [data, setData] = useState<BuildPackage[]>([]);
   const [page, setPage] = useState(1);
+  const [count, setCount] = useState(0);
   const [loading, setLoading] = useState(false);
   const [triggerQuery] = useLazyGetPackageSuggestionsQuery();
 
@@ -62,6 +63,7 @@ export const AddRequestedPackage = ({
 
     if (data) {
       setData(data.data);
+      setCount(data.count);
     }
     setLoading(false);
   }, 200);
@@ -72,6 +74,12 @@ export const AddRequestedPackage = ({
       listboxNode.scrollTop + listboxNode.clientHeight ===
       listboxNode.scrollHeight
     ) {
+      const hasMore = size * page <= count;
+
+      if (!hasMore) return;
+
+      setLoading(true);
+
       const { data } = await triggerQuery({
         page: page + 1,
         size,
@@ -80,8 +88,11 @@ export const AddRequestedPackage = ({
 
       if (data) {
         setData(currData => currData.concat(data.data));
+        setCount(data.count);
       }
+
       setPage(currPage => currPage + 1);
+      setLoading(false);
     }
   };
 
@@ -89,9 +100,12 @@ export const AddRequestedPackage = ({
     (async () => {
       setLoading(true);
       const { data } = await triggerQuery({ page, search: "", size });
+
       if (data) {
         setData(data.data);
+        setCount(data.count);
       }
+
       setLoading(false);
     })();
   }, []);
