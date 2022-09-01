@@ -69,10 +69,11 @@ export const AddRequestedPackage = ({
   }, 200);
 
   const handleScroll = async (event: React.SyntheticEvent) => {
+    const scrollOffset = 2;
     const listboxNode = event.currentTarget;
 
     if (
-      listboxNode.scrollTop + listboxNode.clientHeight >=
+      listboxNode.scrollTop + listboxNode.clientHeight + scrollOffset >=
       listboxNode.scrollHeight
     ) {
       const hasMore = size * page <= count;
