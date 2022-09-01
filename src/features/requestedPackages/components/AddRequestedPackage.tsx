@@ -66,13 +66,22 @@ export const AddRequestedPackage = ({
     setLoading(false);
   }, 200);
 
-  const handleScroll = (event: React.SyntheticEvent) => {
+  const handleScroll = async (event: React.SyntheticEvent) => {
     const listboxNode = event.currentTarget;
     if (
       listboxNode.scrollTop + listboxNode.clientHeight ===
       listboxNode.scrollHeight
     ) {
-      return true;
+      const { data } = await triggerQuery({
+        page: page + 1,
+        size,
+        search: name
+      });
+
+      if (data) {
+        setData(currData => currData.concat(data.data));
+      }
+      setPage(currPage => currPage + 1);
     }
   };
 
