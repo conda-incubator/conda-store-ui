@@ -1,13 +1,17 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useReducer } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Autocomplete from "@mui/material/Autocomplete";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
-import { BuildPackage } from "src/common/models";
 import { StyledIconButton } from "src/styles";
 import { useLazyGetPackageSuggestionsQuery } from "../requestedPackagesApiSlice";
 import { debounce } from "lodash";
 import { CircularProgress } from "@mui/material";
+import {
+  ActionTypes,
+  initialState,
+  requestedPackagesReducer
+} from "../reducer";
 
 interface IAddRequestedPackageProps {
   /**
@@ -23,18 +27,15 @@ export const AddRequestedPackage = ({
   onSubmit
 }: IAddRequestedPackageProps) => {
   const size = 100;
-  const [name, setName] = useState<string>("");
-  const [data, setData] = useState<BuildPackage[]>([]);
-  const [page, setPage] = useState(1);
-  const [count, setCount] = useState(0);
-  const [loading, setLoading] = useState(false);
+  const [state, dispatch] = useReducer(requestedPackagesReducer, initialState);
+
   const [triggerQuery] = useLazyGetPackageSuggestionsQuery();
 
   const uniquePackageNamesList = useMemo(() => {
     const packageNames = new Set();
     const result: string[] = [];
 
-    data.forEach(buildPackage => {
+    state.data.forEach(buildPackage => {
       const packageName = buildPackage.name;
       const hasPackageName = packageNames.has(packageName);
 
@@ -45,27 +46,31 @@ export const AddRequestedPackage = ({
     });
 
     return result;
-  }, [data]);
+  }, [state.data]);
 
   const handleSubmit = () => {
-    if (name) {
-      onSubmit(name);
+    if (state.name) {
+      onSubmit(state.name);
       onCancel(false);
     }
   };
 
   const handleSearch = debounce(async (value: string) => {
-    setLoading(true);
-    setName(value);
-    setPage(1);
+    dispatch({ type: ActionTypes.LOADING, payload: { loading: true } });
 
-    const { data } = await triggerQuery({ page, size, search: value });
+    const { data } = await triggerQuery({
+      page: state.page,
+      size,
+      search: value
+    });
 
     if (data) {
-      setData(data.data);
-      setCount(data.count);
+      dispatch({
+        type: ActionTypes.SEARCHED,
+        payload: { data: data.data, count: data.count, name: value }
+      });
     }
-    setLoading(false);
+    dispatch({ type: ActionTypes.LOADING, payload: { loading: false } });
   }, 200);
 
   const handleScroll = async (event: React.SyntheticEvent) => {
@@ -76,40 +81,47 @@ export const AddRequestedPackage = ({
       listboxNode.scrollTop + listboxNode.clientHeight + scrollOffset >=
       listboxNode.scrollHeight
     ) {
-      const hasMore = size * page <= count;
+      const hasMore = size * state.page <= state.count;
 
       if (!hasMore) {
         return;
       }
 
-      setLoading(true);
+      dispatch({ type: ActionTypes.LOADING, payload: { loading: true } });
       const { data } = await triggerQuery({
-        page: page + 1,
+        page: state.page + 1,
         size,
-        search: name
+        search: state.name
       });
 
       if (data) {
-        setData(currData => currData.concat(data.data));
-        setCount(data.count);
+        dispatch({
+          type: ActionTypes.NEXT_FETCHED,
+          payload: { data: data.data, count: data.count }
+        });
       }
 
-      setPage(currPage => currPage + 1);
-      setLoading(false);
+      dispatch({ type: ActionTypes.LOADING, payload: { loading: false } });
     }
   };
 
   useEffect(() => {
     (async () => {
-      setLoading(true);
-      const { data } = await triggerQuery({ page, search: "", size });
+      dispatch({ type: ActionTypes.LOADING, payload: { loading: true } });
+      const { data } = await triggerQuery({
+        page: state.page,
+        search: "",
+        size
+      });
 
       if (data) {
-        setData(data.data);
-        setCount(data.count);
+        dispatch({
+          type: ActionTypes.DATA_FETCHED,
+          payload: { data: data.data, count: data.count }
+        });
       }
 
-      setLoading(false);
+      dispatch({ type: ActionTypes.LOADING, payload: { loading: false } });
     })();
   }, []);
 
@@ -119,8 +131,7 @@ export const AddRequestedPackage = ({
         <Autocomplete
           onInputChange={(event, value, reason) => {
             if (reason === "clear") {
-              setName("");
-              setPage(1);
+              dispatch({ type: ActionTypes.CLEARED });
               return;
             }
 
@@ -140,7 +151,7 @@ export const AddRequestedPackage = ({
                 ...params.InputProps,
                 endAdornment: (
                   <React.Fragment>
-                    {loading ? (
+                    {state.loading ? (
                       <CircularProgress color="inherit" size={10} />
                     ) : (
                       params.InputProps.endAdornment
