@@ -152,7 +152,11 @@ export const AddRequestedPackage = ({
                 endAdornment: (
                   <React.Fragment>
                     {state.loading ? (
-                      <CircularProgress color="inherit" size={10} />
+                      <CircularProgress
+                        color="inherit"
+                        size={10}
+                        sx={{ marginRight: "7px" }}
+                      />
                     ) : (
                       params.InputProps.endAdornment
                     )}
