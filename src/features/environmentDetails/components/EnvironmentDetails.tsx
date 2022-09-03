@@ -21,27 +21,8 @@ export const EnvironmentDetails = () => {
       size: 100
     });
   }
-  const apiURL = process.env.REACT_APP_API_URL;
-
-  const artifactList = [
-    {
-      name: "Link to lockfile",
-      route: `${apiURL}/build/${selectedEnvironment?.id}/lockfile/`
-    },
-    {
-      name: "Link to yml file",
-      route: `${apiURL}/build/${selectedEnvironment?.id}/yaml/`
-    },
-    {
-      name: "Link to archive",
-      route: `${apiURL}/build/${selectedEnvironment?.id}/archive/`
-    },
-    {
-      name: `Conda Env ${selectedEnvironment?.id} log`,
-      route: `${apiURL}/build/${selectedEnvironment?.id}/logs`
-    }
-  ];
-
+  const buildId =
+    selectedEnvironment?.id === undefined ? -1 : selectedEnvironment.id;
   return (
     <Box sx={{ padding: "14px 12px" }}>
       <EnvironmentDetailsHeader />
@@ -56,7 +37,7 @@ export const EnvironmentDetails = () => {
       </Box>
       {mode === "read-only" && (
         <Box>
-          <ArtifactList artifacts={artifactList} />
+          <ArtifactList build_id={buildId} />
         </Box>
       )}
     </Box>
