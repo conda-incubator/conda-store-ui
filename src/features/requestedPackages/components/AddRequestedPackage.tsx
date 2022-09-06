@@ -1,10 +1,17 @@
+import React, { useEffect, useMemo, useReducer } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Autocomplete from "@mui/material/Autocomplete";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
-import React, { useState } from "react";
-
 import { StyledIconButton } from "src/styles";
+import { useLazyGetPackageSuggestionsQuery } from "../requestedPackagesApiSlice";
+import { debounce } from "lodash";
+import { CircularProgress } from "@mui/material";
+import {
+  ActionTypes,
+  initialState,
+  requestedPackagesReducer
+} from "../reducer";
 
 interface IAddRequestedPackageProps {
   /**
@@ -19,31 +26,144 @@ export const AddRequestedPackage = ({
   onCancel,
   onSubmit
 }: IAddRequestedPackageProps) => {
-  const [name, setName] = useState<string>("");
+  const size = 100;
+  const [state, dispatch] = useReducer(requestedPackagesReducer, initialState);
+
+  const [triggerQuery] = useLazyGetPackageSuggestionsQuery();
+
+  const uniquePackageNamesList = useMemo(() => {
+    const packageNames = new Set();
+    const result: string[] = [];
+
+    state.data.forEach(buildPackage => {
+      const packageName = buildPackage.name;
+      const hasPackageName = packageNames.has(packageName);
+
+      if (!hasPackageName) {
+        result.push(packageName);
+        packageNames.add(packageName);
+      }
+    });
+
+    return result;
+  }, [state.data]);
 
   const handleSubmit = () => {
-    if (name) {
-      onSubmit(name);
+    if (state.name) {
+      onSubmit(state.name);
       onCancel(false);
     }
   };
+
+  const handleSearch = debounce(async (value: string) => {
+    dispatch({ type: ActionTypes.LOADING, payload: { loading: true } });
+
+    const { data } = await triggerQuery({
+      page: state.page,
+      size,
+      search: value
+    });
+
+    if (data) {
+      dispatch({
+        type: ActionTypes.SEARCHED,
+        payload: { data: data.data, count: data.count, name: value }
+      });
+    }
+    dispatch({ type: ActionTypes.LOADING, payload: { loading: false } });
+  }, 200);
+
+  const handleScroll = async (event: React.SyntheticEvent) => {
+    const scrollOffset = 2;
+    const listboxNode = event.currentTarget;
+
+    if (
+      listboxNode.scrollTop + listboxNode.clientHeight + scrollOffset >=
+      listboxNode.scrollHeight
+    ) {
+      const hasMore = size * state.page <= state.count;
+
+      if (!hasMore) {
+        return;
+      }
+
+      dispatch({ type: ActionTypes.LOADING, payload: { loading: true } });
+      const { data } = await triggerQuery({
+        page: state.page + 1,
+        size,
+        search: state.name
+      });
+
+      if (data) {
+        dispatch({
+          type: ActionTypes.NEXT_FETCHED,
+          payload: { data: data.data, count: data.count }
+        });
+      }
+
+      dispatch({ type: ActionTypes.LOADING, payload: { loading: false } });
+    }
+  };
+
+  useEffect(() => {
+    (async () => {
+      dispatch({ type: ActionTypes.LOADING, payload: { loading: true } });
+      const { data } = await triggerQuery({
+        page: state.page,
+        search: "",
+        size
+      });
+
+      if (data) {
+        dispatch({
+          type: ActionTypes.DATA_FETCHED,
+          payload: { data: data.data, count: data.count }
+        });
+      }
+
+      dispatch({ type: ActionTypes.LOADING, payload: { loading: false } });
+    })();
+  }, []);
 
   return (
     <Box sx={{ display: "flex", alignItems: "center", marginTop: "15px" }}>
       <Box sx={{ marginRight: "160px" }}>
         <Autocomplete
-          freeSolo
-          options={["python", "pandas"]}
-          onChange={(e, value) => {
-            setName(value ?? "");
+          onInputChange={(event, value, reason) => {
+            if (reason === "clear") {
+              dispatch({ type: ActionTypes.CLEARED });
+              return;
+            }
+
+            handleSearch(value);
           }}
+          freeSolo
+          options={uniquePackageNamesList}
           sx={{ width: "140px" }}
+          ListboxProps={{
+            onScroll: handleScroll
+          }}
           renderInput={params => (
             <TextField
               autoFocus
               {...params}
+              InputProps={{
+                ...params.InputProps,
+                endAdornment: (
+                  <React.Fragment>
+                    {state.loading ? (
+                      <CircularProgress
+                        color="inherit"
+                        size={10}
+                        sx={{ marginRight: "7px" }}
+                      />
+                    ) : (
+                      params.InputProps.endAdornment
+                    )}
+                  </React.Fragment>
+                )
+              }}
               label="Enter package"
-              onChange={e => setName(e.target.value)}
               onBlur={handleSubmit}
               size="small"
             />
