@@ -4,23 +4,42 @@ React-based UI for [conda store](https://github.com/Quansight/conda-store)
 
 ## How to run
 
-To run conda-store and conda-store-ui, use the `docker-compose.yml` file at the root of the project :
+_This procedure will be updated once we can leverage the login capability of conda-store._  
+_For the moment, we need to run conda-store separately and create a token._
+
+- First, run conda-store separately :
 
 ```sh
+git clone https://github.com/Quansight/conda-store.git
+cd conda-store 
 docker-compose up --build -d
 ```
 
-To run the UI only, use :
+- once running, visit [http://localhost:5000/conda-store/](http://localhost:5000/conda-store/), and log in with the default credentials `admin/password`
+
+- click on `User`, then `create token`, and copy it 
+
+- create your .env for for `conda-store-ui` :
+```
+cd conda-store-ui # change according to where your directory is located
+cp .env.exemple .env
+```
+and then **edit it** to change the `REACT_APP_AUTH_TOKEN` line with the token you created at the previous step.
+
+Then, run the UI :
 
 ```
 conda create --name conda-store-ui
 conda activate conda-store-ui
-conda install -c conda-forge nodejs==16.14.2
+conda install -c conda-forge yarn nodejs==16.14.2
 
 yarn install
 yarn run build
-yarn run start
+yarn run start --port 80
 ```
+
+Once you see the message `webpack 5.73.0 compiled successfully in ... ms` appearing, you can use the UI at url [http://localhost](http://localhost)
+
 
 ## Run unit testing using Jest
 
