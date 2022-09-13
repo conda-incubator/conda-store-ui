@@ -34,12 +34,14 @@ export const EnvironmentDetails = () => {
   const [isEnvUpdated, setIsEnvUpdated] = useState(false);
 
   if (selectedEnvironment) {
-    useGetBuildQuery(selectedEnvironment.current_build_id);
-    useGetBuildPackagesQuery({
+    const a = useGetBuildQuery(selectedEnvironment.current_build_id);
+    const b = useGetBuildPackagesQuery({
       buildId: selectedEnvironment.current_build_id,
       page,
       size: 100
     });
+    console.log(a);
+    console.log(b);
   }
 
   const updateEnvironment = async (code: any) => {
@@ -74,6 +76,10 @@ export const EnvironmentDetails = () => {
     setDescription(selectedEnvironment?.description || "");
   }, [selectedEnvironment]);
 
+  const buildId =
+    selectedEnvironment?.current_build_id === undefined
+      ? -1
+      : selectedEnvironment.current_build_id;
   return (
     <Box sx={{ padding: "14px 12px" }}>
       <EnvironmentDetailsHeader envName={name} onUpdateName={setName} />
@@ -88,11 +94,7 @@ export const EnvironmentDetails = () => {
         </Alert>
       )}
       <Box sx={{ marginBottom: "30px" }}>
-        <EnvMetadata
-          envDescription={description}
-          mode={mode}
-          onUpdateDescription={setDescription}
-        />
+        <EnvMetadata selectedEnv={selectedEnvironment || {}} mode={mode} />
       </Box>
       <Box sx={{ marginBottom: "30px" }}>
         {mode === "read-only" && <SpecificationReadOnly />}
