@@ -34,14 +34,12 @@ export const EnvironmentDetails = () => {
   const [isEnvUpdated, setIsEnvUpdated] = useState(false);
 
   if (selectedEnvironment) {
-    const a = useGetBuildQuery(selectedEnvironment.current_build_id);
-    const b = useGetBuildPackagesQuery({
+    useGetBuildQuery(selectedEnvironment.current_build_id);
+    useGetBuildPackagesQuery({
       buildId: selectedEnvironment.current_build_id,
       page,
       size: 100
     });
-    console.log(a);
-    console.log(b);
   }
 
   const updateEnvironment = async (code: any) => {
