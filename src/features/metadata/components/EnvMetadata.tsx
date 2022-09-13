@@ -26,7 +26,7 @@ interface IEnvMetadataProps {
 }
 
 export const EnvMetadata = ({ selectedEnv, mode }: IEnvMetadataProps) => {
-  const current_build_id = selectedEnv.current_build_id;
+  const currentBuildId = selectedEnv.current_build_id;
   const { data: enviromentBuilds } = useGetEnviromentBuildsQuery(selectedEnv);
   const { palette } = useTheme();
 
@@ -54,10 +54,7 @@ export const EnvMetadata = ({ selectedEnv, mode }: IEnvMetadataProps) => {
       {enviromentBuilds &&
         (mode === EnvironmentDetailsModes.READ ||
           mode === EnvironmentDetailsModes.EDIT) && (
-          <EnvBuilds
-            data={enviromentBuilds}
-            current_build_id={current_build_id}
-          />
+          <EnvBuilds data={enviromentBuilds} currentBuildId={currentBuildId} />
         )}
     </StyledBox>
   );
