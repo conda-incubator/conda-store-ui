@@ -18,7 +18,7 @@ export enum EnvironmentDetailsModes {
 
 interface IEnvMetadataProps {
   /**
-   * @param envDescription description of the selected environment
+   * @param selectedEnv Selected environment's information
    * @param mode change whether the component only displays the list of builds, edit the environment description or create a new description
    */
   selectedEnv: any;
@@ -30,7 +30,7 @@ export const EnvMetadata = ({ selectedEnv, mode }: IEnvMetadataProps) => {
   const { data: enviromentBuilds } = useGetEnviromentBuildsQuery(selectedEnv);
   const { palette } = useTheme();
 
-  const [description, setDescription] = useState(selectedEnv?.description);
+  const [description, setDescription] = useState(selectedEnv.description);
 
   return (
     <StyledBox>
