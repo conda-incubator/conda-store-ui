@@ -12,32 +12,14 @@ import { StyledBox } from "src/styles";
 
 export interface IArtifactsProps {
   /**
-   * @param build_id Id of the buiild that will be active and displayed
+   * @param artifacts list of artifacts
    */
-  build_id: number;
+  artifacts: Artifact[];
 }
 
-export const ArtifactList = ({ build_id }: IArtifactsProps) => {
+export const ArtifactList = ({ artifacts }: IArtifactsProps) => {
+  const listLength = artifacts.length;
   const { typography, palette } = useTheme();
-  const artifactList = [
-    {
-      name: "Link to lockfile",
-      route: `/api/v1/build/${build_id}/lockfile/`
-    },
-    {
-      name: "Link to yml file",
-      route: `/api/v1/build/${build_id}/yaml/`
-    },
-    {
-      name: "Link to archive",
-      route: `/api/v1/build/${build_id}/archive/`
-    },
-    {
-      name: "Conda Env 1 log",
-      route: `/api/v1/build/${build_id}/logs/`
-    }
-  ];
-  const listLength = artifactList.length;
 
   return (
     <StyledBox>
@@ -52,7 +34,7 @@ export const ArtifactList = ({ build_id }: IArtifactsProps) => {
           ></ListItemText>
         </ListItem>
         <Divider sx={{ bgcolor: palette.primary.main }} />
-        {artifactList.map((link, index) => (
+        {artifacts.map((link, index) => (
           <ListItem
             key={link.name}
             sx={{
