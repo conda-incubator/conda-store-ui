@@ -8,7 +8,6 @@ import TableRow from "@mui/material/TableRow";
 import Typography from "@mui/material/Typography";
 import useTheme from "@mui/material/styles/useTheme";
 import React, { useEffect, useMemo, useRef, useState } from "react";
-
 import { RequestedPackagesTableRow } from "./RequestedPackagesTableRow";
 import { AddRequestedPackage } from "./AddRequestedPackage";
 import {
@@ -24,12 +23,15 @@ import { CondaSpecificationPip } from "src/common/models";
 export interface IRequestedPackagesEditProps {
   /**
    * @param packageList list of packages that we get from the API
+   * @param updatePackages notify the parent if there are changes in packageList array.
    */
   packageList: (string | CondaSpecificationPip)[];
+  updatePackages: (packages: any) => void;
 }
 
 export const RequestedPackagesEdit = ({
-  packageList
+  packageList,
+  updatePackages
 }: IRequestedPackagesEditProps) => {
   const [data, setData] = useState(packageList);
   const [isAdding, setIsAdding] = useState(false);
@@ -37,10 +39,17 @@ export const RequestedPackagesEdit = ({
   const scrollRef = useRef<HTMLDivElement | null>(null);
 
   const removePackage = (packageName: string) => {
-    setData(currentData => currentData.filter(item => item !== packageName));
+    const filteredList = (currentData: string[]) =>
+      currentData.filter(item => item !== packageName);
+
+    setData(filteredList);
+    updatePackages(data.filter(item => item !== packageName));
   };
 
-  const addPackage = (packageName: string) => setData([...data, packageName]);
+  const addNewPackage = (packageName: string) => {
+    setData([...data, packageName]);
+    updatePackages([...data, packageName]);
+  };
 
   const filteredPackageList = useMemo(
     () => data.filter(item => typeof item !== "object"),
@@ -115,7 +124,10 @@ export const RequestedPackagesEdit = ({
         </Table>
         <Box ref={scrollRef}>
           {isAdding && (
-            <AddRequestedPackage onSubmit={addPackage} onCancel={setIsAdding} />
+            <AddRequestedPackage
+              onSubmit={addNewPackage}
+              onCancel={setIsAdding}
+            />
           )}
         </Box>
       </StyledAccordionDetails>

@@ -7,8 +7,16 @@ export const environmentDetailsApiSlice = apiSlice.injectEndpoints({
     getBuild: builder.query<IApiResponse<Build>, number>({
       query: buildId => `/api/v1/build/${buildId}`,
       keepUnusedDataFor: 0
+    }),
+    createOrUpdate: builder.mutation({
+      query: code => ({
+        url: "/api/v1/specification/",
+        method: "POST",
+        body: code
+      })
     })
   })
 });
 
-export const { useGetBuildQuery } = environmentDetailsApiSlice;
+export const { useGetBuildQuery, useCreateOrUpdateMutation } =
+  environmentDetailsApiSlice;

@@ -1,44 +1,29 @@
 import React, { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import { ChannelsEdit } from "src/features/channels";
-import { Dependencies, pageChanged } from "src/features/dependencies";
-import { updateChannels } from "src/features/channels";
-import {
-  RequestedPackagesEdit,
-  updatePackages
-} from "src/features/requestedPackages";
+import { RequestedPackagesEdit } from "src/features/requestedPackages";
 import { BlockContainerEditMode } from "src/components";
 import { StyledButtonPrimary } from "src/styles";
-import { useAppDispatch, useAppSelector } from "src/hooks";
 import { CodeEditor } from "src/features/yamlEditor";
 import { stringify } from "yaml";
 
-export const SpecificationEdit = ({ onUpdateEnvironment }: any) => {
-  const { channels } = useAppSelector(state => state.channels);
-  const { requestedPackages } = useAppSelector(
-    state => state.requestedPackages
-  );
-  const { dependencies, size, count, page } = useAppSelector(
-    state => state.dependencies
-  );
-  const hasMore = size * page <= count;
-  const dispatch = useAppDispatch();
+export const SpecificationCreate = ({ onCreateEnvironment }: any) => {
   const [show, setShow] = useState(false);
+  const [channels, setChannels] = useState([]);
+  const [requestedPackages, setPackages] = useState([]);
+  const [newChannels, setNewChannels] = useState(channels);
+  const [newPackages, setNewPackages] = useState(requestedPackages);
   const [code, setCode] = useState({
     channels,
     dependencies: requestedPackages
   });
-  const [newChannels, setNewChannels] = useState(channels);
-  const [newPackages, setNewPackages] = useState(requestedPackages);
 
-  const onUpdatePackages = (packages: string[]) => {
-    dispatch(updatePackages(packages));
-    setNewPackages(packages);
+  const onUpdateChannels = (channels: []) => {
+    setChannels(channels);
   };
 
-  const onUpdateChannels = (channels: string[]) => {
-    dispatch(updateChannels(channels));
-    setNewChannels(channels);
+  const onUpdatePackages = (packages: []) => {
+    setPackages(packages);
   };
 
   const onUpdateEditor = ({ channels, dependencies }: any) => {
@@ -50,19 +35,17 @@ export const SpecificationEdit = ({ onUpdateEnvironment }: any) => {
     setShow(value);
     if (!value) {
       // If user want to switch the yaml editor view, let's send this info to the component
-      dispatch(updateChannels(newChannels));
-      dispatch(updatePackages(newPackages));
+      setChannels(newChannels);
+      setPackages(newPackages);
     }
   };
 
-  const onEditEnvironment = () => {
+  const onUpdateEnvironment = () => {
     if (show) {
-      // If user is using the yaml editor, before make the request update the store
-      dispatch(updateChannels(newChannels));
-      dispatch(updatePackages(newPackages));
+      setChannels(newChannels);
+      setPackages(newPackages);
     }
-
-    onUpdateEnvironment({
+    onCreateEnvironment({
       channels: newChannels,
       dependencies: newPackages
     });
@@ -73,6 +56,8 @@ export const SpecificationEdit = ({ onUpdateEnvironment }: any) => {
       channels,
       dependencies: requestedPackages
     });
+    setNewChannels(channels);
+    setNewPackages(requestedPackages);
   }, [channels, requestedPackages]);
 
   return (
@@ -90,14 +75,6 @@ export const SpecificationEdit = ({ onUpdateEnvironment }: any) => {
               <RequestedPackagesEdit
                 packageList={requestedPackages}
                 updatePackages={onUpdatePackages}
-              />
-            </Box>
-            <Box sx={{ marginBottom: "30px" }}>
-              <Dependencies
-                mode="edit"
-                dependencies={dependencies}
-                hasMore={hasMore}
-                next={() => dispatch(pageChanged(page + 1))}
               />
             </Box>
             <Box sx={{ margiBottom: "30px" }}>
@@ -118,9 +95,9 @@ export const SpecificationEdit = ({ onUpdateEnvironment }: any) => {
         >
           <StyledButtonPrimary
             sx={{ padding: "5px 60px" }}
-            onClick={() => onEditEnvironment()}
+            onClick={onUpdateEnvironment}
           >
-            Edit
+            Create
           </StyledButtonPrimary>
         </Box>
       </Box>

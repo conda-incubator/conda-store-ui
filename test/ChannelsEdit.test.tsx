@@ -16,7 +16,12 @@ describe("<ChannelsEdit />", () => {
 
   beforeEach(() => {
     component = render(
-      mockTheme(<ChannelsEdit channelsList={CHANNELS_LIST} />)
+      mockTheme(
+        <ChannelsEdit
+          channelsList={CHANNELS_LIST}
+          updateChannels={() => ({})}
+        />
+      )
     );
   });
 

@@ -9,7 +9,6 @@ import {
   Droppable,
   DropResult
 } from "react-beautiful-dnd";
-
 import { AddChannel } from "./AddChannel";
 import { ChannelsEditItem } from "./ChannelsEditItem";
 import {
@@ -24,11 +23,16 @@ import { reorderArray } from "src/utils/helpers";
 export interface IChannelsEditProps {
   /**
    * @param channelsList list of channels
+   * @param updateChannels notify the parent if there are changes in channelsList array.
    */
   channelsList: string[];
+  updateChannels: (channels: string[]) => void;
 }
 
-export const ChannelsEdit = ({ channelsList }: IChannelsEditProps) => {
+export const ChannelsEdit = ({
+  channelsList,
+  updateChannels
+}: IChannelsEditProps) => {
   const { palette } = useTheme();
   const scrollRef = useRef<HTMLDivElement | null>(null);
 
@@ -39,12 +43,14 @@ export const ChannelsEdit = ({ channelsList }: IChannelsEditProps) => {
 
   const addNewChannel = (channelName: string) => {
     setList([...list, channelName]);
+    updateChannels([...list, channelName]);
   };
 
   const removeChannel = (channelName: string) => {
     const filteredList = list.filter(channel => channel !== channelName);
 
     setList(filteredList);
+    updateChannels(filteredList);
   };
 
   const editChannel = (channelName: string, newChannelName: string) => {

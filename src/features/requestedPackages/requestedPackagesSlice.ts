@@ -26,6 +26,10 @@ export const requestedPackagesSlice = createSlice({
       const { packageName, version } = action.payload;
 
       state.packageVersions[packageName] = version;
+    },
+    updatePackages: (state, action) => {
+      const packages = action.payload;
+      state.requestedPackages = packages;
     }
   },
   extraReducers: builder => {
@@ -59,4 +63,5 @@ export const requestedPackagesSlice = createSlice({
   }
 });
 
-export const { packageVersionAdded } = requestedPackagesSlice.actions;
+export const { packageVersionAdded, updatePackages } =
+  requestedPackagesSlice.actions;

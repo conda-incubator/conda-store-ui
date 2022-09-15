@@ -1,1 +1,8 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap");
+body {
+    margin: 0;
+    overflow-x: hidden;
+}
+#app {
+    height: 100vh;
+}

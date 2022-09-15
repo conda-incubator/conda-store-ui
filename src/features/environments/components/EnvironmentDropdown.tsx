@@ -11,7 +11,15 @@ import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import { Environment } from "./Environment";
 import { useAppDispatch, useAppSelector } from "src/hooks";
-import { environmentOpened } from "src/features/tabs";
+import {
+  environmentOpened,
+  openCreateNewEnvironmentTab,
+  toggleNewEnvironmentView
+} from "src/features/tabs";
+import {
+  modeChanged,
+  EnvironmentDetailsModes
+} from "src/features/environmentDetails";
 
 interface IEnvironmentDropdownProps {
   /**
@@ -25,6 +33,11 @@ export const EnvironmentDropdown = ({
 }: IEnvironmentDropdownProps) => {
   const { selectedEnvironment } = useAppSelector(state => state.tabs);
   const dispatch = useAppDispatch();
+
+  const onCreateNewEnvironmentTab = (namespace: string) => {
+    dispatch(modeChanged(EnvironmentDetailsModes.CREATE));
+    dispatch(openCreateNewEnvironmentTab(namespace));
+  };
 
   return (
     <Accordion
@@ -42,7 +55,7 @@ export const EnvironmentDropdown = ({
       >
         <Box sx={{ display: "flex", alignItems: "center" }}>
           <Typography sx={{ width: "217px" }}>{namespace}</Typography>
-          <IconButton>
+          <IconButton onClick={() => onCreateNewEnvironmentTab(namespace)}>
             <AddIcon sx={{ width: "15px", height: "15px", color: "#2B2B2B" }} />
           </IconButton>
         </Box>
@@ -58,14 +71,16 @@ export const EnvironmentDropdown = ({
               sx={{ marginBottom: "20px" }}
             >
               <Environment
-                onClick={() =>
+                onClick={() => {
                   dispatch(
                     environmentOpened({
                       environment,
                       selectedEnvironmentId: selectedEnvironment?.id
                     })
-                  )
-                }
+                  );
+                  dispatch(modeChanged(EnvironmentDetailsModes.READ));
+                  dispatch(toggleNewEnvironmentView(false));
+                }}
                 environment={environment}
               />
             </ListItem>
