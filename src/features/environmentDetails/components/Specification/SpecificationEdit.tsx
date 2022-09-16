@@ -12,6 +12,7 @@ import { StyledButtonPrimary } from "src/styles";
 import { useAppDispatch, useAppSelector } from "src/hooks";
 import { CodeEditor } from "src/features/yamlEditor";
 import { stringify } from "yaml";
+import { modeChanged, EnvironmentDetailsModes } from "src/features/environmentDetails";
 
 export const SpecificationEdit = ({ onUpdateEnvironment }: any) => {
   const { channels } = useAppSelector(state => state.channels);
@@ -68,6 +69,10 @@ export const SpecificationEdit = ({ onUpdateEnvironment }: any) => {
     });
   };
 
+  const onCancelEdition = () => {
+    dispatch(modeChanged(EnvironmentDetailsModes.READ));
+  };
+
   useEffect(() => {
     setCode({
       channels,
@@ -112,11 +117,17 @@ export const SpecificationEdit = ({ onUpdateEnvironment }: any) => {
         <Box
           sx={{
             display: "flex",
-            justifyContent: "center",
+            justifyContent: "space-around",
             marginTop: "30px",
             marginBottom: "10px"
           }}
         >
+          <StyledButtonPrimary
+            sx={{ padding: "5px 60px" }}
+            onClick={() => onCancelEdition()}
+          >
+            Cancel
+          </StyledButtonPrimary>
           <StyledButtonPrimary
             sx={{ padding: "5px 60px" }}
             onClick={() => onEditEnvironment()}
