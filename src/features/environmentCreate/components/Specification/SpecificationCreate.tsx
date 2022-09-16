@@ -75,6 +75,7 @@ export const SpecificationCreate = ({ onCreateEnvironment }: any) => {
               <RequestedPackagesEdit
                 packageList={requestedPackages}
                 updatePackages={onUpdatePackages}
+                isCreating={false}
               />
             </Box>
             <Box sx={{ margiBottom: "30px" }}>

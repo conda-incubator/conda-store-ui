@@ -24,14 +24,17 @@ export interface IRequestedPackagesEditProps {
   /**
    * @param packageList list of packages that we get from the API
    * @param updatePackages notify the parent if there are changes in packageList array.
+   * @param isCreating notify the component if it's being used for creation or edition.
    */
   packageList: (string | CondaSpecificationPip)[];
   updatePackages: (packages: any) => void;
+  isCreating: boolean;
 }
 
 export const RequestedPackagesEdit = ({
   packageList,
-  updatePackages
+  updatePackages,
+  isCreating
 }: IRequestedPackagesEditProps) => {
   const [data, setData] = useState(packageList);
   const [isAdding, setIsAdding] = useState(false);
@@ -89,19 +92,23 @@ export const RequestedPackagesEdit = ({
                   Name
                 </Typography>
               </StyledEditPackagesTableCell>
-              <StyledEditPackagesTableCell
-                align="left"
-                sx={{
-                  width: "180px"
-                }}
-              >
-                <Typography
-                  component="p"
-                  sx={{ fontSize: "16px", fontWeight: 500 }}
-                >
-                  Installed Version
-                </Typography>
-              </StyledEditPackagesTableCell>
+              {
+                isCreating && (
+                  <StyledEditPackagesTableCell
+                    align="left"
+                    sx={{
+                      width: "180px"
+                    }}
+                  >
+                    <Typography
+                      component="p"
+                      sx={{ fontSize: "16px", fontWeight: 500 }}
+                    >
+                      Installed Version
+                    </Typography>
+                  </StyledEditPackagesTableCell>
+                )
+              }
               <StyledEditPackagesTableCell align="left">
                 <Typography
                   component="p"
