@@ -63,7 +63,7 @@ export const RequestedPackagesEdit = ({
   }, [isAdding]);
 
   return (
-    <Accordion sx={{ width: 576, boxShadow: "none" }} disableGutters>
+    <Accordion sx={{ width: 576, boxShadow: "none" }} defaultExpanded disableGutters>
       <StyledAccordionSummary expandIcon={<StyledAccordionExpandIcon />}>
         <StyledAccordionTitle>Requested Packages</StyledAccordionTitle>
       </StyledAccordionSummary>
