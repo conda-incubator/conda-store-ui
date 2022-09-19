@@ -81,6 +81,7 @@ export const VersionSelect = ({ version, name }: IVersionSelectProps) => {
           />
         </IconButton>
       )}
+      MenuProps={{ PaperProps: { sx: { maxHeight: 200 } } }}
       sx={{
         borderRadius: "0px",
         width: "110px",
