@@ -25,7 +25,7 @@ export const Build = ({ builds }: IBuildProps) => {
       onClose={() => setOpen(false)}
       onOpen={() => setOpen(true)}
       sx={{ marginLeft: "13px" }}
-      defaultValue={builds ? builds[builds.length - 1].name : null}
+      value={builds && builds.length > 0 ? builds[0].name : ""}
       IconComponent={() => (
         <IconButton
           sx={{ padding: "0px" }}
