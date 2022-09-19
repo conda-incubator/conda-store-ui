@@ -1,7 +1,11 @@
 import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import Alert from "@mui/material/Alert";
-import { EnvironmentDetailsHeader, modeChanged, EnvironmentDetailsModes } from "src/features/environmentDetails";
+import {
+  EnvironmentDetailsHeader,
+  modeChanged,
+  EnvironmentDetailsModes
+} from "src/features/environmentDetails";
 import { Popup } from "src/components";
 import { useAppDispatch, useAppSelector } from "src/hooks";
 import { EnvMetadata } from "src/features/metadata";
@@ -70,7 +74,7 @@ export const EnvironmentCreate = () => {
         />
       </Box>
       <Box sx={{ marginBottom: "30px" }}>
-      {mode === "read-only" && <SpecificationReadOnly />}
+        {mode === "read-only" && <SpecificationReadOnly />}
         {mode === "create" && (
           <SpecificationCreate onCreateEnvironment={createEnvironment} />
         )}

@@ -66,7 +66,11 @@ export const RequestedPackagesEdit = ({
   }, [isAdding]);
 
   return (
-    <Accordion sx={{ width: 576, boxShadow: "none" }} defaultExpanded disableGutters>
+    <Accordion
+      sx={{ width: 576, boxShadow: "none" }}
+      defaultExpanded
+      disableGutters
+    >
       <StyledAccordionSummary expandIcon={<StyledAccordionExpandIcon />}>
         <StyledAccordionTitle>Requested Packages</StyledAccordionTitle>
       </StyledAccordionSummary>
@@ -92,23 +96,21 @@ export const RequestedPackagesEdit = ({
                   Name
                 </Typography>
               </StyledEditPackagesTableCell>
-              {
-                isCreating && (
-                  <StyledEditPackagesTableCell
-                    align="left"
-                    sx={{
-                      width: "180px"
-                    }}
+              {isCreating && (
+                <StyledEditPackagesTableCell
+                  align="left"
+                  sx={{
+                    width: "180px"
+                  }}
+                >
+                  <Typography
+                    component="p"
+                    sx={{ fontSize: "16px", fontWeight: 500 }}
                   >
-                    <Typography
-                      component="p"
-                      sx={{ fontSize: "16px", fontWeight: 500 }}
-                    >
-                      Installed Version
-                    </Typography>
-                  </StyledEditPackagesTableCell>
-                )
-              }
+                    Installed Version
+                  </Typography>
+                </StyledEditPackagesTableCell>
+              )}
               <StyledEditPackagesTableCell align="left">
                 <Typography
                   component="p"

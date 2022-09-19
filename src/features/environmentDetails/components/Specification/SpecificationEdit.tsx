@@ -12,7 +12,10 @@ import { StyledButtonPrimary } from "src/styles";
 import { useAppDispatch, useAppSelector } from "src/hooks";
 import { CodeEditor } from "src/features/yamlEditor";
 import { stringify } from "yaml";
-import { modeChanged, EnvironmentDetailsModes } from "src/features/environmentDetails";
+import {
+  modeChanged,
+  EnvironmentDetailsModes
+} from "src/features/environmentDetails";
 
 export const SpecificationEdit = ({ onUpdateEnvironment }: any) => {
   const { channels } = useAppSelector(state => state.channels);
