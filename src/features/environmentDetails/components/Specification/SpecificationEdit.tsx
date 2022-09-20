@@ -28,10 +28,7 @@ export const SpecificationEdit = ({ onUpdateEnvironment }: any) => {
   const hasMore = size * page <= count;
   const dispatch = useAppDispatch();
   const [show, setShow] = useState(false);
-  const [code, setCode] = useState({
-    channels,
-    dependencies: requestedPackages
-  });
+  const [code, setCode] = useState({});
   const [newChannels, setNewChannels] = useState(channels);
   const [newPackages, setNewPackages] = useState(requestedPackages);
 
@@ -77,10 +74,16 @@ export const SpecificationEdit = ({ onUpdateEnvironment }: any) => {
   };
 
   useEffect(() => {
-    setCode({
-      channels,
-      dependencies: requestedPackages
-    });
+    if (channels.length) {
+      setCode({
+        channels,
+        dependencies: requestedPackages
+      });
+    } else {
+      setCode({
+        dependencies: requestedPackages
+      });
+    }
   }, [channels, requestedPackages]);
 
   return (
