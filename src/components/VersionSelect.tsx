@@ -95,7 +95,7 @@ export const VersionSelect = ({ version, name }: IVersionSelectProps) => {
         }
       }}
     >
-      <MenuItem value={""}>latest</MenuItem>
+      <MenuItem value={""} sx={{ height: "35px !important" }}></MenuItem>
       {versionList.map(version => (
         <MenuItem key={version} value={version}>
           {version}
