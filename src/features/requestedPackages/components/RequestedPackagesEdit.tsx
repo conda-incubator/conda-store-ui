@@ -96,7 +96,7 @@ export const RequestedPackagesEdit = ({
                   Name
                 </Typography>
               </StyledEditPackagesTableCell>
-              {isCreating && (
+              {!isCreating && (
                 <StyledEditPackagesTableCell
                   align="left"
                   sx={{
