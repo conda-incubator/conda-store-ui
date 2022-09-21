@@ -5,7 +5,7 @@ import { Typography } from "@mui/material";
 import { PageTabs } from "src/features/tabs";
 import { useAppSelector } from "src/hooks";
 import { EnvironmentDetails } from "src/features/environmentDetails";
-import { EnvironmentCreate } from "src/features/EnvironmentCreate";
+import { EnvironmentCreate } from "src/features/environmentCreate";
 
 export const PageLayout = () => {
   const { selectedEnvironment, newEnvironment } = useAppSelector(
