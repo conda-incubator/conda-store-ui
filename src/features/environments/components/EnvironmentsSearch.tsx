@@ -17,7 +17,7 @@ interface IEnvironmentsSearchProps {
 export const EnvironmentsSearch = ({ onChange }: IEnvironmentsSearchProps) => {
   const authMethod =
     process.env.REACT_APP_AUTH_METHOD === "cookie" ? true : false;
-  const authUrl = process.env.REACT_APP_LOGIN_PAGE;
+  const authUrl = process.env.REACT_APP_LOGIN_PAGE_URL;
   const pageUrl = window.location.href;
   const loginPageUrl = `${authUrl}${pageUrl}`;
   let login;
