@@ -5,7 +5,9 @@ export enum ActionTypes {
   SEARCHED = "requestedPackages/searched",
   NEXT_FETCHED = "requestedPackages/next_fetched",
   LOADING = "requestedPackages/loading",
-  CLEARED = "requestedPackages/cleared"
+  CLEARED = "requestedPackages/cleared",
+  FETCH_MORE = "requestedPackages/fetch_more",
+  DATA_FIlTERED = "requestedPackages/data_filtered"
 }
 
 interface IInitialState {
@@ -14,6 +16,7 @@ interface IInitialState {
   count: number;
   name: string;
   loading: boolean;
+  results: string[];
 }
 
 type Action =
@@ -33,14 +36,20 @@ type Action =
       type: ActionTypes.LOADING;
       payload: { loading: boolean };
     }
-  | { type: ActionTypes.CLEARED };
+  | { type: ActionTypes.CLEARED }
+  | { type: ActionTypes.DATA_FIlTERED; payload: { results: string[] } }
+  | {
+      type: ActionTypes.FETCH_MORE;
+      payload: { data: BuildPackage[]; page: number };
+    };
 
 export const initialState: IInitialState = {
   page: 1,
   data: [],
   count: 0,
   name: "",
-  loading: false
+  loading: false,
+  results: []
 };
 
 export const requestedPackagesReducer = (
@@ -84,6 +93,21 @@ export const requestedPackagesReducer = (
         ...state,
         name: "",
         page: 1
+      };
+    }
+
+    case ActionTypes.DATA_FIlTERED: {
+      return {
+        ...state,
+        results: action.payload.results
+      };
+    }
+
+    case ActionTypes.FETCH_MORE: {
+      return {
+        ...state,
+        data: action.payload.data,
+        page: action.payload.page
       };
     }
   }

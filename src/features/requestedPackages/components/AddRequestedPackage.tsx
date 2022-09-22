@@ -31,9 +31,31 @@ export const AddRequestedPackage = ({
 
   const [triggerQuery] = useLazyGetPackageSuggestionsQuery();
 
+  const fetchMore = async () => {
+    dispatch({ type: ActionTypes.LOADING, payload: { loading: true } });
+    const nextPage = state.page + 1;
+
+    const { data } = await triggerQuery({
+      page: nextPage,
+      size,
+      search: state.name
+    });
+
+    if (data) {
+      dispatch({
+        type: ActionTypes.FETCH_MORE,
+        payload: { data: data.data, page: nextPage }
+      });
+    }
+
+    dispatch({ type: ActionTypes.LOADING, payload: { loading: false } });
+  };
+
   const uniquePackageNamesList = useMemo(() => {
-    const packageNames = new Set();
-    const result: string[] = [];
+    const packageNames = new Set(state.results);
+    const result: string[] = [...state.results];
+    // console.log("uniquePackageNamesList ran");
+    // console.log("list size", result.length);
 
     state.data.forEach(buildPackage => {
       const packageName = buildPackage.name;
@@ -44,6 +66,13 @@ export const AddRequestedPackage = ({
         packageNames.add(packageName);
       }
     });
+
+    dispatch({ type: ActionTypes.DATA_FIlTERED, payload: { results: result } });
+
+    if (result.length < state.page * 10) {
+      fetchMore();
+      return [];
+    }
 
     return result;
   }, [state.data]);
