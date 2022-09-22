@@ -64,7 +64,7 @@ export const requestedPackagesReducer = (
     }
 
     case ActionTypes.SEARCHED: {
-      return { ...state, ...action.payload, page: 1 };
+      return { ...state, ...action.payload, page: 1, results: [] };
     }
 
     case ActionTypes.NEXT_FETCHED: {

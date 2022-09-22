@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useReducer } from "react";
+import React, { useEffect, useMemo, useReducer, useState } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Autocomplete from "@mui/material/Autocomplete";
 import Box from "@mui/material/Box";
@@ -28,6 +28,7 @@ export const AddRequestedPackage = ({
 }: IAddRequestedPackageProps) => {
   const size = 100;
   const [state, dispatch] = useReducer(requestedPackagesReducer, initialState);
+  const [pageSize, setPageSize] = useState(10);
 
   const [triggerQuery] = useLazyGetPackageSuggestionsQuery();
 
@@ -42,10 +43,12 @@ export const AddRequestedPackage = ({
     });
 
     if (data) {
-      dispatch({
-        type: ActionTypes.FETCH_MORE,
-        payload: { data: data.data, page: nextPage }
-      });
+      if (data.data.length > 0) {
+        dispatch({
+          type: ActionTypes.FETCH_MORE,
+          payload: { data: data.data, page: nextPage }
+        });
+      }
     }
 
     dispatch({ type: ActionTypes.LOADING, payload: { loading: false } });
@@ -56,6 +59,7 @@ export const AddRequestedPackage = ({
     const result: string[] = [...state.results];
     // console.log("uniquePackageNamesList ran");
     // console.log("list size", result.length);
+    // console.log("page size", pageSize);
 
     state.data.forEach(buildPackage => {
       const packageName = buildPackage.name;
@@ -69,9 +73,13 @@ export const AddRequestedPackage = ({
 
     dispatch({ type: ActionTypes.DATA_FIlTERED, payload: { results: result } });
 
-    if (result.length < state.page * 10) {
+    if (result.length <= pageSize) {
       fetchMore();
       return [];
+    }
+
+    if (result.length >= pageSize) {
+      setPageSize(currPageSize => currPageSize + 10);
     }
 
     return result;
@@ -85,6 +93,7 @@ export const AddRequestedPackage = ({
   };
 
   const handleSearch = debounce(async (value: string) => {
+    setPageSize(10);
     dispatch({ type: ActionTypes.LOADING, payload: { loading: true } });
 
     const { data } = await triggerQuery({
@@ -99,6 +108,7 @@ export const AddRequestedPackage = ({
         payload: { data: data.data, count: data.count, name: value }
       });
     }
+
     dispatch({ type: ActionTypes.LOADING, payload: { loading: false } });
   }, 200);
 
