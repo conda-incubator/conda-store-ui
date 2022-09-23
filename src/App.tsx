@@ -5,6 +5,11 @@ import "../style/index.css";
 import { PageLayout } from "./layouts";
 import { LoginPage } from "./features/auth";
 
+import { ThemeProvider } from "@mui/material";
+import { Provider } from "react-redux";
+import { store } from "./store";
+import { theme } from "./theme";
+
 export const App = () => {
   return (
     <Router>
@@ -13,5 +18,21 @@ export const App = () => {
         <Route path="/login" element={<LoginPage />} />
       </Routes>
     </Router>
+  );
+};
+
+export const AppExample = () => {
+  return (
+    <Provider store={store}>
+      <ThemeProvider theme={theme}>
+        <App />
+      </ThemeProvider>
+    </Provider>
+  );
+};
+
+export const FooExample = () => {
+  return (
+    <span>foo text lorem ipsum</span>
   );
 };
