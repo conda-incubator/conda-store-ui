@@ -19,6 +19,7 @@ import {
   StyledEditPackagesTableCell
 } from "src/styles";
 import { CondaSpecificationPip } from "src/common/models";
+import { requestedPackageParser } from "src/utils/helpers";
 
 export interface IRequestedPackagesEditProps {
   /**
@@ -52,6 +53,26 @@ export const RequestedPackagesEdit = ({
   const addNewPackage = (packageName: string) => {
     setData([...data, packageName]);
     updatePackages([...data, packageName]);
+  };
+
+  const comparePackages = (
+    requestedPackage: string | CondaSpecificationPip,
+    newPackage: string,
+    newPackageName: string | CondaSpecificationPip
+  ) => {
+    const { name } = requestedPackageParser(requestedPackage as string);
+
+    if (name === newPackageName) return newPackage;
+
+    return requestedPackage;
+  };
+
+  const updatePackage = (name: string, constraint: string, version: string) => {
+    const newPackage = `${name}${constraint === "latest" ? "==" : constraint}${
+      !version ? "" : version
+    }`;
+
+    updatePackages(data.map(p => comparePackages(p, newPackage, name)));
   };
 
   const filteredPackageList = useMemo(
@@ -96,21 +117,21 @@ export const RequestedPackagesEdit = ({
                   Name
                 </Typography>
               </StyledEditPackagesTableCell>
-              {!isCreating && (
-                <StyledEditPackagesTableCell
-                  align="left"
-                  sx={{
-                    width: "180px"
-                  }}
+              {/* {!isCreating && ( */}
+              <StyledEditPackagesTableCell
+                align="left"
+                sx={{
+                  width: "180px"
+                }}
+              >
+                <Typography
+                  component="p"
+                  sx={{ fontSize: "16px", fontWeight: 500 }}
                 >
-                  <Typography
-                    component="p"
-                    sx={{ fontSize: "16px", fontWeight: 500 }}
-                  >
-                    Installed Version
-                  </Typography>
-                </StyledEditPackagesTableCell>
-              )}
+                  Installed Version
+                </Typography>
+              </StyledEditPackagesTableCell>
+              {/* )} */}
               <StyledEditPackagesTableCell align="left">
                 <Typography
                   component="p"
@@ -124,6 +145,7 @@ export const RequestedPackagesEdit = ({
           <TableBody>
             {filteredPackageList.map(requestedPackage => (
               <RequestedPackagesTableRow
+                onUpdate={updatePackage}
                 onRemove={removePackage}
                 key={`${requestedPackage}`}
                 requestedPackage={`${requestedPackage}`}

@@ -18,9 +18,14 @@ interface IVersionSelectProps {
    */
   version: string | null;
   name: string;
+  onUpdate?: (value: string) => void;
 }
 
-export const VersionSelect = ({ version, name }: IVersionSelectProps) => {
+export const VersionSelect = ({
+  version,
+  name,
+  onUpdate = (value: string) => {}
+}: IVersionSelectProps) => {
   const { palette } = useTheme();
   const [open, setOpen] = useState(false);
 
@@ -50,6 +55,7 @@ export const VersionSelect = ({ version, name }: IVersionSelectProps) => {
     const uniqueVersions = new Set();
     const result: string[] = [];
     let sortedVersions: string[] = [];
+
     state.data.forEach(packageVersions => {
       const packageVersion = packageVersions.version.replace(/[^0-9.]+/, "");
       const hasPackageVersion = uniqueVersions.has(packageVersion);
@@ -65,10 +71,11 @@ export const VersionSelect = ({ version, name }: IVersionSelectProps) => {
 
   return (
     <Select
-      defaultValue={""}
+      defaultValue={version ?? ""}
       open={open}
       onClose={() => setOpen(false)}
       onOpen={() => setOpen(true)}
+      onChange={e => onUpdate(e.target.value)}
       IconComponent={() => (
         <IconButton
           sx={{ padding: "0px" }}
@@ -97,10 +104,9 @@ export const VersionSelect = ({ version, name }: IVersionSelectProps) => {
         }
       }}
     >
-      <MenuItem value={""} sx={{ height: "35px !important" }}></MenuItem>
-      {versionList.map(version => (
-        <MenuItem key={version} value={version}>
-          {version}
+      {versionList.map(v => (
+        <MenuItem key={v} value={v}>
+          {v}
         </MenuItem>
       ))}
     </Select>

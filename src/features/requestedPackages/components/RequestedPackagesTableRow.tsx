@@ -16,11 +16,13 @@ interface IRequestedPackagesTableRowProps {
    */
   requestedPackage: string;
   onRemove: (packageName: string) => void;
+  onUpdate?: (name: string, constraint: string, version: string) => void;
 }
 
 const BaseRequestedPackagesTableRow = ({
   requestedPackage,
-  onRemove
+  onRemove,
+  onUpdate = (name: string, constraint: string, version: string) => {}
 }: IRequestedPackagesTableRowProps) => {
   const { packageVersions } = useAppSelector(state => state.requestedPackages);
 
@@ -31,6 +33,14 @@ const BaseRequestedPackagesTableRow = ({
   if (constraint === "latest") {
     version = packageVersions[name];
   }
+
+  const updateVersion = (value: string) => {
+    onUpdate(name, constraint, value);
+  };
+
+  const updateConstraint = (value: string) => {
+    onUpdate(name, value, version);
+  };
 
   return (
     <TableRow>
@@ -49,9 +59,14 @@ const BaseRequestedPackagesTableRow = ({
       <StyledRequestedPackagesTableCell align="left">
         <Box sx={{ display: "flex", alignItems: "center" }}>
           <ConstraintSelect
+            onUpdate={updateConstraint}
             constraint={constraint === "latest" ? "" : constraint}
           />
-          <VersionSelect version={version} name={name} />
+          <VersionSelect
+            onUpdate={updateVersion}
+            version={version}
+            name={name}
+          />
           <StyledIconButton
             onClick={() => onRemove(requestedPackage)}
             sx={{ marginLeft: "24px" }}
