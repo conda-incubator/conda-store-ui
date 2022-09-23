@@ -10,7 +10,7 @@ import {
   initialState,
   requestedPackagesReducer
 } from "src/features/requestedPackages/reducer";
-
+import { compareVersions } from "compare-versions";
 interface IVersionSelectProps {
   /**
    * @param version package version
@@ -49,8 +49,9 @@ export const VersionSelect = ({ version, name }: IVersionSelectProps) => {
   const versionList = useMemo(() => {
     const uniqueVersions = new Set();
     const result: string[] = [];
+    let sortedVersions: string[] = [];
     state.data.forEach(packageVersions => {
-      const packageVersion = packageVersions.version;
+      const packageVersion = packageVersions.version.replace(/[^0-9.]+/, "");
       const hasPackageVersion = uniqueVersions.has(packageVersion);
 
       if (!hasPackageVersion) {
@@ -58,7 +59,8 @@ export const VersionSelect = ({ version, name }: IVersionSelectProps) => {
         uniqueVersions.add(packageVersion);
       }
     });
-    return result;
+    sortedVersions = result.sort(compareVersions);
+    return sortedVersions.reverse();
   }, [state.data]);
 
   return (
