@@ -51,7 +51,7 @@ const BaseRequestedPackagesTableRow = ({
           <ConstraintSelect
             constraint={constraint === "latest" ? "" : constraint}
           />
-          <VersionSelect version={version} />
+          <VersionSelect version={version} name={name} />
           <StyledIconButton
             onClick={() => onRemove(requestedPackage)}
             sx={{ marginLeft: "24px" }}

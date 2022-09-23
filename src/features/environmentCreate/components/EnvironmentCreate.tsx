@@ -1,15 +1,21 @@
 import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import Alert from "@mui/material/Alert";
-import { EnvironmentDetailsHeader } from "src/features/environmentDetails";
+import {
+  EnvironmentDetailsHeader,
+  modeChanged,
+  EnvironmentDetailsModes
+} from "src/features/environmentDetails";
 import { Popup } from "src/components";
-import { useAppSelector } from "src/hooks";
+import { useAppDispatch, useAppSelector } from "src/hooks";
 import { EnvMetadata } from "src/features/metadata";
-import { SpecificationCreate } from "./Specification/SpecificationCreate";
+import { SpecificationCreate, SpecificationReadOnly } from "./Specification";
 import { useCreateOrUpdateMutation } from "src/features/environmentDetails";
 import { stringify } from "yaml";
 
 export const EnvironmentCreate = () => {
+  const dispatch = useAppDispatch();
+  const { mode } = useAppSelector(state => state.environmentDetails);
   const { newEnvironment } = useAppSelector(state => state.tabs);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -37,6 +43,7 @@ export const EnvironmentCreate = () => {
       });
       const { data } = await createOrUpdate(environmentInfo).unwrap();
       setIsEnvCreated(true);
+      dispatch(modeChanged(EnvironmentDetailsModes.READ));
       console.log(`New build id: ${data.build_id}`);
     } catch ({ data }) {
       setError({
@@ -67,7 +74,10 @@ export const EnvironmentCreate = () => {
         />
       </Box>
       <Box sx={{ marginBottom: "30px" }}>
-        <SpecificationCreate onCreateEnvironment={createEnvironment} />
+        {mode === "read-only" && <SpecificationReadOnly />}
+        {mode === "create" && (
+          <SpecificationCreate onCreateEnvironment={createEnvironment} />
+        )}
       </Box>
       <Popup
         isVisible={isEnvCreated}
