@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import Divider from "@mui/material/Divider";
@@ -11,7 +11,7 @@ import { StyledBox } from "src/styles";
 import { useGetEnviromentsQuery } from "src/features/metadata";
 
 export enum EnvironmentDetailsModes {
-  "CREAT" = "creat",
+  "CREATE" = "create",
   "READ" = "read-only",
   "EDIT" = "edit"
 }
@@ -20,16 +20,20 @@ interface IEnvMetadataProps {
   /**
    * @param envDescription description of the selected environment
    * @param mode change whether the component only displays the list of builds, edit the environment description or create a new description
+   * @param onUpdateDescription change environment description
    */
   envDescription: string;
   mode: "create" | "read-only" | "edit";
+  onUpdateDescription: (description: string) => void;
 }
 
-export const EnvMetadata = ({ envDescription, mode }: IEnvMetadataProps) => {
+export const EnvMetadata = ({
+  envDescription,
+  mode,
+  onUpdateDescription
+}: IEnvMetadataProps) => {
   const { data: enviromentData } = useGetEnviromentsQuery();
   const { palette } = useTheme();
-
-  const [description, setDescription] = useState(envDescription);
 
   return (
     <StyledBox>
@@ -47,8 +51,8 @@ export const EnvMetadata = ({ envDescription, mode }: IEnvMetadataProps) => {
       </List>
       <Description
         mode={mode}
-        description={description}
-        onChangeDescription={setDescription}
+        description={envDescription}
+        onChangeDescription={onUpdateDescription}
       />
       {enviromentData &&
         (mode === EnvironmentDetailsModes.READ ||

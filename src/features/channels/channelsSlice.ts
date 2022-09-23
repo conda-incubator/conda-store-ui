@@ -10,7 +10,12 @@ const initialState: IChannelsState = { channels: [] };
 export const channelsSlice = createSlice({
   name: "channels",
   initialState,
-  reducers: {},
+  reducers: {
+    updateChannels: (state, action) => {
+      const channels = action.payload;
+      state.channels = channels;
+    }
+  },
   extraReducers: builder => {
     builder.addMatcher(
       environmentDetailsApiSlice.endpoints.getBuild.matchFulfilled,
@@ -31,3 +36,5 @@ export const channelsSlice = createSlice({
     );
   }
 });
+
+export const { updateChannels } = channelsSlice.actions;

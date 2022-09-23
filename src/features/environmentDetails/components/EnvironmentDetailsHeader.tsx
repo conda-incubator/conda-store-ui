@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
@@ -9,15 +9,21 @@ import {
   modeChanged
 } from "../environmentDetailsSlice";
 
-export const EnvironmentDetailsHeader = () => {
-  const { mode, name } = useAppSelector(state => state.environmentDetails);
+interface IEnvironmentDetailsHeaderProps {
+  /**
+   * @param envName name of the selected environment
+   * @param onUpdateName change environment name
+   */
+  envName: string;
+  onUpdateName: (value: string) => void;
+}
+
+export const EnvironmentDetailsHeader = ({
+  envName,
+  onUpdateName
+}: IEnvironmentDetailsHeaderProps) => {
+  const { mode } = useAppSelector(state => state.environmentDetails);
   const dispatch = useAppDispatch();
-
-  const [value, setValue] = useState("");
-
-  useEffect(() => {
-    setValue(name);
-  }, [name]);
 
   return (
     <Box
@@ -28,19 +34,24 @@ export const EnvironmentDetailsHeader = () => {
         marginBottom: "19px"
       }}
     >
-      {mode === EnvironmentDetailsModes.READ && (
+      {(mode === EnvironmentDetailsModes.READ ||
+        mode === EnvironmentDetailsModes.EDIT) && (
         <>
           <Typography sx={{ fontSize: "24px", color: "#000" }}>
-            {name}
+            {envName}
           </Typography>
-          <StyledButtonPrimary
-            onClick={() => dispatch(modeChanged(EnvironmentDetailsModes.EDIT))}
-          >
-            Edit
-          </StyledButtonPrimary>
+          {mode === EnvironmentDetailsModes.READ && (
+            <StyledButtonPrimary
+              onClick={() =>
+                dispatch(modeChanged(EnvironmentDetailsModes.EDIT))
+              }
+            >
+              Edit
+            </StyledButtonPrimary>
+          )}
         </>
       )}
-      {mode === EnvironmentDetailsModes.EDIT && (
+      {mode === EnvironmentDetailsModes.CREATE && (
         <>
           <TextField
             sx={{
@@ -57,10 +68,11 @@ export const EnvironmentDetailsHeader = () => {
               }
             }}
             variant="filled"
-            value={value}
-            onChange={e => setValue(e.target.value)}
+            value={envName}
+            placeholder="Environment name"
+            onChange={e => onUpdateName(e.target.value)}
           />
-          <StyledButtonPrimary>Archive</StyledButtonPrimary>
+          {/* <StyledButtonPrimary>Archive</StyledButtonPrimary> */}
         </>
       )}
     </Box>

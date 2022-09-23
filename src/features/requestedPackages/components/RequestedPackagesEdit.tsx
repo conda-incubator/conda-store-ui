@@ -8,7 +8,6 @@ import TableRow from "@mui/material/TableRow";
 import Typography from "@mui/material/Typography";
 import useTheme from "@mui/material/styles/useTheme";
 import React, { useEffect, useMemo, useRef, useState } from "react";
-
 import { RequestedPackagesTableRow } from "./RequestedPackagesTableRow";
 import { AddRequestedPackage } from "./AddRequestedPackage";
 import {
@@ -24,12 +23,18 @@ import { CondaSpecificationPip } from "src/common/models";
 export interface IRequestedPackagesEditProps {
   /**
    * @param packageList list of packages that we get from the API
+   * @param updatePackages notify the parent if there are changes in packageList array.
+   * @param isCreating notify the component if it's being used for creation or edition.
    */
   packageList: (string | CondaSpecificationPip)[];
+  updatePackages: (packages: any) => void;
+  isCreating: boolean;
 }
 
 export const RequestedPackagesEdit = ({
-  packageList
+  packageList,
+  updatePackages,
+  isCreating
 }: IRequestedPackagesEditProps) => {
   const [data, setData] = useState(packageList);
   const [isAdding, setIsAdding] = useState(false);
@@ -37,10 +42,17 @@ export const RequestedPackagesEdit = ({
   const scrollRef = useRef<HTMLDivElement | null>(null);
 
   const removePackage = (packageName: string) => {
-    setData(currentData => currentData.filter(item => item !== packageName));
+    const filteredList = (currentData: string[]) =>
+      currentData.filter(item => item !== packageName);
+
+    setData(filteredList);
+    updatePackages(data.filter(item => item !== packageName));
   };
 
-  const addPackage = (packageName: string) => setData([...data, packageName]);
+  const addNewPackage = (packageName: string) => {
+    setData([...data, packageName]);
+    updatePackages([...data, packageName]);
+  };
 
   const filteredPackageList = useMemo(
     () => data.filter(item => typeof item !== "object"),
@@ -54,7 +66,11 @@ export const RequestedPackagesEdit = ({
   }, [isAdding]);
 
   return (
-    <Accordion sx={{ width: 576, boxShadow: "none" }} disableGutters>
+    <Accordion
+      sx={{ width: 576, boxShadow: "none" }}
+      defaultExpanded
+      disableGutters
+    >
       <StyledAccordionSummary expandIcon={<StyledAccordionExpandIcon />}>
         <StyledAccordionTitle>Requested Packages</StyledAccordionTitle>
       </StyledAccordionSummary>
@@ -80,19 +96,21 @@ export const RequestedPackagesEdit = ({
                   Name
                 </Typography>
               </StyledEditPackagesTableCell>
-              <StyledEditPackagesTableCell
-                align="left"
-                sx={{
-                  width: "180px"
-                }}
-              >
-                <Typography
-                  component="p"
-                  sx={{ fontSize: "16px", fontWeight: 500 }}
+              {!isCreating && (
+                <StyledEditPackagesTableCell
+                  align="left"
+                  sx={{
+                    width: "180px"
+                  }}
                 >
-                  Installed Version
-                </Typography>
-              </StyledEditPackagesTableCell>
+                  <Typography
+                    component="p"
+                    sx={{ fontSize: "16px", fontWeight: 500 }}
+                  >
+                    Installed Version
+                  </Typography>
+                </StyledEditPackagesTableCell>
+              )}
               <StyledEditPackagesTableCell align="left">
                 <Typography
                   component="p"
@@ -115,7 +133,10 @@ export const RequestedPackagesEdit = ({
         </Table>
         <Box ref={scrollRef}>
           {isAdding && (
-            <AddRequestedPackage onSubmit={addPackage} onCancel={setIsAdding} />
+            <AddRequestedPackage
+              onSubmit={addNewPackage}
+              onCancel={setIsAdding}
+            />
           )}
         </Box>
       </StyledAccordionDetails>

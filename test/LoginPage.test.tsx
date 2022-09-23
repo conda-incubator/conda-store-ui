@@ -1,7 +1,7 @@
 import React from "react";
 import { render, fireEvent } from "@testing-library/react";
 import "@testing-library/jest-dom/extend-expect";
-import { LoginPage } from "../src/features/login/components";
+import { LoginPage } from "../src/features/auth";
 
 const mockedUsedNavigate = jest.fn();
 
@@ -9,7 +9,7 @@ jest.mock("react-router-dom", () => ({
   useNavigate: () => mockedUsedNavigate
 }));
 
-jest.mock("../src/features/login/authApiSlice", () => ({
+jest.mock("../src/features/auth/authApiSlice", () => ({
   useLoginMutation: () => [
     () => ({
       unwrap: () =>

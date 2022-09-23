@@ -3,17 +3,32 @@ import { StyledTab } from "src/styles";
 import { StyledTabs } from "src/styles/StyledTabs";
 import CloseIcon from "@mui/icons-material/Close";
 import { useAppDispatch, useAppSelector } from "src/hooks";
-import { environmentClosed, tabChanged } from "../tabsSlice";
+import {
+  modeChanged,
+  EnvironmentDetailsModes
+} from "src/features/environmentDetails";
+import {
+  environmentClosed,
+  tabChanged,
+  closeCreateNewEnvironmentTab,
+  toggleNewEnvironmentView
+} from "../tabsSlice";
 
 export const PageTabs = () => {
-  const { selectedEnvironments, value, selectedEnvironment } = useAppSelector(
-    state => state.tabs
-  );
+  const { selectedEnvironments, value, selectedEnvironment, newEnvironment } =
+    useAppSelector(state => state.tabs);
 
   const dispatch = useAppDispatch();
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-    dispatch(tabChanged(newValue));
+    if (typeof newValue === "number") {
+      dispatch(toggleNewEnvironmentView(false));
+      dispatch(modeChanged(EnvironmentDetailsModes.READ));
+      dispatch(tabChanged(newValue));
+    } else {
+      dispatch(toggleNewEnvironmentView(true));
+      dispatch(modeChanged(EnvironmentDetailsModes.CREATE));
+    }
   };
 
   const handleClick = (
@@ -21,15 +36,26 @@ export const PageTabs = () => {
     envId: number
   ) => {
     e.stopPropagation();
-
-    if (selectedEnvironment) {
-      dispatch(
-        environmentClosed({
-          envId,
-          selectedEnvironmentId: selectedEnvironment.id
-        })
-      );
+    dispatch(modeChanged(EnvironmentDetailsModes.READ));
+    dispatch(
+      environmentClosed({
+        envId,
+        selectedEnvironmentId: selectedEnvironment
+          ? selectedEnvironment.id
+          : envId
+      })
+    );
+    if (selectedEnvironments.length === 1 && newEnvironment.isOpen) {
+      dispatch(modeChanged(EnvironmentDetailsModes.CREATE));
     }
+  };
+
+  const closeNewEnvironment = (
+    e: React.MouseEvent<HTMLSpanElement, MouseEvent>
+  ) => {
+    e.stopPropagation();
+    dispatch(modeChanged(EnvironmentDetailsModes.READ));
+    dispatch(closeCreateNewEnvironmentTab());
   };
 
   return (
@@ -61,6 +87,24 @@ export const PageTabs = () => {
           iconPosition="end"
         />
       ))}
+      {newEnvironment.isOpen && (
+        <StyledTab
+          key="create"
+          label="Create Environment"
+          value="create"
+          wrapped
+          icon={
+            <span
+              style={{ marginTop: "5px" }}
+              role="button"
+              onClick={e => closeNewEnvironment(e)}
+            >
+              <CloseIcon sx={{ color: "#000" }} />
+            </span>
+          }
+          iconPosition="end"
+        />
+      )}
     </StyledTabs>
   );
 };

@@ -9,5 +9,5 @@ export default {
 } as ComponentMeta<typeof ChannelsEdit>;
 
 export const Primary: ComponentStory<typeof ChannelsEdit> = () => (
-  <ChannelsEdit channelsList={channelsList} />
+  <ChannelsEdit channelsList={channelsList} updateChannels={() => ({})} />
 );

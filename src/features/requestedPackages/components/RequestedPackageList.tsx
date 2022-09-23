@@ -47,7 +47,11 @@ export const RequestedPackageList = ({
   }, [packageList, dependencies]);
 
   return (
-    <Accordion sx={{ width: 421, boxShadow: "none" }} disableGutters>
+    <Accordion
+      sx={{ width: 421, boxShadow: "none" }}
+      disableGutters
+      defaultExpanded
+    >
       <StyledAccordionSummary expandIcon={<StyledAccordionExpandIcon />}>
         <StyledAccordionTitle>Requested Packages</StyledAccordionTitle>
       </StyledAccordionSummary>
