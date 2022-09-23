@@ -17,5 +17,6 @@ export const Primary: ComponentStory<typeof RequestedPackagesEdit> = () => (
   <RequestedPackagesEdit
     packageList={packageList}
     updatePackages={() => ({})}
+    isCreating={false}
   />
 );
