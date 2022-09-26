@@ -74,10 +74,6 @@ export const EnvironmentDetails = () => {
     setDescription(selectedEnvironment?.description || "");
   }, [selectedEnvironment]);
 
-  const buildId =
-    selectedEnvironment?.current_build_id === undefined
-      ? -1
-      : selectedEnvironment.current_build_id;
   return (
     <Box sx={{ padding: "14px 12px" }}>
       <EnvironmentDetailsHeader envName={name} onUpdateName={setName} />
@@ -92,7 +88,11 @@ export const EnvironmentDetails = () => {
         </Alert>
       )}
       <Box sx={{ marginBottom: "30px" }}>
-        <EnvMetadata selectedEnv={selectedEnvironment || {}} mode={mode} />
+        <EnvMetadata
+          selectedEnv={selectedEnvironment || {}}
+          mode={mode}
+          onUpdateDescription={setDescription}
+        />
       </Box>
       <Box sx={{ marginBottom: "30px" }}>
         {mode === "read-only" && <SpecificationReadOnly />}
