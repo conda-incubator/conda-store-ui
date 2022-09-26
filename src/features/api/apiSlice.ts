@@ -4,7 +4,15 @@ const baseQuery = fetchBaseQuery({
   baseUrl: process.env.REACT_APP_API_URL,
   credentials: "include",
   prepareHeaders: headers => {
-    headers.set("Authorization", `Bearer ${process.env.REACT_APP_AUTH_TOKEN}`);
+    if (
+      process.env.REACT_APP_AUTH_METHOD === "token" &&
+      process.env.REACT_APP_AUTH_TOKEN
+    ) {
+      headers.set(
+        "Authorization",
+        `Bearer ${process.env.REACT_APP_AUTH_TOKEN}`
+      );
+    }
 
     return headers;
   }

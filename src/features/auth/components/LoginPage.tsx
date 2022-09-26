@@ -28,6 +28,7 @@ export const LoginPage = () => {
 
     try {
       await login({ username, password }).unwrap();
+      navigate("/");
     } catch (err) {
       // Even if the login process is successful, it will response with 303 status code
       if (err.status === "PARSING_ERROR") {
