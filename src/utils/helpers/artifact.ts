@@ -7,19 +7,19 @@ const artifactList = (envId: number | undefined) => {
   return [
     {
       name: "Link to lockfile",
-      route: `${apiURL}/build/${envId}/lockfile/`
+      route: `${apiURL}/api/v1/build/${envId}/lockfile/`
     },
     {
       name: "Link to yml file",
-      route: `${apiURL}/build/${envId}/yaml/`
+      route: `${apiURL}/api/v1/build/${envId}/yaml/`
     },
     {
       name: "Link to archive",
-      route: `${apiURL}/build/${envId}/archive/`
+      route: `${apiURL}/api/v1/build/${envId}/archive/`
     },
     {
       name: `Conda Env ${envId} log`,
-      route: `${apiURL}/build/${envId}/logs`
+      route: `${apiURL}/api/v1/build/${envId}/logs`
     }
   ];
 };
