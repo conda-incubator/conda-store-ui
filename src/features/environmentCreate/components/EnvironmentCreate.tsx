@@ -6,6 +6,10 @@ import {
   modeChanged,
   EnvironmentDetailsModes
 } from "src/features/environmentDetails";
+import {
+  environmentOpened,
+  closeCreateNewEnvironmentTab
+} from "src/features/tabs";
 import { Popup } from "src/components";
 import { useAppDispatch, useAppSelector } from "src/hooks";
 import { EnvMetadata } from "src/features/metadata";
@@ -28,23 +32,41 @@ export const EnvironmentCreate = () => {
 
   const createEnvironment = async (code: any) => {
     const namespace = newEnvironment?.namespace;
-
     const environmentInfo = {
+      namespace,
       specification: `${stringify(
         code
-      )}\ndescription: ${description}\nname: ${name}\nprefix: null`,
-      namespace
+      )}\ndescription: ${description}\nname: ${name}\nprefix: null`
     };
 
     try {
-      setError({
-        message: "",
-        visible: false
-      });
       const { data } = await createOrUpdate(environmentInfo).unwrap();
       setIsEnvCreated(true);
+
+      const environment = {
+        name,
+        current_build: null,
+        current_build_id: data.build_id,
+        description,
+        id: data.build_id,
+        namespace: {
+          id: data.build_id,
+          name: namespace
+        }
+      };
+
       dispatch(modeChanged(EnvironmentDetailsModes.READ));
-      console.log(`New build id: ${data.build_id}`);
+      dispatch(closeCreateNewEnvironmentTab());
+      dispatch(
+        environmentOpened({
+          environment,
+          selectedEnvironmentId: data.build_id
+        })
+      );
+
+      //TODO:
+      // Move alerts to PageLayout
+      // Find out a way to update left panel namespaces
     } catch ({ data }) {
       setError({
         message: data.message,
