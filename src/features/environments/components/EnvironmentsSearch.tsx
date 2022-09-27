@@ -5,7 +5,6 @@ import Box from "@mui/material/Box";
 import InputAdornment from "@mui/material/InputAdornment";
 import SearchIcon from "@mui/icons-material/Search";
 import Link from "@mui/material/Link";
-import { Link as RouterLink } from "react-router-dom";
 import PersonIcon from "@mui/icons-material/Person";
 
 interface IEnvironmentsSearchProps {
@@ -27,15 +26,6 @@ export const EnvironmentsSearch = ({ onChange }: IEnvironmentsSearchProps) => {
       <Link href={loginPageUrl} sx={{ position: "absolute", top: 0, right: 0 }}>
         <PersonIcon sx={{ color: "black" }} />
       </Link>
-    );
-  } else {
-    login = (
-      <RouterLink
-        to="/login"
-        style={{ position: "absolute", top: 0, right: 0 }}
-      >
-        <PersonIcon sx={{ color: "black" }} />
-      </RouterLink>
     );
   }
 
