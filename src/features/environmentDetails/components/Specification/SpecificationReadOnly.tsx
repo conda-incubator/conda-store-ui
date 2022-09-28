@@ -25,14 +25,16 @@ export const SpecificationReadOnly = () => {
         <Box sx={{ marginBottom: "30px" }}>
           <RequestedPackageList packageList={requestedPackages} />
         </Box>
-        <Box sx={{ marginBottom: "30px" }}>
-          <Dependencies
-            mode="read-only"
-            dependencies={dependencies}
-            hasMore={hasMore}
-            next={() => dispatch(pageChanged(page + 1))}
-          />
-        </Box>
+        {dependencies.length > 0 && (
+          <Box sx={{ marginBottom: "30px" }}>
+            <Dependencies
+              mode="read-only"
+              dependencies={dependencies}
+              hasMore={hasMore}
+              next={() => dispatch(pageChanged(page + 1))}
+            />
+          </Box>
+        )}
         <Box sx={{ margiBottom: "30px" }}>
           <ChannelsList channelList={channels} />
         </Box>

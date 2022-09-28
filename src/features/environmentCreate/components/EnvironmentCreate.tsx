@@ -10,14 +10,13 @@ import {
   environmentOpened,
   closeCreateNewEnvironmentTab
 } from "src/features/tabs";
-import { Popup } from "src/components";
 import { useAppDispatch, useAppSelector } from "src/hooks";
 import { EnvMetadata } from "src/features/metadata";
 import { SpecificationCreate, SpecificationReadOnly } from "./Specification";
 import { useCreateOrUpdateMutation } from "src/features/environmentDetails";
 import { stringify } from "yaml";
 
-export const EnvironmentCreate = () => {
+export const EnvironmentCreate = ({ environmentNotification }: any) => {
   const dispatch = useAppDispatch();
   const { mode } = useAppSelector(state => state.environmentDetails);
   const { newEnvironment } = useAppSelector(state => state.tabs);
@@ -27,7 +26,6 @@ export const EnvironmentCreate = () => {
     message: "",
     visible: false
   });
-  const [isEnvCreated, setIsEnvCreated] = useState(false);
   const [createOrUpdate] = useCreateOrUpdateMutation();
 
   const createEnvironment = async (code: any) => {
@@ -41,8 +39,6 @@ export const EnvironmentCreate = () => {
 
     try {
       const { data } = await createOrUpdate(environmentInfo).unwrap();
-      setIsEnvCreated(true);
-
       const environment = {
         name,
         current_build: null,
@@ -63,9 +59,12 @@ export const EnvironmentCreate = () => {
           selectedEnvironmentId: data.build_id
         })
       );
+      environmentNotification({
+        show: true,
+        description: `${name} environment is being created`
+      });
 
       //TODO:
-      // Move alerts to PageLayout
       // Find out a way to update left panel namespaces
     } catch ({ data }) {
       setError({
@@ -101,11 +100,6 @@ export const EnvironmentCreate = () => {
           <SpecificationCreate onCreateEnvironment={createEnvironment} />
         )}
       </Box>
-      <Popup
-        isVisible={isEnvCreated}
-        description={`${name} environment is being created`}
-        onClose={setIsEnvCreated}
-      />
     </Box>
   );
 };

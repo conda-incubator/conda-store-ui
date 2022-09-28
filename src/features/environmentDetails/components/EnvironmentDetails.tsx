@@ -3,7 +3,6 @@ import Box from "@mui/material/Box";
 import Alert from "@mui/material/Alert";
 import { useAppDispatch, useAppSelector } from "src/hooks";
 import { EnvironmentDetailsHeader } from "./EnvironmentDetailsHeader";
-import { Popup } from "src/components";
 import { SpecificationEdit, SpecificationReadOnly } from "./Specification";
 import { useGetBuildQuery } from "../environmentDetailsApiSlice";
 import { useGetBuildPackagesQuery } from "src/features/dependencies";
@@ -17,7 +16,7 @@ import {
 import artifactList from "src/utils/helpers/artifact";
 import { stringify } from "yaml";
 
-export const EnvironmentDetails = () => {
+export const EnvironmentDetails = ({ environmentNotification }: any) => {
   const dispatch = useAppDispatch();
   const { mode } = useAppSelector(state => state.environmentDetails);
   const { page } = useAppSelector(state => state.dependencies);
@@ -31,7 +30,6 @@ export const EnvironmentDetails = () => {
     message: "",
     visible: false
   });
-  const [isEnvUpdated, setIsEnvUpdated] = useState(false);
 
   if (selectedEnvironment) {
     useGetBuildQuery(selectedEnvironment.current_build_id);
@@ -57,10 +55,12 @@ export const EnvironmentDetails = () => {
         message: "",
         visible: false
       });
-      const { data } = await createOrUpdate(environmentInfo).unwrap();
-      setIsEnvUpdated(true);
+      await createOrUpdate(environmentInfo).unwrap();
       dispatch(modeChanged(EnvironmentDetailsModes.READ));
-      console.log(`New build id: ${data.build_id}`);
+      environmentNotification({
+        show: true,
+        description: `${name} environment has been updated`
+      });
     } catch (e) {
       setError({
         message: e?.data?.message ?? e.status,
@@ -105,11 +105,6 @@ export const EnvironmentDetails = () => {
           <ArtifactList artifacts={artifactList(selectedEnvironment?.id)} />
         </Box>
       )}
-      <Popup
-        isVisible={isEnvUpdated}
-        description="Environment has been updated"
-        onClose={setIsEnvUpdated}
-      />
     </Box>
   );
 };

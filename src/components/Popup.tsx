@@ -3,9 +3,9 @@ import Alert from "@mui/material/Alert";
 import Snackbar from "@mui/material/Snackbar";
 
 interface IPopupInterface {
-  description: string;
+  description: string | null;
   isVisible: boolean;
-  onClose: (value: boolean) => void;
+  onClose: (notification: any) => void;
 }
 export const Popup = ({ description, isVisible, onClose }: IPopupInterface) => {
   return (
@@ -13,7 +13,12 @@ export const Popup = ({ description, isVisible, onClose }: IPopupInterface) => {
       anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
       autoHideDuration={5000}
       open={isVisible}
-      onClose={() => onClose(!isVisible)}
+      onClose={() =>
+        onClose({
+          show: !isVisible,
+          description: null
+        })
+      }
     >
       <Alert severity="success" sx={{ width: "100%" }}>
         {description}
