@@ -22,6 +22,7 @@ interface IRequestedPackagesTableRowProps {
 export const RequestedPackagesTableRow = ({
   requestedPackage,
   onRemove,
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   onUpdate = (name: string, constraint: string, version: string) => {}
 }: IRequestedPackagesTableRowProps) => {
   const { packageVersions } = useAppSelector(state => state.requestedPackages);

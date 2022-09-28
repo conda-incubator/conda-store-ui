@@ -28,7 +28,7 @@ export interface IRequestedPackagesEditProps {
    * @param isCreating notify the component if it's being used for creation or edition.
    */
   packageList: (string | CondaSpecificationPip)[];
-  updatePackages: (packages: any) => void;
+  updatePackages: (packages: string[]) => void;
   isCreating: boolean;
 }
 
@@ -47,12 +47,14 @@ export const RequestedPackagesEdit = ({
       currentData.filter(item => item !== packageName);
 
     setData(filteredList);
-    updatePackages(data.filter(item => item !== packageName));
+    const newArr = data.filter(item => item !== packageName) as string[];
+    updatePackages(newArr);
   };
 
   const addNewPackage = (packageName: string) => {
+    const newArr = [...data, packageName] as string[];
     setData([...data, packageName]);
-    updatePackages([...data, packageName]);
+    updatePackages(newArr);
   };
 
   const comparePackages = (
@@ -62,7 +64,9 @@ export const RequestedPackagesEdit = ({
   ) => {
     const { name } = requestedPackageParser(requestedPackage as string);
 
-    if (name === newPackageName) return newPackage;
+    if (name === newPackageName) {
+      return newPackage;
+    }
 
     return requestedPackage;
   };
@@ -72,7 +76,10 @@ export const RequestedPackagesEdit = ({
       !version ? "" : version
     }`;
 
-    updatePackages(data.map(p => comparePackages(p, newPackage, name)));
+    const newArr = data.map(p =>
+      comparePackages(p, newPackage, name)
+    ) as string[];
+    updatePackages(newArr);
   };
 
   const filteredPackageList = useMemo(

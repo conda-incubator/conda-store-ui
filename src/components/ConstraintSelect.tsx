@@ -12,6 +12,7 @@ interface IConstraintSelectProps {
 
 export const ConstraintSelect = ({
   constraint,
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   onUpdate = (value: string) => {}
 }: IConstraintSelectProps) => {
   const constraints = [">", "<", ">=", "<=", "=="];
@@ -20,7 +21,11 @@ export const ConstraintSelect = ({
     <Select
       defaultValue={constraint}
       IconComponent={() => null}
-      onChange={e => onUpdate(e.target.value!)}
+      onChange={e => {
+        if (e.target.value) {
+          onUpdate(e.target.value);
+        }
+      }}
       sx={{
         borderRadius: "0px",
         width: "44px"
