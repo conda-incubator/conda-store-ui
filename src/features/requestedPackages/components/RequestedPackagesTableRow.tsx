@@ -13,14 +13,17 @@ interface IRequestedPackagesTableRowProps {
   /**
    * @param requestedPackage requested package
    * @param onRemove handler that will run when delete icon is clicked
+   * @param isCreating notify the component if it's being used for creating or editing environment
    */
   requestedPackage: string;
   onRemove: (packageName: string) => void;
+  isCreating: boolean;
 }
 
 const BaseRequestedPackagesTableRow = ({
   requestedPackage,
-  onRemove
+  onRemove,
+  isCreating
 }: IRequestedPackagesTableRowProps) => {
   const { packageVersions } = useAppSelector(state => state.requestedPackages);
 
@@ -39,13 +42,15 @@ const BaseRequestedPackagesTableRow = ({
           {name}
         </Typography>
       </StyledRequestedPackagesTableCell>
-      <StyledRequestedPackagesTableCell align="left">
-        <Typography
-          sx={{ fontSize: "16px", fontWeight: 400, color: "#676666" }}
-        >
-          {version}
-        </Typography>
-      </StyledRequestedPackagesTableCell>
+      {!isCreating && (
+        <StyledRequestedPackagesTableCell align="left">
+          <Typography
+            sx={{ fontSize: "16px", fontWeight: 400, color: "#676666" }}
+          >
+            {version}
+          </Typography>
+        </StyledRequestedPackagesTableCell>
+      )}
       <StyledRequestedPackagesTableCell align="left">
         <Box sx={{ display: "flex", alignItems: "center" }}>
           <ConstraintSelect
