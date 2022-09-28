@@ -68,7 +68,7 @@ export const RequestedPackagesEdit = ({
   };
 
   const updatePackage = (name: string, constraint: string, version: string) => {
-    const newPackage = `${name}${constraint === "latest" ? "==" : constraint}${
+    const newPackage = `${name}${constraint === "latest" ? ">=" : constraint}${
       !version ? "" : version
     }`;
 
@@ -85,6 +85,10 @@ export const RequestedPackagesEdit = ({
       scrollRef.current.scrollIntoView({ behavior: "smooth" });
     }
   }, [isAdding]);
+
+  useEffect(() => {
+    setData(packageList);
+  }, [packageList]);
 
   return (
     <Accordion
@@ -117,21 +121,21 @@ export const RequestedPackagesEdit = ({
                   Name
                 </Typography>
               </StyledEditPackagesTableCell>
-              {/* {!isCreating && ( */}
-              <StyledEditPackagesTableCell
-                align="left"
-                sx={{
-                  width: "180px"
-                }}
-              >
-                <Typography
-                  component="p"
-                  sx={{ fontSize: "16px", fontWeight: 500 }}
+              {!isCreating && (
+                <StyledEditPackagesTableCell
+                  align="left"
+                  sx={{
+                    width: "180px"
+                  }}
                 >
-                  Installed Version
-                </Typography>
-              </StyledEditPackagesTableCell>
-              {/* )} */}
+                  <Typography
+                    component="p"
+                    sx={{ fontSize: "16px", fontWeight: 500 }}
+                  >
+                    Installed Version
+                  </Typography>
+                </StyledEditPackagesTableCell>
+              )}
               <StyledEditPackagesTableCell align="left">
                 <Typography
                   component="p"

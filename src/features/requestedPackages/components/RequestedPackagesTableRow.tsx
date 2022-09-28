@@ -1,4 +1,4 @@
-import React, { memo } from "react";
+import React from "react";
 import TableRow from "@mui/material/TableRow";
 import Typography from "@mui/material/Typography";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -19,7 +19,7 @@ interface IRequestedPackagesTableRowProps {
   onUpdate?: (name: string, constraint: string, version: string) => void;
 }
 
-const BaseRequestedPackagesTableRow = ({
+export const RequestedPackagesTableRow = ({
   requestedPackage,
   onRemove,
   onUpdate = (name: string, constraint: string, version: string) => {}
@@ -78,16 +78,3 @@ const BaseRequestedPackagesTableRow = ({
     </TableRow>
   );
 };
-
-const compareProps = (
-  prevProps: IRequestedPackagesTableRowProps,
-  nextProps: IRequestedPackagesTableRowProps
-) => {
-  return prevProps.requestedPackage === nextProps.requestedPackage;
-};
-
-// memoize the component, rerender only when requestedPackage prop has changed
-export const RequestedPackagesTableRow = memo(
-  BaseRequestedPackagesTableRow,
-  compareProps
-);
