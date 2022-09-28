@@ -15,14 +15,13 @@ interface IEnvironmentsSearchProps {
 }
 
 export const EnvironmentsSearch = ({ onChange }: IEnvironmentsSearchProps) => {
-  const authMethod =
-    process.env.REACT_APP_AUTH_METHOD === "cookie" ? true : false;
+  const isCookieAuthMethod = process.env.REACT_APP_AUTH_METHOD === "cookie";
   const authUrl = process.env.REACT_APP_LOGIN_PAGE_URL;
   const pageUrl = window.location.href;
   const loginPageUrl = `${authUrl}${pageUrl}`;
   let login;
 
-  if (authMethod) {
+  if (isCookieAuthMethod) {
     login = (
       <Link href={loginPageUrl} sx={{ position: "absolute", top: 0, right: 0 }}>
         <PersonIcon sx={{ color: "black" }} />

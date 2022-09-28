@@ -2,7 +2,20 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 const baseQuery = fetchBaseQuery({
   baseUrl: process.env.REACT_APP_API_URL,
-  credentials: "include"
+  credentials: "include",
+  prepareHeaders: headers => {
+    if (
+      process.env.REACT_APP_AUTH_METHOD === "token" &&
+      process.env.REACT_APP_AUTH_TOKEN
+    ) {
+      headers.set(
+        "Authorization",
+        `Bearer ${process.env.REACT_APP_AUTH_TOKEN}`
+      );
+    }
+
+    return headers;
+  }
 });
 
 export const apiSlice = createApi({
