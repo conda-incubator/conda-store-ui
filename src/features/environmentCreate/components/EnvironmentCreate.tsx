@@ -53,7 +53,6 @@ export const EnvironmentCreate = () => {
     }
   };
 
-  const newEnv = { description: description };
   return (
     <Box sx={{ padding: "14px 12px" }}>
       <EnvironmentDetailsHeader envName={name} onUpdateName={setName} />
@@ -69,8 +68,8 @@ export const EnvironmentCreate = () => {
       )}
       <Box sx={{ marginBottom: "30px" }}>
         <EnvMetadata
-          selectedEnv={newEnv}
           mode="create"
+          selectedEnv={{}}
           onUpdateDescription={setDescription}
         />
       </Box>

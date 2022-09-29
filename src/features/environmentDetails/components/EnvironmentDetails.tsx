@@ -24,7 +24,7 @@ export const EnvironmentDetails = () => {
   const { selectedEnvironment } = useAppSelector(state => state.tabs);
   const [name, setName] = useState(selectedEnvironment?.name || "");
   const [description, setDescription] = useState(
-    selectedEnvironment?.description || ""
+    selectedEnvironment ? selectedEnvironment.description : undefined
   );
   const [createOrUpdate] = useCreateOrUpdateMutation();
   const [error, setError] = useState({
@@ -89,7 +89,10 @@ export const EnvironmentDetails = () => {
       )}
       <Box sx={{ marginBottom: "30px" }}>
         <EnvMetadata
-          selectedEnv={selectedEnvironment || {}}
+          selectedEnv={{
+            ...selectedEnvironment,
+            description
+          }}
           mode={mode}
           onUpdateDescription={setDescription}
         />

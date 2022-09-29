@@ -8,10 +8,7 @@ import Typography from "@mui/material/Typography";
 import useTheme from "@mui/material/styles/useTheme";
 import { EnvBuilds, Description } from "src/features/metadata/components";
 import { StyledBox } from "src/styles";
-import {
-  useGetEnviromentBuildsQuery,
-  useGetEnviromentBuildQuery
-} from "src/features/metadata";
+import { useGetEnviromentBuildsQuery } from "src/features/metadata";
 
 import { buildMapper } from "src/utils/helpers/buildMapper";
 export enum EnvironmentDetailsModes {
@@ -31,13 +28,21 @@ interface IEnvMetadataProps {
   onUpdateDescription: (description: string) => void;
 }
 
-export const EnvMetadata = ({ selectedEnv, mode }: IEnvMetadataProps) => {
-  const current_build_id = selectedEnv.current_build_id;
-  const { data: currentBuild } = useGetEnviromentBuildQuery(current_build_id);
-  const { data: enviromentBuilds } = useGetEnviromentBuildsQuery(selectedEnv);
+export const EnvMetadata = ({
+  selectedEnv,
+  mode,
+  onUpdateDescription
+}: IEnvMetadataProps) => {
   const { palette } = useTheme();
+  const { current_build_id = undefined, description: envDescription } =
+    selectedEnv;
 
-  const [description, setDescription] = useState(selectedEnv.description);
+  let enviromentBuilds = undefined;
+  if (current_build_id) {
+    // It is calling multiple times
+    const { data } = useGetEnviromentBuildsQuery(selectedEnv);
+    enviromentBuilds = data;
+  }
 
   return (
     <StyledBox>
@@ -55,17 +60,12 @@ export const EnvMetadata = ({ selectedEnv, mode }: IEnvMetadataProps) => {
       </List>
       <Description
         mode={mode}
-        description={description}
-        onChangeDescription={setDescription}
+        description={envDescription || undefined}
+        onChangeDescription={onUpdateDescription}
       />
-      {enviromentBuilds &&
-        (mode === EnvironmentDetailsModes.READ ||
-          mode === EnvironmentDetailsModes.EDIT) && (
-          <EnvBuilds
-            data={enviromentBuilds}
-            currentBuildId={current_build_id}
-          />
-        )}
+      {mode !== EnvironmentDetailsModes.CREATE && enviromentBuilds && (
+        <EnvBuilds data={enviromentBuilds} currentBuildId={current_build_id} />
+      )}
     </StyledBox>
   );
 };
