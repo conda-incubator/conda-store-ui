@@ -102,7 +102,9 @@ export const EnvironmentDetails = () => {
       </Box>
       {mode === "read-only" && (
         <Box>
-          <ArtifactList artifacts={artifactList(selectedEnvironment?.id)} />
+          <ArtifactList
+            artifacts={artifactList(selectedEnvironment?.current_build_id)}
+          />
         </Box>
       )}
       <Popup
