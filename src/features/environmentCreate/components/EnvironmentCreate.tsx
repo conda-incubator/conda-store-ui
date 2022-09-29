@@ -68,8 +68,10 @@ export const EnvironmentCreate = () => {
       )}
       <Box sx={{ marginBottom: "30px" }}>
         <EnvMetadata
-          mode="create"
           selectedEnv={{}}
+          description={description}
+          current_build_id={0}
+          mode={mode}
           onUpdateDescription={setDescription}
         />
       </Box>

@@ -9,6 +9,8 @@ import { useGetBuildQuery } from "../environmentDetailsApiSlice";
 import { useGetBuildPackagesQuery } from "src/features/dependencies";
 import { ArtifactList } from "src/features/artifacts";
 import { EnvMetadata } from "src/features/metadata";
+import { useGetEnviromentBuildsQuery } from "src/features/metadata";
+
 import {
   EnvironmentDetailsModes,
   useCreateOrUpdateMutation,
@@ -74,6 +76,12 @@ export const EnvironmentDetails = () => {
     setDescription(selectedEnvironment?.description || "");
   }, [selectedEnvironment]);
 
+  let enviromentBuilds = undefined;
+  if (selectedEnvironment?.current_build_id) {
+    const { data } = useGetEnviromentBuildsQuery(selectedEnvironment);
+    enviromentBuilds = data;
+  }
+
   return (
     <Box sx={{ padding: "14px 12px" }}>
       <EnvironmentDetailsHeader envName={name} onUpdateName={setName} />
@@ -89,10 +97,9 @@ export const EnvironmentDetails = () => {
       )}
       <Box sx={{ marginBottom: "30px" }}>
         <EnvMetadata
-          selectedEnv={{
-            ...selectedEnvironment,
-            description
-          }}
+          selectedEnv={enviromentBuilds}
+          description={description}
+          current_build_id={selectedEnvironment?.current_build_id || 0}
           mode={mode}
           onUpdateDescription={setDescription}
         />
