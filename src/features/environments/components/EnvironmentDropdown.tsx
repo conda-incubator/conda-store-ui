@@ -55,7 +55,7 @@ export const EnvironmentDropdown = ({
       >
         <Box sx={{ display: "flex", alignItems: "center" }}>
           <Typography sx={{ width: "217px" }}>{namespace}</Typography>
-          <IconButton onClick={e => onCreateNewEnvironmentTab(namespace)}>
+          <IconButton onClick={() => onCreateNewEnvironmentTab(namespace)}>
             <AddIcon sx={{ width: "15px", height: "15px", color: "#2B2B2B" }} />
           </IconButton>
         </Box>
