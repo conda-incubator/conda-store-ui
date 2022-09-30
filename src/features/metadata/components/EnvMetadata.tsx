@@ -8,8 +8,9 @@ import Typography from "@mui/material/Typography";
 import useTheme from "@mui/material/styles/useTheme";
 import { EnvBuilds, Description } from "src/features/metadata/components";
 import { StyledBox } from "src/styles";
-import { useGetEnviromentsQuery } from "src/features/metadata";
+import { useGetEnviromentBuildsQuery } from "src/features/metadata";
 
+import { buildMapper } from "src/utils/helpers/buildMapper";
 export enum EnvironmentDetailsModes {
   "CREATE" = "create",
   "READ" = "read-only",
@@ -18,22 +19,35 @@ export enum EnvironmentDetailsModes {
 
 interface IEnvMetadataProps {
   /**
-   * @param envDescription description of the selected environment
+   * @param selectedEnv Selected environment's information
    * @param mode change whether the component only displays the list of builds, edit the environment description or create a new description
    * @param onUpdateDescription change environment description
    */
-  envDescription: string;
+  selectedEnv: any;
+  description: any;
   mode: "create" | "read-only" | "edit";
   onUpdateDescription: (description: string) => void;
+  current_build_id: number;
 }
 
 export const EnvMetadata = ({
-  envDescription,
+  selectedEnv,
+  description,
   mode,
-  onUpdateDescription
+  onUpdateDescription,
+  current_build_id
 }: IEnvMetadataProps) => {
-  const { data: enviromentData } = useGetEnviromentsQuery();
   const { palette } = useTheme();
+  // const { current_build_id = undefined, description: envDescription } =
+  //   selectedEnv;
+
+  // let enviromentBuilds = undefined;
+  // if (current_build_id) {
+  //   // It is calling multiple times
+  //   const { data } = useGetEnviromentBuildsQuery(selectedEnv);
+  //   enviromentBuilds = data;
+  // }
+  // const [buildId, setBuildId] = useState(selectedEnv?.current_build_id || "");
 
   return (
     <StyledBox>
@@ -51,14 +65,12 @@ export const EnvMetadata = ({
       </List>
       <Description
         mode={mode}
-        description={envDescription}
+        description={description || undefined}
         onChangeDescription={onUpdateDescription}
       />
-      {enviromentData &&
-        (mode === EnvironmentDetailsModes.READ ||
-          mode === EnvironmentDetailsModes.EDIT) && (
-          <EnvBuilds data={enviromentData} />
-        )}
+      {mode !== EnvironmentDetailsModes.CREATE && selectedEnv && (
+        <EnvBuilds data={selectedEnv} currentBuildId={current_build_id} />
+      )}
     </StyledBox>
   );
 };

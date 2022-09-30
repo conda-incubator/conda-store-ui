@@ -75,6 +75,7 @@ export const ChannelsEdit = ({
     });
 
     setList(reorderedArray);
+    updateChannels(reorderedArray);
   };
 
   useEffect(() => {

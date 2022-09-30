@@ -17,14 +17,17 @@ interface IAddRequestedPackageProps {
   /**
    * @param onCancel handler that will run when delete icon is clicked
    * @param onSubmit handler that will run when input losses focus
+   * @param isCreating notify the component if it's being used for creating or editing environment
    */
   onCancel: React.Dispatch<React.SetStateAction<boolean>>;
   onSubmit: (packageName: string) => void;
+  isCreating: boolean;
 }
 
 export const AddRequestedPackage = ({
   onCancel,
-  onSubmit
+  onSubmit,
+  isCreating
 }: IAddRequestedPackageProps) => {
   const size = 100;
   const [state, dispatch] = useReducer(requestedPackagesReducer, initialState);
@@ -170,17 +173,28 @@ export const AddRequestedPackage = ({
           )}
         />
       </Box>
-      <Box>
-        <Box sx={{ display: "flex", alignItems: "center" }}>
-          <Box sx={{ width: "154px" }} />
-          <StyledIconButton
-            onClick={() => onCancel(false)}
-            sx={{ marginLeft: "24px" }}
-          >
-            <DeleteIcon />
-          </StyledIconButton>
+      {isCreating ? (
+        <Box>
+          <Box sx={{ display: "flex", alignItems: "center" }}>
+            <Box />
+            <StyledIconButton onClick={() => onCancel(false)}>
+              <DeleteIcon />
+            </StyledIconButton>
+          </Box>
         </Box>
-      </Box>
+      ) : (
+        <Box>
+          <Box sx={{ display: "flex", alignItems: "center" }}>
+            <Box sx={{ width: "154px" }} />
+            <StyledIconButton
+              onClick={() => onCancel(false)}
+              sx={{ marginLeft: "24px" }}
+            >
+              <DeleteIcon />
+            </StyledIconButton>
+          </Box>
+        </Box>
+      )}
     </Box>
   );
 };
