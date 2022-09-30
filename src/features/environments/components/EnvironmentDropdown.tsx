@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Accordion from "@mui/material/Accordion";
 import { StyledAccordionExpandIcon, StyledAccordionSummary } from "src/styles";
 import { INamespaceEnvironments } from "src/common/interfaces";
@@ -32,13 +32,16 @@ export const EnvironmentDropdown = ({
   data: { namespace, environments }
 }: IEnvironmentDropdownProps) => {
   const { selectedEnvironment } = useAppSelector(state => state.tabs);
+  const [isExpanded, setIsExpanded] = useState(false);
   const dispatch = useAppDispatch();
 
   const onCreateNewEnvironmentTab = (
     event: React.SyntheticEvent,
     namespace: string
   ) => {
-    event.stopPropagation();
+    if (isExpanded) {
+      event.stopPropagation();
+    }
     dispatch(modeChanged(EnvironmentDetailsModes.CREATE));
     dispatch(openCreateNewEnvironmentTab(namespace));
   };
@@ -47,7 +50,9 @@ export const EnvironmentDropdown = ({
     <Accordion
       sx={{ border: "none", position: "initial" }}
       elevation={0}
+      expanded={isExpanded}
       disableGutters
+      onChange={() => setIsExpanded(!isExpanded)}
     >
       <StyledAccordionSummary
         sx={{
