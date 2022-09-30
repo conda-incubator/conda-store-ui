@@ -25,8 +25,8 @@ export const SpecificationReadOnly = () => {
         <Box sx={{ marginBottom: "30px" }}>
           <RequestedPackageList packageList={requestedPackages} />
         </Box>
-        {/* Let's hide this component if dependencies are empty.
-         No requested packages installed or new environment created*/}
+        {/* Hide component if dependencies are empty.
+         When an env is being created, the first call returns [] */}
         {dependencies.length > 0 && (
           <Box sx={{ marginBottom: "30px" }}>
             <Dependencies

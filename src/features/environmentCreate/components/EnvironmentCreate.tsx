@@ -16,7 +16,11 @@ import { SpecificationCreate, SpecificationReadOnly } from "./Specification";
 import { useCreateOrUpdateMutation } from "src/features/environmentDetails";
 import { stringify } from "yaml";
 
-export const EnvironmentCreate = ({ environmentNotification }: any) => {
+export interface IEnvCreate {
+  environmentNotification: (notification: any) => void;
+}
+
+export const EnvironmentCreate = ({ environmentNotification }: IEnvCreate) => {
   const dispatch = useAppDispatch();
   const { mode } = useAppSelector(state => state.environmentDetails);
   const { newEnvironment } = useAppSelector(state => state.tabs);
@@ -63,9 +67,6 @@ export const EnvironmentCreate = ({ environmentNotification }: any) => {
         show: true,
         description: `${name} environment is being created`
       });
-
-      //TODO:
-      // Find out a way to update left panel namespaces
     } catch ({ data }) {
       setError({
         message: data.message,

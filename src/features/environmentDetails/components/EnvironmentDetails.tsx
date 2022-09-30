@@ -18,7 +18,13 @@ import {
 import artifactList from "src/utils/helpers/artifact";
 import { stringify } from "yaml";
 
-export const EnvironmentDetails = ({ environmentNotification }: any) => {
+export interface IEnvDetails {
+  environmentNotification: (notification: any) => void;
+}
+
+export const EnvironmentDetails = ({
+  environmentNotification
+}: IEnvDetails) => {
   const dispatch = useAppDispatch();
   const { mode } = useAppSelector(state => state.environmentDetails);
   const { page } = useAppSelector(state => state.dependencies);

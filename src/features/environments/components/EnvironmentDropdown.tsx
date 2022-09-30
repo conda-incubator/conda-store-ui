@@ -34,11 +34,7 @@ export const EnvironmentDropdown = ({
   const { selectedEnvironment } = useAppSelector(state => state.tabs);
   const dispatch = useAppDispatch();
 
-  const onCreateNewEnvironmentTab = (
-    event: React.SyntheticEvent,
-    namespace: string
-  ) => {
-    event.stopPropagation();
+  const onCreateNewEnvironmentTab = (namespace: string) => {
     dispatch(modeChanged(EnvironmentDetailsModes.CREATE));
     dispatch(openCreateNewEnvironmentTab(namespace));
   };
@@ -59,7 +55,7 @@ export const EnvironmentDropdown = ({
       >
         <Box sx={{ display: "flex", alignItems: "center" }}>
           <Typography sx={{ width: "217px" }}>{namespace}</Typography>
-          <IconButton onClick={e => onCreateNewEnvironmentTab(e, namespace)}>
+          <IconButton onClick={e => onCreateNewEnvironmentTab(namespace)}>
             <AddIcon sx={{ width: "15px", height: "15px", color: "#2B2B2B" }} />
           </IconButton>
         </Box>
