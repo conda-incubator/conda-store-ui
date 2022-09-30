@@ -38,7 +38,6 @@ export const SpecificationEdit = ({ onUpdateEnvironment }: any) => {
   };
 
   const onUpdateChannels = (channels: string[]) => {
-    dispatch(updateChannels(channels));
     setNewChannels(channels);
   };
 
@@ -51,9 +50,9 @@ export const SpecificationEdit = ({ onUpdateEnvironment }: any) => {
     setShow(value);
     if (!value) {
       // If user want to switch the yaml editor view, let's send this info to the component
-      dispatch(updateChannels(newChannels));
       dispatch(updatePackages(newPackages));
     }
+    dispatch(updateChannels(newChannels));
   };
 
   const onEditEnvironment = () => {
