@@ -9,8 +9,8 @@ import { stringify } from "yaml";
 
 export const SpecificationCreate = ({ onCreateEnvironment }: any) => {
   const [show, setShow] = useState(false);
-  const [channels, setChannels] = useState([]);
-  const [requestedPackages, setPackages] = useState([]);
+  const [channels, setChannels] = useState<string[]>([]);
+  const [requestedPackages, setPackages] = useState<string[]>([]);
   const [newChannels, setNewChannels] = useState(channels);
   const [newPackages, setNewPackages] = useState(requestedPackages);
   const [code, setCode] = useState({
@@ -18,11 +18,11 @@ export const SpecificationCreate = ({ onCreateEnvironment }: any) => {
     dependencies: requestedPackages
   });
 
-  const onUpdateChannels = (channels: []) => {
+  const onUpdateChannels = (channels: string[]) => {
     setChannels(channels);
   };
 
-  const onUpdatePackages = (packages: []) => {
+  const onUpdatePackages = (packages: string[]) => {
     setPackages(packages);
   };
 

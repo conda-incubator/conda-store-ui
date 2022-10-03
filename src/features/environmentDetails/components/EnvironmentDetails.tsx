@@ -62,7 +62,6 @@ export const EnvironmentDetails = () => {
       const { data } = await createOrUpdate(environmentInfo).unwrap();
       setIsEnvUpdated(true);
       dispatch(modeChanged(EnvironmentDetailsModes.READ));
-      console.log(`New build id: ${data.build_id}`);
     } catch (e) {
       setError({
         message: e?.data?.message ?? e.status,
