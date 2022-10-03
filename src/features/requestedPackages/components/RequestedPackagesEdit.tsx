@@ -160,6 +160,7 @@ export const RequestedPackagesEdit = ({
                 onRemove={removePackage}
                 key={`${requestedPackage}`}
                 requestedPackage={`${requestedPackage}`}
+                isCreating={isCreating}
               />
             ))}
           </TableBody>
@@ -169,6 +170,7 @@ export const RequestedPackagesEdit = ({
             <AddRequestedPackage
               onSubmit={addNewPackage}
               onCancel={setIsAdding}
+              isCreating={isCreating}
             />
           )}
         </Box>
