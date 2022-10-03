@@ -19,6 +19,7 @@ import {
   StyledEditPackagesTableCell
 } from "src/styles";
 import { CondaSpecificationPip } from "src/common/models";
+import { requestedPackageParser } from "src/utils/helpers";
 
 export interface IRequestedPackagesEditProps {
   /**
@@ -27,7 +28,7 @@ export interface IRequestedPackagesEditProps {
    * @param isCreating notify the component if it's being used for creation or edition.
    */
   packageList: (string | CondaSpecificationPip)[];
-  updatePackages: (packages: any) => void;
+  updatePackages: (packages: string[]) => void;
   isCreating: boolean;
 }
 
@@ -46,12 +47,39 @@ export const RequestedPackagesEdit = ({
       currentData.filter(item => item !== packageName);
 
     setData(filteredList);
-    updatePackages(data.filter(item => item !== packageName));
+    const newArr = data.filter(item => item !== packageName) as string[];
+    updatePackages(newArr);
   };
 
   const addNewPackage = (packageName: string) => {
+    const newArr = [...data, packageName] as string[];
     setData([...data, packageName]);
-    updatePackages([...data, packageName]);
+    updatePackages(newArr);
+  };
+
+  const comparePackages = (
+    requestedPackage: string | CondaSpecificationPip,
+    newPackage: string,
+    newPackageName: string | CondaSpecificationPip
+  ) => {
+    const { name } = requestedPackageParser(requestedPackage as string);
+
+    if (name === newPackageName) {
+      return newPackage;
+    }
+
+    return requestedPackage;
+  };
+
+  const updatePackage = (name: string, constraint: string, version: string) => {
+    const newPackage = `${name}${constraint === "latest" ? ">=" : constraint}${
+      !version ? "" : version
+    }`;
+
+    const newArr = data.map(p =>
+      comparePackages(p, newPackage, name)
+    ) as string[];
+    updatePackages(newArr);
   };
 
   const filteredPackageList = useMemo(
@@ -64,6 +92,10 @@ export const RequestedPackagesEdit = ({
       scrollRef.current.scrollIntoView({ behavior: "smooth" });
     }
   }, [isAdding]);
+
+  useEffect(() => {
+    setData(packageList);
+  }, [packageList]);
 
   return (
     <Accordion
@@ -124,6 +156,7 @@ export const RequestedPackagesEdit = ({
           <TableBody>
             {filteredPackageList.map(requestedPackage => (
               <RequestedPackagesTableRow
+                onUpdate={updatePackage}
                 onRemove={removePackage}
                 key={`${requestedPackage}`}
                 requestedPackage={`${requestedPackage}`}

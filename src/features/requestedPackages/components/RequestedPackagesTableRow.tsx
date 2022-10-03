@@ -1,4 +1,4 @@
-import React, { memo } from "react";
+import React from "react";
 import TableRow from "@mui/material/TableRow";
 import Typography from "@mui/material/Typography";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -17,12 +17,14 @@ interface IRequestedPackagesTableRowProps {
    */
   requestedPackage: string;
   onRemove: (packageName: string) => void;
+  onUpdate?: (name: string, constraint: string, version: string) => void;
   isCreating: boolean;
 }
 
-const BaseRequestedPackagesTableRow = ({
+export const RequestedPackagesTableRow = ({
   requestedPackage,
   onRemove,
+  onUpdate = (name: string, constraint: string, version: string) => {},
   isCreating
 }: IRequestedPackagesTableRowProps) => {
   const { packageVersions } = useAppSelector(state => state.requestedPackages);
@@ -34,6 +36,14 @@ const BaseRequestedPackagesTableRow = ({
   if (constraint === "latest") {
     version = packageVersions[name];
   }
+
+  const updateVersion = (value: string) => {
+    onUpdate(name, constraint, value);
+  };
+
+  const updateConstraint = (value: string) => {
+    onUpdate(name, value, version);
+  };
 
   return (
     <TableRow>
@@ -54,9 +64,14 @@ const BaseRequestedPackagesTableRow = ({
       <StyledRequestedPackagesTableCell align="left">
         <Box sx={{ display: "flex", alignItems: "center" }}>
           <ConstraintSelect
+            onUpdate={updateConstraint}
             constraint={constraint === "latest" ? "" : constraint}
           />
-          <VersionSelect version={version} name={name} />
+          <VersionSelect
+            onUpdate={updateVersion}
+            version={version}
+            name={name}
+          />
           <StyledIconButton
             onClick={() => onRemove(requestedPackage)}
             sx={{ marginLeft: "24px" }}
@@ -68,16 +83,3 @@ const BaseRequestedPackagesTableRow = ({
     </TableRow>
   );
 };
-
-const compareProps = (
-  prevProps: IRequestedPackagesTableRowProps,
-  nextProps: IRequestedPackagesTableRowProps
-) => {
-  return prevProps.requestedPackage === nextProps.requestedPackage;
-};
-
-// memoize the component, rerender only when requestedPackage prop has changed
-export const RequestedPackagesTableRow = memo(
-  BaseRequestedPackagesTableRow,
-  compareProps
-);
