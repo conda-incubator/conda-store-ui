@@ -24,7 +24,6 @@ interface IVersionSelectProps {
 export const VersionSelect = ({
   version,
   name,
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
   onUpdate = (value: string) => {}
 }: IVersionSelectProps) => {
   const { palette } = useTheme();
