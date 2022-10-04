@@ -4,6 +4,7 @@ import Typography from "@mui/material/Typography";
 import SquareIcon from "@mui/icons-material/Square";
 import FileUploadIcon from "@mui/icons-material/FileUpload";
 import { Dependency } from "../../../common/models";
+import Tooltip from "@mui/material/Tooltip";
 import { StyledIconButton } from "../../../styles";
 
 interface IDependenciesItemProps {
@@ -22,7 +23,7 @@ const BaseDependenciesItem = ({
   mode,
   handleClick
 }: IDependenciesItemProps) => {
-  const { id, name, version } = dependency;
+  const { name, version } = dependency;
   const isEditMode = mode === "edit";
 
   return (
@@ -48,9 +49,11 @@ const BaseDependenciesItem = ({
         {version}
       </Typography>
       {isEditMode && (
-        <StyledIconButton onClick={handleClick}>
-          <FileUploadIcon />
-        </StyledIconButton>
+        <Tooltip title="Promote as requested package" placement="right-start">
+          <StyledIconButton onClick={handleClick}>
+            <FileUploadIcon />
+          </StyledIconButton>
+        </Tooltip>
       )}
     </Box>
   );
