@@ -7,9 +7,10 @@ import { buildMapper } from "../../../utils/helpers/buildMapper";
 
 interface IData {
   data: IApiResponse<IBuild[]>;
+  currentBuildId: number;
 }
-export const EnvBuilds = ({ data }: IData) => {
-  const builds = data ? buildMapper(data) : [];
+export const EnvBuilds = ({ data, currentBuildId }: IData) => {
+  const builds = data !== undefined ? buildMapper(data, currentBuildId) : [];
   return (
     <>
       <StyledMetadataItem>

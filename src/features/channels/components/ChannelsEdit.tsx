@@ -47,10 +47,11 @@ export const ChannelsEdit = ({
   };
 
   const removeChannel = (channelName: string) => {
-    const filteredList = list.filter(channel => channel !== channelName);
+    const filteredList = (currentData: string[]) =>
+      currentData.filter(item => item !== channelName);
 
     setList(filteredList);
-    updateChannels(filteredList);
+    updateChannels(list.filter(item => item !== channelName));
   };
 
   const editChannel = (channelName: string, newChannelName: string) => {
@@ -74,6 +75,7 @@ export const ChannelsEdit = ({
     });
 
     setList(reorderedArray);
+    updateChannels(reorderedArray);
   };
 
   useEffect(() => {

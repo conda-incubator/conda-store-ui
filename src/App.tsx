@@ -3,20 +3,18 @@ import { BrowserRouter as Router } from "react-router-dom";
 import { Route, Routes } from "react-router";
 import "../style/index.css";
 import { PageLayout } from "./layouts";
-import { LoginPage } from "./features/auth";
 
 import { ThemeProvider } from "@mui/material";
 import { Provider } from "react-redux";
 import { store } from "./store";
 import { theme } from "./theme";
 
+// TODO: fix for jlab
 export const App = () => {
   return (
     <Router>
       <Routes>
         <Route path="/" element={<PageLayout />} />
-        <Route path="/lab" element={<PageLayout />} />
-        <Route path="/login" element={<LoginPage />} />
       </Routes>
     </Router>
   );

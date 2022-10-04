@@ -8,6 +8,7 @@ import TableRow from "@mui/material/TableRow";
 import Typography from "@mui/material/Typography";
 import useTheme from "@mui/material/styles/useTheme";
 import React, { useEffect, useMemo, useRef, useState } from "react";
+
 import { RequestedPackagesTableRow } from "./RequestedPackagesTableRow";
 import { AddRequestedPackage } from "./AddRequestedPackage";
 import {
@@ -19,19 +20,23 @@ import {
   StyledEditPackagesTableCell
 } from "../../../styles";
 import { CondaSpecificationPip } from "../../../common/models";
+import { requestedPackageParser } from "../../../utils/helpers";
 
 export interface IRequestedPackagesEditProps {
   /**
    * @param packageList list of packages that we get from the API
    * @param updatePackages notify the parent if there are changes in packageList array.
+   * @param isCreating notify the component if it's being used for creation or edition.
    */
   packageList: (string | CondaSpecificationPip)[];
-  updatePackages: (packages: any) => void;
+  updatePackages: (packages: string[]) => void;
+  isCreating: boolean;
 }
 
 export const RequestedPackagesEdit = ({
   packageList,
-  updatePackages
+  updatePackages,
+  isCreating
 }: IRequestedPackagesEditProps) => {
   const [data, setData] = useState(packageList);
   const [isAdding, setIsAdding] = useState(false);
@@ -43,12 +48,39 @@ export const RequestedPackagesEdit = ({
       currentData.filter(item => item !== packageName);
 
     setData(filteredList);
-    updatePackages(data.filter(item => item !== packageName));
+    const newArr = data.filter(item => item !== packageName) as string[];
+    updatePackages(newArr);
   };
 
   const addNewPackage = (packageName: string) => {
+    const newArr = [...data, packageName] as string[];
     setData([...data, packageName]);
-    updatePackages([...data, packageName]);
+    updatePackages(newArr);
+  };
+
+  const comparePackages = (
+    requestedPackage: string | CondaSpecificationPip,
+    newPackage: string,
+    newPackageName: string | CondaSpecificationPip
+  ) => {
+    const { name } = requestedPackageParser(requestedPackage as string);
+
+    if (name === newPackageName) {
+      return newPackage;
+    }
+
+    return requestedPackage;
+  };
+
+  const updatePackage = (name: string, constraint: string, version: string) => {
+    const newPackage = `${name}${constraint === "latest" ? ">=" : constraint}${
+      !version ? "" : version
+    }`;
+
+    const newArr = data.map(p =>
+      comparePackages(p, newPackage, name)
+    ) as string[];
+    updatePackages(newArr);
   };
 
   const filteredPackageList = useMemo(
@@ -62,8 +94,16 @@ export const RequestedPackagesEdit = ({
     }
   }, [isAdding]);
 
+  useEffect(() => {
+    setData(packageList);
+  }, [packageList]);
+
   return (
-    <Accordion sx={{ width: 576, boxShadow: "none" }} disableGutters>
+    <Accordion
+      sx={{ width: 576, boxShadow: "none" }}
+      defaultExpanded
+      disableGutters
+    >
       <StyledAccordionSummary expandIcon={<StyledAccordionExpandIcon />}>
         <StyledAccordionTitle>Requested Packages</StyledAccordionTitle>
       </StyledAccordionSummary>
@@ -89,19 +129,21 @@ export const RequestedPackagesEdit = ({
                   Name
                 </Typography>
               </StyledEditPackagesTableCell>
-              <StyledEditPackagesTableCell
-                align="left"
-                sx={{
-                  width: "180px"
-                }}
-              >
-                <Typography
-                  component="p"
-                  sx={{ fontSize: "16px", fontWeight: 500 }}
+              {!isCreating && (
+                <StyledEditPackagesTableCell
+                  align="left"
+                  sx={{
+                    width: "180px"
+                  }}
                 >
-                  Installed Version
-                </Typography>
-              </StyledEditPackagesTableCell>
+                  <Typography
+                    component="p"
+                    sx={{ fontSize: "16px", fontWeight: 500 }}
+                  >
+                    Installed Version
+                  </Typography>
+                </StyledEditPackagesTableCell>
+              )}
               <StyledEditPackagesTableCell align="left">
                 <Typography
                   component="p"
@@ -115,9 +157,11 @@ export const RequestedPackagesEdit = ({
           <TableBody>
             {filteredPackageList.map(requestedPackage => (
               <RequestedPackagesTableRow
+                onUpdate={updatePackage}
                 onRemove={removePackage}
                 key={`${requestedPackage}`}
                 requestedPackage={`${requestedPackage}`}
+                isCreating={isCreating}
               />
             ))}
           </TableBody>
@@ -127,6 +171,7 @@ export const RequestedPackagesEdit = ({
             <AddRequestedPackage
               onSubmit={addNewPackage}
               onCancel={setIsAdding}
+              isCreating={isCreating}
             />
           )}
         </Box>

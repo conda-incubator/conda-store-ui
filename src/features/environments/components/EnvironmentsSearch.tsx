@@ -5,7 +5,6 @@ import Box from "@mui/material/Box";
 import InputAdornment from "@mui/material/InputAdornment";
 import SearchIcon from "@mui/icons-material/Search";
 import Link from "@mui/material/Link";
-import { Link as RouterLink } from "react-router-dom";
 import PersonIcon from "@mui/icons-material/Person";
 
 interface IEnvironmentsSearchProps {
@@ -16,24 +15,20 @@ interface IEnvironmentsSearchProps {
 }
 
 export const EnvironmentsSearch = ({ onChange }: IEnvironmentsSearchProps) => {
-  const authMethod =
-    process.env.REACT_APP_AUTH_METHOD === "cookie" ? true : false;
+  const isCookieAuthMethod = process.env.REACT_APP_AUTH_METHOD === "cookie";
+  const authUrl = process.env.REACT_APP_LOGIN_PAGE_URL;
+  const pageUrl = window.location.href;
+  const loginPageUrl = `${authUrl}${pageUrl}`;
   let login;
-  if (authMethod) {
+
+  if (isCookieAuthMethod) {
     login = (
-      <Link
-        component={RouterLink}
-        to="/login"
-        sx={{
-          position: "absolute",
-          right: 0,
-          top: 0
-        }}
-      >
+      <Link href={loginPageUrl} sx={{ position: "absolute", top: 0, right: 0 }}>
         <PersonIcon sx={{ color: "black" }} />
       </Link>
     );
   }
+
   return (
     <Box
       sx={{

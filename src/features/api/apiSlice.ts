@@ -1,16 +1,23 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-const apiURL = "http://localhost:5000/conda-store";
-
-// auth token generated from http://localhost:5000/conda-store/user/
+// TODO: fix for jlab
+// const apiLocal = "http://localhost:5000/conda-store";
 const baseQuery = fetchBaseQuery({
-  baseUrl: apiURL,
-  // prepareHeaders: headers => {
-  //   headers.set("Authorization", `Bearer ${process.env.REACT_APP_AUTH_TOKEN}`);
+  baseUrl: process.env.REACT_APP_API_URL,
+  credentials: "include",
+  prepareHeaders: headers => {
+    if (
+      process.env.REACT_APP_AUTH_METHOD === "token" &&
+      process.env.REACT_APP_AUTH_TOKEN
+    ) {
+      headers.set(
+        "Authorization",
+        `Bearer ${process.env.REACT_APP_AUTH_TOKEN}`
+      );
+    }
 
-  //   return headers;
-  // },
-  // credentials: "include"
+    return headers;
+  }
 });
 
 export const apiSlice = createApi({

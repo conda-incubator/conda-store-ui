@@ -1,6 +1,9 @@
 name: python-flask-env
 channels:
-  - conda-forge
+- conda-forge
 dependencies:
-  - python ==3.9
-  - flask
+- python ==3.9
+- flask
+- ipykernel
+description: 'test description'
+prefix: null

@@ -12,6 +12,10 @@ import { StyledButtonPrimary } from "../../../../styles";
 import { useAppDispatch, useAppSelector } from "../../../../hooks";
 import { CodeEditor } from "../../../../features/yamlEditor";
 import { stringify } from "yaml";
+import {
+  modeChanged,
+  EnvironmentDetailsModes
+} from "src/features/environmentDetails";
 
 export const SpecificationEdit = ({ onUpdateEnvironment }: any) => {
   const { channels } = useAppSelector(state => state.channels);
@@ -24,10 +28,7 @@ export const SpecificationEdit = ({ onUpdateEnvironment }: any) => {
   const hasMore = size * page <= count;
   const dispatch = useAppDispatch();
   const [show, setShow] = useState(false);
-  const [code, setCode] = useState({
-    channels,
-    dependencies: requestedPackages
-  });
+  const [code, setCode] = useState({});
   const [newChannels, setNewChannels] = useState(channels);
   const [newPackages, setNewPackages] = useState(requestedPackages);
 
@@ -37,7 +38,6 @@ export const SpecificationEdit = ({ onUpdateEnvironment }: any) => {
   };
 
   const onUpdateChannels = (channels: string[]) => {
-    dispatch(updateChannels(channels));
     setNewChannels(channels);
   };
 
@@ -50,9 +50,9 @@ export const SpecificationEdit = ({ onUpdateEnvironment }: any) => {
     setShow(value);
     if (!value) {
       // If user want to switch the yaml editor view, let's send this info to the component
-      dispatch(updateChannels(newChannels));
       dispatch(updatePackages(newPackages));
     }
+    dispatch(updateChannels(newChannels));
   };
 
   const onEditEnvironment = () => {
@@ -68,11 +68,21 @@ export const SpecificationEdit = ({ onUpdateEnvironment }: any) => {
     });
   };
 
+  const onCancelEdition = () => {
+    dispatch(modeChanged(EnvironmentDetailsModes.READ));
+  };
+
   useEffect(() => {
-    setCode({
-      channels,
-      dependencies: requestedPackages
-    });
+    if (channels.length) {
+      setCode({
+        channels,
+        dependencies: requestedPackages
+      });
+    } else {
+      setCode({
+        dependencies: requestedPackages
+      });
+    }
   }, [channels, requestedPackages]);
 
   return (
@@ -90,6 +100,7 @@ export const SpecificationEdit = ({ onUpdateEnvironment }: any) => {
               <RequestedPackagesEdit
                 packageList={requestedPackages}
                 updatePackages={onUpdatePackages}
+                isCreating={false}
               />
             </Box>
             <Box sx={{ marginBottom: "30px" }}>
@@ -111,11 +122,17 @@ export const SpecificationEdit = ({ onUpdateEnvironment }: any) => {
         <Box
           sx={{
             display: "flex",
-            justifyContent: "center",
+            justifyContent: "space-around",
             marginTop: "30px",
             marginBottom: "10px"
           }}
         >
+          <StyledButtonPrimary
+            sx={{ padding: "5px 60px" }}
+            onClick={() => onCancelEdition()}
+          >
+            Cancel
+          </StyledButtonPrimary>
           <StyledButtonPrimary
             sx={{ padding: "5px 60px" }}
             onClick={() => onEditEnvironment()}

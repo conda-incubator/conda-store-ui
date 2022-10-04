@@ -1,6 +1,8 @@
-import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import Alert from "@mui/material/Alert";
+import React, { useEffect, useState } from "react";
+import { stringify } from "yaml";
+
 import { useAppDispatch, useAppSelector } from "../../../hooks";
 import { EnvironmentDetailsHeader } from "./EnvironmentDetailsHeader";
 import { Popup } from "../../../components";
@@ -8,14 +10,13 @@ import { SpecificationEdit, SpecificationReadOnly } from "./Specification";
 import { useGetBuildQuery } from "../environmentDetailsApiSlice";
 import { useGetBuildPackagesQuery } from "../../../features/dependencies";
 import { ArtifactList } from "../../../features/artifacts";
-import { EnvMetadata } from "../../../features/metadata";
+import { EnvMetadata, useGetEnviromentBuildsQuery } from "../../../features/metadata";
 import {
   EnvironmentDetailsModes,
   useCreateOrUpdateMutation,
   modeChanged
 } from "../../../features/environmentDetails";
 import artifactList from "../../../utils/helpers/artifact";
-import { stringify } from "yaml";
 
 export const EnvironmentDetails = () => {
   const dispatch = useAppDispatch();
@@ -24,7 +25,7 @@ export const EnvironmentDetails = () => {
   const { selectedEnvironment } = useAppSelector(state => state.tabs);
   const [name, setName] = useState(selectedEnvironment?.name || "");
   const [description, setDescription] = useState(
-    selectedEnvironment?.description || ""
+    selectedEnvironment ? selectedEnvironment.description : undefined
   );
   const [createOrUpdate] = useCreateOrUpdateMutation();
   const [error, setError] = useState({
@@ -60,7 +61,6 @@ export const EnvironmentDetails = () => {
       const { data } = await createOrUpdate(environmentInfo).unwrap();
       setIsEnvUpdated(true);
       dispatch(modeChanged(EnvironmentDetailsModes.READ));
-      console.log(`New build id: ${data.build_id}`);
     } catch (e) {
       setError({
         message: e?.data?.message ?? e.status,
@@ -73,6 +73,12 @@ export const EnvironmentDetails = () => {
     setName(selectedEnvironment?.name || "");
     setDescription(selectedEnvironment?.description || "");
   }, [selectedEnvironment]);
+
+  let enviromentBuilds = undefined;
+  if (selectedEnvironment?.current_build_id) {
+    const { data } = useGetEnviromentBuildsQuery(selectedEnvironment);
+    enviromentBuilds = data;
+  }
 
   return (
     <Box sx={{ padding: "14px 12px" }}>
@@ -89,7 +95,9 @@ export const EnvironmentDetails = () => {
       )}
       <Box sx={{ marginBottom: "30px" }}>
         <EnvMetadata
-          envDescription={description}
+          selectedEnv={enviromentBuilds}
+          description={description}
+          current_build_id={selectedEnvironment?.current_build_id || 0}
           mode={mode}
           onUpdateDescription={setDescription}
         />
@@ -102,7 +110,9 @@ export const EnvironmentDetails = () => {
       </Box>
       {mode === "read-only" && (
         <Box>
-          <ArtifactList artifacts={artifactList(selectedEnvironment?.id)} />
+          <ArtifactList
+            artifacts={artifactList(selectedEnvironment?.current_build_id)}
+          />
         </Box>
       )}
       <Popup

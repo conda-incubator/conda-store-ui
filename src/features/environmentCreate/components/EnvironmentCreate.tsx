@@ -1,15 +1,21 @@
 import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import Alert from "@mui/material/Alert";
-import { EnvironmentDetailsHeader } from "../../../features/environmentDetails";
+import {
+  EnvironmentDetailsHeader,
+  modeChanged,
+  EnvironmentDetailsModes
+} from "../../../features/environmentDetails";
 import { Popup } from "../../../components";
-import { useAppSelector } from "../../../hooks";
+import { useAppDispatch, useAppSelector } from "../../../hooks";
 import { EnvMetadata } from "../../../features/metadata";
-import { SpecificationCreate } from "./Specification/SpecificationCreate";
+import { SpecificationCreate, SpecificationReadOnly } from "./Specification";
 import { useCreateOrUpdateMutation } from "../../../features/environmentDetails";
 import { stringify } from "yaml";
 
 export const EnvironmentCreate = () => {
+  const dispatch = useAppDispatch();
+  const { mode } = useAppSelector(state => state.environmentDetails);
   const { newEnvironment } = useAppSelector(state => state.tabs);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -37,7 +43,7 @@ export const EnvironmentCreate = () => {
       });
       const { data } = await createOrUpdate(environmentInfo).unwrap();
       setIsEnvCreated(true);
-      console.log(`New build id: ${data.build_id}`);
+      dispatch(modeChanged(EnvironmentDetailsModes.READ));
     } catch ({ data }) {
       setError({
         message: data.message,
@@ -61,13 +67,18 @@ export const EnvironmentCreate = () => {
       )}
       <Box sx={{ marginBottom: "30px" }}>
         <EnvMetadata
-          envDescription={description}
-          mode="create"
+          selectedEnv={{}}
+          description={description}
+          current_build_id={0}
+          mode={mode}
           onUpdateDescription={setDescription}
         />
       </Box>
       <Box sx={{ marginBottom: "30px" }}>
-        <SpecificationCreate onCreateEnvironment={createEnvironment} />
+        {mode === "read-only" && <SpecificationReadOnly />}
+        {mode === "create" && (
+          <SpecificationCreate onCreateEnvironment={createEnvironment} />
+        )}
       </Box>
       <Popup
         isVisible={isEnvCreated}

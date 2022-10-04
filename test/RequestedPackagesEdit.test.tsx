@@ -16,6 +16,7 @@ describe("<RequestedPackagesEdit />", () => {
           <RequestedPackagesEdit
             packageList={PACKAGE_LIST}
             updatePackages={() => ({})}
+            isCreating={false}
           />
         </Provider>
       )

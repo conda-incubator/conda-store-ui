@@ -1,25 +1,27 @@
-const apiURL = "http://localhost:5000/conda-store";
+// TODO: fix for jlab
+// const apiURL = "http://localhost:5000/conda-store";
+const apiURL = process.env.REACT_APP_API_URL;
 
-const artifactList = (envId: number | undefined) => {
-  if (!envId) {
+const artifactList = (currentBuildId: number | undefined) => {
+  if (!currentBuildId) {
     return [];
   }
   return [
     {
       name: "Link to lockfile",
-      route: `${apiURL}/build/${envId}/lockfile/`
+      route: `${apiURL}/api/v1/build/${currentBuildId}/lockfile/`
     },
     {
       name: "Link to yml file",
-      route: `${apiURL}/build/${envId}/yaml/`
+      route: `${apiURL}/api/v1/build/${currentBuildId}/yaml/`
     },
     {
       name: "Link to archive",
-      route: `${apiURL}/build/${envId}/archive/`
+      route: `${apiURL}/api/v1/build/${currentBuildId}/archive/`
     },
     {
-      name: `Conda Env ${envId} log`,
-      route: `${apiURL}/build/${envId}/logs`
+      name: `Conda Env ${currentBuildId} log`,
+      route: `${apiURL}/api/v1/build/${currentBuildId}/logs`
     }
   ];
 };
