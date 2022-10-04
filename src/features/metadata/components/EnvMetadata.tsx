@@ -6,9 +6,9 @@ import Typography from "@mui/material/Typography";
 import useTheme from "@mui/material/styles/useTheme";
 import React from "react";
 
-import { useGetEnviromentsQuery } from "src/features/metadata";
-import { EnvBuilds, Description } from "src/features/metadata/components";
-import { StyledBox } from "src/styles";
+import { useGetEnviromentsQuery } from "../../../features/metadata";
+import { EnvBuilds, Description } from "../../../features/metadata/components";
+import { StyledBox } from "../../../styles";
 
 export enum EnvironmentDetailsModes {
   "CREATE" = "create",

@@ -1,4 +1,4 @@
-const apiURL = process.env.REACT_APP_API_URL;
+const apiURL = "http://localhost:5000/conda-store";
 
 const artifactList = (envId: number | undefined) => {
   if (!envId) {

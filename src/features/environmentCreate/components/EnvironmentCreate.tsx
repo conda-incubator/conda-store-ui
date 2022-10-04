@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import Alert from "@mui/material/Alert";
-import { EnvironmentDetailsHeader } from "src/features/environmentDetails";
-import { Popup } from "src/components";
-import { useAppSelector } from "src/hooks";
-import { EnvMetadata } from "src/features/metadata";
+import { EnvironmentDetailsHeader } from "../../../features/environmentDetails";
+import { Popup } from "../../../components";
+import { useAppSelector } from "../../../hooks";
+import { EnvMetadata } from "../../../features/metadata";
 import { SpecificationCreate } from "./Specification/SpecificationCreate";
-import { useCreateOrUpdateMutation } from "src/features/environmentDetails";
+import { useCreateOrUpdateMutation } from "../../../features/environmentDetails";
 import { stringify } from "yaml";
 
 export const EnvironmentCreate = () => {

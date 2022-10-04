@@ -1,9 +1,9 @@
 import React from "react";
-import { StyledMetadataItem } from "src/styles/StyledMetadataItem";
-import { Build } from "src/features/metadata/components";
-import { IApiResponse } from "src/common/interfaces";
-import { Build as IBuild } from "src/common/models";
-import { buildMapper } from "src/utils/helpers/buildMapper";
+import { StyledMetadataItem } from "../../../styles/StyledMetadataItem";
+import { Build } from "../../../features/metadata/components";
+import { IApiResponse } from "../../../common/interfaces";
+import { Build as IBuild } from "../../../common/models";
+import { buildMapper } from "../../../utils/helpers/buildMapper";
 
 interface IData {
   data: IApiResponse<IBuild[]>;

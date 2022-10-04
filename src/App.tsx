@@ -15,6 +15,7 @@ export const App = () => {
     <Router>
       <Routes>
         <Route path="/" element={<PageLayout />} />
+        <Route path="/lab" element={<PageLayout />} />
         <Route path="/login" element={<LoginPage />} />
       </Routes>
     </Router>

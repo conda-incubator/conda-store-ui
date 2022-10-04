@@ -17,8 +17,8 @@ import {
   StyledAccordionTitle,
   StyledButtonPrimary,
   StyledEditPackagesTableCell
-} from "src/styles";
-import { CondaSpecificationPip } from "src/common/models";
+} from "../../../styles";
+import { CondaSpecificationPip } from "../../../common/models";
 
 export interface IRequestedPackagesEditProps {
   /**
