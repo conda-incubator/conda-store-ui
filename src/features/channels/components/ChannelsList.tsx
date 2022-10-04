@@ -8,7 +8,7 @@ import {
   StyledAccordionExpandIcon,
   StyledAccordionSummary,
   StyledAccordionTitle
-} from "src/styles";
+} from "../../../styles";
 
 export interface IChannelsListProps {
   /**

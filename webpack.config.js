@@ -26,8 +26,9 @@ const {
 const isProd = process.env.NODE_ENV === "production";
 
 const basicConfig = {
-  devtool: "source-map",
+  devtool: isProd ? false : "source-map",
   entry: "src/index.tsx",
+  libraryTarget: "umd",
   watch: false,
   ...getContext(__dirname),
 

@@ -11,6 +11,8 @@
     "moduleResolution": "node",
     "noEmitOnError": true,
     "noImplicitAny": true,
+    "noUnusedLocals": true,
+    "skipLibCheck": true,
     "sourceMap": true,
     "strictNullChecks": true,
     "target": "es2019"

@@ -5,12 +5,12 @@ import {
   EnvironmentDetailsHeader,
   modeChanged,
   EnvironmentDetailsModes
-} from "src/features/environmentDetails";
-import { Popup } from "src/components";
-import { useAppDispatch, useAppSelector } from "src/hooks";
-import { EnvMetadata } from "src/features/metadata";
+} from "../../../features/environmentDetails";
+import { Popup } from "../../../components";
+import { useAppDispatch, useAppSelector } from "../../../hooks";
+import { EnvMetadata } from "../../../features/metadata";
 import { SpecificationCreate, SpecificationReadOnly } from "./Specification";
-import { useCreateOrUpdateMutation } from "src/features/environmentDetails";
+import { useCreateOrUpdateMutation } from "../../../features/environmentDetails";
 import { stringify } from "yaml";
 
 export const EnvironmentCreate = () => {
@@ -41,7 +41,7 @@ export const EnvironmentCreate = () => {
         message: "",
         visible: false
       });
-      const { data } = await createOrUpdate(environmentInfo).unwrap();
+      await createOrUpdate(environmentInfo).unwrap();
       setIsEnvCreated(true);
       dispatch(modeChanged(EnvironmentDetailsModes.READ));
     } catch ({ data }) {
