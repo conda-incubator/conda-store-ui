@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Accordion from "@mui/material/Accordion";
 import { StyledAccordionExpandIcon, StyledAccordionSummary } from "src/styles";
 import { INamespaceEnvironments } from "src/common/interfaces";
@@ -32,9 +32,16 @@ export const EnvironmentDropdown = ({
   data: { namespace, environments }
 }: IEnvironmentDropdownProps) => {
   const { selectedEnvironment } = useAppSelector(state => state.tabs);
+  const [isExpanded, setIsExpanded] = useState(false);
   const dispatch = useAppDispatch();
 
-  const onCreateNewEnvironmentTab = (namespace: string) => {
+  const onCreateNewEnvironmentTab = (
+    event: React.SyntheticEvent,
+    namespace: string
+  ) => {
+    if (isExpanded) {
+      event.stopPropagation();
+    }
     dispatch(modeChanged(EnvironmentDetailsModes.CREATE));
     dispatch(openCreateNewEnvironmentTab(namespace));
   };
@@ -43,7 +50,9 @@ export const EnvironmentDropdown = ({
     <Accordion
       sx={{ border: "none", position: "initial" }}
       elevation={0}
+      expanded={isExpanded}
       disableGutters
+      onChange={() => setIsExpanded(!isExpanded)}
     >
       <StyledAccordionSummary
         sx={{
@@ -55,7 +64,7 @@ export const EnvironmentDropdown = ({
       >
         <Box sx={{ display: "flex", alignItems: "center" }}>
           <Typography sx={{ width: "217px" }}>{namespace}</Typography>
-          <IconButton onClick={() => onCreateNewEnvironmentTab(namespace)}>
+          <IconButton onClick={e => onCreateNewEnvironmentTab(e, namespace)}>
             <AddIcon sx={{ width: "15px", height: "15px", color: "#2B2B2B" }} />
           </IconButton>
         </Box>
