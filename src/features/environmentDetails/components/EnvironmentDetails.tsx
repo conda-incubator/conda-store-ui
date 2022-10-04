@@ -58,7 +58,7 @@ export const EnvironmentDetails = () => {
         message: "",
         visible: false
       });
-      const { data } = await createOrUpdate(environmentInfo).unwrap();
+      await createOrUpdate(environmentInfo).unwrap();
       setIsEnvUpdated(true);
       dispatch(modeChanged(EnvironmentDetailsModes.READ));
     } catch (e) {

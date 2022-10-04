@@ -1,21 +1,21 @@
-import React, { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
-import { ChannelsEdit } from "../../../../features/channels";
+import React, { useState, useEffect } from "react";
+import { stringify } from "yaml";
+
+import { BlockContainerEditMode } from "../../../../components";
+import { ChannelsEdit, updateChannels } from "../../../../features/channels";
 import { Dependencies, pageChanged } from "../../../../features/dependencies";
-import { updateChannels } from "../../../../features/channels";
+import {
+  modeChanged,
+  EnvironmentDetailsModes
+} from "../../../../features/environmentDetails";
 import {
   RequestedPackagesEdit,
   updatePackages
 } from "../../../../features/requestedPackages";
-import { BlockContainerEditMode } from "../../../../components";
-import { StyledButtonPrimary } from "../../../../styles";
-import { useAppDispatch, useAppSelector } from "../../../../hooks";
 import { CodeEditor } from "../../../../features/yamlEditor";
-import { stringify } from "yaml";
-import {
-  modeChanged,
-  EnvironmentDetailsModes
-} from "src/features/environmentDetails";
+import { useAppDispatch, useAppSelector } from "../../../../hooks";
+import { StyledButtonPrimary } from "../../../../styles";
 
 export const SpecificationEdit = ({ onUpdateEnvironment }: any) => {
   const { channels } = useAppSelector(state => state.channels);

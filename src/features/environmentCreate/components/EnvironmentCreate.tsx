@@ -41,7 +41,7 @@ export const EnvironmentCreate = () => {
         message: "",
         visible: false
       });
-      const { data } = await createOrUpdate(environmentInfo).unwrap();
+      await createOrUpdate(environmentInfo).unwrap();
       setIsEnvCreated(true);
       dispatch(modeChanged(EnvironmentDetailsModes.READ));
     } catch ({ data }) {
