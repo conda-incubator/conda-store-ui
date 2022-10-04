@@ -10,17 +10,17 @@ interface IDependenciesItemProps {
   /**
    * @param dependency single dependency
    * @param mode change whether we are only able to read this dependency or edit it
-   * @param onClick click handler
+   * @param handleClick click handler
    */
   dependency: Dependency;
   mode: "read-only" | "edit";
-  onClick: (id: number) => void;
+  handleClick: () => void;
 }
 
 const BaseDependenciesItem = ({
   dependency,
   mode,
-  onClick
+  handleClick
 }: IDependenciesItemProps) => {
   const { id, name, version } = dependency;
   const isEditMode = mode === "edit";
@@ -48,7 +48,7 @@ const BaseDependenciesItem = ({
         {version}
       </Typography>
       {isEditMode && (
-        <StyledIconButton onClick={() => onClick(id)}>
+        <StyledIconButton onClick={handleClick}>
           <FileUploadIcon />
         </StyledIconButton>
       )}

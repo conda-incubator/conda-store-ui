@@ -23,6 +23,11 @@ export const dependenciesSlice = createSlice({
   reducers: {
     pageChanged: (state, action: PayloadAction<number>) => {
       state.page = action.payload;
+    },
+    dependencyPromoted: (state, action: PayloadAction<Dependency>) => {
+      state.dependencies = state.dependencies.filter(
+        p => p.id !== action.payload.id
+      );
     }
   },
   extraReducers: builder => {
@@ -74,4 +79,4 @@ export const dependenciesSlice = createSlice({
   }
 });
 
-export const { pageChanged } = dependenciesSlice.actions;
+export const { pageChanged, dependencyPromoted } = dependenciesSlice.actions;
