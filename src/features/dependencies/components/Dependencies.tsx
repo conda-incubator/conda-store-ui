@@ -8,10 +8,10 @@ import {
   StyledAccordionDetails,
   StyledAccordionSummary,
   StyledAccordionTitle
-} from "src/styles";
-import { Dependency } from "src/common/models";
+} from "../../../styles";
+import { Dependency } from "../../../common/models";
 import { DependenciesItem } from "./DependenciesItem";
-import { useAppSelector } from "src/hooks";
+import { useAppSelector } from "../../../hooks";
 
 export interface IDependenciesProps {
   /**

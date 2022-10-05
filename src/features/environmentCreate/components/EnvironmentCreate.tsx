@@ -5,21 +5,20 @@ import {
   EnvironmentDetailsHeader,
   modeChanged,
   EnvironmentDetailsModes
-} from "src/features/environmentDetails";
+} from "../../../features/environmentDetails";
 import {
   environmentOpened,
   closeCreateNewEnvironmentTab
-} from "src/features/tabs";
-import { useAppDispatch, useAppSelector } from "src/hooks";
-import { EnvMetadata } from "src/features/metadata";
+} from "../../../features/tabs";
+import { useAppDispatch, useAppSelector } from "../../../hooks";
+import { EnvMetadata } from "../../../features/metadata";
 import { SpecificationCreate, SpecificationReadOnly } from "./Specification";
-import { useCreateOrUpdateMutation } from "src/features/environmentDetails";
+import { useCreateOrUpdateMutation } from "../../../features/environmentDetails";
 import { stringify } from "yaml";
 
 export interface IEnvCreate {
   environmentNotification: (notification: any) => void;
 }
-
 export const EnvironmentCreate = ({ environmentNotification }: IEnvCreate) => {
   const dispatch = useAppDispatch();
   const { mode } = useAppSelector(state => state.environmentDetails);

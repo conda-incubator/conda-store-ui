@@ -1,4 +1,4 @@
-import { BuildPackage } from "src/common/models";
+import { BuildPackage } from "../../common/models";
 
 export enum ActionTypes {
   DATA_FETCHED = "requestedPackages/data_fetched",
