@@ -16,11 +16,14 @@ import {
   useCreateOrUpdateMutation,
   modeChanged
 } from "src/features/environmentDetails";
+import { environmentUpdated } from "src/features/environmentDetails";
 import artifactList from "src/utils/helpers/artifact";
 import { stringify } from "yaml";
 
 export const EnvironmentDetails = () => {
   const dispatch = useAppDispatch();
+  const { isUpdated } = useAppSelector(state => state.environmentDetails);
+
   const { mode } = useAppSelector(state => state.environmentDetails);
   const { page } = useAppSelector(state => state.dependencies);
   const { selectedEnvironment } = useAppSelector(state => state.tabs);
@@ -61,6 +64,8 @@ export const EnvironmentDetails = () => {
       });
       const { data } = await createOrUpdate(environmentInfo).unwrap();
       setIsEnvUpdated(true);
+      dispatch(environmentUpdated(true));
+      console.log(isUpdated);
       dispatch(modeChanged(EnvironmentDetailsModes.READ));
     } catch (e) {
       setError({

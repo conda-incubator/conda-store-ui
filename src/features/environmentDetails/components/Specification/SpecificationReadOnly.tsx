@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import { RequestedPackageList } from "src/features/requestedPackages";
 import { Dependencies, pageChanged } from "src/features/dependencies";
@@ -10,6 +10,7 @@ export const SpecificationReadOnly = () => {
   const { requestedPackages } = useAppSelector(
     state => state.requestedPackages
   );
+  console.log(requestedPackages);
   const { channels } = useAppSelector(state => state.channels);
   const { dependencies, size, count, page } = useAppSelector(
     state => state.dependencies

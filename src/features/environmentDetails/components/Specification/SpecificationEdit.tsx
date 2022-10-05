@@ -31,6 +31,7 @@ export const SpecificationEdit = ({ onUpdateEnvironment }: any) => {
   const [code, setCode] = useState({});
   const [newChannels, setNewChannels] = useState(channels);
   const [newPackages, setNewPackages] = useState(requestedPackages);
+  //const { isUpdated } = useAppSelector(state => state.environmentDetails);
 
   const onUpdatePackages = (packages: string[]) => {
     dispatch(updatePackages(packages));
