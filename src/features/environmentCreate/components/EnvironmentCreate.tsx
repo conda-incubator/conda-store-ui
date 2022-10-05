@@ -1,20 +1,20 @@
 import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import Alert from "@mui/material/Alert";
+import { stringify } from "yaml";
 import {
   EnvironmentDetailsHeader,
   modeChanged,
   EnvironmentDetailsModes
-} from "src/features/environmentDetails";
+} from "../../../features/environmentDetails";
 import {
   environmentOpened,
   closeCreateNewEnvironmentTab
-} from "src/features/tabs";
-import { useAppDispatch, useAppSelector } from "src/hooks";
-import { EnvMetadata } from "src/features/metadata";
+} from "../../../features/tabs";
+import { useAppSelector, useAppDispatch } from "../../../hooks";
+import { EnvMetadata } from "../../../features/metadata";
 import { SpecificationCreate, SpecificationReadOnly } from "./Specification";
-import { useCreateOrUpdateMutation } from "src/features/environmentDetails";
-import { stringify } from "yaml";
+import { useCreateOrUpdateMutation } from "../../../features/environmentDetails";
 
 export interface IEnvCreate {
   environmentNotification: (notification: any) => void;

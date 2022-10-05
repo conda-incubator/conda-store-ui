@@ -1,22 +1,21 @@
-import React, { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
-import { cloneDeep } from "lodash";
-import { ChannelsEdit } from "src/features/channels";
-import { Dependencies, pageChanged } from "src/features/dependencies";
-import { updateChannels } from "src/features/channels";
-import {
-  RequestedPackagesEdit,
-  updatePackages
-} from "src/features/requestedPackages";
-import { BlockContainerEditMode } from "src/components";
-import { StyledButtonPrimary } from "src/styles";
-import { useAppDispatch, useAppSelector } from "src/hooks";
-import { CodeEditor } from "src/features/yamlEditor";
+import React, { useState, useEffect } from "react";
 import { stringify } from "yaml";
+import { cloneDeep } from "lodash";
+import { BlockContainerEditMode } from "../../../../components";
+import { ChannelsEdit, updateChannels } from "../../../../features/channels";
+import { Dependencies, pageChanged } from "../../../../features/dependencies";
 import {
   modeChanged,
   EnvironmentDetailsModes
-} from "src/features/environmentDetails";
+} from "../../../../features/environmentDetails";
+import {
+  RequestedPackagesEdit,
+  updatePackages
+} from "../../../../features/requestedPackages";
+import { CodeEditor } from "../../../../features/yamlEditor";
+import { useAppDispatch, useAppSelector } from "../../../../hooks";
+import { StyledButtonPrimary } from "../../../../styles";
 
 export const SpecificationEdit = ({
   descriptionUpdated,

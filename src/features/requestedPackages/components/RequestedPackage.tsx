@@ -2,8 +2,9 @@ import SquareIcon from "@mui/icons-material/Square";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import React from "react";
-import { requestedPackageParser } from "src/utils/helpers";
-import { useAppSelector } from "src/hooks";
+
+import { requestedPackageParser } from "../../../utils/helpers";
+import { useAppSelector } from "../../../hooks";
 
 interface IRequestedPackageProps {
   /**

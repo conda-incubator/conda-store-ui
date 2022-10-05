@@ -17,8 +17,8 @@ import {
   StyledAccordionSummary,
   StyledAccordionTitle,
   StyledButtonPrimary
-} from "src/styles";
-import { reorderArray } from "src/utils/helpers";
+} from "../../../styles";
+import { reorderArray } from "../../../utils/helpers";
 
 export interface IChannelsEditProps {
   /**

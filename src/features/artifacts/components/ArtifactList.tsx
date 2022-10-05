@@ -1,14 +1,14 @@
 import Box from "@mui/material/Box";
 import React from "react";
 import { ArtifactItem } from "./ArtifactsItem";
-import { Artifact } from "src/common/models";
+import { Artifact } from "../../../common/models";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import Divider from "@mui/material/Divider";
 import ListItemText from "@mui/material/ListItemText";
 import Typography from "@mui/material/Typography";
 import useTheme from "@mui/material/styles/useTheme";
-import { StyledBox } from "src/styles";
+import { StyledBox } from "../../../styles";
 
 export interface IArtifactsProps {
   /**
