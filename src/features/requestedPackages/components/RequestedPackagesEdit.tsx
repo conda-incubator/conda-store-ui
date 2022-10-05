@@ -10,7 +10,6 @@ import useTheme from "@mui/material/styles/useTheme";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { RequestedPackagesTableRow } from "./RequestedPackagesTableRow";
 import { AddRequestedPackage } from "./AddRequestedPackage";
-import { useAppSelector } from "src/hooks";
 import {
   StyledAccordionDetails,
   StyledAccordionExpandIcon,
@@ -39,7 +38,6 @@ export const RequestedPackagesEdit = ({
 }: IRequestedPackagesEditProps) => {
   const [data, setData] = useState(packageList);
   const [isAdding, setIsAdding] = useState(false);
-  const { isUpdated } = useAppSelector(state => state.environmentDetails);
   const { palette } = useTheme();
   const scrollRef = useRef<HTMLDivElement | null>(null);
 
@@ -54,12 +52,8 @@ export const RequestedPackagesEdit = ({
 
   const addNewPackage = (packageName: string) => {
     const newArr = [...data, packageName] as string[];
+    setData([...data, packageName]);
     updatePackages(newArr);
-
-    if (isUpdated) {
-      setData([...data, packageName]);
-      console.log(isUpdated + "updated list");
-    }
   };
 
   const comparePackages = (

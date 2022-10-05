@@ -10,13 +10,11 @@ import { useGetBuildPackagesQuery } from "src/features/dependencies";
 import { ArtifactList } from "src/features/artifacts";
 import { EnvMetadata } from "src/features/metadata";
 import { useGetEnviromentBuildsQuery } from "src/features/metadata";
-
 import {
   EnvironmentDetailsModes,
   useCreateOrUpdateMutation,
   modeChanged
 } from "src/features/environmentDetails";
-import { environmentUpdated } from "src/features/environmentDetails";
 import artifactList from "src/utils/helpers/artifact";
 import { stringify } from "yaml";
 
@@ -62,10 +60,8 @@ export const EnvironmentDetails = () => {
         message: "",
         visible: false
       });
-      const { data } = await createOrUpdate(environmentInfo).unwrap();
+      await createOrUpdate(environmentInfo).unwrap();
       setIsEnvUpdated(true);
-      dispatch(environmentUpdated(true));
-      console.log(isUpdated);
       dispatch(modeChanged(EnvironmentDetailsModes.READ));
     } catch (e) {
       setError({

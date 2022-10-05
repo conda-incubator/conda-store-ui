@@ -31,10 +31,10 @@ export const SpecificationEdit = ({ onUpdateEnvironment }: any) => {
   const [code, setCode] = useState({});
   const [newChannels, setNewChannels] = useState(channels);
   const [newPackages, setNewPackages] = useState(requestedPackages);
-  //const { isUpdated } = useAppSelector(state => state.environmentDetails);
+  const [isUpdated, setIsUpdated] = useState(false);
 
   const onUpdatePackages = (packages: string[]) => {
-    dispatch(updatePackages(packages));
+    // dispatch(updatePackages(packages));
     setNewPackages(packages);
   };
 
@@ -63,6 +63,8 @@ export const SpecificationEdit = ({ onUpdateEnvironment }: any) => {
       dispatch(updatePackages(newPackages));
     }
 
+    setIsUpdated(true);
+
     onUpdateEnvironment({
       channels: newChannels,
       dependencies: newPackages
@@ -85,6 +87,14 @@ export const SpecificationEdit = ({ onUpdateEnvironment }: any) => {
       });
     }
   }, [channels, requestedPackages]);
+
+  useEffect(() => {
+    console.log("updated", isUpdated);
+    // When "save" button is clicked, let's do the dispatch to update the data
+    if (isUpdated) {
+      dispatch(updatePackages(newPackages));
+    }
+  }, [isUpdated]);
 
   return (
     <BlockContainerEditMode

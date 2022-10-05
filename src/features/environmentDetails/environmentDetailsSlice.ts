@@ -30,10 +30,6 @@ export const environmentDetailsSlice = createSlice({
       action: PayloadAction<IEnvironmentDetailsState["mode"]>
     ) => {
       state.mode = action.payload;
-    },
-    environmentUpdated: (state, action: PayloadAction<boolean>) => {
-      const test = action.payload;
-      state.isUpdated = test;
     }
   },
   extraReducers: builder => {
@@ -58,5 +54,4 @@ export const environmentDetailsSlice = createSlice({
   }
 });
 
-export const { modeChanged, environmentUpdated } =
-  environmentDetailsSlice.actions;
+export const { modeChanged } = environmentDetailsSlice.actions;
