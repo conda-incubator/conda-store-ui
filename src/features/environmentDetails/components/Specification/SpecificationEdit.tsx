@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
+import { cloneDeep } from "lodash";
 import { ChannelsEdit } from "src/features/channels";
 import { Dependencies, pageChanged } from "src/features/dependencies";
 import { updateChannels } from "src/features/channels";
@@ -17,7 +18,10 @@ import {
   EnvironmentDetailsModes
 } from "src/features/environmentDetails";
 
-export const SpecificationEdit = ({ onUpdateEnvironment }: any) => {
+export const SpecificationEdit = ({
+  descriptionUpdated,
+  onUpdateEnvironment
+}: any) => {
   const { channels } = useAppSelector(state => state.channels);
   const { requestedPackages } = useAppSelector(
     state => state.requestedPackages
@@ -31,6 +35,27 @@ export const SpecificationEdit = ({ onUpdateEnvironment }: any) => {
   const [code, setCode] = useState({});
   const [newChannels, setNewChannels] = useState(channels);
   const [newPackages, setNewPackages] = useState(requestedPackages);
+  const [envIsUpdated, setEnvIsUpdated] = useState(false);
+  const [storagedChannels, setStoragedChannels] = useState(
+    cloneDeep(newChannels)
+  );
+  const [storagedPackages, setStoragedPackages] = useState(
+    cloneDeep(newPackages)
+  );
+
+  useEffect(() => {
+    if (descriptionUpdated) {
+      setEnvIsUpdated(true);
+    }
+    if (newChannels.length !== storagedChannels.length) {
+      setEnvIsUpdated(true);
+      setStoragedChannels(newChannels);
+    }
+    if (newPackages.length !== storagedPackages.length) {
+      setEnvIsUpdated(true);
+      setStoragedPackages(newPackages);
+    }
+  }, [newChannels, newPackages, descriptionUpdated]);
 
   const onUpdatePackages = (packages: string[]) => {
     dispatch(updatePackages(packages));
@@ -135,9 +160,10 @@ export const SpecificationEdit = ({ onUpdateEnvironment }: any) => {
           </StyledButtonPrimary>
           <StyledButtonPrimary
             sx={{ padding: "5px 60px" }}
+            disabled={!envIsUpdated}
             onClick={() => onEditEnvironment()}
           >
-            Edit
+            Save
           </StyledButtonPrimary>
         </Box>
       </Box>

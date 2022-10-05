@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import Alert from "@mui/material/Alert";
+import { cloneDeep } from "lodash";
 import { useAppDispatch, useAppSelector } from "src/hooks";
 import { EnvironmentDetailsHeader } from "./EnvironmentDetailsHeader";
 import { SpecificationEdit, SpecificationReadOnly } from "./Specification";
@@ -30,10 +31,13 @@ export const EnvironmentDetails = ({
   const { page } = useAppSelector(state => state.dependencies);
   const { selectedEnvironment } = useAppSelector(state => state.tabs);
   const [name, setName] = useState(selectedEnvironment?.name || "");
+  const [createOrUpdate] = useCreateOrUpdateMutation();
   const [description, setDescription] = useState(
     selectedEnvironment ? selectedEnvironment.description : undefined
   );
-  const [createOrUpdate] = useCreateOrUpdateMutation();
+  const [storagedDescription, setStoragedDescription] = useState(
+    cloneDeep(description)
+  );
   const [error, setError] = useState({
     message: "",
     visible: false
@@ -65,6 +69,7 @@ export const EnvironmentDetails = ({
       });
       await createOrUpdate(environmentInfo).unwrap();
       dispatch(modeChanged(EnvironmentDetailsModes.READ));
+      setStoragedDescription(description);
       environmentNotification({
         show: true,
         description: `${name} environment has been updated`
@@ -113,7 +118,10 @@ export const EnvironmentDetails = ({
       <Box sx={{ marginBottom: "30px" }}>
         {mode === "read-only" && <SpecificationReadOnly />}
         {mode === "edit" && (
-          <SpecificationEdit onUpdateEnvironment={updateEnvironment} />
+          <SpecificationEdit
+            descriptionUpdated={storagedDescription !== description}
+            onUpdateEnvironment={updateEnvironment}
+          />
         )}
       </Box>
       {mode === "read-only" && (

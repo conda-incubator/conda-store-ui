@@ -8,15 +8,12 @@ import Typography from "@mui/material/Typography";
 import useTheme from "@mui/material/styles/useTheme";
 import { EnvBuilds, Description } from "src/features/metadata/components";
 import { StyledBox } from "src/styles";
-import { useGetEnviromentBuildsQuery } from "src/features/metadata";
 
-import { buildMapper } from "src/utils/helpers/buildMapper";
 export enum EnvironmentDetailsModes {
   "CREATE" = "create",
   "READ" = "read-only",
   "EDIT" = "edit"
 }
-
 interface IEnvMetadataProps {
   /**
    * @param selectedEnv Selected environment's information
@@ -26,28 +23,18 @@ interface IEnvMetadataProps {
   selectedEnv: any;
   description: any;
   mode: "create" | "read-only" | "edit";
-  onUpdateDescription: (description: string) => void;
   current_build_id: number;
+  onUpdateDescription: (description: string) => void;
 }
 
 export const EnvMetadata = ({
   selectedEnv,
   description,
   mode,
-  onUpdateDescription,
-  current_build_id
+  current_build_id,
+  onUpdateDescription
 }: IEnvMetadataProps) => {
   const { palette } = useTheme();
-  // const { current_build_id = undefined, description: envDescription } =
-  //   selectedEnv;
-
-  // let enviromentBuilds = undefined;
-  // if (current_build_id) {
-  //   // It is calling multiple times
-  //   const { data } = useGetEnviromentBuildsQuery(selectedEnv);
-  //   enviromentBuilds = data;
-  // }
-  // const [buildId, setBuildId] = useState(selectedEnv?.current_build_id || "");
 
   return (
     <StyledBox>
