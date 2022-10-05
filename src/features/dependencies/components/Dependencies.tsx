@@ -12,7 +12,7 @@ import {
 import { Dependency } from "src/common/models";
 import { DependenciesItem } from "./DependenciesItem";
 import { useAppDispatch, useAppSelector } from "src/hooks";
-import { dependencyPromoted } from "../dependenciesSlice";
+import { dependencyPromoted } from "src/features/requestedPackages";
 
 export interface IDependenciesProps {
   /**
