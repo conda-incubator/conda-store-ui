@@ -85,7 +85,11 @@ export const ChannelsEdit = ({
   }, [isAdding]);
 
   return (
-    <Accordion sx={{ width: 421, boxShadow: "none" }} disableGutters>
+    <Accordion
+      defaultExpanded={listLength > 0}
+      sx={{ width: 421, boxShadow: "none" }}
+      disableGutters
+    >
       <StyledAccordionSummary expandIcon={<StyledAccordionExpandIcon />}>
         <StyledAccordionTitle>Channels</StyledAccordionTitle>
       </StyledAccordionSummary>
