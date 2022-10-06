@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { Build } from "../../common/models";
+import { Build } from "src/common/models";
 import { environmentsApiSlice } from "./metadataApiSlice";
 
 export interface IBuildState {

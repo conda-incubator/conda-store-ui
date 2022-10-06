@@ -2,8 +2,8 @@ import React from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
-import { StyledButtonPrimary } from "../../../styles";
-import { useAppDispatch, useAppSelector } from "../../../hooks";
+import { StyledButtonPrimary } from "src/styles";
+import { useAppDispatch, useAppSelector } from "src/hooks";
 import {
   EnvironmentDetailsModes,
   modeChanged

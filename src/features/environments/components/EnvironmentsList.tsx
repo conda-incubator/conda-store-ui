@@ -4,9 +4,9 @@ import Typography from "@mui/material/Typography";
 import CircularProgress from "@mui/material/CircularProgress";
 import GroupIcon from "@mui/icons-material/Group";
 import { EnvironmentDropdown } from "./EnvironmentDropdown";
-import { Environment } from "../../../common/models";
-import { StyledScrollContainer } from "../../../styles";
-import { INamespaceEnvironments } from "../../../common/interfaces";
+import { Environment } from "src/common/models";
+import { StyledScrollContainer } from "src/styles";
+import { INamespaceEnvironments } from "src/common/interfaces";
 import lodash from "lodash";
 import InfiniteScroll from "react-infinite-scroll-component";
 

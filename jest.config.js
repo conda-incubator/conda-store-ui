@@ -13,6 +13,7 @@ module.exports = {
         "<rootDir>/src/**/*.{ts,tsx}",
         "!<rootDir>/src/**/*.stories.{ts,tsx}", // storybook files
     ],
+    testEnvironment: "jsdom",
     moduleDirectories: ["node_modules", __dirname],
     modulePathIgnorePatterns: ["<rootDir>/lib/"],
     transformIgnorePatterns: [

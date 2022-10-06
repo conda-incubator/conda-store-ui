@@ -1,5 +1,3 @@
-// TODO: fix for jlab
-// const apiURL = "http://localhost:5000/conda-store";
 const apiURL = process.env.REACT_APP_API_URL;
 
 const artifactList = (currentBuildId: number | undefined) => {

@@ -1,12 +1,12 @@
 import React from "react";
-import { StyledTab } from "../../../styles";
-import { StyledTabs } from "../../../styles/StyledTabs";
+import { StyledTab } from "src/styles";
+import { StyledTabs } from "src/styles/StyledTabs";
 import CloseIcon from "@mui/icons-material/Close";
-import { useAppDispatch, useAppSelector } from "../../../hooks";
+import { useAppDispatch, useAppSelector } from "src/hooks";
 import {
   modeChanged,
   EnvironmentDetailsModes
-} from "../../../features/environmentDetails";
+} from "src/features/environmentDetails";
 import {
   environmentClosed,
   tabChanged,
