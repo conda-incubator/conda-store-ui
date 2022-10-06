@@ -1,5 +1,5 @@
-import { IApiResponse } from "../../common/interfaces";
-import { Dependency } from "../../common/models";
+import { IApiResponse } from "src/common/interfaces";
+import { Dependency } from "src/common/models";
 import { apiSlice } from "../api";
 
 export const dependenciesApiSlice = apiSlice.injectEndpoints({

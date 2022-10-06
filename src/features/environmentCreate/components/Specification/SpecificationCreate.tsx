@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
-import { ChannelsEdit } from "../../../../features/channels";
-import { RequestedPackagesEdit } from "../../../../features/requestedPackages";
-import { BlockContainerEditMode } from "../../../../components";
-import { StyledButtonPrimary } from "../../../../styles";
-import { CodeEditor } from "../../../../features/yamlEditor";
+import { ChannelsEdit } from "src/features/channels";
+import { RequestedPackagesEdit } from "src/features/requestedPackages";
+import { BlockContainerEditMode } from "src/components";
+import { StyledButtonPrimary } from "src/styles";
+import { CodeEditor } from "src/features/yamlEditor";
 import { stringify } from "yaml";
 
 export const SpecificationCreate = ({ onCreateEnvironment }: any) => {

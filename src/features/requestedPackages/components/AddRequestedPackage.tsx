@@ -3,7 +3,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import Autocomplete from "@mui/material/Autocomplete";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
-import { StyledIconButton } from "../../../styles";
+import { StyledIconButton } from "src/styles";
 import { useLazyGetPackageSuggestionsQuery } from "../requestedPackagesApiSlice";
 import { debounce } from "lodash";
 import { CircularProgress } from "@mui/material";

@@ -7,7 +7,10 @@ import { EnvironmentsSearch } from "./EnvironmentsSearch";
 import { useLazyFetchEnvironmentsQuery } from "../environmentsApiSlice";
 import { ActionTypes, initialState, environmentsReducer } from "../reducer";
 
-const BaseEnvironments = ({ refreshEnvironments }: any) => {
+const BaseEnvironments = ({
+  refreshEnvironments,
+  onUpdateRefreshEnvironments
+}: any) => {
   const size = 100;
   const [state, dispatch] = useReducer(environmentsReducer, initialState);
 
@@ -57,6 +60,8 @@ const BaseEnvironments = ({ refreshEnvironments }: any) => {
           payload: { data: data.data, count: data.count }
         });
       }
+
+      onUpdateRefreshEnvironments(false);
     })();
   }, [refreshEnvironments]);
 

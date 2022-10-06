@@ -3,22 +3,20 @@ import Box from "@mui/material/Box";
 import Alert from "@mui/material/Alert";
 import { cloneDeep } from "lodash";
 import { stringify } from "yaml";
-import { useAppDispatch, useAppSelector } from "../../../hooks";
+import { useAppDispatch, useAppSelector } from "src/hooks";
 import { EnvironmentDetailsHeader } from "./EnvironmentDetailsHeader";
 import { SpecificationEdit, SpecificationReadOnly } from "./Specification";
 import { useGetBuildQuery } from "../environmentDetailsApiSlice";
-import { useGetBuildPackagesQuery } from "../../../features/dependencies";
-import { ArtifactList } from "../../../features/artifacts";
-import {
-  EnvMetadata,
-  useGetEnviromentBuildsQuery
-} from "../../../features/metadata";
+import { useGetBuildPackagesQuery } from "src/features/dependencies";
+import { ArtifactList } from "src/features/artifacts";
+import { EnvMetadata } from "src/features/metadata";
+import { useGetEnviromentBuildsQuery } from "src/features/metadata";
 import {
   EnvironmentDetailsModes,
   useCreateOrUpdateMutation,
   modeChanged
-} from "../../../features/environmentDetails";
-import artifactList from "../../../utils/helpers/artifact";
+} from "src/features/environmentDetails";
+import artifactList from "src/utils/helpers/artifact";
 
 export interface IEnvDetails {
   environmentNotification: (notification: any) => void;

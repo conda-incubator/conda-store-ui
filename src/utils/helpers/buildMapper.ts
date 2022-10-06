@@ -1,6 +1,6 @@
 import { format } from "date-fns";
-import { IApiResponse } from "../../common/interfaces";
-import { Build } from "../../common/models";
+import { IApiResponse } from "src/common/interfaces";
+import { Build } from "src/common/models";
 
 const STATUS_OPTIONS: any = {
   COMPLETED: "Available",

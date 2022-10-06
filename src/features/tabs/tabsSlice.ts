@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Environment } from "../../common/models";
+import { Environment } from "src/common/models";
 
 interface INewEnv {
   isOpen: boolean;
