@@ -1,9 +1,8 @@
+import React from "react";
 import SquareIcon from "@mui/icons-material/Square";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import React from "react";
 import { requestedPackageParser } from "src/utils/helpers";
-import { useAppSelector } from "src/hooks";
 
 interface IRequestedPackageProps {
   /**
@@ -15,13 +14,16 @@ interface IRequestedPackageProps {
 export const RequestedPackage = ({
   requestedPackage
 }: IRequestedPackageProps) => {
-  const { packageVersions } = useAppSelector(state => state.requestedPackages);
-  let { version } = requestedPackageParser(requestedPackage);
-  const { constraint, name } = requestedPackageParser(requestedPackage);
+  const { constraint, name, version } =
+    requestedPackageParser(requestedPackage);
 
-  if (constraint === "latest") {
-    version = packageVersions[name];
-  }
+  const displayConstraint = () => {
+    if (constraint === "latest") {
+      return "";
+    }
+
+    return `${constraint}${version}`;
+  };
 
   return (
     <Box sx={{ display: "flex", alignItems: "center" }}>
@@ -31,7 +33,7 @@ export const RequestedPackage = ({
         />
         <Typography sx={{ width: 190 }}>{name}</Typography>
       </Box>
-      <Typography>{version}</Typography>
+      <Typography>{displayConstraint()}</Typography>
     </Box>
   );
 };
