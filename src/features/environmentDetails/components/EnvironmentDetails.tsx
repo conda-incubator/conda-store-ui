@@ -20,8 +20,6 @@ import { stringify } from "yaml";
 
 export const EnvironmentDetails = () => {
   const dispatch = useAppDispatch();
-  const { isUpdated } = useAppSelector(state => state.environmentDetails);
-
   const { mode } = useAppSelector(state => state.environmentDetails);
   const { page } = useAppSelector(state => state.dependencies);
   const { selectedEnvironment } = useAppSelector(state => state.tabs);

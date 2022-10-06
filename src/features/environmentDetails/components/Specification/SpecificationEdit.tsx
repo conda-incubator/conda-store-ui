@@ -34,7 +34,6 @@ export const SpecificationEdit = ({ onUpdateEnvironment }: any) => {
   const [backupChannels] = useState(cloneDeep(channels));
   const [newPackages, setNewPackages] = useState(requestedPackages);
   const [backupPackages] = useState(cloneDeep(requestedPackages));
-  const [isUpdated, setIsUpdated] = useState(false);
 
   const onUpdatePackages = (packages: string[]) => {
     dispatch(updatePackages(packages));
@@ -66,8 +65,6 @@ export const SpecificationEdit = ({ onUpdateEnvironment }: any) => {
       dispatch(updatePackages(newPackages));
     }
 
-    setIsUpdated(true);
-
     onUpdateEnvironment({
       channels: newChannels,
       dependencies: newPackages
@@ -92,14 +89,6 @@ export const SpecificationEdit = ({ onUpdateEnvironment }: any) => {
       });
     }
   }, [channels, requestedPackages]);
-
-  useEffect(() => {
-    console.log("updated", isUpdated);
-    // When "save" button is clicked, let's do the dispatch to update the data
-    if (isUpdated) {
-      dispatch(updatePackages(newPackages));
-    }
-  }, [isUpdated]);
 
   return (
     <BlockContainerEditMode
