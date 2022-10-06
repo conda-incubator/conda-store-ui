@@ -76,9 +76,9 @@ export const RequestedPackagesEdit = ({
       !version ? "" : version
     }`;
 
-    const newArr = data.map(p =>
-      comparePackages(p, newPackage, name)
-    ) as string[];
+    const newArr = data
+      .filter(p => typeof p !== "object")
+      .map(p => comparePackages(p, newPackage, name)) as string[];
     updatePackages(newArr);
   };
 
