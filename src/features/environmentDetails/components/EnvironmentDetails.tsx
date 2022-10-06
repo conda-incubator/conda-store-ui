@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import Alert from "@mui/material/Alert";
-import { cloneDeep } from "lodash";
 import { stringify } from "yaml";
 import { useAppDispatch, useAppSelector } from "src/hooks";
 import { EnvironmentDetailsHeader } from "./EnvironmentDetailsHeader";
@@ -18,7 +17,7 @@ import {
 } from "src/features/environmentDetails";
 import artifactList from "src/utils/helpers/artifact";
 
-export interface IEnvDetails {
+interface IEnvDetails {
   environmentNotification: (notification: any) => void;
 }
 
@@ -31,11 +30,9 @@ export const EnvironmentDetails = ({
   const { selectedEnvironment } = useAppSelector(state => state.tabs);
   const [name, setName] = useState(selectedEnvironment?.name || "");
   const [createOrUpdate] = useCreateOrUpdateMutation();
+  const [descriptionIsUpdated, setDescriptionIsUpdated] = useState(false);
   const [description, setDescription] = useState(
     selectedEnvironment ? selectedEnvironment.description : undefined
-  );
-  const [storagedDescription, setStoragedDescription] = useState(
-    cloneDeep(description)
   );
   const [error, setError] = useState({
     message: "",
@@ -50,6 +47,11 @@ export const EnvironmentDetails = ({
       size: 100
     });
   }
+
+  const updateDescription = (description: string) => {
+    setDescription(description);
+    setDescriptionIsUpdated(true);
+  };
 
   const updateEnvironment = async (code: any) => {
     const namespace = selectedEnvironment?.namespace.name;
@@ -68,7 +70,6 @@ export const EnvironmentDetails = ({
       });
       await createOrUpdate(environmentInfo).unwrap();
       dispatch(modeChanged(EnvironmentDetailsModes.READ));
-      setStoragedDescription(description);
       environmentNotification({
         show: true,
         description: `${name} environment has been updated`
@@ -84,6 +85,7 @@ export const EnvironmentDetails = ({
   useEffect(() => {
     setName(selectedEnvironment?.name || "");
     setDescription(selectedEnvironment?.description || "");
+    setDescriptionIsUpdated(false);
   }, [selectedEnvironment]);
 
   let enviromentBuilds = undefined;
@@ -111,14 +113,14 @@ export const EnvironmentDetails = ({
           description={description}
           current_build_id={selectedEnvironment?.current_build_id || 0}
           mode={mode}
-          onUpdateDescription={setDescription}
+          onUpdateDescription={updateDescription}
         />
       </Box>
       <Box sx={{ marginBottom: "30px" }}>
         {mode === "read-only" && <SpecificationReadOnly />}
         {mode === "edit" && (
           <SpecificationEdit
-            descriptionUpdated={storagedDescription !== description}
+            descriptionUpdated={descriptionIsUpdated}
             onUpdateEnvironment={updateEnvironment}
           />
         )}

@@ -18,10 +18,14 @@ import {
   EnvironmentDetailsModes
 } from "src/features/environmentDetails";
 
+interface ISpecificationEdit {
+  descriptionUpdated: boolean;
+  onUpdateEnvironment: (specification: any) => void;
+}
 export const SpecificationEdit = ({
   descriptionUpdated,
   onUpdateEnvironment
-}: any) => {
+}: ISpecificationEdit) => {
   const { channels } = useAppSelector(state => state.channels);
   const { requestedPackages } = useAppSelector(
     state => state.requestedPackages
@@ -36,24 +40,32 @@ export const SpecificationEdit = ({
   const [newChannels, setNewChannels] = useState(channels);
   const [newPackages, setNewPackages] = useState(requestedPackages);
   const [envIsUpdated, setEnvIsUpdated] = useState(false);
-  const [storagedChannels, setStoragedChannels] = useState(
-    cloneDeep(newChannels)
-  );
-  const [storagedPackages, setStoragedPackages] = useState(
-    cloneDeep(newPackages)
-  );
+  const [currentSpecification, setCurrentSpecification] = useState({
+    packages: cloneDeep(newPackages),
+    channels: cloneDeep(newChannels)
+  });
 
   useEffect(() => {
     if (descriptionUpdated) {
       setEnvIsUpdated(true);
     }
-    if (newChannels.length !== storagedChannels.length) {
+    if (newChannels.length !== currentSpecification.channels.length) {
       setEnvIsUpdated(true);
-      setStoragedChannels(newChannels);
+      setCurrentSpecification({
+        packages: {
+          ...currentSpecification.packages
+        },
+        channels: newChannels
+      });
     }
-    if (newPackages.length !== storagedPackages.length) {
+    if (newPackages.length !== currentSpecification.packages.length) {
       setEnvIsUpdated(true);
-      setStoragedPackages(newPackages);
+      setCurrentSpecification({
+        channels: {
+          ...currentSpecification.channels
+        },
+        packages: newPackages
+      });
     }
   }, [newChannels, newPackages, descriptionUpdated]);
 
@@ -94,6 +106,7 @@ export const SpecificationEdit = ({
   };
 
   const onCancelEdition = () => {
+    setEnvIsUpdated(false);
     dispatch(modeChanged(EnvironmentDetailsModes.READ));
   };
 
