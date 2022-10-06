@@ -8,7 +8,6 @@ import TableRow from "@mui/material/TableRow";
 import Typography from "@mui/material/Typography";
 import useTheme from "@mui/material/styles/useTheme";
 import React, { useEffect, useMemo, useRef, useState } from "react";
-
 import { RequestedPackagesTableRow } from "./RequestedPackagesTableRow";
 import { AddRequestedPackage } from "./AddRequestedPackage";
 import {
@@ -18,9 +17,9 @@ import {
   StyledAccordionTitle,
   StyledButtonPrimary,
   StyledEditPackagesTableCell
-} from "../../../styles";
-import { CondaSpecificationPip } from "../../../common/models";
-import { requestedPackageParser } from "../../../utils/helpers";
+} from "src/styles";
+import { CondaSpecificationPip } from "src/common/models";
+import { requestedPackageParser } from "src/utils/helpers";
 
 export interface IRequestedPackagesEditProps {
   /**

@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { CondaSpecificationPip } from "../../common/models";
-import { requestedPackageParser } from "../../utils/helpers";
+import { CondaSpecificationPip } from "src/common/models";
+import { requestedPackageParser } from "src/utils/helpers";
 import { environmentDetailsApiSlice } from "../environmentDetails";
 
 export interface IRequestedPackagesState {

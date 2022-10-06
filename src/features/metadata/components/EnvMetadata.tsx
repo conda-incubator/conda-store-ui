@@ -1,14 +1,16 @@
-import Divider from "@mui/material/Divider";
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import React, { useEffect, useState } from "react";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
+import Divider from "@mui/material/Divider";
 import ListItemText from "@mui/material/ListItemText";
 import Typography from "@mui/material/Typography";
 import useTheme from "@mui/material/styles/useTheme";
-import React from "react";
+import { EnvBuilds, Description } from "src/features/metadata/components";
+import { StyledBox } from "src/styles";
+import { useGetEnviromentBuildsQuery } from "src/features/metadata";
 
-import { EnvBuilds, Description } from "../../../features/metadata/components";
-import { StyledBox } from "../../../styles";
-
+import { buildMapper } from "src/utils/helpers/buildMapper";
 export enum EnvironmentDetailsModes {
   "CREATE" = "create",
   "READ" = "read-only",

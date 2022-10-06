@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Dependency, Environment } from "../../common/models";
+import { Dependency, Environment } from "src/common/models";
 import { environmentClosed, environmentOpened, tabChanged } from "../tabs";
 import { dependenciesApiSlice } from "./dependenciesApiSlice";
 
