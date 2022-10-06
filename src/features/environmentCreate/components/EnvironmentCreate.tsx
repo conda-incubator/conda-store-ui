@@ -1,19 +1,25 @@
 import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import Alert from "@mui/material/Alert";
+import { stringify } from "yaml";
 import {
   EnvironmentDetailsHeader,
   modeChanged,
   EnvironmentDetailsModes
 } from "src/features/environmentDetails";
-import { Popup } from "src/components";
+import {
+  environmentOpened,
+  closeCreateNewEnvironmentTab
+} from "../../../features/tabs";
 import { useAppDispatch, useAppSelector } from "src/hooks";
 import { EnvMetadata } from "src/features/metadata";
 import { SpecificationCreate, SpecificationReadOnly } from "./Specification";
 import { useCreateOrUpdateMutation } from "src/features/environmentDetails";
-import { stringify } from "yaml";
 
-export const EnvironmentCreate = () => {
+export interface IEnvCreate {
+  environmentNotification: (notification: any) => void;
+}
+export const EnvironmentCreate = ({ environmentNotification }: IEnvCreate) => {
   const dispatch = useAppDispatch();
   const { mode } = useAppSelector(state => state.environmentDetails);
   const { newEnvironment } = useAppSelector(state => state.tabs);
@@ -23,27 +29,43 @@ export const EnvironmentCreate = () => {
     message: "",
     visible: false
   });
-  const [isEnvCreated, setIsEnvCreated] = useState(false);
   const [createOrUpdate] = useCreateOrUpdateMutation();
 
   const createEnvironment = async (code: any) => {
     const namespace = newEnvironment?.namespace;
-
     const environmentInfo = {
+      namespace,
       specification: `${stringify(
         code
-      )}\ndescription: ${description}\nname: ${name}\nprefix: null`,
-      namespace
+      )}\ndescription: ${description}\nname: ${name}\nprefix: null`
     };
 
     try {
-      setError({
-        message: "",
-        visible: false
-      });
       const { data } = await createOrUpdate(environmentInfo).unwrap();
-      setIsEnvCreated(true);
+      const environment = {
+        name,
+        current_build: null,
+        current_build_id: data.build_id,
+        description,
+        id: data.build_id,
+        namespace: {
+          id: data.build_id,
+          name: namespace
+        }
+      };
+
       dispatch(modeChanged(EnvironmentDetailsModes.READ));
+      dispatch(closeCreateNewEnvironmentTab());
+      dispatch(
+        environmentOpened({
+          environment,
+          selectedEnvironmentId: data.build_id
+        })
+      );
+      environmentNotification({
+        show: true,
+        description: `${name} environment is being created`
+      });
     } catch ({ data }) {
       setError({
         message: data.message,
@@ -80,11 +102,6 @@ export const EnvironmentCreate = () => {
           <SpecificationCreate onCreateEnvironment={createEnvironment} />
         )}
       </Box>
-      <Popup
-        isVisible={isEnvCreated}
-        description={`${name} environment is being created`}
-        onClose={setIsEnvCreated}
-      />
     </Box>
   );
 };
