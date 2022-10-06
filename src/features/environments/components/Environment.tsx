@@ -2,8 +2,8 @@ import React from "react";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import useTheme from "@mui/material/styles/useTheme";
 import CircleIcon from "@mui/icons-material/Circle";
-import { Environment as EnvironmentModel } from "../../../common/models";
-import { StyledIconButton } from "../../../styles";
+import { Environment as EnvironmentModel } from "src/common/models";
+import { StyledIconButton } from "src/styles";
 
 interface IEnvironmentProps {
   /**

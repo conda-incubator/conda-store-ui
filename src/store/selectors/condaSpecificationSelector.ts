@@ -1,4 +1,4 @@
-import { CondaSpecification } from "../../common/models";
+import { CondaSpecification } from "src/common/models";
 import { RootState } from "../store";
 
 export const selectCondaSpecification = (

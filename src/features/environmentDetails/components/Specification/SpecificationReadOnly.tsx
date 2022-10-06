@@ -1,10 +1,10 @@
 import React from "react";
 import Box from "@mui/material/Box";
-import { RequestedPackageList } from "../../../../features/requestedPackages";
-import { Dependencies, pageChanged } from "../../../../features/dependencies";
-import { ChannelsList } from "../../../../features/channels";
-import { BlockContainer } from "../../../../components";
-import { useAppDispatch, useAppSelector } from "../../../../hooks";
+import { RequestedPackageList } from "src/features/requestedPackages";
+import { Dependencies, pageChanged } from "src/features/dependencies";
+import { ChannelsList } from "src/features/channels";
+import { BlockContainer } from "src/components";
+import { useAppDispatch, useAppSelector } from "src/hooks";
 
 export const SpecificationReadOnly = () => {
   const { requestedPackages } = useAppSelector(

@@ -4,10 +4,10 @@ import Typography from "@mui/material/Typography";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Box from "@mui/material/Box";
 
-import { StyledRequestedPackagesTableCell, StyledIconButton } from "../../../styles";
-import { ConstraintSelect, VersionSelect } from "../../../components";
-import { requestedPackageParser } from "../../../utils/helpers";
-import { useAppSelector } from "../../../hooks";
+import { StyledRequestedPackagesTableCell, StyledIconButton } from "src/styles";
+import { ConstraintSelect, VersionSelect } from "src/components";
+import { requestedPackageParser } from "src/utils/helpers";
+import { useAppSelector } from "src/hooks";
 
 interface IRequestedPackagesTableRowProps {
   /**

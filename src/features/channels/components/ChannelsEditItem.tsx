@@ -5,7 +5,7 @@ import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import React, { memo, useState } from "react";
 
-import { StyledIconButton } from "../../../styles";
+import { StyledIconButton } from "src/styles";
 
 interface IChannelsEditItemProps {
   /**

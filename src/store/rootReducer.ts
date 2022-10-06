@@ -1,10 +1,10 @@
-import { apiSlice } from "../features/api";
-import { channelsSlice } from "../features/channels";
-import { dependenciesSlice } from "../features/dependencies";
-import { environmentDetailsSlice } from "../features/environmentDetails";
-import { requestedPackagesSlice } from "../features/requestedPackages";
-import { tabsSlice } from "../features/tabs";
-import { enviromentsSlice } from "../features/metadata";
+import { apiSlice } from "src/features/api";
+import { channelsSlice } from "src/features/channels";
+import { dependenciesSlice } from "src/features/dependencies";
+import { environmentDetailsSlice } from "src/features/environmentDetails";
+import { requestedPackagesSlice } from "src/features/requestedPackages";
+import { tabsSlice } from "src/features/tabs";
+import { enviromentsSlice } from "src/features/metadata";
 
 export const rootReducer = {
   [apiSlice.reducerPath]: apiSlice.reducer,
