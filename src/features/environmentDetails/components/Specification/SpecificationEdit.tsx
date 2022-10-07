@@ -38,12 +38,10 @@ export const SpecificationEdit = ({
   const [show, setShow] = useState(false);
   const [code] = useState({});
   const [newChannels, setNewChannels] = useState(channels);
+  const [backupChannels] = useState(cloneDeep(channels));
   const [newPackages, setNewPackages] = useState(requestedPackages);
+  const [backupPackages] = useState(cloneDeep(requestedPackages));
   const [envIsUpdated, setEnvIsUpdated] = useState(false);
-  const [currentSpecification, setCurrentSpecification] = useState({
-    packages: cloneDeep(newPackages),
-    channels: cloneDeep(newChannels)
-  });
 
   const onUpdatePackages = (packages: string[]) => {
     dispatch(updatePackages(packages));
@@ -83,6 +81,8 @@ export const SpecificationEdit = ({
 
   const onCancelEdition = () => {
     setEnvIsUpdated(false);
+    dispatch(updatePackages(backupPackages));
+    dispatch(updateChannels(backupChannels));
     dispatch(modeChanged(EnvironmentDetailsModes.READ));
   };
 
@@ -90,23 +90,11 @@ export const SpecificationEdit = ({
     if (descriptionUpdated) {
       setEnvIsUpdated(true);
     }
-    if (newChannels.length !== currentSpecification.channels.length) {
+    if (newChannels.length !== backupChannels.length) {
       setEnvIsUpdated(true);
-      setCurrentSpecification({
-        packages: {
-          ...currentSpecification.packages
-        },
-        channels: newChannels
-      });
     }
-    if (newPackages.length !== currentSpecification.packages.length) {
+    if (newPackages.length !== backupPackages.length) {
       setEnvIsUpdated(true);
-      setCurrentSpecification({
-        channels: {
-          ...currentSpecification.channels
-        },
-        packages: newPackages
-      });
     }
   }, [newChannels, newPackages, descriptionUpdated]);
 
