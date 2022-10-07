@@ -1,25 +1,32 @@
-import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import Alert from "@mui/material/Alert";
-import { useAppDispatch, useAppSelector } from "src/hooks";
+import React, { useEffect, useState } from "react";
+import { stringify } from "yaml";
+
 import { EnvironmentDetailsHeader } from "./EnvironmentDetailsHeader";
-import { Popup } from "src/components";
 import { SpecificationEdit, SpecificationReadOnly } from "./Specification";
 import { useGetBuildQuery } from "../environmentDetailsApiSlice";
-import { useGetBuildPackagesQuery } from "src/features/dependencies";
-import { ArtifactList } from "src/features/artifacts";
-import { EnvMetadata } from "src/features/metadata";
-import { useGetEnviromentBuildsQuery } from "src/features/metadata";
-
+import { useGetBuildPackagesQuery } from "../../../features/dependencies";
+import { ArtifactList } from "../../../features/artifacts";
+import {
+  EnvMetadata,
+  useGetEnviromentBuildsQuery
+} from "../../../features/metadata";
 import {
   EnvironmentDetailsModes,
   useCreateOrUpdateMutation,
   modeChanged
-} from "src/features/environmentDetails";
-import artifactList from "src/utils/helpers/artifact";
-import { stringify } from "yaml";
+} from "../../../features/environmentDetails";
+import { useAppDispatch, useAppSelector } from "../../../hooks";
+import artifactList from "../../../utils/helpers/artifact";
 
-export const EnvironmentDetails = () => {
+export interface IEnvDetails {
+  environmentNotification: (notification: any) => void;
+}
+
+export const EnvironmentDetails = ({
+  environmentNotification
+}: IEnvDetails) => {
   const dispatch = useAppDispatch();
   const { mode } = useAppSelector(state => state.environmentDetails);
   const { page } = useAppSelector(state => state.dependencies);
@@ -33,7 +40,6 @@ export const EnvironmentDetails = () => {
     message: "",
     visible: false
   });
-  const [isEnvUpdated, setIsEnvUpdated] = useState(false);
 
   if (selectedEnvironment) {
     useGetBuildQuery(selectedEnvironment.current_build_id);
@@ -59,9 +65,12 @@ export const EnvironmentDetails = () => {
         message: "",
         visible: false
       });
-      const { data } = await createOrUpdate(environmentInfo).unwrap();
-      setIsEnvUpdated(true);
+      await createOrUpdate(environmentInfo).unwrap();
       dispatch(modeChanged(EnvironmentDetailsModes.READ));
+      environmentNotification({
+        show: true,
+        description: `${name} environment has been updated`
+      });
     } catch (e) {
       setError({
         message: e?.data?.message ?? e.status,
@@ -116,11 +125,6 @@ export const EnvironmentDetails = () => {
           />
         </Box>
       )}
-      <Popup
-        isVisible={isEnvUpdated}
-        description="Environment has been updated"
-        onClose={setIsEnvUpdated}
-      />
     </Box>
   );
 };

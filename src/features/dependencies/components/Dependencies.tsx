@@ -3,15 +3,17 @@ import Accordion from "@mui/material/Accordion";
 import Box from "@mui/material/Box";
 import CircularProgress from "@mui/material/CircularProgress";
 import InfiniteScroll from "react-infinite-scroll-component";
+
 import {
   StyledAccordionExpandIcon,
   StyledAccordionDetails,
   StyledAccordionSummary,
   StyledAccordionTitle
-} from "src/styles";
-import { Dependency } from "src/common/models";
+} from "../../../styles";
+import { Dependency } from "../../../common/models";
 import { DependenciesItem } from "./DependenciesItem";
-import { useAppSelector } from "src/hooks";
+import { useAppDispatch, useAppSelector } from "../../../hooks";
+import { dependencyPromoted } from "../../../features/requestedPackages";
 
 export interface IDependenciesProps {
   /**
@@ -32,6 +34,7 @@ export const Dependencies = ({
   hasMore,
   next = () => null
 }: IDependenciesProps) => {
+  const dispatch = useAppDispatch();
   const { selectedEnvironment } = useAppSelector(state => state.tabs);
   const listLength = dependencies.length;
   const scrollRef = useRef<HTMLDivElement | null>(null);
@@ -47,6 +50,7 @@ export const Dependencies = ({
         boxShadow: "none"
       }}
       disableGutters
+      defaultExpanded
     >
       <StyledAccordionSummary expandIcon={<StyledAccordionExpandIcon />}>
         <StyledAccordionTitle>
@@ -84,7 +88,7 @@ export const Dependencies = ({
               <DependenciesItem
                 mode={mode}
                 dependency={dependency}
-                onClick={() => null}
+                handleClick={() => dispatch(dependencyPromoted(dependency))}
               />
             </Box>
           ))}

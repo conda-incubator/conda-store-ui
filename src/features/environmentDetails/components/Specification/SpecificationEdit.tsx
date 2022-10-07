@@ -1,21 +1,22 @@
-import React, { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
-import { ChannelsEdit } from "src/features/channels";
-import { Dependencies, pageChanged } from "src/features/dependencies";
-import { updateChannels } from "src/features/channels";
-import {
-  RequestedPackagesEdit,
-  updatePackages
-} from "src/features/requestedPackages";
-import { BlockContainerEditMode } from "src/components";
-import { StyledButtonPrimary } from "src/styles";
-import { useAppDispatch, useAppSelector } from "src/hooks";
-import { CodeEditor } from "src/features/yamlEditor";
+import React, { useState, useEffect } from "react";
+import { cloneDeep } from "lodash";
 import { stringify } from "yaml";
+
+import { BlockContainerEditMode } from "../../../../components";
+import { ChannelsEdit, updateChannels } from "../../../../features/channels";
+import { Dependencies, pageChanged } from "../../../../features/dependencies";
 import {
   modeChanged,
   EnvironmentDetailsModes
-} from "src/features/environmentDetails";
+} from "../../../../features/environmentDetails";
+import {
+  RequestedPackagesEdit,
+  updatePackages
+} from "../../../../features/requestedPackages";
+import { CodeEditor } from "../../../../features/yamlEditor";
+import { useAppDispatch, useAppSelector } from "../../../../hooks";
+import { StyledButtonPrimary } from "../../../../styles";
 
 export const SpecificationEdit = ({ onUpdateEnvironment }: any) => {
   const { channels } = useAppSelector(state => state.channels);
@@ -30,7 +31,9 @@ export const SpecificationEdit = ({ onUpdateEnvironment }: any) => {
   const [show, setShow] = useState(false);
   const [code, setCode] = useState({});
   const [newChannels, setNewChannels] = useState(channels);
+  const [backupChannels] = useState(cloneDeep(channels));
   const [newPackages, setNewPackages] = useState(requestedPackages);
+  const [backupPackages] = useState(cloneDeep(requestedPackages));
 
   const onUpdatePackages = (packages: string[]) => {
     dispatch(updatePackages(packages));
@@ -70,6 +73,8 @@ export const SpecificationEdit = ({ onUpdateEnvironment }: any) => {
 
   const onCancelEdition = () => {
     dispatch(modeChanged(EnvironmentDetailsModes.READ));
+    dispatch(updatePackages(backupPackages));
+    dispatch(updateChannels(backupChannels));
   };
 
   useEffect(() => {
@@ -84,6 +89,10 @@ export const SpecificationEdit = ({ onUpdateEnvironment }: any) => {
       });
     }
   }, [channels, requestedPackages]);
+
+  useEffect(() => {
+    setNewPackages(requestedPackages);
+  }, [requestedPackages]);
 
   return (
     <BlockContainerEditMode

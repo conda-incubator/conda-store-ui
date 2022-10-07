@@ -1,10 +1,10 @@
 import React from "react";
 import Box from "@mui/material/Box";
-import { RequestedPackageList } from "src/features/requestedPackages";
-import { Dependencies, pageChanged } from "src/features/dependencies";
-import { ChannelsList } from "src/features/channels";
-import { BlockContainer } from "src/components";
-import { useAppDispatch, useAppSelector } from "src/hooks";
+import { RequestedPackageList } from "../../../../features/requestedPackages";
+import { Dependencies, pageChanged } from "../../../../features/dependencies";
+import { ChannelsList } from "../../../../features/channels";
+import { BlockContainer } from "../../../../components";
+import { useAppDispatch, useAppSelector } from "../../../../hooks";
 
 export const SpecificationReadOnly = () => {
   const { requestedPackages } = useAppSelector(
@@ -25,14 +25,18 @@ export const SpecificationReadOnly = () => {
         <Box sx={{ marginBottom: "30px" }}>
           <RequestedPackageList packageList={requestedPackages} />
         </Box>
-        <Box sx={{ marginBottom: "30px" }}>
-          <Dependencies
-            mode="read-only"
-            dependencies={dependencies}
-            hasMore={hasMore}
-            next={() => dispatch(pageChanged(page + 1))}
-          />
-        </Box>
+        {/* Hide component if dependencies are empty.
+         When an env is being created, the first call returns [] */}
+        {dependencies.length > 0 && (
+          <Box sx={{ marginBottom: "30px" }}>
+            <Dependencies
+              mode="read-only"
+              dependencies={dependencies}
+              hasMore={hasMore}
+              next={() => dispatch(pageChanged(page + 1))}
+            />
+          </Box>
+        )}
         <Box sx={{ margiBottom: "30px" }}>
           <ChannelsList channelList={channels} />
         </Box>
