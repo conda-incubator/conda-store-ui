@@ -1,12 +1,13 @@
-import React, { useState } from "react";
-import Box from "@mui/material/Box";
-import { Popup } from "src/components";
-import { Environments } from "src/features/environments";
 import { Typography } from "@mui/material";
-import { PageTabs } from "src/features/tabs";
-import { useAppSelector } from "src/hooks";
-import { EnvironmentDetails } from "src/features/environmentDetails";
-import { EnvironmentCreate } from "src/features/environmentCreate";
+import Box from "@mui/material/Box";
+import React, { useState } from "react";
+
+import { Popup } from "../components";
+import { Environments } from "../features/environments";
+import { EnvironmentCreate } from "../features/environmentCreate";
+import { EnvironmentDetails } from "../features/environmentDetails";
+import { PageTabs } from "../features/tabs";
+import { useAppSelector } from "../hooks";
 
 export const PageLayout = () => {
   const { selectedEnvironment, newEnvironment } = useAppSelector(

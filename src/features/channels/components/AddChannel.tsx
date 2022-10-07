@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import React, { useState } from "react";
 
-import { StyledIconButton } from "src/styles";
+import { StyledIconButton } from "../../../styles";
 
 interface IAddChannelProps {
   /**

@@ -3,16 +3,17 @@ import Accordion from "@mui/material/Accordion";
 import Box from "@mui/material/Box";
 import CircularProgress from "@mui/material/CircularProgress";
 import InfiniteScroll from "react-infinite-scroll-component";
+
 import {
   StyledAccordionExpandIcon,
   StyledAccordionDetails,
   StyledAccordionSummary,
   StyledAccordionTitle
-} from "src/styles";
-import { Dependency } from "src/common/models";
+} from "../../../styles";
+import { Dependency } from "../../../common/models";
 import { DependenciesItem } from "./DependenciesItem";
-import { useAppDispatch, useAppSelector } from "src/hooks";
-import { dependencyPromoted } from "src/features/requestedPackages";
+import { useAppDispatch, useAppSelector } from "../../../hooks";
+import { dependencyPromoted } from "../../../features/requestedPackages";
 
 export interface IDependenciesProps {
   /**
