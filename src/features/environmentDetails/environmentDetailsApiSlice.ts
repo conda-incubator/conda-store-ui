@@ -1,5 +1,5 @@
-import { IApiResponse } from "src/common/interfaces";
-import { Build } from "src/common/models/Build";
+import { IApiResponse } from "../../common/interfaces";
+import { Build } from "../../common/models/Build";
 import { apiSlice } from "../api";
 
 export const environmentDetailsApiSlice = apiSlice.injectEndpoints({

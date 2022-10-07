@@ -1,16 +1,18 @@
-import React, { useState, useEffect, useMemo, useReducer } from "react";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import useTheme from "@mui/material/styles/useTheme";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import IconButton from "@mui/material/IconButton";
-import { useLazyGetPackageVersionSuggestionsQuery } from "src/features/requestedPackages/requestedPackageVersionApiSlice";
+import { compareVersions } from "compare-versions";
+import React, { useState, useEffect, useMemo, useReducer } from "react";
+
+import { useLazyGetPackageVersionSuggestionsQuery } from "../features/requestedPackages/requestedPackageVersionApiSlice";
 import {
   ActionTypes,
   initialState,
   requestedPackagesReducer
-} from "src/features/requestedPackages/reducer";
-import { compareVersions } from "compare-versions";
+} from "../features/requestedPackages/reducer";
+
 interface IVersionSelectProps {
   /**
    * @param version package version

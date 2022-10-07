@@ -2,7 +2,7 @@ import SquareIcon from "@mui/icons-material/Square";
 import Box from "@mui/material/Box";
 import Link from "@mui/material/Link";
 import React from "react";
-import { Artifact } from "src/common/models";
+import { Artifact } from "../../../common/models";
 
 interface IArtifactsProps {
   /**

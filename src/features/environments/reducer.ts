@@ -1,4 +1,4 @@
-import { Environment } from "src/common/models";
+import { Environment } from "../../common/models";
 
 export enum ActionTypes {
   DATA_FETCHED = "environments/data_fetched",
