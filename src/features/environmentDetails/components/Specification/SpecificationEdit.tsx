@@ -1,22 +1,22 @@
-import React, { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
-import { ChannelsEdit } from "src/features/channels";
-import { Dependencies, pageChanged } from "src/features/dependencies";
-import { updateChannels } from "src/features/channels";
-import {
-  RequestedPackagesEdit,
-  updatePackages
-} from "src/features/requestedPackages";
-import { BlockContainerEditMode } from "src/components";
-import { StyledButtonPrimary } from "src/styles";
-import { useAppDispatch, useAppSelector } from "src/hooks";
-import { CodeEditor } from "src/features/yamlEditor";
+import React, { useState, useEffect } from "react";
 import { cloneDeep } from "lodash";
 import { stringify } from "yaml";
+
+import { BlockContainerEditMode } from "../../../../components";
+import { ChannelsEdit, updateChannels } from "../../../../features/channels";
+import { Dependencies, pageChanged } from "../../../../features/dependencies";
 import {
   modeChanged,
   EnvironmentDetailsModes
-} from "src/features/environmentDetails";
+} from "../../../../features/environmentDetails";
+import {
+  RequestedPackagesEdit,
+  updatePackages
+} from "../../../../features/requestedPackages";
+import { CodeEditor } from "../../../../features/yamlEditor";
+import { useAppDispatch, useAppSelector } from "../../../../hooks";
+import { StyledButtonPrimary } from "../../../../styles";
 
 interface ISpecificationEdit {
   descriptionUpdated: boolean;
@@ -36,7 +36,7 @@ export const SpecificationEdit = ({
   const hasMore = size * page <= count;
   const dispatch = useAppDispatch();
   const [show, setShow] = useState(false);
-  const [code, setCode] = useState({});
+  const [code] = useState({});
   const [newChannels, setNewChannels] = useState(channels);
   const [newPackages, setNewPackages] = useState(requestedPackages);
   const [envIsUpdated, setEnvIsUpdated] = useState(false);
@@ -44,30 +44,6 @@ export const SpecificationEdit = ({
     packages: cloneDeep(newPackages),
     channels: cloneDeep(newChannels)
   });
-
-  useEffect(() => {
-    if (descriptionUpdated) {
-      setEnvIsUpdated(true);
-    }
-    if (newChannels.length !== currentSpecification.channels.length) {
-      setEnvIsUpdated(true);
-      setCurrentSpecification({
-        packages: {
-          ...currentSpecification.packages
-        },
-        channels: newChannels
-      });
-    }
-    if (newPackages.length !== currentSpecification.packages.length) {
-      setEnvIsUpdated(true);
-      setCurrentSpecification({
-        channels: {
-          ...currentSpecification.channels
-        },
-        packages: newPackages
-      });
-    }
-  }, [newChannels, newPackages, descriptionUpdated]);
 
   const onUpdatePackages = (packages: string[]) => {
     dispatch(updatePackages(packages));
@@ -111,17 +87,32 @@ export const SpecificationEdit = ({
   };
 
   useEffect(() => {
-    if (channels.length) {
-      setCode({
-        channels,
-        dependencies: requestedPackages
-      });
-    } else {
-      setCode({
-        dependencies: requestedPackages
+    if (descriptionUpdated) {
+      setEnvIsUpdated(true);
+    }
+    if (newChannels.length !== currentSpecification.channels.length) {
+      setEnvIsUpdated(true);
+      setCurrentSpecification({
+        packages: {
+          ...currentSpecification.packages
+        },
+        channels: newChannels
       });
     }
-  }, [channels, requestedPackages]);
+    if (newPackages.length !== currentSpecification.packages.length) {
+      setEnvIsUpdated(true);
+      setCurrentSpecification({
+        channels: {
+          ...currentSpecification.channels
+        },
+        packages: newPackages
+      });
+    }
+  }, [newChannels, newPackages, descriptionUpdated]);
+
+  useEffect(() => {
+    setNewPackages(requestedPackages);
+  }, [requestedPackages]);
 
   return (
     <BlockContainerEditMode

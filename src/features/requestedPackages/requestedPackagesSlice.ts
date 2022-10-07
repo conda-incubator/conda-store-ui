@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { CondaSpecificationPip } from "src/common/models";
-import { requestedPackageParser } from "src/utils/helpers";
+
+import { CondaSpecificationPip, Dependency } from "../../common/models";
+import { requestedPackageParser } from "../../utils/helpers";
 import { environmentDetailsApiSlice } from "../environmentDetails";
 
 export interface IRequestedPackagesState {
@@ -30,6 +31,11 @@ export const requestedPackagesSlice = createSlice({
     updatePackages: (state, action) => {
       const packages = action.payload;
       state.requestedPackages = packages;
+    },
+    dependencyPromoted: (state, action: PayloadAction<Dependency>) => {
+      const newRequestedPackage = `${action.payload.name}==${action.payload.version}`;
+
+      state.requestedPackages.push(newRequestedPackage);
     }
   },
   extraReducers: builder => {
@@ -63,5 +69,5 @@ export const requestedPackagesSlice = createSlice({
   }
 });
 
-export const { packageVersionAdded, updatePackages } =
+export const { packageVersionAdded, updatePackages, dependencyPromoted } =
   requestedPackagesSlice.actions;

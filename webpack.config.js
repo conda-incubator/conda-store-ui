@@ -26,8 +26,8 @@ const {
 const isProd = process.env.NODE_ENV === "production";
 
 const basicConfig = {
-  devtool: "source-map",
-  entry: "src/index.tsx",
+  devtool: isProd ? false : "source-map",
+  entry: ["src/index.tsx", "src/AppExample.tsx"],
   watch: false,
   ...getContext(__dirname),
 

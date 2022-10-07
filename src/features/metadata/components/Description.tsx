@@ -1,8 +1,8 @@
 import React from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
-import { StyledMetadataItem } from "src/styles/StyledMetadataItem";
-import { EnvironmentDetailsModes } from "src/features/environmentDetails";
+import { StyledMetadataItem } from "../../../styles/StyledMetadataItem";
+import { EnvironmentDetailsModes } from "../../../features/environmentDetails";
 
 interface IDescriptionProps {
   /**

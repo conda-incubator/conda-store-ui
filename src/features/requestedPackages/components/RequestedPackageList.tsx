@@ -7,9 +7,9 @@ import {
   StyledAccordionExpandIcon,
   StyledAccordionSummary,
   StyledAccordionTitle
-} from "src/styles";
-import { CondaSpecificationPip } from "src/common/models";
-import { useAppDispatch, useAppSelector } from "src/hooks";
+} from "../../../styles";
+import { CondaSpecificationPip } from "../../../common/models";
+import { useAppDispatch, useAppSelector } from "../../../hooks";
 import { packageVersionAdded } from "../requestedPackagesSlice";
 
 export interface IRequestedPackageListProps {
