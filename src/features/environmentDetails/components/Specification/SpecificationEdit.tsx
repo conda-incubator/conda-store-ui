@@ -36,7 +36,7 @@ export const SpecificationEdit = ({
   const hasMore = size * page <= count;
   const dispatch = useAppDispatch();
   const [show, setShow] = useState(false);
-  const [code] = useState({});
+  const [code, setCode] = useState({});
   const [newChannels, setNewChannels] = useState(channels);
   const [backupChannels] = useState(cloneDeep(channels));
   const [newPackages, setNewPackages] = useState(requestedPackages);
@@ -85,6 +85,23 @@ export const SpecificationEdit = ({
     dispatch(updateChannels(backupChannels));
     dispatch(modeChanged(EnvironmentDetailsModes.READ));
   };
+
+  useEffect(() => {
+    if (channels.length) {
+      setCode({
+        channels,
+        dependencies: requestedPackages
+      });
+    } else {
+      setCode({
+        dependencies: requestedPackages
+      });
+    }
+  }, [channels, requestedPackages]);
+
+  useEffect(() => {
+    setNewPackages(requestedPackages);
+  }, [requestedPackages]);
 
   useEffect(() => {
     if (descriptionUpdated) {
