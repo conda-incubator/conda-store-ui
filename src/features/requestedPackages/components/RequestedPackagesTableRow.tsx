@@ -72,7 +72,7 @@ export const RequestedPackagesTableRow = ({
           />
           <VersionSelect
             onUpdate={updateVersion}
-            version={version}
+            version={constraint === "latest" ? "" : version}
             name={name}
           />
           <StyledIconButton

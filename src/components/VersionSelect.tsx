@@ -1,11 +1,10 @@
+import React, { useState, useEffect, useMemo, useReducer } from "react";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import useTheme from "@mui/material/styles/useTheme";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import IconButton from "@mui/material/IconButton";
-import { compareVersions } from "compare-versions";
-import React, { useState, useEffect, useMemo, useReducer } from "react";
-
+import { compareVersions, compare } from "compare-versions";
 import { useLazyGetPackageVersionSuggestionsQuery } from "../features/requestedPackages/requestedPackageVersionApiSlice";
 import {
   ActionTypes,
@@ -30,6 +29,7 @@ export const VersionSelect = ({
 }: IVersionSelectProps) => {
   const { palette } = useTheme();
   const [open, setOpen] = useState(false);
+  const [value, setValue] = useState(version ?? "");
 
   const [state, dispatch] = useReducer(requestedPackagesReducer, initialState);
 
@@ -53,7 +53,7 @@ export const VersionSelect = ({
     })();
   }, []);
 
-  const versionList = useMemo(() => {
+  const versionsList = useMemo(() => {
     const uniqueVersions = new Set();
     const result: string[] = [];
     let sortedVersions: string[] = [];
@@ -67,17 +67,30 @@ export const VersionSelect = ({
         uniqueVersions.add(packageVersion);
       }
     });
+
     sortedVersions = result.sort(compareVersions);
+
+    sortedVersions.forEach(v => {
+      if (v !== "" && value !== "") {
+        if (compare(v, value, "=")) {
+          setValue(v);
+        }
+      }
+    });
+
     return sortedVersions.reverse();
   }, [state.data]);
 
   return (
     <Select
-      defaultValue={version ?? ""}
+      value={value}
       open={open}
       onClose={() => setOpen(false)}
       onOpen={() => setOpen(true)}
-      onChange={e => onUpdate(e.target.value)}
+      onChange={e => {
+        onUpdate(e.target.value);
+        setValue(e.target.value);
+      }}
       IconComponent={() => (
         <IconButton
           sx={{ padding: "0px" }}
@@ -106,7 +119,7 @@ export const VersionSelect = ({
         }
       }}
     >
-      {versionList.map(v => (
+      {versionsList.map(v => (
         <MenuItem key={v} value={v}>
           {v}
         </MenuItem>
