@@ -8,7 +8,10 @@ import { SpecificationEdit, SpecificationReadOnly } from "./Specification";
 import { useGetBuildQuery } from "../environmentDetailsApiSlice";
 import { useGetBuildPackagesQuery } from "../../../features/dependencies";
 import { ArtifactList } from "../../../features/artifacts";
-import { EnvMetadata, useGetEnviromentBuildsQuery } from "../../../features/metadata";
+import {
+  EnvMetadata,
+  useGetEnviromentBuildsQuery
+} from "../../../features/metadata";
 import {
   EnvironmentDetailsModes,
   useCreateOrUpdateMutation,

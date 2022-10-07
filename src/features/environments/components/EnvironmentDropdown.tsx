@@ -1,7 +1,4 @@
-import React, { useState } from "react";
 import Accordion from "@mui/material/Accordion";
-import { StyledAccordionExpandIcon, StyledAccordionSummary } from "../../../styles";
-import { INamespaceEnvironments } from "../../../common/interfaces";
 import AddIcon from "@mui/icons-material/Add";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
@@ -9,17 +6,24 @@ import Box from "@mui/material/Box";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
+import React, { useState } from "react";
+
 import { Environment } from "./Environment";
-import { useAppDispatch, useAppSelector } from "../../../hooks";
+import { INamespaceEnvironments } from "../../../common/interfaces";
+import {
+  modeChanged,
+  EnvironmentDetailsModes
+} from "../../../features/environmentDetails";
 import {
   environmentOpened,
   openCreateNewEnvironmentTab,
   toggleNewEnvironmentView
 } from "../../../features/tabs";
+import { useAppDispatch, useAppSelector } from "../../../hooks";
 import {
-  modeChanged,
-  EnvironmentDetailsModes
-} from "../../../features/environmentDetails";
+  StyledAccordionExpandIcon,
+  StyledAccordionSummary
+} from "../../../styles";
 
 interface IEnvironmentDropdownProps {
   /**

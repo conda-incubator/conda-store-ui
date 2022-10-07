@@ -32,7 +32,5 @@ export const AppExample = () => {
 };
 
 export const FooExample = () => {
-  return (
-    <span>foo text lorem ipsum</span>
-  );
+  return <span>foo text lorem ipsum</span>;
 };
