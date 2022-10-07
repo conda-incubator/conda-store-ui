@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import Box from "@mui/material/Box";
+import { Popup } from "src/components";
 import { Environments } from "src/features/environments";
 import { Typography } from "@mui/material";
 import { PageTabs } from "src/features/tabs";
@@ -11,10 +12,23 @@ export const PageLayout = () => {
   const { selectedEnvironment, newEnvironment } = useAppSelector(
     state => state.tabs
   );
+  const [isEnvCreated, setIsEnvCreated] = useState(false);
+  const [notification, setNotification] = useState({
+    show: false,
+    description: null
+  });
+
+  const onCreateEnv = (notification: any) => {
+    setNotification(notification);
+    setIsEnvCreated(true);
+  };
 
   return (
     <Box sx={{ display: "flex", width: "100%", height: "100%" }}>
-      <Environments />
+      <Environments
+        refreshEnvironments={isEnvCreated}
+        onUpdateRefreshEnvironments={setIsEnvCreated}
+      />
       <Box sx={{ borderTop: "1px solid #A7A7A7", width: "100%" }}>
         {(selectedEnvironment || newEnvironment.isActive) && (
           <>
@@ -28,7 +42,7 @@ export const PageLayout = () => {
                   marginTop: "-1px"
                 }}
               >
-                <EnvironmentDetails />
+                <EnvironmentDetails environmentNotification={setNotification} />
               </Box>
             )}
 
@@ -40,7 +54,7 @@ export const PageLayout = () => {
                   marginTop: "-1px"
                 }}
               >
-                <EnvironmentCreate />
+                <EnvironmentCreate environmentNotification={onCreateEnv} />
               </Box>
             )}
           </>
@@ -63,6 +77,11 @@ export const PageLayout = () => {
           </Box>
         )}
       </Box>
+      <Popup
+        isVisible={notification.show}
+        description={notification.description}
+        onClose={setNotification}
+      />
     </Box>
   );
 };

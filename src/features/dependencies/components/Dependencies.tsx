@@ -47,6 +47,7 @@ export const Dependencies = ({
         boxShadow: "none"
       }}
       disableGutters
+      defaultExpanded
     >
       <StyledAccordionSummary expandIcon={<StyledAccordionExpandIcon />}>
         <StyledAccordionTitle>
