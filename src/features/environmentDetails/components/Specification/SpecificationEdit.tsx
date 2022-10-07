@@ -90,6 +90,10 @@ export const SpecificationEdit = ({ onUpdateEnvironment }: any) => {
     }
   }, [channels, requestedPackages]);
 
+  useEffect(() => {
+    setNewPackages(requestedPackages);
+  }, [requestedPackages]);
+
   return (
     <BlockContainerEditMode
       title="Specification"

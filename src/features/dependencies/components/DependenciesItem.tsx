@@ -4,25 +4,26 @@ import Typography from "@mui/material/Typography";
 import SquareIcon from "@mui/icons-material/Square";
 import FileUploadIcon from "@mui/icons-material/FileUpload";
 import { Dependency } from "../../../common/models";
+import Tooltip from "@mui/material/Tooltip";
 import { StyledIconButton } from "../../../styles";
 
 interface IDependenciesItemProps {
   /**
    * @param dependency single dependency
    * @param mode change whether we are only able to read this dependency or edit it
-   * @param onClick click handler
+   * @param handleClick click handler
    */
   dependency: Dependency;
   mode: "read-only" | "edit";
-  onClick: (id: number) => void;
+  handleClick: () => void;
 }
 
 const BaseDependenciesItem = ({
   dependency,
   mode,
-  onClick
+  handleClick
 }: IDependenciesItemProps) => {
-  const { id, name, version } = dependency;
+  const { name, version } = dependency;
   const isEditMode = mode === "edit";
 
   return (
@@ -48,9 +49,11 @@ const BaseDependenciesItem = ({
         {version}
       </Typography>
       {isEditMode && (
-        <StyledIconButton onClick={() => onClick(id)}>
-          <FileUploadIcon />
-        </StyledIconButton>
+        <Tooltip title="Promote as requested package" placement="right-start">
+          <StyledIconButton onClick={handleClick}>
+            <FileUploadIcon />
+          </StyledIconButton>
+        </Tooltip>
       )}
     </Box>
   );

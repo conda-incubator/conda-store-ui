@@ -11,7 +11,8 @@ import {
 } from "src/styles";
 import { Dependency } from "src/common/models";
 import { DependenciesItem } from "./DependenciesItem";
-import { useAppSelector } from "src/hooks";
+import { useAppDispatch, useAppSelector } from "src/hooks";
+import { dependencyPromoted } from "src/features/requestedPackages";
 
 export interface IDependenciesProps {
   /**
@@ -32,6 +33,7 @@ export const Dependencies = ({
   hasMore,
   next = () => null
 }: IDependenciesProps) => {
+  const dispatch = useAppDispatch();
   const { selectedEnvironment } = useAppSelector(state => state.tabs);
   const listLength = dependencies.length;
   const scrollRef = useRef<HTMLDivElement | null>(null);
@@ -85,7 +87,7 @@ export const Dependencies = ({
               <DependenciesItem
                 mode={mode}
                 dependency={dependency}
-                onClick={() => null}
+                handleClick={() => dispatch(dependencyPromoted(dependency))}
               />
             </Box>
           ))}
