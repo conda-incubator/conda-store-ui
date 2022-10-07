@@ -8,8 +8,6 @@ const body = document.querySelector("body");
 container.setAttribute("id", "app");
 body?.appendChild(container);
 
-const root = createRoot(container!);
+const root = createRoot(container);
 
-root.render(
-    <AppExample/>
-);
+root.render(<AppExample />);
