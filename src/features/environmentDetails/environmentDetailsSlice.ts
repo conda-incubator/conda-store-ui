@@ -9,14 +9,12 @@ export enum EnvironmentDetailsModes {
 
 export interface IEnvironmentDetailsState {
   mode: EnvironmentDetailsModes;
-  isUpdated: boolean;
   name: string;
   prefix: string | null | undefined;
 }
 
 const initialState: IEnvironmentDetailsState = {
   mode: EnvironmentDetailsModes.READ,
-  isUpdated: false,
   name: "",
   prefix: null
 };

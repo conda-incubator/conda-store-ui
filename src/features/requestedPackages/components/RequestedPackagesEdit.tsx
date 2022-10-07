@@ -20,6 +20,7 @@ import {
 } from "src/styles";
 import { CondaSpecificationPip } from "src/common/models";
 import { requestedPackageParser } from "src/utils/helpers";
+
 export interface IRequestedPackagesEditProps {
   /**
    * @param packageList list of packages that we get from the API
