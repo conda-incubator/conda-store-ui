@@ -1,7 +1,7 @@
-import { Namespace } from "src/common/models";
+import { Namespace } from "../../common/models";
 
 export enum ActionTypes {
-  DATA_FETCHED = "namespaces/data_fetched",
+  DATA_FETCHED = "namespaces/data_fetched"
 }
 
 interface IInitialState {
@@ -18,7 +18,7 @@ type Action = {
 export const initialState: IInitialState = {
   page: 1,
   data: [],
-  count: 0,
+  count: 0
 };
 
 export const namespacesReducer = (state: IInitialState, action: Action) => {

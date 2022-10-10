@@ -28,7 +28,7 @@ const BaseEnvironments = ({
     (async () => {
       const { data } = await triggerNamespacesQuery({
         page: stateN.page,
-        size,
+        size
       });
 
       if (data) {
