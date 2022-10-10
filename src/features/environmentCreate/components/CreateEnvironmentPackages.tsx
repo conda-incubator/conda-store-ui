@@ -19,8 +19,12 @@ import {
 } from "../../../styles";
 import { AddRequestedPackage } from "../../requestedPackages";
 import useTheme from "@mui/material/styles/useTheme";
-import { requestedPackagesChanged } from "../environmentCreateSlice";
+import {
+  requestedPackageRemoved,
+  requestedPackagesChanged
+} from "../environmentCreateSlice";
 import { useAppDispatch, useAppSelector } from "../../../hooks";
+import { CreateEnvironmentPackagesTableRow } from "./CreateEnvironmentPackagesTableRow";
 
 export const CreateEnvironmentPackages = () => {
   const dispatch = useAppDispatch();
@@ -30,6 +34,10 @@ export const CreateEnvironmentPackages = () => {
   const [isAdding, setIsAdding] = useState(false);
   const scrollRef = useRef<HTMLDivElement | null>(null);
   const { palette } = useTheme();
+
+  const handleRemovePackage = (requestedPackage: string) => {
+    dispatch(requestedPackageRemoved(requestedPackage));
+  };
 
   return (
     <Accordion
@@ -73,15 +81,13 @@ export const CreateEnvironmentPackages = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {/* {filteredPackageList.map(requestedPackage => (
-              <RequestedPackagesTableRow
-                onUpdate={updatePackage}
-                onRemove={removePackage}
-                key={`${requestedPackage}`}
-                requestedPackage={`${requestedPackage}`}
-                isCreating={isCreating}
+            {requestedPackages.map(requestedPackage => (
+              <CreateEnvironmentPackagesTableRow
+                key={requestedPackage}
+                requestedPackage={requestedPackage}
+                onRemove={handleRemovePackage}
               />
-            ))} */}
+            ))}
           </TableBody>
         </Table>
         <Box ref={scrollRef}>

@@ -29,6 +29,11 @@ export const environmentCreateSlice = createSlice({
     },
     requestedPackagesChanged: (state, action: PayloadAction<string[]>) => {
       state.requestedPackages = action.payload;
+    },
+    requestedPackageRemoved: (state, action: PayloadAction<string>) => {
+      state.requestedPackages = state.requestedPackages.filter(
+        p => p !== action.payload
+      );
     }
   }
 });
@@ -37,5 +42,6 @@ export const {
   nameChanged,
   descriptionChanged,
   channelsChanged,
-  requestedPackagesChanged
+  requestedPackagesChanged,
+  requestedPackageRemoved
 } = environmentCreateSlice.actions;
