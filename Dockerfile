@@ -8,6 +8,8 @@ RUN yarn install
 
 COPY . .
 
+RUN mv .env.example .env
+
 EXPOSE 80
 
 CMD [ "yarn", "webpack-dev-server", "--port", "80" ]
