@@ -26,9 +26,16 @@ export const environmentCreateSlice = createSlice({
     },
     channelsChanged: (state, action: PayloadAction<string[]>) => {
       state.channels = action.payload;
+    },
+    requestedPackagesChanged: (state, action: PayloadAction<string[]>) => {
+      state.requestedPackages = action.payload;
     }
   }
 });
 
-export const { nameChanged, descriptionChanged, channelsChanged } =
-  environmentCreateSlice.actions;
+export const {
+  nameChanged,
+  descriptionChanged,
+  channelsChanged,
+  requestedPackagesChanged
+} = environmentCreateSlice.actions;

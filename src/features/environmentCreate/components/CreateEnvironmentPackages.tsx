@@ -19,8 +19,14 @@ import {
 } from "../../../styles";
 import { AddRequestedPackage } from "../../requestedPackages";
 import useTheme from "@mui/material/styles/useTheme";
+import { requestedPackagesChanged } from "../environmentCreateSlice";
+import { useAppDispatch, useAppSelector } from "../../../hooks";
 
 export const CreateEnvironmentPackages = () => {
+  const dispatch = useAppDispatch();
+  const { requestedPackages } = useAppSelector(
+    state => state.environmentCreate
+  );
   const [isAdding, setIsAdding] = useState(false);
   const scrollRef = useRef<HTMLDivElement | null>(null);
   const { palette } = useTheme();
@@ -56,21 +62,6 @@ export const CreateEnvironmentPackages = () => {
                   Name
                 </Typography>
               </StyledEditPackagesTableCell>
-              {/* {!isCreating && (
-                <StyledEditPackagesTableCell
-                  align="left"
-                  sx={{
-                    width: "180px"
-                  }}
-                >
-                  <Typography
-                    component="p"
-                    sx={{ fontSize: "16px", fontWeight: 500 }}
-                  >
-                    Installed Version
-                  </Typography>
-                </StyledEditPackagesTableCell>
-              )} */}
               <StyledEditPackagesTableCell align="left">
                 <Typography
                   component="p"
@@ -96,8 +87,12 @@ export const CreateEnvironmentPackages = () => {
         <Box ref={scrollRef}>
           {isAdding && (
             <AddRequestedPackage
-              onSubmit={() => {}}
-              onCancel={() => {}}
+              onSubmit={(value: string) =>
+                dispatch(
+                  requestedPackagesChanged([...requestedPackages, value])
+                )
+              }
+              onCancel={() => setIsAdding(false)}
               isCreating={true}
             />
           )}
