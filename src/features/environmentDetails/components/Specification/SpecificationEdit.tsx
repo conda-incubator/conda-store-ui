@@ -18,7 +18,14 @@ import { CodeEditor } from "../../../../features/yamlEditor";
 import { useAppDispatch, useAppSelector } from "../../../../hooks";
 import { StyledButtonPrimary } from "../../../../styles";
 
-export const SpecificationEdit = ({ onUpdateEnvironment }: any) => {
+interface ISpecificationEdit {
+  descriptionUpdated: boolean;
+  onUpdateEnvironment: (specification: any) => void;
+}
+export const SpecificationEdit = ({
+  descriptionUpdated,
+  onUpdateEnvironment
+}: ISpecificationEdit) => {
   const { channels } = useAppSelector(state => state.channels);
   const { requestedPackages } = useAppSelector(
     state => state.requestedPackages
@@ -34,6 +41,7 @@ export const SpecificationEdit = ({ onUpdateEnvironment }: any) => {
   const [backupChannels] = useState(cloneDeep(channels));
   const [newPackages, setNewPackages] = useState(requestedPackages);
   const [backupPackages] = useState(cloneDeep(requestedPackages));
+  const [envIsUpdated, setEnvIsUpdated] = useState(false);
 
   const onUpdatePackages = (packages: string[]) => {
     dispatch(updatePackages(packages));
@@ -72,9 +80,10 @@ export const SpecificationEdit = ({ onUpdateEnvironment }: any) => {
   };
 
   const onCancelEdition = () => {
-    dispatch(modeChanged(EnvironmentDetailsModes.READ));
+    setEnvIsUpdated(false);
     dispatch(updatePackages(backupPackages));
     dispatch(updateChannels(backupChannels));
+    dispatch(modeChanged(EnvironmentDetailsModes.READ));
   };
 
   useEffect(() => {
@@ -89,6 +98,22 @@ export const SpecificationEdit = ({ onUpdateEnvironment }: any) => {
       });
     }
   }, [channels, requestedPackages]);
+
+  useEffect(() => {
+    setNewPackages(requestedPackages);
+  }, [requestedPackages]);
+
+  useEffect(() => {
+    if (descriptionUpdated) {
+      setEnvIsUpdated(true);
+    }
+    if (newChannels.length !== backupChannels.length) {
+      setEnvIsUpdated(true);
+    }
+    if (newPackages.length !== backupPackages.length) {
+      setEnvIsUpdated(true);
+    }
+  }, [newChannels, newPackages, descriptionUpdated]);
 
   useEffect(() => {
     setNewPackages(requestedPackages);
@@ -144,9 +169,10 @@ export const SpecificationEdit = ({ onUpdateEnvironment }: any) => {
           </StyledButtonPrimary>
           <StyledButtonPrimary
             sx={{ padding: "5px 60px" }}
+            disabled={!envIsUpdated}
             onClick={() => onEditEnvironment()}
           >
-            Edit
+            Save
           </StyledButtonPrimary>
         </Box>
       </Box>
