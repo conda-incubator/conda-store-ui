@@ -19,6 +19,10 @@ export const SpecificationCreate = ({ onCreateEnvironment }: any) => {
     state => state.environmentCreate
   );
   const [show, setShow] = useState(false);
+  const [editorContent, setEditorContent] = useState<{
+    channels: string[];
+    dependencies: string[];
+  }>({ channels: [], dependencies: [] });
 
   const onUpdateChannels = (channels: string[]) => {
     dispatch(channelsChanged(channels));
@@ -32,24 +36,38 @@ export const SpecificationCreate = ({ onCreateEnvironment }: any) => {
       channels: string[];
       dependencies: string[];
     }) => {
-      dispatch(editorCodeUpdated({ channels, dependencies }));
+      const code = { channels, dependencies };
+
+      if (!channels || channels.length === 0) {
+        code.channels = [];
+      }
+
+      if (!dependencies || dependencies.length === 0) {
+        code.dependencies = [];
+      }
+
+      setEditorContent(code);
     },
     300
   );
 
   const onToggleEditorView = (value: boolean) => {
+    if (show) {
+      dispatch(
+        editorCodeUpdated({
+          channels: editorContent.channels,
+          dependencies: editorContent.dependencies
+        })
+      );
+    }
+
     setShow(value);
   };
 
-  const onUpdateEnvironment = () => {
-    // if (show) {
-    //   setChannels(newChannels);
-    //   setPackages(newPackages);
-    // }
-    // onCreateEnvironment({
-    //   channels: channels,
-    //   dependencies: newPackages
-    // });
+  const handleSubmit = () => {
+    const code = show ? editorContent : null;
+
+    onCreateEnvironment(code);
   };
 
   return (
@@ -62,8 +80,8 @@ export const SpecificationCreate = ({ onCreateEnvironment }: any) => {
         {show ? (
           <CodeEditor
             code={stringify({
-              channels,
-              dependencies: requestedPackages
+              dependencies: requestedPackages,
+              channels
             })}
             onChangeEditor={onUpdateEditor}
           />
@@ -90,7 +108,7 @@ export const SpecificationCreate = ({ onCreateEnvironment }: any) => {
         >
           <StyledButtonPrimary
             sx={{ padding: "5px 60px" }}
-            onClick={onUpdateEnvironment}
+            onClick={handleSubmit}
           >
             Create
           </StyledButtonPrimary>

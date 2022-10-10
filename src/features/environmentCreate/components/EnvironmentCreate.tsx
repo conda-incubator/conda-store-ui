@@ -22,15 +22,18 @@ import { descriptionChanged, nameChanged } from "../environmentCreateSlice";
 export interface IEnvCreate {
   environmentNotification: (notification: any) => void;
 }
+
+interface ICreateEnvironmentArgs {
+  code: { channels: string[]; dependencies: string[] } | null;
+}
+
 export const EnvironmentCreate = ({ environmentNotification }: IEnvCreate) => {
   const dispatch = useAppDispatch();
   const { mode } = useAppSelector(state => state.environmentDetails);
-  const { name, description } = useAppSelector(
+  const { name, description, channels, requestedPackages } = useAppSelector(
     state => state.environmentCreate
   );
   const { newEnvironment } = useAppSelector(state => state.tabs);
-  // const [name, setName] = useState("");
-  // const [description, setDescription] = useState("");
   const [error, setError] = useState({
     message: "",
     visible: false
@@ -45,12 +48,14 @@ export const EnvironmentCreate = ({ environmentNotification }: IEnvCreate) => {
     dispatch(descriptionChanged(value));
   }, 300);
 
-  const createEnvironment = async (code: any) => {
+  const createEnvironment = async (code: ICreateEnvironmentArgs) => {
+    const envCode = code ? code : { channels, dependencies: requestedPackages };
+
     const namespace = newEnvironment?.namespace;
     const environmentInfo = {
       namespace,
       specification: `${stringify(
-        code
+        envCode
       )}\ndescription: ${description}\nname: ${name}\nprefix: null`
     };
 
