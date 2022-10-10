@@ -21,7 +21,8 @@ import { AddRequestedPackage } from "../../requestedPackages";
 import useTheme from "@mui/material/styles/useTheme";
 import {
   requestedPackageRemoved,
-  requestedPackagesChanged
+  requestedPackagesChanged,
+  requestedPackageUpdated
 } from "../environmentCreateSlice";
 import { useAppDispatch, useAppSelector } from "../../../hooks";
 import { CreateEnvironmentPackagesTableRow } from "./CreateEnvironmentPackagesTableRow";
@@ -37,6 +38,13 @@ export const CreateEnvironmentPackages = () => {
 
   const handleRemovePackage = (requestedPackage: string) => {
     dispatch(requestedPackageRemoved(requestedPackage));
+  };
+
+  const handleUpdatePackage = (
+    currentPackage: string,
+    updatedPackage: string
+  ) => {
+    dispatch(requestedPackageUpdated({ currentPackage, updatedPackage }));
   };
 
   return (
@@ -83,6 +91,7 @@ export const CreateEnvironmentPackages = () => {
           <TableBody>
             {requestedPackages.map(requestedPackage => (
               <CreateEnvironmentPackagesTableRow
+                handleUpdate={handleUpdatePackage}
                 key={requestedPackage}
                 requestedPackage={requestedPackage}
                 onRemove={handleRemovePackage}

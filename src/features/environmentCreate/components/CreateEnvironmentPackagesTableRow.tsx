@@ -12,17 +12,34 @@ interface IProps {
   /**
    * @param requestedPackage requested package
    * @param onRemove handler that will run when delete icon is clicked
+   * @param handleUpdate handler that will run when a package is updated
    */
   requestedPackage: string;
   onRemove: (packageName: string) => void;
+  handleUpdate: (currentPackage: string, updatedPackage: string) => void;
 }
 
 export const CreateEnvironmentPackagesTableRow = ({
   requestedPackage,
-  onRemove
+  onRemove,
+  handleUpdate
 }: IProps) => {
   const { version, constraint, name } =
     requestedPackageParser(requestedPackage);
+
+  const handleUpdateConstraint = (value: string) => {
+    const updatedPackage = `${name}${value}${version}`;
+
+    handleUpdate(requestedPackage, updatedPackage);
+  };
+
+  const handleUpdateVersion = (value: string) => {
+    const updatedPackage = `${name}${
+      constraint === "latest" ? ">=" : constraint
+    }${value}`;
+
+    handleUpdate(requestedPackage, updatedPackage);
+  };
 
   return (
     <TableRow>
@@ -34,11 +51,11 @@ export const CreateEnvironmentPackagesTableRow = ({
       <StyledRequestedPackagesTableCell align="left">
         <Box sx={{ display: "flex", alignItems: "center" }}>
           <ConstraintSelect
-            onUpdate={() => {}}
+            onUpdate={handleUpdateConstraint}
             constraint={constraint === "latest" ? "" : constraint}
           />
           <VersionSelect
-            onUpdate={() => {}}
+            onUpdate={handleUpdateVersion}
             version={constraint === "latest" ? "" : version}
             name={name}
           />

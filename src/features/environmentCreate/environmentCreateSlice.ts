@@ -34,6 +34,16 @@ export const environmentCreateSlice = createSlice({
       state.requestedPackages = state.requestedPackages.filter(
         p => p !== action.payload
       );
+    },
+    requestedPackageUpdated: (
+      state,
+      action: PayloadAction<{ currentPackage: string; updatedPackage: string }>
+    ) => {
+      const { currentPackage, updatedPackage } = action.payload;
+
+      state.requestedPackages = state.requestedPackages.map(p =>
+        p === currentPackage ? updatedPackage : p
+      );
     }
   }
 });
@@ -43,5 +53,6 @@ export const {
   descriptionChanged,
   channelsChanged,
   requestedPackagesChanged,
-  requestedPackageRemoved
+  requestedPackageRemoved,
+  requestedPackageUpdated
 } = environmentCreateSlice.actions;
