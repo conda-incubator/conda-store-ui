@@ -13,8 +13,9 @@ export const buildMapper = (
   { data }: IApiResponse<Build[]>,
   currentBuildId: number
 ) => {
-  return data.map(({ id, status, ended_on }: Build) => {
-    const date = format(new Date(ended_on), "MMMM do, yyyy - h:mm");
+  return data.map(({ id, status, ended_on, scheduled_on }: Build) => {
+    const dateDetails = status === "BUILDING" ? scheduled_on : ended_on;
+    const date = format(new Date(dateDetails), "MMMM do, yyyy - h:mm");
     if (id === currentBuildId) {
       return {
         id,

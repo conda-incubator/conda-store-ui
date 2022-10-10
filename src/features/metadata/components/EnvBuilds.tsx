@@ -10,7 +10,7 @@ interface IData {
   currentBuildId: number;
 }
 export const EnvBuilds = ({ data, currentBuildId }: IData) => {
-  const builds = data !== undefined ? buildMapper(data, currentBuildId) : [];
+  const builds = data ? buildMapper(data, currentBuildId) : [];
   return (
     <>
       <StyledMetadataItem>
