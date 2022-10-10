@@ -26,17 +26,14 @@ export interface IRequestedPackagesEditProps {
   /**
    * @param packageList list of packages that we get from the API
    * @param updatePackages notify the parent if there are changes in packageList array.
-   * @param isCreating notify the component if it's being used for creation or edition.
    */
   packageList: (string | CondaSpecificationPip)[];
   updatePackages: (packages: string[]) => void;
-  isCreating: boolean;
 }
 
 export const RequestedPackagesEdit = ({
   packageList,
-  updatePackages,
-  isCreating
+  updatePackages
 }: IRequestedPackagesEditProps) => {
   const [data, setData] = useState(packageList);
   const [isAdding, setIsAdding] = useState(false);
@@ -129,21 +126,19 @@ export const RequestedPackagesEdit = ({
                   Name
                 </Typography>
               </StyledEditPackagesTableCell>
-              {!isCreating && (
-                <StyledEditPackagesTableCell
-                  align="left"
-                  sx={{
-                    width: "180px"
-                  }}
+              <StyledEditPackagesTableCell
+                align="left"
+                sx={{
+                  width: "180px"
+                }}
+              >
+                <Typography
+                  component="p"
+                  sx={{ fontSize: "16px", fontWeight: 500 }}
                 >
-                  <Typography
-                    component="p"
-                    sx={{ fontSize: "16px", fontWeight: 500 }}
-                  >
-                    Installed Version
-                  </Typography>
-                </StyledEditPackagesTableCell>
-              )}
+                  Installed Version
+                </Typography>
+              </StyledEditPackagesTableCell>
               <StyledEditPackagesTableCell align="left">
                 <Typography
                   component="p"
@@ -161,7 +156,6 @@ export const RequestedPackagesEdit = ({
                 onRemove={removePackage}
                 key={`${requestedPackage}`}
                 requestedPackage={`${requestedPackage}`}
-                isCreating={isCreating}
               />
             ))}
           </TableBody>
@@ -171,7 +165,7 @@ export const RequestedPackagesEdit = ({
             <AddRequestedPackage
               onSubmit={addNewPackage}
               onCancel={setIsAdding}
-              isCreating={isCreating}
+              isCreating={false}
             />
           )}
         </Box>

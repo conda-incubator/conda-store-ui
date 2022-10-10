@@ -109,7 +109,6 @@ export const SpecificationEdit = ({ onUpdateEnvironment }: any) => {
               <RequestedPackagesEdit
                 packageList={requestedPackages}
                 updatePackages={onUpdatePackages}
-                isCreating={false}
               />
             </Box>
             <Box sx={{ marginBottom: "30px" }}>
