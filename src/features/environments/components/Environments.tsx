@@ -5,7 +5,13 @@ import { EnvironmentsList } from "./EnvironmentsList";
 import { debounce } from "lodash";
 import { EnvironmentsSearch } from "./EnvironmentsSearch";
 import { useLazyFetchEnvironmentsQuery } from "../environmentsApiSlice";
+import { useLazyFetchNamespacesQuery } from "../../../features/namespaces";
 import { ActionTypes, initialState, environmentsReducer } from "../reducer";
+import {
+  ActionTypes as NActionTypes,
+  initialState as NInitialState,
+  namespacesReducer
+} from "../../../features/namespaces/reducer";
 
 const BaseEnvironments = ({
   refreshEnvironments,
@@ -13,6 +19,26 @@ const BaseEnvironments = ({
 }: any) => {
   const size = 100;
   const [state, dispatch] = useReducer(environmentsReducer, initialState);
+
+  const [stateN, dispatchN] = useReducer(namespacesReducer, NInitialState);
+
+  const [triggerNamespacesQuery] = useLazyFetchNamespacesQuery();
+
+  useEffect(() => {
+    (async () => {
+      const { data } = await triggerNamespacesQuery({
+        page: stateN.page,
+        size
+      });
+
+      if (data) {
+        dispatchN({
+          type: NActionTypes.DATA_FETCHED,
+          payload: { data: data.data, count: data.count }
+        });
+      }
+    })();
+  }, []);
 
   const {
     palette: { primary }
@@ -76,6 +102,7 @@ const BaseEnvironments = ({
             next={next}
             hasMore={size * state.page < state.count}
             environmentsList={state.data}
+            namespacesList={stateN.data}
             search={state.search}
           />
         )}
