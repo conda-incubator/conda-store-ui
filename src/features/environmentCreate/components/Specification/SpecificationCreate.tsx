@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import { ChannelsEdit } from "../../../../features/channels";
-import { RequestedPackagesEdit } from "../../../../features/requestedPackages";
 import { BlockContainerEditMode } from "../../../../components";
 import { StyledButtonPrimary } from "../../../../styles";
 import { CodeEditor } from "../../../../features/yamlEditor";
 import { stringify } from "yaml";
+import { CreateEnvironmentPackages } from "../CreateEnvironmentPackages";
 
 export const SpecificationCreate = ({ onCreateEnvironment }: any) => {
   const [show, setShow] = useState(false);
@@ -22,9 +22,9 @@ export const SpecificationCreate = ({ onCreateEnvironment }: any) => {
     setChannels(channels);
   };
 
-  const onUpdatePackages = (packages: string[]) => {
-    setPackages(packages);
-  };
+  // const onUpdatePackages = (packages: string[]) => {
+  //   setPackages(packages);
+  // };
 
   const onUpdateEditor = ({ channels, dependencies }: any) => {
     setNewChannels(channels);
@@ -72,11 +72,12 @@ export const SpecificationCreate = ({ onCreateEnvironment }: any) => {
         ) : (
           <>
             <Box sx={{ marginBottom: "30px" }}>
-              <RequestedPackagesEdit
+              {/* <RequestedPackagesEdit
                 packageList={requestedPackages}
                 updatePackages={onUpdatePackages}
                 isCreating={true}
-              />
+              /> */}
+              <CreateEnvironmentPackages />
             </Box>
             <Box sx={{ margiBottom: "30px" }}>
               <ChannelsEdit
