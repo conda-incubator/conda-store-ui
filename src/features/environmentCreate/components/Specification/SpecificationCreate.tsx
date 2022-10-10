@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import { ChannelsEdit } from "../../../../features/channels";
 import { BlockContainerEditMode } from "../../../../components";
@@ -7,41 +7,38 @@ import { CodeEditor } from "../../../../features/yamlEditor";
 import { stringify } from "yaml";
 import { CreateEnvironmentPackages } from "../CreateEnvironmentPackages";
 import { useAppDispatch, useAppSelector } from "../../../../hooks";
-import { channelsChanged } from "../../environmentCreateSlice";
+import {
+  channelsChanged,
+  editorCodeUpdated
+} from "../../environmentCreateSlice";
+import { debounce } from "lodash";
 
 export const SpecificationCreate = ({ onCreateEnvironment }: any) => {
   const dispatch = useAppDispatch();
-  const { channels } = useAppSelector(state => state.environmentCreate);
+  const { channels, requestedPackages } = useAppSelector(
+    state => state.environmentCreate
+  );
   const [show, setShow] = useState(false);
-  // const [channels, setChannels] = useState<string[]>([]);
-  // const [requestedPackages, setPackages] = useState<string[]>([]);
-  // const [newChannels, setNewChannels] = useState(channels);
-  // const [newPackages, setNewPackages] = useState(requestedPackages);
-  const [code, setCode] = useState({
-    channels,
-    dependencies: []
-  });
 
   const onUpdateChannels = (channels: string[]) => {
     dispatch(channelsChanged(channels));
   };
 
-  // const onUpdatePackages = (packages: string[]) => {
-  //   setPackages(packages);
-  // };
-
-  const onUpdateEditor = ({ channels, dependencies }: any) => {
-    // setNewChannels(channels);
-    // setNewPackages(dependencies);
-  };
+  const onUpdateEditor = debounce(
+    ({
+      channels,
+      dependencies
+    }: {
+      channels: string[];
+      dependencies: string[];
+    }) => {
+      dispatch(editorCodeUpdated({ channels, dependencies }));
+    },
+    300
+  );
 
   const onToggleEditorView = (value: boolean) => {
     setShow(value);
-    // if (!value) {
-    //   // If user want to switch the yaml editor view, let's send this info to the component
-    //   setChannels(newChannels);
-    //   setPackages(newPackages);
-    // }
   };
 
   const onUpdateEnvironment = () => {
@@ -55,15 +52,6 @@ export const SpecificationCreate = ({ onCreateEnvironment }: any) => {
     // });
   };
 
-  useEffect(() => {
-    setCode({
-      channels,
-      dependencies: []
-    });
-    // setNewChannels(channels);
-    // setNewPackages(requestedPackages);
-  }, [channels]);
-
   return (
     <BlockContainerEditMode
       title="Specification"
@@ -72,15 +60,16 @@ export const SpecificationCreate = ({ onCreateEnvironment }: any) => {
     >
       <Box sx={{ padding: "13px 19px" }}>
         {show ? (
-          <CodeEditor code={stringify(code)} onChangeEditor={onUpdateEditor} />
+          <CodeEditor
+            code={stringify({
+              channels,
+              dependencies: requestedPackages
+            })}
+            onChangeEditor={onUpdateEditor}
+          />
         ) : (
           <>
             <Box sx={{ marginBottom: "30px" }}>
-              {/* <RequestedPackagesEdit
-                packageList={requestedPackages}
-                updatePackages={onUpdatePackages}
-                isCreating={true}
-              /> */}
               <CreateEnvironmentPackages />
             </Box>
             <Box sx={{ margiBottom: "30px" }}>

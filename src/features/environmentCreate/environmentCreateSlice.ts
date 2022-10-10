@@ -44,6 +44,13 @@ export const environmentCreateSlice = createSlice({
       state.requestedPackages = state.requestedPackages.map(p =>
         p === currentPackage ? updatedPackage : p
       );
+    },
+    editorCodeUpdated: (
+      state,
+      action: PayloadAction<{ dependencies: string[]; channels: string[] }>
+    ) => {
+      state.requestedPackages = action.payload.dependencies;
+      state.channels = action.payload.channels;
     }
   }
 });
@@ -54,5 +61,6 @@ export const {
   channelsChanged,
   requestedPackagesChanged,
   requestedPackageRemoved,
-  requestedPackageUpdated
+  requestedPackageUpdated,
+  editorCodeUpdated
 } = environmentCreateSlice.actions;
