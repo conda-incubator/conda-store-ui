@@ -4,7 +4,7 @@ import Typography from "@mui/material/Typography";
 import CircularProgress from "@mui/material/CircularProgress";
 import GroupIcon from "@mui/icons-material/Group";
 import { EnvironmentDropdown } from "./EnvironmentDropdown";
-import { Environment } from "../../../common/models";
+import { Environment, Namespace } from "../../../common/models";
 import { StyledScrollContainer } from "../../../styles";
 import { INamespaceEnvironments } from "../../../common/interfaces";
 import lodash from "lodash";
@@ -13,11 +13,13 @@ import InfiniteScroll from "react-infinite-scroll-component";
 interface IEnvironmentsListProps {
   /**
    * @param environmentsList environments list
+   * @param namespacesList namespaces list
    * @param hasMore indicates whether there are more items to fetch
    * @param next function that will run on the bottom of the inf scroll
    * @param search current search
    */
   environmentsList: Environment[];
+  namespacesList: Namespace[];
   hasMore: boolean;
   next: () => void;
   search: string;
@@ -25,6 +27,7 @@ interface IEnvironmentsListProps {
 
 export const EnvironmentsList = ({
   environmentsList,
+  namespacesList,
   hasMore,
   next,
   search
@@ -34,6 +37,26 @@ export const EnvironmentsList = ({
   const { defaultNamespace, sharedNamespaces } = useMemo(() => {
     let defaultNamespace: INamespaceEnvironments | null = null;
     const sharedNamespaces: INamespaceEnvironments[] = [];
+
+    //List of all namespaces without environments inside
+    const emptyNamespaces = namespacesList
+      .map(namespace => namespace.name)
+      .filter(
+        elemen =>
+          !environmentsList
+            .map(environment => environment.namespace.name)
+            .includes(elemen)
+      );
+
+    emptyNamespaces.forEach(element => {
+      const value: Environment[] = [];
+      const obj = { namespace: element, environments: value };
+      if (element === "default") {
+        defaultNamespace = obj;
+      } else {
+        sharedNamespaces.push(obj);
+      }
+    });
 
     lodash(environmentsList)
       .groupBy((x: Environment) => x.namespace.name)
@@ -50,7 +73,7 @@ export const EnvironmentsList = ({
       .value();
 
     return { defaultNamespace, sharedNamespaces };
-  }, [environmentsList]);
+  }, [environmentsList, namespacesList]);
 
   useEffect(() => {
     scrollRef.current?.scrollTo(0, 0);

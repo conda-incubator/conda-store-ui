@@ -20,7 +20,7 @@ import {
 import { useAppDispatch, useAppSelector } from "../../../hooks";
 import artifactList from "../../../utils/helpers/artifact";
 
-export interface IEnvDetails {
+interface IEnvDetails {
   environmentNotification: (notification: any) => void;
 }
 
@@ -32,10 +32,11 @@ export const EnvironmentDetails = ({
   const { page } = useAppSelector(state => state.dependencies);
   const { selectedEnvironment } = useAppSelector(state => state.tabs);
   const [name, setName] = useState(selectedEnvironment?.name || "");
+  const [createOrUpdate] = useCreateOrUpdateMutation();
+  const [descriptionIsUpdated, setDescriptionIsUpdated] = useState(false);
   const [description, setDescription] = useState(
     selectedEnvironment ? selectedEnvironment.description : undefined
   );
-  const [createOrUpdate] = useCreateOrUpdateMutation();
   const [error, setError] = useState({
     message: "",
     visible: false
@@ -49,6 +50,11 @@ export const EnvironmentDetails = ({
       size: 100
     });
   }
+
+  const updateDescription = (description: string) => {
+    setDescription(description);
+    setDescriptionIsUpdated(true);
+  };
 
   const updateEnvironment = async (code: any) => {
     const namespace = selectedEnvironment?.namespace.name;
@@ -82,6 +88,7 @@ export const EnvironmentDetails = ({
   useEffect(() => {
     setName(selectedEnvironment?.name || "");
     setDescription(selectedEnvironment?.description || "");
+    setDescriptionIsUpdated(false);
   }, [selectedEnvironment]);
 
   let enviromentBuilds = undefined;
@@ -109,13 +116,16 @@ export const EnvironmentDetails = ({
           description={description}
           current_build_id={selectedEnvironment?.current_build_id || 0}
           mode={mode}
-          onUpdateDescription={setDescription}
+          onUpdateDescription={updateDescription}
         />
       </Box>
       <Box sx={{ marginBottom: "30px" }}>
         {mode === "read-only" && <SpecificationReadOnly />}
         {mode === "edit" && (
-          <SpecificationEdit onUpdateEnvironment={updateEnvironment} />
+          <SpecificationEdit
+            descriptionUpdated={descriptionIsUpdated}
+            onUpdateEnvironment={updateEnvironment}
+          />
         )}
       </Box>
       {mode === "read-only" && (
