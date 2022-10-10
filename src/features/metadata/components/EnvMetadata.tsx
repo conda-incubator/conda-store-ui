@@ -35,7 +35,6 @@ export const EnvMetadata = ({
   onUpdateDescription
 }: IEnvMetadataProps) => {
   const { palette } = useTheme();
-
   return (
     <StyledBox>
       <List>
