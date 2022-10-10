@@ -52,7 +52,7 @@ In order to setup the environment variables correctly, you should create a .env 
 
 - `REACT_APP_API_URL` - base API url that will be used when creating RTK Query queries
 - `REACT_APP_AUTH_METHOD` - method of authentication.
-  - value `cookie` lets lets users authenticate with a login process. **This is the prefered option. conda-store API and conda-store UI must both be under the same domain.**
+  - value `cookie` lets users authenticate with a login process. **This is the prefered option. conda-store API and conda-store UI must both be under the same domain.**
   - value `token` lets you set up a token in conda-store, and use conda-store authenticated as the user who created the token.
 - `REACT_APP_AUTH_METHOD` - URL endpoint to authenticate. Check the example below.
 - `REACT_APP_AUTH_TOKEN` - authentication token required when the auth method is `token`
