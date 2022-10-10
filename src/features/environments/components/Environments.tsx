@@ -1,17 +1,17 @@
-import React, { memo, useEffect, useReducer, useState } from "react";
+import React, { memo, useEffect, useReducer } from "react";
 import Box from "@mui/material/Box";
 import useTheme from "@mui/material/styles/useTheme";
 import { EnvironmentsList } from "./EnvironmentsList";
 import { debounce } from "lodash";
 import { EnvironmentsSearch } from "./EnvironmentsSearch";
 import { useLazyFetchEnvironmentsQuery } from "../environmentsApiSlice";
-import { useLazyFetchNamespacesQuery } from "src/features/namespaces";
+import { useLazyFetchNamespacesQuery } from "../../../features/namespaces";
 import { ActionTypes, initialState, environmentsReducer } from "../reducer";
 import {
   ActionTypes as NActionTypes,
   initialState as NInitialState,
   namespacesReducer
-} from "src/features/namespaces/reducer";
+} from "../../../features/namespaces/reducer";
 
 const BaseEnvironments = ({
   refreshEnvironments,

@@ -1,5 +1,5 @@
-import { IApiResponse } from "src/common/interfaces";
-import { Namespace } from "src/common/models";
+import { IApiResponse } from "../../common/interfaces";
+import { Namespace } from "../../common/models";
 import { apiSlice } from "../api";
 
 export const namespacesApiSlice = apiSlice.injectEndpoints({
