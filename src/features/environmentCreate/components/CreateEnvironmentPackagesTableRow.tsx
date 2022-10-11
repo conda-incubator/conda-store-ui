@@ -1,5 +1,5 @@
-import { Box, TableRow, Typography } from "@mui/material";
 import React from "react";
+import { Box, TableRow, Typography } from "@mui/material";
 import { ConstraintSelect, VersionSelect } from "../../../components";
 import DeleteIcon from "@mui/icons-material/Delete";
 import {
@@ -7,30 +7,35 @@ import {
   StyledRequestedPackagesTableCell
 } from "../../../styles";
 import { requestedPackageParser } from "../../../utils/helpers";
+import { useAppDispatch } from "../../../hooks";
+import {
+  requestedPackageRemoved,
+  requestedPackageUpdated
+} from "../environmentCreateSlice";
 
 interface IProps {
   /**
    * @param requestedPackage requested package
-   * @param onRemove handler that will run when delete icon is clicked
-   * @param handleUpdate handler that will run when a package is updated
    */
   requestedPackage: string;
-  onRemove: (packageName: string) => void;
-  handleUpdate: (currentPackage: string, updatedPackage: string) => void;
 }
 
 export const CreateEnvironmentPackagesTableRow = ({
-  requestedPackage,
-  onRemove,
-  handleUpdate
+  requestedPackage
 }: IProps) => {
+  const dispatch = useAppDispatch();
   const { version, constraint, name } =
     requestedPackageParser(requestedPackage);
 
   const handleUpdateConstraint = (value: string) => {
     const updatedPackage = `${name}${value}${version}`;
 
-    handleUpdate(requestedPackage, updatedPackage);
+    dispatch(
+      requestedPackageUpdated({
+        currentPackage: requestedPackage,
+        updatedPackage
+      })
+    );
   };
 
   const handleUpdateVersion = (value: string) => {
@@ -38,7 +43,16 @@ export const CreateEnvironmentPackagesTableRow = ({
       constraint === "latest" ? ">=" : constraint
     }${value}`;
 
-    handleUpdate(requestedPackage, updatedPackage);
+    dispatch(
+      requestedPackageUpdated({
+        currentPackage: requestedPackage,
+        updatedPackage
+      })
+    );
+  };
+
+  const handleRemovePackage = (requestedPackage: string) => {
+    dispatch(requestedPackageRemoved(requestedPackage));
   };
 
   return (
@@ -60,7 +74,7 @@ export const CreateEnvironmentPackagesTableRow = ({
             name={name}
           />
           <StyledIconButton
-            onClick={() => onRemove(requestedPackage)}
+            onClick={() => handleRemovePackage(requestedPackage)}
             sx={{ marginLeft: "24px" }}
           >
             <DeleteIcon />
