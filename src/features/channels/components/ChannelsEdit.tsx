@@ -33,12 +33,12 @@ const BaseChannelsEdit = ({
   channelsList,
   updateChannels
 }: IChannelsEditProps) => {
+  const listLength = channelsList.length;
   const { palette } = useTheme();
   const scrollRef = useRef<HTMLDivElement | null>(null);
+  const expandedRef = useRef(listLength > 0);
 
   const [isAdding, setIsAdding] = useState(false);
-
-  const listLength = channelsList.length;
 
   const addNewChannel = (channelName: string) => {
     updateChannels([...channelsList, channelName]);
@@ -79,7 +79,7 @@ const BaseChannelsEdit = ({
 
   return (
     <Accordion
-      defaultExpanded={listLength > 0}
+      defaultExpanded={expandedRef.current}
       sx={{ width: 421, boxShadow: "none" }}
       disableGutters
     >
