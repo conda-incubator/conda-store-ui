@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, useCallback } from "react";
 import Box from "@mui/material/Box";
-import { cloneDeep } from "lodash";
+import { cloneDeep, debounce } from "lodash";
 import { stringify } from "yaml";
 import { BlockContainerEditMode } from "../../../../components";
 import { ChannelsEdit, updateChannels } from "../../../../features/channels";
@@ -50,25 +50,42 @@ export const SpecificationEdit = ({
     dispatch(updateChannels(channels));
   }, []);
 
-  const onUpdateEditor = ({
-    channels,
-    dependencies
-  }: {
-    channels: string[];
-    dependencies: string[];
-  }) => {
-    const code = { dependencies, channels };
+  const onUpdateEditor = debounce(
+    ({
+      channels,
+      dependencies
+    }: {
+      channels: string[];
+      dependencies: string[];
+    }) => {
+      const code = { dependencies, channels };
+      const stringifiedInitialChannels = JSON.stringify(
+        initialChannels.current
+      );
+      const stringifiedInitialPackages = JSON.stringify(
+        initialPackages.current
+      );
 
-    if (!channels || channels.length === 0) {
-      code.channels = [];
-    }
+      if (!channels || channels.length === 0) {
+        code.channels = [];
+      }
 
-    if (!dependencies || dependencies.length === 0) {
-      code.dependencies = [];
-    }
+      if (!dependencies || dependencies.length === 0) {
+        code.dependencies = [];
+      }
 
-    setCode(code);
-  };
+      if (JSON.stringify(code.channels) !== stringifiedInitialChannels) {
+        setEnvIsUpdated(true);
+      }
+
+      if (JSON.stringify(code.dependencies) !== stringifiedInitialPackages) {
+        setEnvIsUpdated(true);
+      }
+
+      setCode(code);
+    },
+    200
+  );
 
   const onToggleEditorView = (value: boolean) => {
     if (show) {
@@ -124,10 +141,15 @@ export const SpecificationEdit = ({
     if (descriptionUpdated) {
       setEnvIsUpdated(true);
     }
-    if (channels.length !== initialChannels.current.length) {
+
+    const stringifiedInitialChannels = JSON.stringify(initialChannels.current);
+    const stringifiedInitialPackages = JSON.stringify(initialPackages.current);
+
+    if (JSON.stringify(channels) !== stringifiedInitialChannels) {
       setEnvIsUpdated(true);
     }
-    if (requestedPackages.length !== initialPackages.current.length) {
+
+    if (JSON.stringify(requestedPackages) !== stringifiedInitialPackages) {
       setEnvIsUpdated(true);
     }
   }, [channels, requestedPackages, descriptionUpdated]);
