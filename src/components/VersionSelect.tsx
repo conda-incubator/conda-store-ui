@@ -83,7 +83,7 @@ export const VersionSelect = ({
 
   return (
     <Select
-      value={value}
+      value={versionsList.length > 0 ? value : ""}
       open={open}
       onClose={() => setOpen(false)}
       onOpen={() => setOpen(true)}
