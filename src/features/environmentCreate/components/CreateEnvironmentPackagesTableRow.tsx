@@ -39,9 +39,13 @@ const BaseCreateEnvironmentPackagesTableRow = ({
   };
 
   const handleUpdateVersion = (value: string) => {
-    const updatedPackage = `${name}${
-      constraint === "latest" ? ">=" : constraint
-    }${value}`;
+    let pkgConstraint = constraint === "latest" ? ">=" : constraint;
+
+    if (value === "") {
+      pkgConstraint = "";
+    }
+
+    const updatedPackage = `${name}${pkgConstraint}${value}`;
 
     dispatch(
       requestedPackageUpdated({

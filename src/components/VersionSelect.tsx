@@ -119,6 +119,9 @@ export const VersionSelect = ({
         }
       }}
     >
+      <MenuItem key="empty" value="" sx={{ height: "30px" }}>
+        {" "}
+      </MenuItem>
       {versionsList.map(v => (
         <MenuItem key={v} value={v}>
           {v}
