@@ -42,7 +42,7 @@ export const RequestedPackagesEdit = ({
   };
 
   const filteredPackageList = useMemo(
-    () => packageList.filter(item => typeof item !== "object"),
+    () => packageList.filter(item => typeof item !== "object") as string[],
     [packageList]
   );
 
@@ -109,8 +109,8 @@ export const RequestedPackagesEdit = ({
           <TableBody>
             {filteredPackageList.map(requestedPackage => (
               <RequestedPackagesTableRow
-                key={`${requestedPackage}`}
-                requestedPackage={`${requestedPackage}`}
+                key={requestedPackage}
+                requestedPackage={requestedPackage}
               />
             ))}
           </TableBody>

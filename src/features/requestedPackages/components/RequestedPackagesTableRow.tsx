@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import TableRow from "@mui/material/TableRow";
 import Typography from "@mui/material/Typography";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -20,7 +20,7 @@ interface IRequestedPackagesTableRowProps {
   requestedPackage: string;
 }
 
-export const RequestedPackagesTableRow = ({
+const BaseRequestedPackagesTableRow = ({
   requestedPackage
 }: IRequestedPackagesTableRowProps) => {
   const dispatch = useAppDispatch();
@@ -90,3 +90,5 @@ export const RequestedPackagesTableRow = ({
     </TableRow>
   );
 };
+
+export const RequestedPackagesTableRow = memo(BaseRequestedPackagesTableRow);

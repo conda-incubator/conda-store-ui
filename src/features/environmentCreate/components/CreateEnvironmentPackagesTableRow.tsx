@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import { Box, TableRow, Typography } from "@mui/material";
 import { ConstraintSelect, VersionSelect } from "../../../components";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -20,7 +20,7 @@ interface IProps {
   requestedPackage: string;
 }
 
-export const CreateEnvironmentPackagesTableRow = ({
+const BaseCreateEnvironmentPackagesTableRow = ({
   requestedPackage
 }: IProps) => {
   const dispatch = useAppDispatch();
@@ -84,3 +84,7 @@ export const CreateEnvironmentPackagesTableRow = ({
     </TableRow>
   );
 };
+
+export const CreateEnvironmentPackagesTableRow = memo(
+  BaseCreateEnvironmentPackagesTableRow
+);

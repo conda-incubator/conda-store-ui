@@ -1,8 +1,8 @@
+import React, { useState, useRef, useEffect, memo } from "react";
 import { useTheme } from "@mui/material";
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import Box from "@mui/material/Box";
-import React, { useState, useRef, useEffect } from "react";
 import {
   DragDropContext,
   Draggable,
@@ -29,7 +29,7 @@ export interface IChannelsEditProps {
   updateChannels: (channels: string[]) => void;
 }
 
-export const ChannelsEdit = ({
+const BaseChannelsEdit = ({
   channelsList,
   updateChannels
 }: IChannelsEditProps) => {
@@ -150,3 +150,18 @@ export const ChannelsEdit = ({
     </Accordion>
   );
 };
+
+// rerender only when the passed channelsList and update handler are different then the previous props
+const compareProps = (
+  prevProps: IChannelsEditProps,
+  nextProps: IChannelsEditProps
+) => {
+  const isSameArray =
+    JSON.stringify(prevProps.channelsList) ===
+    JSON.stringify(nextProps.channelsList);
+  const isSameFunc = prevProps.updateChannels === nextProps.updateChannels;
+
+  return isSameArray && isSameFunc;
+};
+
+export const ChannelsEdit = memo(BaseChannelsEdit, compareProps);

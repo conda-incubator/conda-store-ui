@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import Box from "@mui/material/Box";
 import { ChannelsEdit } from "../../../../features/channels";
 import { BlockContainerEditMode } from "../../../../components";
@@ -24,9 +24,12 @@ export const SpecificationCreate = ({ onCreateEnvironment }: any) => {
     dependencies: string[];
   }>({ channels: [], dependencies: [] });
 
-  const onUpdateChannels = (channels: string[]) => {
-    dispatch(channelsChanged(channels));
-  };
+  const onUpdateChannels = useCallback(
+    (channels: string[]) => {
+      dispatch(channelsChanged(channels));
+    },
+    [channels]
+  );
 
   const onUpdateEditor = debounce(
     ({
