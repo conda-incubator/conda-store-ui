@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import useTheme from "@mui/material/styles/useTheme";
 import { Box } from "@mui/system";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useAppDispatch } from "../../../hooks";
 import {
   StyledAccordionDetails,
@@ -37,6 +37,12 @@ export const CreateEnvironmentPackages = ({
   const [isAdding, setIsAdding] = useState(false);
   const scrollRef = useRef<HTMLDivElement | null>(null);
   const { palette } = useTheme();
+
+  useEffect(() => {
+    if (isAdding && scrollRef.current) {
+      scrollRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [isAdding]);
 
   return (
     <Accordion
