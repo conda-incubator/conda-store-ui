@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Box from "@mui/material/Box";
 import { cloneDeep, debounce } from "lodash";
 import { stringify } from "yaml";
@@ -18,10 +18,12 @@ import { CodeEditor } from "../../../../features/yamlEditor";
 import { useAppDispatch, useAppSelector } from "../../../../hooks";
 import { StyledButtonPrimary } from "../../../../styles";
 import { CondaSpecificationPip } from "../../../../common/models";
+import { requestedPackageParser } from "../../../../utils/helpers";
+import { installedVersionsGenerated } from "../../environmentDetailsSlice";
 
 export const SpecificationEdit = ({ onUpdateEnvironment }: any) => {
   const { channels } = useAppSelector(state => state.channels);
-  const { requestedPackages } = useAppSelector(
+  const { requestedPackages, packageVersions } = useAppSelector(
     state => state.requestedPackages
   );
   const { dependencies, size, count, page } = useAppSelector(
@@ -68,7 +70,10 @@ export const SpecificationEdit = ({ onUpdateEnvironment }: any) => {
     if (show) {
       dispatch(updatePackages(code.dependencies));
       dispatch(updateChannels(code.channels));
+    } else {
+      setCode({ dependencies: requestedPackages, channels });
     }
+
     setShow(value);
   };
 
@@ -85,6 +90,30 @@ export const SpecificationEdit = ({ onUpdateEnvironment }: any) => {
     dispatch(updatePackages(initialPackages.current));
     dispatch(updateChannels(initialChannels.current));
   };
+
+  useEffect(() => {
+    const versions: { [key: string]: string } = {};
+
+    requestedPackages.forEach(p => {
+      if (typeof p === "string") {
+        const { name, version } = requestedPackageParser(p as string);
+
+        if (version) {
+          versions[name] = version;
+        }
+
+        if (packageVersions[name]) {
+          versions[name] = packageVersions[name];
+        }
+      }
+    });
+
+    dispatch(installedVersionsGenerated(versions));
+
+    return () => {
+      dispatch(installedVersionsGenerated({}));
+    };
+  }, []);
 
   return (
     <BlockContainerEditMode
@@ -129,7 +158,7 @@ export const SpecificationEdit = ({ onUpdateEnvironment }: any) => {
         >
           <StyledButtonPrimary
             sx={{ padding: "5px 60px" }}
-            onClick={() => onCancelEdition()}
+            onClick={onCancelEdition}
           >
             Cancel
           </StyledButtonPrimary>

@@ -25,6 +25,9 @@ export const RequestedPackagesTableRow = ({
 }: IRequestedPackagesTableRowProps) => {
   const dispatch = useAppDispatch();
   const { packageVersions } = useAppSelector(state => state.requestedPackages);
+  const { installedVersions } = useAppSelector(
+    state => state.environmentDetails
+  );
 
   const result = requestedPackageParser(requestedPackage);
   let { version } = result;
@@ -65,7 +68,7 @@ export const RequestedPackagesTableRow = ({
         <Typography
           sx={{ fontSize: "16px", fontWeight: 400, color: "#676666" }}
         >
-          {version}
+          {installedVersions[name]}
         </Typography>
       </StyledRequestedPackagesTableCell>
       <StyledRequestedPackagesTableCell align="left">
