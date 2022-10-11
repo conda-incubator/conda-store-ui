@@ -30,24 +30,12 @@ export const SpecificationEdit = ({ onUpdateEnvironment }: any) => {
   const dispatch = useAppDispatch();
   const [show, setShow] = useState(false);
   const [code, setCode] = useState({});
-  // const [newChannels, setNewChannels] = useState(channels);
   const initialChannels = useRef(cloneDeep(channels));
-  // const [newPackages, setNewPackages] = useState(requestedPackages);
   const initialPackages = useRef(cloneDeep(requestedPackages));
-
-  // const onUpdatePackages = (packages: string[]) => {
-  //   dispatch(updatePackages(packages));
-  //   setNewPackages(packages);
-  // };
 
   const onUpdateChannels = (channels: string[]) => {
     dispatch(updateChannels(channels));
   };
-
-  // const onUpdateEditor = ({ channels, dependencies }: any) => {
-  //   setNewChannels(channels);
-  //   setNewPackages(dependencies);
-  // };
 
   const onToggleEditorView = (value: boolean) => {
     setShow(value);
@@ -89,10 +77,6 @@ export const SpecificationEdit = ({ onUpdateEnvironment }: any) => {
     }
   }, [channels, requestedPackages]);
 
-  // useEffect(() => {
-  //   setNewPackages(requestedPackages);
-  // }, [requestedPackages]);
-
   return (
     <BlockContainerEditMode
       title="Specification"
@@ -105,10 +89,7 @@ export const SpecificationEdit = ({ onUpdateEnvironment }: any) => {
         ) : (
           <>
             <Box sx={{ marginBottom: "30px" }}>
-              <RequestedPackagesEdit
-                packageList={requestedPackages}
-                updatePackages={() => {}}
-              />
+              <RequestedPackagesEdit packageList={requestedPackages} />
             </Box>
             <Box sx={{ marginBottom: "30px" }}>
               <Dependencies

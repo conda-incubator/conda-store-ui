@@ -20,69 +20,31 @@ import {
   StyledEditPackagesTableCell
 } from "../../../styles";
 import { CondaSpecificationPip } from "../../../common/models";
-import { requestedPackageParser } from "../../../utils/helpers";
+import { useAppDispatch } from "../../../hooks";
+import { packageAdded } from "../requestedPackagesSlice";
 
 export interface IRequestedPackagesEditProps {
   /**
    * @param packageList list of packages that we get from the API
-   * @param updatePackages notify the parent if there are changes in packageList array.
    */
   packageList: (string | CondaSpecificationPip)[];
-  updatePackages: (packages: string[]) => void;
 }
 
 export const RequestedPackagesEdit = ({
-  packageList,
-  updatePackages
+  packageList
 }: IRequestedPackagesEditProps) => {
-  const [data, setData] = useState(packageList);
+  const dispatch = useAppDispatch();
   const [isAdding, setIsAdding] = useState(false);
   const { palette } = useTheme();
   const scrollRef = useRef<HTMLDivElement | null>(null);
 
-  const removePackage = (packageName: string) => {
-    const filteredList = (currentData: string[]) =>
-      currentData.filter(item => item !== packageName);
-
-    setData(filteredList);
-    const newArr = data.filter(item => item !== packageName) as string[];
-    updatePackages(newArr);
-  };
-
-  const addNewPackage = (packageName: string) => {
-    const newArr = [...data, packageName] as string[];
-    setData([...data, packageName]);
-    updatePackages(newArr);
-  };
-
-  const comparePackages = (
-    requestedPackage: string | CondaSpecificationPip,
-    newPackage: string,
-    newPackageName: string | CondaSpecificationPip
-  ) => {
-    const { name } = requestedPackageParser(requestedPackage as string);
-
-    if (name === newPackageName) {
-      return newPackage;
-    }
-
-    return requestedPackage;
-  };
-
-  const updatePackage = (name: string, constraint: string, version: string) => {
-    const newPackage = `${name}${constraint === "latest" ? ">=" : constraint}${
-      !version ? "" : version
-    }`;
-
-    const newArr = data
-      .filter(p => typeof p !== "object")
-      .map(p => comparePackages(p, newPackage, name)) as string[];
-    updatePackages(newArr);
+  const handleSubmit = (packageName: string) => {
+    dispatch(packageAdded(packageName));
   };
 
   const filteredPackageList = useMemo(
-    () => data.filter(item => typeof item !== "object"),
-    [data]
+    () => packageList.filter(item => typeof item !== "object"),
+    [packageList]
   );
 
   useEffect(() => {
@@ -90,10 +52,6 @@ export const RequestedPackagesEdit = ({
       scrollRef.current.scrollIntoView({ behavior: "smooth" });
     }
   }, [isAdding]);
-
-  useEffect(() => {
-    setData(packageList);
-  }, [packageList]);
 
   return (
     <Accordion
@@ -152,8 +110,6 @@ export const RequestedPackagesEdit = ({
           <TableBody>
             {filteredPackageList.map(requestedPackage => (
               <RequestedPackagesTableRow
-                onUpdate={updatePackage}
-                onRemove={removePackage}
                 key={`${requestedPackage}`}
                 requestedPackage={`${requestedPackage}`}
               />
@@ -163,7 +119,7 @@ export const RequestedPackagesEdit = ({
         <Box ref={scrollRef}>
           {isAdding && (
             <AddRequestedPackage
-              onSubmit={addNewPackage}
+              onSubmit={handleSubmit}
               onCancel={setIsAdding}
               isCreating={false}
             />

@@ -36,6 +36,24 @@ export const requestedPackagesSlice = createSlice({
       const newRequestedPackage = `${action.payload.name}==${action.payload.version}`;
 
       state.requestedPackages.push(newRequestedPackage);
+    },
+    packageUpdated: (
+      state,
+      action: PayloadAction<{ currentPackage: string; updatedPackage: string }>
+    ) => {
+      const { currentPackage, updatedPackage } = action.payload;
+
+      state.requestedPackages = state.requestedPackages.map(p =>
+        p === currentPackage ? updatedPackage : p
+      );
+    },
+    packageRemoved: (state, action: PayloadAction<string>) => {
+      state.requestedPackages = state.requestedPackages.filter(
+        p => p !== action.payload
+      );
+    },
+    packageAdded: (state, action: PayloadAction<string>) => {
+      state.requestedPackages.push(action.payload);
     }
   },
   extraReducers: builder => {
@@ -69,5 +87,11 @@ export const requestedPackagesSlice = createSlice({
   }
 });
 
-export const { packageVersionAdded, updatePackages, dependencyPromoted } =
-  requestedPackagesSlice.actions;
+export const {
+  packageVersionAdded,
+  updatePackages,
+  dependencyPromoted,
+  packageUpdated,
+  packageRemoved,
+  packageAdded
+} = requestedPackagesSlice.actions;

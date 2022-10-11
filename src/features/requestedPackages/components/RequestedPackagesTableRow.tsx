@@ -10,23 +10,20 @@ import {
 } from "../../../styles";
 import { ConstraintSelect, VersionSelect } from "../../../components";
 import { requestedPackageParser } from "../../../utils/helpers";
-import { useAppSelector } from "../../../hooks";
+import { useAppDispatch, useAppSelector } from "../../../hooks";
+import { packageRemoved, packageUpdated } from "../requestedPackagesSlice";
 
 interface IRequestedPackagesTableRowProps {
   /**
    * @param requestedPackage requested package
-   * @param onRemove handler that will run when delete icon is clicked
    */
   requestedPackage: string;
-  onRemove: (packageName: string) => void;
-  onUpdate?: (name: string, constraint: string, version: string) => void;
 }
 
 export const RequestedPackagesTableRow = ({
-  requestedPackage,
-  onRemove,
-  onUpdate = (name: string, constraint: string, version: string) => {}
+  requestedPackage
 }: IRequestedPackagesTableRowProps) => {
+  const dispatch = useAppDispatch();
   const { packageVersions } = useAppSelector(state => state.requestedPackages);
 
   const result = requestedPackageParser(requestedPackage);
@@ -38,12 +35,24 @@ export const RequestedPackagesTableRow = ({
   }
 
   const updateVersion = (value: string) => {
-    onUpdate(name, constraint, value);
+    const updatedPackage = `${name}${
+      constraint === "latest" ? ">=" : constraint
+    }${value}`;
+
+    dispatch(
+      packageUpdated({ currentPackage: requestedPackage, updatedPackage })
+    );
   };
 
   const updateConstraint = (value: string) => {
-    onUpdate(name, value, version);
+    const updatedPackage = `${name}${value}${version}`;
+
+    dispatch(
+      packageUpdated({ currentPackage: requestedPackage, updatedPackage })
+    );
   };
+
+  const handleRemove = () => dispatch(packageRemoved(requestedPackage));
 
   return (
     <TableRow>
@@ -70,10 +79,7 @@ export const RequestedPackagesTableRow = ({
             version={constraint === "latest" ? "" : version}
             name={name}
           />
-          <StyledIconButton
-            onClick={() => onRemove(requestedPackage)}
-            sx={{ marginLeft: "24px" }}
-          >
+          <StyledIconButton onClick={handleRemove} sx={{ marginLeft: "24px" }}>
             <DeleteIcon />
           </StyledIconButton>
         </Box>
