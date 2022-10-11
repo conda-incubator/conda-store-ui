@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useRef } from "react";
 import Box from "@mui/material/Box";
-import { cloneDeep } from "lodash";
+import { cloneDeep, debounce } from "lodash";
 import { stringify } from "yaml";
 
 import { BlockContainerEditMode } from "../../../../components";
@@ -17,6 +17,7 @@ import {
 import { CodeEditor } from "../../../../features/yamlEditor";
 import { useAppDispatch, useAppSelector } from "../../../../hooks";
 import { StyledButtonPrimary } from "../../../../styles";
+import { CondaSpecificationPip } from "../../../../common/models";
 
 export const SpecificationEdit = ({ onUpdateEnvironment }: any) => {
   const { channels } = useAppSelector(state => state.channels);
@@ -29,7 +30,10 @@ export const SpecificationEdit = ({ onUpdateEnvironment }: any) => {
   const hasMore = size * page <= count;
   const dispatch = useAppDispatch();
   const [show, setShow] = useState(false);
-  const [code, setCode] = useState({});
+  const [code, setCode] = useState<{
+    dependencies: (string | CondaSpecificationPip)[];
+    channels: string[];
+  }>({ dependencies: requestedPackages, channels });
   const initialChannels = useRef(cloneDeep(channels));
   const initialPackages = useRef(cloneDeep(requestedPackages));
 
@@ -37,25 +41,43 @@ export const SpecificationEdit = ({ onUpdateEnvironment }: any) => {
     dispatch(updateChannels(channels));
   };
 
+  const onUpdateEditor = debounce(
+    ({
+      channels,
+      dependencies
+    }: {
+      channels: string[];
+      dependencies: string[];
+    }) => {
+      const code = { dependencies, channels };
+
+      if (!channels || channels.length === 0) {
+        code.channels = [];
+      }
+
+      if (!dependencies || dependencies.length === 0) {
+        code.dependencies = [];
+      }
+
+      setCode(code);
+    },
+    300
+  );
+
   const onToggleEditorView = (value: boolean) => {
+    if (show) {
+      dispatch(updatePackages(code.dependencies));
+      dispatch(updateChannels(code.channels));
+    }
     setShow(value);
-    // if (!value) {
-    //   // If user want to switch the yaml editor view, let's send this info to the component
-    //   dispatch(updatePackages(newPackages));
-    // }
-    // dispatch(updateChannels(newChannels));
   };
 
   const onEditEnvironment = () => {
-    // if (show) {
-    //   // If user is using the yaml editor, before make the request update the store
-    //   dispatch(updateChannels(newChannels));
-    //   dispatch(updatePackages(newPackages));
-    // }
-    // onUpdateEnvironment({
-    //   channels: newChannels,
-    //   dependencies: newPackages
-    // });
+    const envContent = show
+      ? code
+      : { dependencies: requestedPackages, channels };
+
+    onUpdateEnvironment(envContent);
   };
 
   const onCancelEdition = () => {
@@ -63,19 +85,6 @@ export const SpecificationEdit = ({ onUpdateEnvironment }: any) => {
     dispatch(updatePackages(initialPackages.current));
     dispatch(updateChannels(initialChannels.current));
   };
-
-  useEffect(() => {
-    if (channels.length) {
-      setCode({
-        channels,
-        dependencies: requestedPackages
-      });
-    } else {
-      setCode({
-        dependencies: requestedPackages
-      });
-    }
-  }, [channels, requestedPackages]);
 
   return (
     <BlockContainerEditMode
@@ -85,7 +94,10 @@ export const SpecificationEdit = ({ onUpdateEnvironment }: any) => {
     >
       <Box sx={{ padding: "13px 19px" }}>
         {show ? (
-          <CodeEditor code={stringify(code)} onChangeEditor={() => {}} />
+          <CodeEditor
+            code={stringify({ dependencies: requestedPackages, channels })}
+            onChangeEditor={onUpdateEditor}
+          />
         ) : (
           <>
             <Box sx={{ marginBottom: "30px" }}>
@@ -123,7 +135,7 @@ export const SpecificationEdit = ({ onUpdateEnvironment }: any) => {
           </StyledButtonPrimary>
           <StyledButtonPrimary
             sx={{ padding: "5px 60px" }}
-            onClick={() => onEditEnvironment()}
+            onClick={onEditEnvironment}
           >
             Edit
           </StyledButtonPrimary>

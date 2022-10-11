@@ -1,6 +1,6 @@
+import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import Alert from "@mui/material/Alert";
-import React, { useEffect, useState } from "react";
 import { stringify } from "yaml";
 
 import { EnvironmentDetailsHeader } from "./EnvironmentDetailsHeader";
@@ -19,9 +19,17 @@ import {
 } from "../../../features/environmentDetails";
 import { useAppDispatch, useAppSelector } from "../../../hooks";
 import artifactList from "../../../utils/helpers/artifact";
+import { CondaSpecificationPip } from "../../../common/models";
 
 export interface IEnvDetails {
   environmentNotification: (notification: any) => void;
+}
+
+interface IUpdateEnvironmentArgs {
+  code: {
+    dependencies: (string | CondaSpecificationPip)[];
+    channels: string[];
+  };
 }
 
 export const EnvironmentDetails = ({
@@ -50,7 +58,7 @@ export const EnvironmentDetails = ({
     });
   }
 
-  const updateEnvironment = async (code: any) => {
+  const updateEnvironment = async (code: IUpdateEnvironmentArgs) => {
     const namespace = selectedEnvironment?.namespace.name;
 
     const environmentInfo = {
