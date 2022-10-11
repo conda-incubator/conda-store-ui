@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import Alert from "@mui/material/Alert";
 import { stringify } from "yaml";
-
 import {
   EnvironmentDetailsHeader,
   modeChanged,
@@ -24,13 +23,13 @@ export interface IEnvCreate {
 }
 
 interface ICreateEnvironmentArgs {
-  code: { channels: string[]; dependencies: string[] } | null;
+  code: { channels: string[]; dependencies: string[] };
 }
 
 export const EnvironmentCreate = ({ environmentNotification }: IEnvCreate) => {
   const dispatch = useAppDispatch();
   const { mode } = useAppSelector(state => state.environmentDetails);
-  const { name, description, channels, requestedPackages } = useAppSelector(
+  const { name, description } = useAppSelector(
     state => state.environmentCreate
   );
   const { newEnvironment } = useAppSelector(state => state.tabs);
@@ -49,13 +48,11 @@ export const EnvironmentCreate = ({ environmentNotification }: IEnvCreate) => {
   }, 300);
 
   const createEnvironment = async (code: ICreateEnvironmentArgs) => {
-    const envCode = code ? code : { channels, dependencies: requestedPackages };
-
     const namespace = newEnvironment?.namespace;
     const environmentInfo = {
       namespace,
       specification: `${stringify(
-        envCode
+        code
       )}\ndescription: ${description}\nname: ${name}\nprefix: null`
     };
 

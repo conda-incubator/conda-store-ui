@@ -67,7 +67,9 @@ export const SpecificationCreate = ({ onCreateEnvironment }: any) => {
   };
 
   const handleSubmit = () => {
-    const code = show ? editorContent : null;
+    const code = show
+      ? editorContent
+      : { dependencies: requestedPackages, channels };
 
     onCreateEnvironment(code);
   };

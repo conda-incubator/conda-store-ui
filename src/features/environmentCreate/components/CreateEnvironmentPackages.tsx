@@ -24,6 +24,9 @@ import { requestedPackagesChanged } from "../environmentCreateSlice";
 import { CreateEnvironmentPackagesTableRow } from "./CreateEnvironmentPackagesTableRow";
 
 interface ICreateEnvironmentPackagesProps {
+  /**
+   * @param requestedPackages list of created packages
+   */
   requestedPackages: string[];
 }
 
