@@ -13,7 +13,7 @@ export const environmentsApiSlice = apiSlice.injectEndpoints({
     getEnviroment: builder.query<IApiResponse<Build>, any>({
       query: env => `/api/v1/environment/${env.namespace.name}/${env.name}`
     }),
-    getEnviromentBuilds: builder.query<IApiResponse<Build[]>, any>({
+    getEnviromentBuilds: builder.query<IApiResponse<any>, any>({
       query: env =>
         `/api/v1/build/?namespace=${env.namespace.name}&name=${env.name}&order=desc&sort_by=scheduled_on`
     })
@@ -24,5 +24,6 @@ export const {
   useGetEnviromentsQuery,
   useGetEnviromentQuery,
   useGetEnviromentBuildsQuery,
+  useLazyGetEnviromentBuildsQuery,
   useGetEnviromentBuildQuery
 } = environmentsApiSlice;

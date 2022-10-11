@@ -20,7 +20,14 @@ import { CondaSpecificationPip } from "../../../../common/models";
 import { requestedPackageParser } from "../../../../utils/helpers";
 import { installedVersionsGenerated } from "../../environmentDetailsSlice";
 
-export const SpecificationEdit = ({ onUpdateEnvironment }: any) => {
+interface ISpecificationEdit {
+  descriptionUpdated: boolean;
+  onUpdateEnvironment: (specification: any) => void;
+}
+export const SpecificationEdit = ({
+  descriptionUpdated,
+  onUpdateEnvironment
+}: ISpecificationEdit) => {
   const { channels } = useAppSelector(state => state.channels);
   const { requestedPackages, packageVersions } = useAppSelector(
     state => state.requestedPackages
@@ -37,6 +44,7 @@ export const SpecificationEdit = ({ onUpdateEnvironment }: any) => {
   }>({ dependencies: requestedPackages, channels });
   const initialChannels = useRef(cloneDeep(channels));
   const initialPackages = useRef(cloneDeep(requestedPackages));
+  const [envIsUpdated, setEnvIsUpdated] = useState(false);
 
   const onUpdateChannels = useCallback((channels: string[]) => {
     dispatch(updateChannels(channels));
@@ -82,6 +90,7 @@ export const SpecificationEdit = ({ onUpdateEnvironment }: any) => {
   };
 
   const onCancelEdition = () => {
+    setEnvIsUpdated(false);
     dispatch(modeChanged(EnvironmentDetailsModes.READ));
     dispatch(updatePackages(initialPackages.current));
     dispatch(updateChannels(initialChannels.current));
@@ -110,6 +119,18 @@ export const SpecificationEdit = ({ onUpdateEnvironment }: any) => {
       dispatch(installedVersionsGenerated({}));
     };
   }, []);
+
+  useEffect(() => {
+    if (descriptionUpdated) {
+      setEnvIsUpdated(true);
+    }
+    if (channels.length !== initialChannels.current.length) {
+      setEnvIsUpdated(true);
+    }
+    if (requestedPackages.length !== initialPackages.current.length) {
+      setEnvIsUpdated(true);
+    }
+  }, [channels, requestedPackages, descriptionUpdated]);
 
   return (
     <BlockContainerEditMode
@@ -161,8 +182,9 @@ export const SpecificationEdit = ({ onUpdateEnvironment }: any) => {
           <StyledButtonPrimary
             sx={{ padding: "5px 60px" }}
             onClick={onEditEnvironment}
+            disabled={!envIsUpdated}
           >
-            Edit
+            Save
           </StyledButtonPrimary>
         </Box>
       </Box>

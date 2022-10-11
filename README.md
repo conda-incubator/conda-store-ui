@@ -4,27 +4,23 @@ React-based UI for [conda store](https://github.com/Quansight/conda-store)
 
 ## How to run
 
-_This procedure will be updated once we can leverage the login capability of conda-store._  
-_For the moment, we need to run conda-store separately and create a token._
-
-- First, run conda-store separately :
-
+Checkout the project and start the `docker-compose` stack :
 ```sh
 git clone https://github.com/Quansight/conda-store.git
 cd conda-store 
 docker-compose up --build -d
 ```
 
-- once running, visit [http://localhost:5000/conda-store/](http://localhost:5000/conda-store/), and log in with the default credentials `admin/password`
+- once running, you can log in with the default credentials `admin/password`
 
-- click on `User`, then `create token`, and copy it 
+## How to run locally - dev mode
 
-- create your .env for for `conda-store-ui` :
+Checkout the project and start the `docker-compose-dev` stack :
+```sh
+git clone https://github.com/Quansight/conda-store.git
+cd conda-store 
+docker-compose -f docker-compose-dev.yml up --build -d      
 ```
-cd conda-store-ui # change according to where your directory is located
-cp .env.exemple .env
-```
-and then **edit it** to change the `REACT_APP_AUTH_TOKEN` line with the token you created at the previous step.
 
 Then, run the UI :
 
@@ -41,6 +37,7 @@ yarn run start --port 80
 Once you see the message `webpack 5.73.0 compiled successfully in ... ms` appearing, you can use the UI at url [http://localhost](http://localhost)
 
 
+
 ## Run unit testing using Jest
 
 ```
@@ -52,6 +49,19 @@ yarn report test/AddChannel.test.tsx     // run a single test instead of all
 ## ENV file setup
 
 In order to setup the environment variables correctly, you should create a .env file and inside copy the contents of the .env.example file.
-REACT_APP_API_URL - base API url that will be used when creating RTK Query queries
-REACT_APP_AUTH_TOKEN - authentication token required for access to certain endpoints
-REACT_APP_AUTH_METHOD - see https://github.com/Quansight/conda-store-ui/issues/53
+
+- `REACT_APP_API_URL` - base API url that will be used when creating RTK Query queries
+- `REACT_APP_AUTH_METHOD` - method of authentication.
+  - value `cookie` lets users authenticate with a login process. **This is the prefered option. conda-store API and conda-store UI must both be under the same domain.**
+  - value `token` lets you set up a token in conda-store, and use conda-store authenticated as the user who created the token.
+- `REACT_APP_AUTH_METHOD` - URL endpoint to authenticate. Check the example below.
+- `REACT_APP_AUTH_TOKEN` - authentication token required when the auth method is `token`
+
+
+Here is an example if you run conda-store locally :
+```
+REACT_APP_API_URL=http://localhost:5000/conda-store
+REACT_APP_AUTH_METHOD=cookie
+REACT_APP_LOGIN_PAGE_URL=http://localhost:5000/conda-store/login?next=
+REACT_APP_AUTH_TOKEN=
+```

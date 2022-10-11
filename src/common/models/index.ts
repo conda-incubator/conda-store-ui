@@ -6,3 +6,4 @@ export * from "./Build";
 export * from "./Artifact";
 export * from "./BuildPackage";
 export * from "./BuildArtifact";
+export * from "./Namespace";

@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import Alert from "@mui/material/Alert";
 import { stringify } from "yaml";
-
 import { EnvironmentDetailsHeader } from "./EnvironmentDetailsHeader";
 import { SpecificationEdit, SpecificationReadOnly } from "./Specification";
 import { useGetBuildQuery } from "../environmentDetailsApiSlice";
@@ -10,7 +9,7 @@ import { useGetBuildPackagesQuery } from "../../../features/dependencies";
 import { ArtifactList } from "../../../features/artifacts";
 import {
   EnvMetadata,
-  useGetEnviromentBuildsQuery
+  useLazyGetEnviromentBuildsQuery
 } from "../../../features/metadata";
 import {
   EnvironmentDetailsModes,
@@ -21,7 +20,7 @@ import { useAppDispatch, useAppSelector } from "../../../hooks";
 import artifactList from "../../../utils/helpers/artifact";
 import { CondaSpecificationPip } from "../../../common/models";
 
-export interface IEnvDetails {
+interface IEnvDetails {
   environmentNotification: (notification: any) => void;
 }
 
@@ -39,15 +38,20 @@ export const EnvironmentDetails = ({
   const { mode } = useAppSelector(state => state.environmentDetails);
   const { page } = useAppSelector(state => state.dependencies);
   const { selectedEnvironment } = useAppSelector(state => state.tabs);
+  const [enviromentBuilds, setEnviromentBuilds] = useState<any>([]);
   const [name, setName] = useState(selectedEnvironment?.name || "");
+  const [createOrUpdate] = useCreateOrUpdateMutation();
+  const [descriptionIsUpdated, setDescriptionIsUpdated] = useState(false);
   const [description, setDescription] = useState(
     selectedEnvironment ? selectedEnvironment.description : undefined
   );
-  const [createOrUpdate] = useCreateOrUpdateMutation();
+  const [envIsUpdated, setEnvIsUpdated] = useState(false);
   const [error, setError] = useState({
     message: "",
     visible: false
   });
+
+  const [triggerQuery] = useLazyGetEnviromentBuildsQuery();
 
   if (selectedEnvironment) {
     useGetBuildQuery(selectedEnvironment.current_build_id);
@@ -57,6 +61,11 @@ export const EnvironmentDetails = ({
       size: 100
     });
   }
+
+  const updateDescription = (description: string) => {
+    setDescription(description);
+    setDescriptionIsUpdated(true);
+  };
 
   const updateEnvironment = async (code: IUpdateEnvironmentArgs) => {
     const namespace = selectedEnvironment?.namespace.name;
@@ -79,6 +88,7 @@ export const EnvironmentDetails = ({
         show: true,
         description: `${name} environment has been updated`
       });
+      setEnvIsUpdated(true);
     } catch (e) {
       setError({
         message: e?.data?.message ?? e.status,
@@ -90,13 +100,13 @@ export const EnvironmentDetails = ({
   useEffect(() => {
     setName(selectedEnvironment?.name || "");
     setDescription(selectedEnvironment?.description || "");
-  }, [selectedEnvironment]);
+    setDescriptionIsUpdated(false);
 
-  let enviromentBuilds = undefined;
-  if (selectedEnvironment?.current_build_id) {
-    const { data } = useGetEnviromentBuildsQuery(selectedEnvironment);
-    enviromentBuilds = data;
-  }
+    (async () => {
+      const { data } = await triggerQuery(selectedEnvironment);
+      setEnviromentBuilds(data);
+    })();
+  }, [selectedEnvironment, envIsUpdated]);
 
   return (
     <Box sx={{ padding: "14px 12px" }}>
@@ -117,13 +127,16 @@ export const EnvironmentDetails = ({
           description={description}
           current_build_id={selectedEnvironment?.current_build_id || 0}
           mode={mode}
-          onUpdateDescription={setDescription}
+          onUpdateDescription={updateDescription}
         />
       </Box>
       <Box sx={{ marginBottom: "30px" }}>
         {mode === "read-only" && <SpecificationReadOnly />}
         {mode === "edit" && (
-          <SpecificationEdit onUpdateEnvironment={updateEnvironment} />
+          <SpecificationEdit
+            descriptionUpdated={descriptionIsUpdated}
+            onUpdateEnvironment={updateEnvironment}
+          />
         )}
       </Box>
       {mode === "read-only" && (
