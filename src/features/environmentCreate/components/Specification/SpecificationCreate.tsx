@@ -59,6 +59,8 @@ export const SpecificationCreate = ({ onCreateEnvironment }: any) => {
           dependencies: editorContent.dependencies
         })
       );
+    } else {
+      setEditorContent({ dependencies: requestedPackages, channels });
     }
 
     setShow(value);

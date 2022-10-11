@@ -23,7 +23,7 @@ import { reorderArray } from "../../../utils/helpers";
 export interface IChannelsEditProps {
   /**
    * @param channelsList list of channels
-   * @param updateChannels notify the parent if there are changes in channelsList array.
+   * @param updateChannels handler that will update the channels list
    */
   channelsList: string[];
   updateChannels: (channels: string[]) => void;
@@ -36,29 +36,24 @@ export const ChannelsEdit = ({
   const { palette } = useTheme();
   const scrollRef = useRef<HTMLDivElement | null>(null);
 
-  // const [list, setList] = useState(channelsList);
   const [isAdding, setIsAdding] = useState(false);
 
   const listLength = channelsList.length;
 
   const addNewChannel = (channelName: string) => {
-    // setList([...list, channelName]);
     updateChannels([...channelsList, channelName]);
   };
 
   const removeChannel = (channelName: string) => {
-    // const filteredList = (currentData: string[]) =>
-    //   currentData.filter(item => item !== channelName);
-
-    // setList(filteredList);
     updateChannels(channelsList.filter(item => item !== channelName));
   };
 
   const editChannel = (channelName: string, newChannelName: string) => {
-    // const newChannelsList = channelsList.map(channel =>
-    //   channel === channelName ? newChannelName : channel
-    // );
-    // setList(newChannelsList);
+    const newChannelsList = channelsList.map(channel =>
+      channel === channelName ? newChannelName : channel
+    );
+
+    updateChannels(newChannelsList);
   };
 
   const onDragEnd = (result: DropResult) => {
@@ -73,7 +68,6 @@ export const ChannelsEdit = ({
       endIndex: destination.index
     });
 
-    // setList(reorderedArray);
     updateChannels(reorderedArray);
   };
 
