@@ -1,5 +1,5 @@
+import React, { useState, useEffect, useRef } from "react";
 import Box from "@mui/material/Box";
-import React, { useState, useEffect } from "react";
 import { cloneDeep } from "lodash";
 import { stringify } from "yaml";
 
@@ -30,51 +30,50 @@ export const SpecificationEdit = ({ onUpdateEnvironment }: any) => {
   const dispatch = useAppDispatch();
   const [show, setShow] = useState(false);
   const [code, setCode] = useState({});
-  const [newChannels, setNewChannels] = useState(channels);
-  const [backupChannels] = useState(cloneDeep(channels));
-  const [newPackages, setNewPackages] = useState(requestedPackages);
-  const [backupPackages] = useState(cloneDeep(requestedPackages));
+  // const [newChannels, setNewChannels] = useState(channels);
+  const initialChannels = useRef(cloneDeep(channels));
+  // const [newPackages, setNewPackages] = useState(requestedPackages);
+  const initialPackages = useRef(cloneDeep(requestedPackages));
 
-  const onUpdatePackages = (packages: string[]) => {
-    dispatch(updatePackages(packages));
-    setNewPackages(packages);
-  };
+  // const onUpdatePackages = (packages: string[]) => {
+  //   dispatch(updatePackages(packages));
+  //   setNewPackages(packages);
+  // };
 
   const onUpdateChannels = (channels: string[]) => {
-    setNewChannels(channels);
+    dispatch(updateChannels(channels));
   };
 
-  const onUpdateEditor = ({ channels, dependencies }: any) => {
-    setNewChannels(channels);
-    setNewPackages(dependencies);
-  };
+  // const onUpdateEditor = ({ channels, dependencies }: any) => {
+  //   setNewChannels(channels);
+  //   setNewPackages(dependencies);
+  // };
 
   const onToggleEditorView = (value: boolean) => {
     setShow(value);
-    if (!value) {
-      // If user want to switch the yaml editor view, let's send this info to the component
-      dispatch(updatePackages(newPackages));
-    }
-    dispatch(updateChannels(newChannels));
+    // if (!value) {
+    //   // If user want to switch the yaml editor view, let's send this info to the component
+    //   dispatch(updatePackages(newPackages));
+    // }
+    // dispatch(updateChannels(newChannels));
   };
 
   const onEditEnvironment = () => {
-    if (show) {
-      // If user is using the yaml editor, before make the request update the store
-      dispatch(updateChannels(newChannels));
-      dispatch(updatePackages(newPackages));
-    }
-
-    onUpdateEnvironment({
-      channels: newChannels,
-      dependencies: newPackages
-    });
+    // if (show) {
+    //   // If user is using the yaml editor, before make the request update the store
+    //   dispatch(updateChannels(newChannels));
+    //   dispatch(updatePackages(newPackages));
+    // }
+    // onUpdateEnvironment({
+    //   channels: newChannels,
+    //   dependencies: newPackages
+    // });
   };
 
   const onCancelEdition = () => {
     dispatch(modeChanged(EnvironmentDetailsModes.READ));
-    dispatch(updatePackages(backupPackages));
-    dispatch(updateChannels(backupChannels));
+    dispatch(updatePackages(initialPackages.current));
+    dispatch(updateChannels(initialChannels.current));
   };
 
   useEffect(() => {
@@ -90,9 +89,9 @@ export const SpecificationEdit = ({ onUpdateEnvironment }: any) => {
     }
   }, [channels, requestedPackages]);
 
-  useEffect(() => {
-    setNewPackages(requestedPackages);
-  }, [requestedPackages]);
+  // useEffect(() => {
+  //   setNewPackages(requestedPackages);
+  // }, [requestedPackages]);
 
   return (
     <BlockContainerEditMode
@@ -102,13 +101,13 @@ export const SpecificationEdit = ({ onUpdateEnvironment }: any) => {
     >
       <Box sx={{ padding: "13px 19px" }}>
         {show ? (
-          <CodeEditor code={stringify(code)} onChangeEditor={onUpdateEditor} />
+          <CodeEditor code={stringify(code)} onChangeEditor={() => {}} />
         ) : (
           <>
             <Box sx={{ marginBottom: "30px" }}>
               <RequestedPackagesEdit
                 packageList={requestedPackages}
-                updatePackages={onUpdatePackages}
+                updatePackages={() => {}}
               />
             </Box>
             <Box sx={{ marginBottom: "30px" }}>
