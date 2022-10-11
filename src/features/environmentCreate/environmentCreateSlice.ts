@@ -51,6 +51,12 @@ export const environmentCreateSlice = createSlice({
     ) => {
       state.requestedPackages = action.payload.dependencies;
       state.channels = action.payload.channels;
+    },
+    environmentCreated: state => {
+      state.name = "";
+      state.description = "";
+      state.channels = [];
+      state.requestedPackages = [];
     }
   }
 });
@@ -62,5 +68,6 @@ export const {
   requestedPackagesChanged,
   requestedPackageRemoved,
   requestedPackageUpdated,
-  editorCodeUpdated
+  editorCodeUpdated,
+  environmentCreated
 } = environmentCreateSlice.actions;

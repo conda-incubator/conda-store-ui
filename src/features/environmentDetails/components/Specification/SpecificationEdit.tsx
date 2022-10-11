@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, useCallback } from "react";
 import Box from "@mui/material/Box";
-import { cloneDeep, debounce } from "lodash";
+import { cloneDeep } from "lodash";
 import { stringify } from "yaml";
 import { BlockContainerEditMode } from "../../../../components";
 import { ChannelsEdit, updateChannels } from "../../../../features/channels";
@@ -42,28 +42,25 @@ export const SpecificationEdit = ({ onUpdateEnvironment }: any) => {
     dispatch(updateChannels(channels));
   }, []);
 
-  const onUpdateEditor = debounce(
-    ({
-      channels,
-      dependencies
-    }: {
-      channels: string[];
-      dependencies: string[];
-    }) => {
-      const code = { dependencies, channels };
+  const onUpdateEditor = ({
+    channels,
+    dependencies
+  }: {
+    channels: string[];
+    dependencies: string[];
+  }) => {
+    const code = { dependencies, channels };
 
-      if (!channels || channels.length === 0) {
-        code.channels = [];
-      }
+    if (!channels || channels.length === 0) {
+      code.channels = [];
+    }
 
-      if (!dependencies || dependencies.length === 0) {
-        code.dependencies = [];
-      }
+    if (!dependencies || dependencies.length === 0) {
+      code.dependencies = [];
+    }
 
-      setCode(code);
-    },
-    300
-  );
+    setCode(code);
+  };
 
   const onToggleEditorView = (value: boolean) => {
     if (show) {

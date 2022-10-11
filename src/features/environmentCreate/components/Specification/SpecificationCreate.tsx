@@ -11,7 +11,6 @@ import {
   channelsChanged,
   editorCodeUpdated
 } from "../../environmentCreateSlice";
-import { debounce } from "lodash";
 
 export const SpecificationCreate = ({ onCreateEnvironment }: any) => {
   const dispatch = useAppDispatch();
@@ -28,28 +27,25 @@ export const SpecificationCreate = ({ onCreateEnvironment }: any) => {
     dispatch(channelsChanged(channels));
   }, []);
 
-  const onUpdateEditor = debounce(
-    ({
-      channels,
-      dependencies
-    }: {
-      channels: string[];
-      dependencies: string[];
-    }) => {
-      const code = { channels, dependencies };
+  const onUpdateEditor = ({
+    channels,
+    dependencies
+  }: {
+    channels: string[];
+    dependencies: string[];
+  }) => {
+    const code = { channels, dependencies };
 
-      if (!channels || channels.length === 0) {
-        code.channels = [];
-      }
+    if (!channels || channels.length === 0) {
+      code.channels = [];
+    }
 
-      if (!dependencies || dependencies.length === 0) {
-        code.dependencies = [];
-      }
+    if (!dependencies || dependencies.length === 0) {
+      code.dependencies = [];
+    }
 
-      setEditorContent(code);
-    },
-    300
-  );
+    setEditorContent(code);
+  };
 
   const onToggleEditorView = (value: boolean) => {
     if (show) {
