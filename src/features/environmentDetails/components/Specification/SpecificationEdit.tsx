@@ -120,7 +120,7 @@ export const SpecificationEdit = ({ onUpdateEnvironment }: any) => {
       <Box sx={{ padding: "13px 19px" }}>
         {show ? (
           <CodeEditor
-            code={stringify({ dependencies: requestedPackages, channels })}
+            code={stringify({ channels, dependencies: requestedPackages })}
             onChangeEditor={onUpdateEditor}
           />
         ) : (

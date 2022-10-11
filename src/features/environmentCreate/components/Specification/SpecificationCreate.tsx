@@ -80,8 +80,8 @@ export const SpecificationCreate = ({ onCreateEnvironment }: any) => {
         {show ? (
           <CodeEditor
             code={stringify({
-              dependencies: requestedPackages,
-              channels
+              channels,
+              dependencies: requestedPackages
             })}
             onChangeEditor={onUpdateEditor}
           />
