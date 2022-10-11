@@ -10,7 +10,7 @@ import {
 import useTheme from "@mui/material/styles/useTheme";
 import { Box } from "@mui/system";
 import React, { useRef, useState } from "react";
-import { useAppDispatch, useAppSelector } from "../../../hooks";
+import { useAppDispatch } from "../../../hooks";
 import {
   StyledAccordionDetails,
   StyledAccordionExpandIcon,
@@ -23,11 +23,14 @@ import { AddRequestedPackage } from "../../requestedPackages";
 import { requestedPackagesChanged } from "../environmentCreateSlice";
 import { CreateEnvironmentPackagesTableRow } from "./CreateEnvironmentPackagesTableRow";
 
-export const CreateEnvironmentPackages = () => {
+interface ICreateEnvironmentPackagesProps {
+  requestedPackages: string[];
+}
+
+export const CreateEnvironmentPackages = ({
+  requestedPackages
+}: ICreateEnvironmentPackagesProps) => {
   const dispatch = useAppDispatch();
-  const { requestedPackages } = useAppSelector(
-    state => state.environmentCreate
-  );
   const [isAdding, setIsAdding] = useState(false);
   const scrollRef = useRef<HTMLDivElement | null>(null);
   const { palette } = useTheme();

@@ -1,8 +1,7 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import Box from "@mui/material/Box";
 import { cloneDeep, debounce } from "lodash";
 import { stringify } from "yaml";
-
 import { BlockContainerEditMode } from "../../../../components";
 import { ChannelsEdit, updateChannels } from "../../../../features/channels";
 import { Dependencies, pageChanged } from "../../../../features/dependencies";
@@ -39,9 +38,9 @@ export const SpecificationEdit = ({ onUpdateEnvironment }: any) => {
   const initialChannels = useRef(cloneDeep(channels));
   const initialPackages = useRef(cloneDeep(requestedPackages));
 
-  const onUpdateChannels = (channels: string[]) => {
+  const onUpdateChannels = useCallback((channels: string[]) => {
     dispatch(updateChannels(channels));
-  };
+  }, []);
 
   const onUpdateEditor = debounce(
     ({

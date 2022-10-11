@@ -24,12 +24,9 @@ export const SpecificationCreate = ({ onCreateEnvironment }: any) => {
     dependencies: string[];
   }>({ channels: [], dependencies: [] });
 
-  const onUpdateChannels = useCallback(
-    (channels: string[]) => {
-      dispatch(channelsChanged(channels));
-    },
-    [channels]
-  );
+  const onUpdateChannels = useCallback((channels: string[]) => {
+    dispatch(channelsChanged(channels));
+  }, []);
 
   const onUpdateEditor = debounce(
     ({
@@ -93,7 +90,9 @@ export const SpecificationCreate = ({ onCreateEnvironment }: any) => {
         ) : (
           <>
             <Box sx={{ marginBottom: "30px" }}>
-              <CreateEnvironmentPackages />
+              <CreateEnvironmentPackages
+                requestedPackages={requestedPackages}
+              />
             </Box>
             <Box sx={{ margiBottom: "30px" }}>
               <ChannelsEdit
