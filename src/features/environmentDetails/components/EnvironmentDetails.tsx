@@ -10,7 +10,7 @@ import { useGetBuildPackagesQuery } from "../../../features/dependencies";
 import { ArtifactList } from "../../../features/artifacts";
 import {
   EnvMetadata,
-  useGetEnviromentBuildsQuery
+  useLazyGetEnviromentBuildsQuery
 } from "../../../features/metadata";
 import {
   EnvironmentDetailsModes,
@@ -31,16 +31,20 @@ export const EnvironmentDetails = ({
   const { mode } = useAppSelector(state => state.environmentDetails);
   const { page } = useAppSelector(state => state.dependencies);
   const { selectedEnvironment } = useAppSelector(state => state.tabs);
+  const [enviromentBuilds, setEnviromentBuilds] = useState<any>([]);
   const [name, setName] = useState(selectedEnvironment?.name || "");
   const [createOrUpdate] = useCreateOrUpdateMutation();
   const [descriptionIsUpdated, setDescriptionIsUpdated] = useState(false);
   const [description, setDescription] = useState(
     selectedEnvironment ? selectedEnvironment.description : undefined
   );
+  const [envIsUpdated, setEnvIsUpdated] = useState(false);
   const [error, setError] = useState({
     message: "",
     visible: false
   });
+
+  const [triggerQuery] = useLazyGetEnviromentBuildsQuery();
 
   if (selectedEnvironment) {
     useGetBuildQuery(selectedEnvironment.current_build_id);
@@ -77,6 +81,7 @@ export const EnvironmentDetails = ({
         show: true,
         description: `${name} environment has been updated`
       });
+      setEnvIsUpdated(true);
     } catch (e) {
       setError({
         message: e?.data?.message ?? e.status,
@@ -89,13 +94,12 @@ export const EnvironmentDetails = ({
     setName(selectedEnvironment?.name || "");
     setDescription(selectedEnvironment?.description || "");
     setDescriptionIsUpdated(false);
-  }, [selectedEnvironment]);
 
-  let enviromentBuilds = undefined;
-  if (selectedEnvironment?.current_build_id) {
-    const { data } = useGetEnviromentBuildsQuery(selectedEnvironment);
-    enviromentBuilds = data;
-  }
+    (async () => {
+      const { data } = await triggerQuery(selectedEnvironment);
+      setEnviromentBuilds(data);
+    })();
+  }, [selectedEnvironment, envIsUpdated]);
 
   return (
     <Box sx={{ padding: "14px 12px" }}>

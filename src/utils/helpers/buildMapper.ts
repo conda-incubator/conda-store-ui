@@ -9,18 +9,33 @@ const STATUS_OPTIONS: any = {
   BUILDING: "Building"
 };
 
+const isBuilding = (status: string) => {
+  const BUILD_STATUS = ["BUILDING", "QUEUED"];
+  return BUILD_STATUS.includes(status);
+};
+
 export const buildMapper = (
   { data }: IApiResponse<Build[]>,
   currentBuildId: number
 ) => {
-  return data.map(({ id, status, ended_on }: Build) => {
-    const date = format(new Date(ended_on), "MMMM do, yyyy - h:mm");
+  return data.map(({ id, status, ended_on, scheduled_on }: Build) => {
+    const dateDetails = isBuilding(status) ? scheduled_on : ended_on;
+    const date = format(new Date(dateDetails), "MMMM do, yyyy - h:mm");
+
+    if (isBuilding(status)) {
+      return {
+        id,
+        name: `${date} - Building`
+      };
+    }
+
     if (id === currentBuildId) {
       return {
         id,
         name: `${date} - Active`
       };
     }
+
     return {
       id,
       name: `${date} - ${STATUS_OPTIONS[status]}`

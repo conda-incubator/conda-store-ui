@@ -9,8 +9,10 @@ interface IData {
   data: IApiResponse<IBuild[]>;
   currentBuildId: number;
 }
+
 export const EnvBuilds = ({ data, currentBuildId }: IData) => {
-  const builds = data !== undefined ? buildMapper(data, currentBuildId) : [];
+  const { data: envData = [] } = data;
+  const builds = envData.length ? buildMapper(data, currentBuildId) : [];
   return (
     <>
       <StyledMetadataItem>
