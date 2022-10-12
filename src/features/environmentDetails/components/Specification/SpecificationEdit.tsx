@@ -35,6 +35,9 @@ export const SpecificationEdit = ({
   const { dependencies, size, count, page } = useAppSelector(
     state => state.dependencies
   );
+  const { updatedConstraints } = useAppSelector(
+    state => state.environmentDetails
+  );
   const hasMore = size * page <= count;
   const dispatch = useAppDispatch();
   const [show, setShow] = useState(false);
@@ -92,7 +95,23 @@ export const SpecificationEdit = ({
       dispatch(updatePackages(code.dependencies));
       dispatch(updateChannels(code.channels));
     } else {
-      setCode({ dependencies: requestedPackages, channels });
+      const updatedPackageList = requestedPackages.map(p => {
+        if (typeof p === "object") {
+          return p;
+        }
+
+        const { name } = requestedPackageParser(p as string);
+        const updatedConstraint = updatedConstraints[name];
+
+        if (updatedConstraint) {
+          return `${name}${updatedConstraint.range}${updatedConstraint.version}`;
+        }
+
+        return p;
+      });
+
+      dispatch(updatePackages(updatedPackageList));
+      setCode({ dependencies: updatedPackageList, channels });
     }
 
     setShow(value);

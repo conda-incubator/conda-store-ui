@@ -11,7 +11,8 @@ import {
 import { ConstraintSelect, VersionSelect } from "../../../components";
 import { requestedPackageParser } from "../../../utils/helpers";
 import { useAppDispatch, useAppSelector } from "../../../hooks";
-import { packageRemoved, packageUpdated } from "../requestedPackagesSlice";
+import { packageRemoved } from "../requestedPackagesSlice";
+import { constraintUpdated } from "../../environmentDetails";
 
 interface IRequestedPackagesTableRowProps {
   /**
@@ -25,7 +26,7 @@ const BaseRequestedPackagesTableRow = ({
 }: IRequestedPackagesTableRowProps) => {
   const dispatch = useAppDispatch();
   const { packageVersions } = useAppSelector(state => state.requestedPackages);
-  const { installedVersions } = useAppSelector(
+  const { installedVersions, updatedConstraints } = useAppSelector(
     state => state.environmentDetails
   );
 
@@ -44,18 +45,29 @@ const BaseRequestedPackagesTableRow = ({
       pkgConstraint = "";
     }
 
-    const updatedPackage = `${name}${pkgConstraint}${value}`;
-
     dispatch(
-      packageUpdated({ currentPackage: requestedPackage, updatedPackage })
+      constraintUpdated({
+        pkgName: name,
+        pkgConstraint: pkgConstraint,
+        pkgVersion: value
+      })
     );
   };
 
   const updateConstraint = (value: string) => {
-    const updatedPackage = `${name}${value}${version}`;
+    let pkgVersion = version;
+    const updatedConstraint = updatedConstraints[name];
+
+    if (updatedConstraint) {
+      pkgVersion = updatedConstraint.version;
+    }
 
     dispatch(
-      packageUpdated({ currentPackage: requestedPackage, updatedPackage })
+      constraintUpdated({
+        pkgName: name,
+        pkgConstraint: value,
+        pkgVersion
+      })
     );
   };
 
