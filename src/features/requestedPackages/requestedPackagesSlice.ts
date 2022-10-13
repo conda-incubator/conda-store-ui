@@ -1,6 +1,10 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-import { CondaSpecificationPip, Dependency } from "../../common/models";
+import {
+  BuildPackage,
+  CondaSpecificationPip,
+  Dependency
+} from "../../common/models";
 import { requestedPackageParser } from "../../utils/helpers";
 import { environmentDetailsApiSlice } from "../environmentDetails";
 
@@ -8,12 +12,16 @@ export interface IRequestedPackagesState {
   requestedPackages: (string | CondaSpecificationPip)[];
   packageVersions: { [key: string]: string };
   packagesWithLatestVersions: { [key: string]: string };
+  buildPackagesCache: {
+    [key: string]: { packages: BuildPackage[]; count: number };
+  };
 }
 
 const initialState: IRequestedPackagesState = {
   requestedPackages: [],
   packageVersions: {},
-  packagesWithLatestVersions: {}
+  packagesWithLatestVersions: {},
+  buildPackagesCache: {}
 };
 
 export const requestedPackagesSlice = createSlice({
@@ -54,6 +62,18 @@ export const requestedPackagesSlice = createSlice({
     },
     packageAdded: (state, action: PayloadAction<string>) => {
       state.requestedPackages.push(action.payload);
+    },
+    buildPackagesCacheAdded: (
+      state,
+      action: PayloadAction<{
+        pkgName: string;
+        packages: BuildPackage[];
+        count: number;
+      }>
+    ) => {
+      const { pkgName, packages, count } = action.payload;
+
+      state.buildPackagesCache[pkgName] = { packages, count };
     }
   },
   extraReducers: builder => {
@@ -93,5 +113,6 @@ export const {
   dependencyPromoted,
   packageUpdated,
   packageRemoved,
-  packageAdded
+  packageAdded,
+  buildPackagesCacheAdded
 } = requestedPackagesSlice.actions;
