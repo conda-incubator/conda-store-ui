@@ -1,18 +1,16 @@
-import React, { memo } from "react";
-import TableRow from "@mui/material/TableRow";
-import Typography from "@mui/material/Typography";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Box from "@mui/material/Box";
-
-import {
-  StyledRequestedPackagesTableCell,
-  StyledIconButton
-} from "../../../styles";
+import TableRow from "@mui/material/TableRow";
+import Typography from "@mui/material/Typography";
+import React, { memo } from "react";
 import { ConstraintSelect, VersionSelect } from "../../../components";
-import { requestedPackageParser } from "../../../utils/helpers";
 import { useAppDispatch, useAppSelector } from "../../../hooks";
-import { packageRemoved } from "../requestedPackagesSlice";
-import { constraintUpdated } from "../../environmentDetails";
+import {
+  StyledIconButton,
+  StyledRequestedPackagesTableCell
+} from "../../../styles";
+import { requestedPackageParser } from "../../../utils/helpers";
+import { packageRemoved, packageUpdated } from "../requestedPackagesSlice";
 
 interface IRequestedPackagesTableRowProps {
   /**
@@ -26,10 +24,9 @@ const BaseRequestedPackagesTableRow = ({
 }: IRequestedPackagesTableRowProps) => {
   const dispatch = useAppDispatch();
   const { packageVersions } = useAppSelector(state => state.requestedPackages);
-  const { installedVersions, updatedConstraints } = useAppSelector(
+  const { installedVersions } = useAppSelector(
     state => state.environmentDetails
   );
-
   const result = requestedPackageParser(requestedPackage);
   let { version } = result;
   const { constraint, name } = result;
@@ -45,29 +42,18 @@ const BaseRequestedPackagesTableRow = ({
       pkgConstraint = "";
     }
 
+    const updatedPackage = `${name}${pkgConstraint}${value}`;
+
     dispatch(
-      constraintUpdated({
-        pkgName: name,
-        pkgConstraint: pkgConstraint,
-        pkgVersion: value
-      })
+      packageUpdated({ currentPackage: requestedPackage, updatedPackage })
     );
   };
 
   const updateConstraint = (value: string) => {
-    let pkgVersion = version;
-    const updatedConstraint = updatedConstraints[name];
-
-    if (updatedConstraint) {
-      pkgVersion = updatedConstraint.version;
-    }
+    const updatedPackage = `${name}${value}${version}`;
 
     dispatch(
-      constraintUpdated({
-        pkgName: name,
-        pkgConstraint: value,
-        pkgVersion
-      })
+      packageUpdated({ currentPackage: requestedPackage, updatedPackage })
     );
   };
 

@@ -12,15 +12,13 @@ export interface IEnvironmentDetailsState {
   name: string;
   prefix: string | null | undefined;
   installedVersions: { [key: string]: string };
-  updatedConstraints: { [key: string]: { range: string; version: string } };
 }
 
 const initialState: IEnvironmentDetailsState = {
   mode: EnvironmentDetailsModes.READ,
   name: "",
   prefix: null,
-  installedVersions: {},
-  updatedConstraints: {}
+  installedVersions: {}
 };
 
 export const environmentDetailsSlice = createSlice({
@@ -38,24 +36,6 @@ export const environmentDetailsSlice = createSlice({
       action: PayloadAction<IEnvironmentDetailsState["installedVersions"]>
     ) => {
       state.installedVersions = action.payload;
-    },
-    constraintUpdated: (
-      state,
-      action: PayloadAction<{
-        pkgName: string;
-        pkgVersion: string;
-        pkgConstraint: string;
-      }>
-    ) => {
-      const { pkgName, pkgConstraint, pkgVersion } = action.payload;
-
-      state.updatedConstraints[pkgName] = {
-        range: pkgConstraint,
-        version: pkgVersion
-      };
-    },
-    constraintsCleared: state => {
-      state.updatedConstraints = {};
     }
   },
   extraReducers: builder => {
@@ -80,9 +60,5 @@ export const environmentDetailsSlice = createSlice({
   }
 });
 
-export const {
-  modeChanged,
-  installedVersionsGenerated,
-  constraintUpdated,
-  constraintsCleared
-} = environmentDetailsSlice.actions;
+export const { modeChanged, installedVersionsGenerated } =
+  environmentDetailsSlice.actions;
