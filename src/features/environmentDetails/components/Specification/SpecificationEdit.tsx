@@ -1,4 +1,10 @@
-import React, { useState, useRef, useEffect, useCallback } from "react";
+import React, {
+  useState,
+  useRef,
+  useEffect,
+  useCallback,
+  useMemo
+} from "react";
 import Box from "@mui/material/Box";
 import { cloneDeep, debounce } from "lodash";
 import { stringify } from "yaml";
@@ -37,14 +43,23 @@ export const SpecificationEdit = ({
   );
   const hasMore = size * page <= count;
   const dispatch = useAppDispatch();
+
   const [show, setShow] = useState(false);
   const [code, setCode] = useState<{
     dependencies: (string | CondaSpecificationPip)[];
     channels: string[];
   }>({ dependencies: requestedPackages, channels });
+  const [envIsUpdated, setEnvIsUpdated] = useState(false);
+
   const initialChannels = useRef(cloneDeep(channels));
   const initialPackages = useRef(cloneDeep(requestedPackages));
-  const [envIsUpdated, setEnvIsUpdated] = useState(false);
+
+  const stringifiedInitialChannels = useMemo(() => {
+    return JSON.stringify(initialChannels.current);
+  }, [initialChannels.current]);
+  const stringifiedInitialPackages = useMemo(() => {
+    return JSON.stringify(initialPackages.current);
+  }, [initialPackages.current]);
 
   const onUpdateChannels = useCallback((channels: string[]) => {
     dispatch(updateChannels(channels));
@@ -59,12 +74,10 @@ export const SpecificationEdit = ({
       dependencies: string[];
     }) => {
       const code = { dependencies, channels };
-      const stringifiedInitialChannels = JSON.stringify(
-        initialChannels.current
-      );
-      const stringifiedInitialPackages = JSON.stringify(
-        initialPackages.current
-      );
+      const isDifferentChannels =
+        JSON.stringify(code.channels) !== stringifiedInitialChannels;
+      const isDifferentPackages =
+        JSON.stringify(code.dependencies) !== stringifiedInitialPackages;
 
       if (!channels || channels.length === 0) {
         code.channels = [];
@@ -74,11 +87,7 @@ export const SpecificationEdit = ({
         code.dependencies = [];
       }
 
-      if (JSON.stringify(code.channels) !== stringifiedInitialChannels) {
-        setEnvIsUpdated(true);
-      }
-
-      if (JSON.stringify(code.dependencies) !== stringifiedInitialPackages) {
+      if (isDifferentChannels || isDifferentPackages) {
         setEnvIsUpdated(true);
       }
 
@@ -142,14 +151,12 @@ export const SpecificationEdit = ({
       setEnvIsUpdated(true);
     }
 
-    const stringifiedInitialChannels = JSON.stringify(initialChannels.current);
-    const stringifiedInitialPackages = JSON.stringify(initialPackages.current);
+    const isDifferentChannels =
+      JSON.stringify(channels) !== stringifiedInitialChannels;
+    const isDifferentPackages =
+      JSON.stringify(requestedPackages) !== stringifiedInitialPackages;
 
-    if (JSON.stringify(channels) !== stringifiedInitialChannels) {
-      setEnvIsUpdated(true);
-    }
-
-    if (JSON.stringify(requestedPackages) !== stringifiedInitialPackages) {
+    if (isDifferentChannels || isDifferentPackages) {
       setEnvIsUpdated(true);
     }
   }, [channels, requestedPackages, descriptionUpdated]);
