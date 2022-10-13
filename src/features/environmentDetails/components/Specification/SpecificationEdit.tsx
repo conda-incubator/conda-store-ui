@@ -57,6 +57,7 @@ export const SpecificationEdit = ({
   const stringifiedInitialChannels = useMemo(() => {
     return JSON.stringify(initialChannels.current);
   }, [initialChannels.current]);
+
   const stringifiedInitialPackages = useMemo(() => {
     return JSON.stringify(initialPackages.current);
   }, [initialPackages.current]);
