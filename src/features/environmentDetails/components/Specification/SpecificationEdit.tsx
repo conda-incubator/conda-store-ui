@@ -17,8 +17,14 @@ import { CodeEditor } from "../../../../features/yamlEditor";
 import { useAppDispatch, useAppSelector } from "../../../../hooks";
 import { StyledButtonPrimary } from "../../../../styles";
 import { CondaSpecificationPip } from "../../../../common/models";
-import { requestedPackageParser } from "../../../../utils/helpers";
-import { installedVersionsGenerated } from "../../environmentDetailsSlice";
+import {
+  requestedPackageParser,
+  updatePackagesWithConstraints
+} from "../../../../utils/helpers";
+import {
+  constraintsCleared,
+  installedVersionsGenerated
+} from "../../environmentDetailsSlice";
 
 interface ISpecificationEdit {
   descriptionUpdated: boolean;
@@ -94,21 +100,12 @@ export const SpecificationEdit = ({
     if (show) {
       dispatch(updatePackages(code.dependencies));
       dispatch(updateChannels(code.channels));
+      dispatch(constraintsCleared());
     } else {
-      const updatedPackageList = requestedPackages.map(p => {
-        if (typeof p === "object") {
-          return p;
-        }
-
-        const { name } = requestedPackageParser(p as string);
-        const updatedConstraint = updatedConstraints[name];
-
-        if (updatedConstraint) {
-          return `${name}${updatedConstraint.range}${updatedConstraint.version}`;
-        }
-
-        return p;
-      });
+      const updatedPackageList = updatePackagesWithConstraints(
+        updatedConstraints,
+        requestedPackages
+      );
 
       dispatch(updatePackages(updatedPackageList));
       setCode({ dependencies: updatedPackageList, channels });
@@ -118,9 +115,19 @@ export const SpecificationEdit = ({
   };
 
   const onEditEnvironment = () => {
+    let updatedPackageList: (string | CondaSpecificationPip)[] = [];
+
+    if (!show) {
+      updatedPackageList = updatePackagesWithConstraints(
+        updatedConstraints,
+        requestedPackages
+      );
+      dispatch(updatePackages(updatedPackageList));
+    }
+
     const envContent = show
       ? code
-      : { dependencies: requestedPackages, channels };
+      : { dependencies: updatedPackageList, channels };
 
     onUpdateEnvironment(envContent);
   };
@@ -152,6 +159,7 @@ export const SpecificationEdit = ({
     dispatch(installedVersionsGenerated(versions));
 
     return () => {
+      dispatch(constraintsCleared());
       dispatch(installedVersionsGenerated({}));
     };
   }, []);
@@ -171,7 +179,11 @@ export const SpecificationEdit = ({
     if (JSON.stringify(requestedPackages) !== stringifiedInitialPackages) {
       setEnvIsUpdated(true);
     }
-  }, [channels, requestedPackages, descriptionUpdated]);
+
+    if (Object.keys(updatedConstraints).length > 0) {
+      setEnvIsUpdated(true);
+    }
+  }, [channels, requestedPackages, descriptionUpdated, updatedConstraints]);
 
   return (
     <BlockContainerEditMode

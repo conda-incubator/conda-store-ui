@@ -53,6 +53,9 @@ export const environmentDetailsSlice = createSlice({
         range: pkgConstraint,
         version: pkgVersion
       };
+    },
+    constraintsCleared: state => {
+      state.updatedConstraints = {};
     }
   },
   extraReducers: builder => {
@@ -77,5 +80,9 @@ export const environmentDetailsSlice = createSlice({
   }
 });
 
-export const { modeChanged, installedVersionsGenerated, constraintUpdated } =
-  environmentDetailsSlice.actions;
+export const {
+  modeChanged,
+  installedVersionsGenerated,
+  constraintUpdated,
+  constraintsCleared
+} = environmentDetailsSlice.actions;
