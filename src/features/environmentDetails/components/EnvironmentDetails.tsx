@@ -19,6 +19,8 @@ import {
 import { useAppDispatch, useAppSelector } from "../../../hooks";
 import artifactList from "../../../utils/helpers/artifact";
 import { CondaSpecificationPip } from "../../../common/models";
+import { updatePackages } from "../../requestedPackages";
+import { updateChannels } from "../../channels";
 
 interface IEnvDetails {
   environmentNotification: (notification: any) => void;
@@ -84,6 +86,8 @@ export const EnvironmentDetails = ({
       });
       await createOrUpdate(environmentInfo).unwrap();
       dispatch(modeChanged(EnvironmentDetailsModes.READ));
+      dispatch(updatePackages(code.code.dependencies));
+      dispatch(updateChannels(code.code.channels));
       environmentNotification({
         show: true,
         description: `${name} environment has been updated`
