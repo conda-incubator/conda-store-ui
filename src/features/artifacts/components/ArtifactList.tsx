@@ -14,7 +14,7 @@ export interface IArtifactsProps {
   /**
    * @param artifacts list of artifacts
    */
-  artifacts: Artifact[];
+  artifacts: Artifact[] | never[];
 }
 
 export const ArtifactList = ({ artifacts }: IArtifactsProps) => {

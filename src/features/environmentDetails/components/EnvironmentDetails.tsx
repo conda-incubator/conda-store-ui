@@ -2,10 +2,12 @@ import Box from "@mui/material/Box";
 import Alert from "@mui/material/Alert";
 import React, { useEffect, useState } from "react";
 import { stringify } from "yaml";
+import { parseArtifacts } from "../../../utils/helpers/parseArtifactList";
 
 import { EnvironmentDetailsHeader } from "./EnvironmentDetailsHeader";
 import { SpecificationEdit, SpecificationReadOnly } from "./Specification";
 import { useGetBuildQuery } from "../environmentDetailsApiSlice";
+import { useGetArtifactsQuery } from "../../artifacts";
 import { useGetBuildPackagesQuery } from "../../../features/dependencies";
 import { ArtifactList } from "../../../features/artifacts";
 import {
@@ -59,6 +61,9 @@ export const EnvironmentDetails = ({
     setDescription(description);
     setDescriptionIsUpdated(true);
   };
+
+  const { data } = useGetArtifactsQuery(selectedEnvironment?.current_build_id);
+  const apiArtifactTypes: string[] = parseArtifacts(data);
 
   const updateEnvironment = async (code: any) => {
     const namespace = selectedEnvironment?.namespace.name;
@@ -135,7 +140,10 @@ export const EnvironmentDetails = ({
       {mode === "read-only" && (
         <Box>
           <ArtifactList
-            artifacts={artifactList(selectedEnvironment?.current_build_id)}
+            artifacts={artifactList(
+              selectedEnvironment?.current_build_id,
+              apiArtifactTypes
+            )}
           />
         </Box>
       )}
