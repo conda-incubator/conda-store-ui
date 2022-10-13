@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import { ChannelsEdit } from "../../../../features/channels";
 import { BlockContainerEditMode } from "../../../../components";
@@ -9,7 +9,8 @@ import { CreateEnvironmentPackages } from "../CreateEnvironmentPackages";
 import { useAppDispatch, useAppSelector } from "../../../../hooks";
 import {
   channelsChanged,
-  editorCodeUpdated
+  editorCodeUpdated,
+  environmentCreateStateCleared
 } from "../../environmentCreateSlice";
 
 export const SpecificationCreate = ({ onCreateEnvironment }: any) => {
@@ -69,6 +70,12 @@ export const SpecificationCreate = ({ onCreateEnvironment }: any) => {
 
     onCreateEnvironment(code);
   };
+
+  useEffect(() => {
+    return () => {
+      dispatch(environmentCreateStateCleared());
+    };
+  }, []);
 
   return (
     <BlockContainerEditMode

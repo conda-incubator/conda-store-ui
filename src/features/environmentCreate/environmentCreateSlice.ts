@@ -52,7 +52,7 @@ export const environmentCreateSlice = createSlice({
       state.requestedPackages = action.payload.dependencies;
       state.channels = action.payload.channels;
     },
-    environmentCreated: state => {
+    environmentCreateStateCleared: state => {
       state.name = "";
       state.description = "";
       state.channels = [];
@@ -69,5 +69,5 @@ export const {
   requestedPackageRemoved,
   requestedPackageUpdated,
   editorCodeUpdated,
-  environmentCreated
+  environmentCreateStateCleared
 } = environmentCreateSlice.actions;

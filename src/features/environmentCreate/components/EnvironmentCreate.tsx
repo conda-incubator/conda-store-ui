@@ -16,11 +16,7 @@ import {
 import { useAppDispatch, useAppSelector } from "../../../hooks";
 import { SpecificationCreate, SpecificationReadOnly } from "./Specification";
 import { debounce } from "lodash";
-import {
-  descriptionChanged,
-  environmentCreated,
-  nameChanged
-} from "../environmentCreateSlice";
+import { descriptionChanged, nameChanged } from "../environmentCreateSlice";
 
 export interface IEnvCreate {
   environmentNotification: (notification: any) => void;
@@ -86,7 +82,6 @@ export const EnvironmentCreate = ({ environmentNotification }: IEnvCreate) => {
         show: true,
         description: `${name} environment is being created`
       });
-      dispatch(environmentCreated());
     } catch ({ data }) {
       setError({
         message: data.message,
