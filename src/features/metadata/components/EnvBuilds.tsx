@@ -13,12 +13,16 @@ interface IData {
 export const EnvBuilds = ({ data, currentBuildId }: IData) => {
   const { data: envData = [] } = data;
   const builds = envData.length ? buildMapper(data, currentBuildId) : [];
+  const currentBuild = builds.find(build => build.id === currentBuildId);
+
   return (
     <>
       <StyledMetadataItem>
         <b>Build</b>
       </StyledMetadataItem>
-      <Build builds={builds} />
+      {currentBuild && (
+        <Build builds={builds} currentBuildName={currentBuild.name} />
+      )}
       <StyledMetadataItem>
         <b>Status:</b> Completed/Building/Failed
       </StyledMetadataItem>

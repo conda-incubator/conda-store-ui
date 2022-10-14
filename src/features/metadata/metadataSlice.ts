@@ -22,7 +22,13 @@ const initialState: IBuildState = {
 export const enviromentsSlice = createSlice({
   name: "environments",
   initialState,
-  reducers: {},
+  reducers: {
+    currentBuildIdChanged: (state, action: PayloadAction<number>) => {
+      if (state.currentBuild) {
+        state.currentBuild.id = action.payload;
+      }
+    }
+  },
   extraReducers: builder => {
     builder.addCase(
       environmentOpened.type,
@@ -49,3 +55,5 @@ export const enviromentsSlice = createSlice({
     );
   }
 });
+
+export const { currentBuildIdChanged } = enviromentsSlice.actions;
