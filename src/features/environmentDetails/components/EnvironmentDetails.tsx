@@ -37,12 +37,14 @@ export const EnvironmentDetails = ({
   environmentNotification
 }: IEnvDetails) => {
   const dispatch = useAppDispatch();
+
   const { mode } = useAppSelector(state => state.environmentDetails);
   const { page } = useAppSelector(state => state.dependencies);
   const { selectedEnvironment } = useAppSelector(state => state.tabs);
+  const { currentBuild } = useAppSelector(state => state.enviroments);
+
   const [enviromentBuilds, setEnviromentBuilds] = useState<any>([]);
   const [name, setName] = useState(selectedEnvironment?.name || "");
-  const [createOrUpdate] = useCreateOrUpdateMutation();
   const [descriptionIsUpdated, setDescriptionIsUpdated] = useState(false);
   const [description, setDescription] = useState(
     selectedEnvironment ? selectedEnvironment.description : undefined
@@ -53,12 +55,13 @@ export const EnvironmentDetails = ({
     visible: false
   });
 
+  const [createOrUpdate] = useCreateOrUpdateMutation();
   const [triggerQuery] = useLazyGetEnviromentBuildsQuery();
 
-  if (selectedEnvironment) {
-    useGetBuildQuery(selectedEnvironment.current_build_id);
+  if (currentBuild) {
+    useGetBuildQuery(currentBuild.id);
     useGetBuildPackagesQuery({
-      buildId: selectedEnvironment.current_build_id,
+      buildId: currentBuild.id,
       page,
       size: 100
     });
