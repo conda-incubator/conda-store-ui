@@ -19,7 +19,6 @@ const isQueued = (status: string) => {
   return BUILD_STATUS.includes(status);
 };
 
-
 export const buildMapper = (
   { data }: IApiResponse<Build[]>,
   currentBuildId: number
@@ -35,11 +34,11 @@ export const buildMapper = (
       };
     }
 
-    if ( isQueued(status)){
+    if (isQueued(status)) {
       return {
         id,
         name: `${date} - Queued`
-      }
+      };
     }
 
     if (id === currentBuildId) {
