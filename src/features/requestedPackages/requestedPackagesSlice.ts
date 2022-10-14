@@ -1,6 +1,10 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-import { CondaSpecificationPip, Dependency } from "../../common/models";
+import {
+  BuildPackage,
+  CondaSpecificationPip,
+  Dependency
+} from "../../common/models";
 import { requestedPackageParser } from "../../utils/helpers";
 import { environmentDetailsApiSlice } from "../environmentDetails";
 
@@ -8,12 +12,16 @@ export interface IRequestedPackagesState {
   requestedPackages: (string | CondaSpecificationPip)[];
   packageVersions: { [key: string]: string };
   packagesWithLatestVersions: { [key: string]: string };
+  buildPackagesCache: {
+    [key: string]: { packages: BuildPackage[]; count: number };
+  };
 }
 
 const initialState: IRequestedPackagesState = {
   requestedPackages: [],
   packageVersions: {},
-  packagesWithLatestVersions: {}
+  packagesWithLatestVersions: {},
+  buildPackagesCache: {}
 };
 
 export const requestedPackagesSlice = createSlice({
@@ -36,6 +44,36 @@ export const requestedPackagesSlice = createSlice({
       const newRequestedPackage = `${action.payload.name}==${action.payload.version}`;
 
       state.requestedPackages.push(newRequestedPackage);
+    },
+    packageUpdated: (
+      state,
+      action: PayloadAction<{ currentPackage: string; updatedPackage: string }>
+    ) => {
+      const { currentPackage, updatedPackage } = action.payload;
+
+      state.requestedPackages = state.requestedPackages.map(p =>
+        p === currentPackage ? updatedPackage : p
+      );
+    },
+    packageRemoved: (state, action: PayloadAction<string>) => {
+      state.requestedPackages = state.requestedPackages.filter(
+        p => p !== action.payload
+      );
+    },
+    packageAdded: (state, action: PayloadAction<string>) => {
+      state.requestedPackages.push(action.payload);
+    },
+    buildPackagesCacheAdded: (
+      state,
+      action: PayloadAction<{
+        pkgName: string;
+        packages: BuildPackage[];
+        count: number;
+      }>
+    ) => {
+      const { pkgName, packages, count } = action.payload;
+
+      state.buildPackagesCache[pkgName] = { packages, count };
     }
   },
   extraReducers: builder => {
@@ -69,5 +107,12 @@ export const requestedPackagesSlice = createSlice({
   }
 });
 
-export const { packageVersionAdded, updatePackages, dependencyPromoted } =
-  requestedPackagesSlice.actions;
+export const {
+  packageVersionAdded,
+  updatePackages,
+  dependencyPromoted,
+  packageUpdated,
+  packageRemoved,
+  packageAdded,
+  buildPackagesCacheAdded
+} = requestedPackagesSlice.actions;

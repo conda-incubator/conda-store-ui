@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import Alert from "@mui/material/Alert";
 import { stringify } from "yaml";
-
 import {
   EnvironmentDetailsHeader,
   modeChanged,
@@ -16,23 +15,39 @@ import {
 } from "../../../features/tabs";
 import { useAppDispatch, useAppSelector } from "../../../hooks";
 import { SpecificationCreate, SpecificationReadOnly } from "./Specification";
+import { debounce } from "lodash";
+import { descriptionChanged, nameChanged } from "../environmentCreateSlice";
 
 export interface IEnvCreate {
   environmentNotification: (notification: any) => void;
 }
+
+interface ICreateEnvironmentArgs {
+  code: { channels: string[]; dependencies: string[] };
+}
+
 export const EnvironmentCreate = ({ environmentNotification }: IEnvCreate) => {
   const dispatch = useAppDispatch();
   const { mode } = useAppSelector(state => state.environmentDetails);
+  const { name, description } = useAppSelector(
+    state => state.environmentCreate
+  );
   const { newEnvironment } = useAppSelector(state => state.tabs);
-  const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
   const [error, setError] = useState({
     message: "",
     visible: false
   });
   const [createOrUpdate] = useCreateOrUpdateMutation();
 
-  const createEnvironment = async (code: any) => {
+  const handleChangeName = debounce((value: string) => {
+    dispatch(nameChanged(value));
+  }, 300);
+
+  const handleChangeDescription = debounce((value: string) => {
+    dispatch(descriptionChanged(value));
+  }, 300);
+
+  const createEnvironment = async (code: ICreateEnvironmentArgs) => {
     const namespace = newEnvironment?.namespace;
     const environmentInfo = {
       namespace,
@@ -77,7 +92,7 @@ export const EnvironmentCreate = ({ environmentNotification }: IEnvCreate) => {
 
   return (
     <Box sx={{ padding: "14px 12px" }}>
-      <EnvironmentDetailsHeader envName={name} onUpdateName={setName} />
+      <EnvironmentDetailsHeader onUpdateName={handleChangeName} />
       {error.visible && (
         <Alert
           severity="error"
@@ -91,10 +106,9 @@ export const EnvironmentCreate = ({ environmentNotification }: IEnvCreate) => {
       <Box sx={{ marginBottom: "30px" }}>
         <EnvMetadata
           selectedEnv={{}}
-          description={description}
           current_build_id={0}
           mode={mode}
-          onUpdateDescription={setDescription}
+          onUpdateDescription={handleChangeDescription}
         />
       </Box>
       <Box sx={{ marginBottom: "30px" }}>

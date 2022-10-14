@@ -14,9 +14,5 @@ export default {
 } as ComponentMeta<typeof RequestedPackagesEdit>;
 
 export const Primary: ComponentStory<typeof RequestedPackagesEdit> = () => (
-  <RequestedPackagesEdit
-    packageList={packageList}
-    updatePackages={() => ({})}
-    isCreating={false}
-  />
+  <RequestedPackagesEdit packageList={packageList} />
 );

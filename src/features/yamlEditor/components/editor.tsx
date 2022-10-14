@@ -7,7 +7,10 @@ import { parse } from "yaml";
 
 export interface ICodeEditor {
   code: any;
-  onChangeEditor: (str: any) => void;
+  onChangeEditor: (code: {
+    channels: string[];
+    dependencies: string[];
+  }) => void;
 }
 
 export const CodeEditor = ({ code, onChangeEditor }: ICodeEditor) => {

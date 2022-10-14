@@ -11,6 +11,8 @@ import {
   initialState,
   requestedPackagesReducer
 } from "../features/requestedPackages/reducer";
+import { useAppDispatch, useAppSelector } from "../hooks";
+import { buildPackagesCacheAdded } from "../features/requestedPackages";
 
 interface IVersionSelectProps {
   /**
@@ -28,6 +30,10 @@ export const VersionSelect = ({
   onUpdate = (value: string) => {}
 }: IVersionSelectProps) => {
   const { palette } = useTheme();
+  const reduxDispatch = useAppDispatch();
+  const { buildPackagesCache } = useAppSelector(
+    state => state.requestedPackages
+  );
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(version ?? "");
 
@@ -37,6 +43,18 @@ export const VersionSelect = ({
 
   useEffect(() => {
     (async () => {
+      if (buildPackagesCache[name]) {
+        dispatch({
+          type: ActionTypes.DATA_FETCHED,
+          payload: {
+            data: buildPackagesCache[name].packages,
+            count: buildPackagesCache[name].count
+          }
+        });
+
+        return;
+      }
+
       dispatch({ type: ActionTypes.LOADING, payload: { loading: true } });
       const { data } = await triggerQuery({
         page: state.page,
@@ -48,6 +66,13 @@ export const VersionSelect = ({
           type: ActionTypes.DATA_FETCHED,
           payload: { data: data.data, count: data.count }
         });
+        reduxDispatch(
+          buildPackagesCacheAdded({
+            pkgName: name,
+            packages: data.data,
+            count: data.count
+          })
+        );
       }
       dispatch({ type: ActionTypes.LOADING, payload: { loading: false } });
     })();
@@ -83,7 +108,7 @@ export const VersionSelect = ({
 
   return (
     <Select
-      value={value}
+      value={versionsList.length > 0 ? value : ""}
       open={open}
       onClose={() => setOpen(false)}
       onOpen={() => setOpen(true)}
@@ -119,6 +144,9 @@ export const VersionSelect = ({
         }
       }}
     >
+      <MenuItem key="empty" value="" sx={{ height: "30px" }}>
+        {" "}
+      </MenuItem>
       {versionsList.map(v => (
         <MenuItem key={v} value={v}>
           {v}

@@ -1,37 +1,32 @@
-import React from "react";
-import TableRow from "@mui/material/TableRow";
-import Typography from "@mui/material/Typography";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Box from "@mui/material/Box";
-
-import {
-  StyledRequestedPackagesTableCell,
-  StyledIconButton
-} from "../../../styles";
+import TableRow from "@mui/material/TableRow";
+import Typography from "@mui/material/Typography";
+import React, { memo } from "react";
 import { ConstraintSelect, VersionSelect } from "../../../components";
+import { useAppDispatch, useAppSelector } from "../../../hooks";
+import {
+  StyledIconButton,
+  StyledRequestedPackagesTableCell
+} from "../../../styles";
 import { requestedPackageParser } from "../../../utils/helpers";
-import { useAppSelector } from "../../../hooks";
+import { packageRemoved, packageUpdated } from "../requestedPackagesSlice";
 
 interface IRequestedPackagesTableRowProps {
   /**
    * @param requestedPackage requested package
-   * @param onRemove handler that will run when delete icon is clicked
-   * @param isCreating notify the component if it's being used for creating or editing environment
    */
   requestedPackage: string;
-  onRemove: (packageName: string) => void;
-  onUpdate?: (name: string, constraint: string, version: string) => void;
-  isCreating: boolean;
 }
 
-export const RequestedPackagesTableRow = ({
-  requestedPackage,
-  onRemove,
-  onUpdate = (name: string, constraint: string, version: string) => {},
-  isCreating
+const BaseRequestedPackagesTableRow = ({
+  requestedPackage
 }: IRequestedPackagesTableRowProps) => {
+  const dispatch = useAppDispatch();
   const { packageVersions } = useAppSelector(state => state.requestedPackages);
-
+  const { installedVersions } = useAppSelector(
+    state => state.environmentDetails
+  );
   const result = requestedPackageParser(requestedPackage);
   let { version } = result;
   const { constraint, name } = result;
@@ -41,12 +36,28 @@ export const RequestedPackagesTableRow = ({
   }
 
   const updateVersion = (value: string) => {
-    onUpdate(name, constraint, value);
+    let pkgConstraint = constraint === "latest" ? ">=" : constraint;
+
+    if (value === "") {
+      pkgConstraint = "";
+    }
+
+    const updatedPackage = `${name}${pkgConstraint}${value}`;
+
+    dispatch(
+      packageUpdated({ currentPackage: requestedPackage, updatedPackage })
+    );
   };
 
   const updateConstraint = (value: string) => {
-    onUpdate(name, value, version);
+    const updatedPackage = `${name}${value}${version}`;
+
+    dispatch(
+      packageUpdated({ currentPackage: requestedPackage, updatedPackage })
+    );
   };
+
+  const handleRemove = () => dispatch(packageRemoved(requestedPackage));
 
   return (
     <TableRow>
@@ -55,15 +66,13 @@ export const RequestedPackagesTableRow = ({
           {name}
         </Typography>
       </StyledRequestedPackagesTableCell>
-      {!isCreating && (
-        <StyledRequestedPackagesTableCell align="left">
-          <Typography
-            sx={{ fontSize: "16px", fontWeight: 400, color: "#676666" }}
-          >
-            {version}
-          </Typography>
-        </StyledRequestedPackagesTableCell>
-      )}
+      <StyledRequestedPackagesTableCell align="left">
+        <Typography
+          sx={{ fontSize: "16px", fontWeight: 400, color: "#676666" }}
+        >
+          {installedVersions[name]}
+        </Typography>
+      </StyledRequestedPackagesTableCell>
       <StyledRequestedPackagesTableCell align="left">
         <Box sx={{ display: "flex", alignItems: "center" }}>
           <ConstraintSelect
@@ -75,10 +84,7 @@ export const RequestedPackagesTableRow = ({
             version={constraint === "latest" ? "" : version}
             name={name}
           />
-          <StyledIconButton
-            onClick={() => onRemove(requestedPackage)}
-            sx={{ marginLeft: "24px" }}
-          >
+          <StyledIconButton onClick={handleRemove} sx={{ marginLeft: "24px" }}>
             <DeleteIcon />
           </StyledIconButton>
         </Box>
@@ -86,3 +92,5 @@ export const RequestedPackagesTableRow = ({
     </TableRow>
   );
 };
+
+export const RequestedPackagesTableRow = memo(BaseRequestedPackagesTableRow);

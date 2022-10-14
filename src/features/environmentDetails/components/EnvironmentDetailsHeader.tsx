@@ -14,12 +14,12 @@ interface IEnvironmentDetailsHeaderProps {
    * @param envName name of the selected environment
    * @param onUpdateName change environment name
    */
-  envName: string;
+  envName?: string;
   onUpdateName: (value: string) => void;
 }
 
 export const EnvironmentDetailsHeader = ({
-  envName,
+  envName = "",
   onUpdateName
 }: IEnvironmentDetailsHeaderProps) => {
   const { mode } = useAppSelector(state => state.environmentDetails);
@@ -68,7 +68,6 @@ export const EnvironmentDetailsHeader = ({
               }
             }}
             variant="filled"
-            value={envName}
             placeholder="Environment name"
             onChange={e => onUpdateName(e.target.value)}
           />

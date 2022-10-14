@@ -1,8 +1,7 @@
+import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import Alert from "@mui/material/Alert";
-import React, { useEffect, useState } from "react";
 import { stringify } from "yaml";
-
 import { EnvironmentDetailsHeader } from "./EnvironmentDetailsHeader";
 import { SpecificationEdit, SpecificationReadOnly } from "./Specification";
 import { useGetBuildQuery } from "../environmentDetailsApiSlice";
@@ -19,9 +18,19 @@ import {
 } from "../../../features/environmentDetails";
 import { useAppDispatch, useAppSelector } from "../../../hooks";
 import artifactList from "../../../utils/helpers/artifact";
+import { CondaSpecificationPip } from "../../../common/models";
+import { updatePackages } from "../../requestedPackages";
+import { updateChannels } from "../../channels";
 
 interface IEnvDetails {
   environmentNotification: (notification: any) => void;
+}
+
+interface IUpdateEnvironmentArgs {
+  code: {
+    dependencies: (string | CondaSpecificationPip)[];
+    channels: string[];
+  };
 }
 
 export const EnvironmentDetails = ({
@@ -60,7 +69,7 @@ export const EnvironmentDetails = ({
     setDescriptionIsUpdated(true);
   };
 
-  const updateEnvironment = async (code: any) => {
+  const updateEnvironment = async (code: IUpdateEnvironmentArgs) => {
     const namespace = selectedEnvironment?.namespace.name;
 
     const environmentInfo = {
@@ -77,6 +86,8 @@ export const EnvironmentDetails = ({
       });
       await createOrUpdate(environmentInfo).unwrap();
       dispatch(modeChanged(EnvironmentDetailsModes.READ));
+      dispatch(updatePackages(code.code.dependencies));
+      dispatch(updateChannels(code.code.channels));
       environmentNotification({
         show: true,
         description: `${name} environment has been updated`

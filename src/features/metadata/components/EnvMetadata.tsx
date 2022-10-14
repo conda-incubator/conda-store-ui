@@ -21,7 +21,7 @@ interface IEnvMetadataProps {
    * @param onUpdateDescription change environment description
    */
   selectedEnv: any;
-  description: any;
+  description?: any;
   mode: "create" | "read-only" | "edit";
   current_build_id: number;
   onUpdateDescription: (description: string) => void;
@@ -29,7 +29,7 @@ interface IEnvMetadataProps {
 
 export const EnvMetadata = ({
   selectedEnv,
-  description,
+  description = "",
   mode,
   current_build_id,
   onUpdateDescription

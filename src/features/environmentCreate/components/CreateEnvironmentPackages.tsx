@@ -1,15 +1,16 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
-import Accordion from "@mui/material/Accordion";
-import AccordionDetails from "@mui/material/AccordionDetails";
-import Box from "@mui/material/Box";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Typography from "@mui/material/Typography";
+import {
+  Accordion,
+  AccordionDetails,
+  Table,
+  TableBody,
+  TableHead,
+  TableRow,
+  Typography
+} from "@mui/material";
 import useTheme from "@mui/material/styles/useTheme";
-import { RequestedPackagesTableRow } from "./RequestedPackagesTableRow";
-import { AddRequestedPackage } from "./AddRequestedPackage";
+import { Box } from "@mui/system";
+import React, { useEffect, useRef, useState } from "react";
+import { useAppDispatch } from "../../../hooks";
 import {
   StyledAccordionDetails,
   StyledAccordionExpandIcon,
@@ -18,33 +19,24 @@ import {
   StyledButtonPrimary,
   StyledEditPackagesTableCell
 } from "../../../styles";
-import { CondaSpecificationPip } from "../../../common/models";
-import { useAppDispatch } from "../../../hooks";
-import { packageAdded } from "../requestedPackagesSlice";
+import { AddRequestedPackage } from "../../requestedPackages";
+import { requestedPackagesChanged } from "../environmentCreateSlice";
+import { CreateEnvironmentPackagesTableRow } from "./CreateEnvironmentPackagesTableRow";
 
-export interface IRequestedPackagesEditProps {
+interface ICreateEnvironmentPackagesProps {
   /**
-   * @param packageList list of packages that we get from the API
+   * @param requestedPackages list of created packages
    */
-  packageList: (string | CondaSpecificationPip)[];
+  requestedPackages: string[];
 }
 
-export const RequestedPackagesEdit = ({
-  packageList
-}: IRequestedPackagesEditProps) => {
+export const CreateEnvironmentPackages = ({
+  requestedPackages
+}: ICreateEnvironmentPackagesProps) => {
   const dispatch = useAppDispatch();
   const [isAdding, setIsAdding] = useState(false);
-  const { palette } = useTheme();
   const scrollRef = useRef<HTMLDivElement | null>(null);
-
-  const handleSubmit = (packageName: string) => {
-    dispatch(packageAdded(packageName));
-  };
-
-  const filteredPackageList = useMemo(
-    () => packageList.filter(item => typeof item !== "object") as string[],
-    [packageList]
-  );
+  const { palette } = useTheme();
 
   useEffect(() => {
     if (isAdding && scrollRef.current) {
@@ -54,7 +46,7 @@ export const RequestedPackagesEdit = ({
 
   return (
     <Accordion
-      sx={{ width: 576, boxShadow: "none" }}
+      sx={{ width: 421, boxShadow: "none" }}
       defaultExpanded
       disableGutters
     >
@@ -83,19 +75,6 @@ export const RequestedPackagesEdit = ({
                   Name
                 </Typography>
               </StyledEditPackagesTableCell>
-              <StyledEditPackagesTableCell
-                align="left"
-                sx={{
-                  width: "180px"
-                }}
-              >
-                <Typography
-                  component="p"
-                  sx={{ fontSize: "16px", fontWeight: 500 }}
-                >
-                  Installed Version
-                </Typography>
-              </StyledEditPackagesTableCell>
               <StyledEditPackagesTableCell align="left">
                 <Typography
                   component="p"
@@ -107,8 +86,8 @@ export const RequestedPackagesEdit = ({
             </TableRow>
           </TableHead>
           <TableBody>
-            {filteredPackageList.map(requestedPackage => (
-              <RequestedPackagesTableRow
+            {requestedPackages.map(requestedPackage => (
+              <CreateEnvironmentPackagesTableRow
                 key={requestedPackage}
                 requestedPackage={requestedPackage}
               />
@@ -118,9 +97,13 @@ export const RequestedPackagesEdit = ({
         <Box ref={scrollRef}>
           {isAdding && (
             <AddRequestedPackage
-              onSubmit={handleSubmit}
-              onCancel={setIsAdding}
-              isCreating={false}
+              onSubmit={(value: string) =>
+                dispatch(
+                  requestedPackagesChanged([...requestedPackages, value])
+                )
+              }
+              onCancel={() => setIsAdding(false)}
+              isCreating={true}
             />
           )}
         </Box>
