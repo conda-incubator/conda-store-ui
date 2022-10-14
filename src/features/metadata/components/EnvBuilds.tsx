@@ -4,6 +4,7 @@ import { Build } from "../../../features/metadata/components";
 import { IApiResponse } from "../../../common/interfaces";
 import { Build as IBuild } from "../../../common/models";
 import { buildMapper } from "../../../utils/helpers/buildMapper";
+import { CircularProgress } from "@mui/material";
 
 interface IData {
   data: IApiResponse<IBuild[]>;
@@ -22,6 +23,12 @@ export const EnvBuilds = ({ data, currentBuildId }: IData) => {
       </StyledMetadataItem>
       {currentBuild && (
         <Build builds={builds} currentBuildName={currentBuild.name} />
+      )}
+      {!currentBuild && (
+        <CircularProgress
+          size={20}
+          sx={{ marginLeft: "15px", marginTop: "6px", marginBottom: "7px" }}
+        />
       )}
       <StyledMetadataItem>
         <b>Status:</b> Completed/Building/Failed
