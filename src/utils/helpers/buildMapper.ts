@@ -4,15 +4,21 @@ import { Build } from "../../common/models";
 
 const STATUS_OPTIONS: any = {
   COMPLETED: "Available",
-  QUEUED: "Building",
+  QUEUED: "Queued",
   FAILED: "Failed",
   BUILDING: "Building"
 };
 
 const isBuilding = (status: string) => {
-  const BUILD_STATUS = ["BUILDING", "QUEUED"];
+  const BUILD_STATUS = ["BUILDING"];
   return BUILD_STATUS.includes(status);
 };
+
+const isQueued = (status: string) => {
+  const BUILD_STATUS = ["QUEUED"];
+  return BUILD_STATUS.includes(status);
+};
+
 
 export const buildMapper = (
   { data }: IApiResponse<Build[]>,
@@ -27,6 +33,13 @@ export const buildMapper = (
         id,
         name: `${date} - Building`
       };
+    }
+
+    if ( isQueued(status)){
+      return {
+        id,
+        name: `${date} - Queued`
+      }
     }
 
     if (id === currentBuildId) {
