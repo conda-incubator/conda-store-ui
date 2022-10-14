@@ -6,7 +6,7 @@ export const dependenciesApiSlice = apiSlice.injectEndpoints({
   endpoints: builder => ({
     getBuildPackages: builder.query<
       IApiResponse<Dependency[]>,
-      { buildId: number; page: number; size: number }
+      { buildId: number | undefined; page: number; size: number }
     >({
       query: dto =>
         `/api/v1/build/${dto.buildId}/packages?page=${dto.page}&size=${dto.size}`,
