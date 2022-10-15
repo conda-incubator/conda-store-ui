@@ -11,9 +11,9 @@ import { environmentDetailsApiSlice } from "../environmentDetails";
 
 export interface IRequestedPackagesState {
   requestedPackages: (string | CondaSpecificationPip)[];
-  packageVersions: { [key: string]: string };
+  versionsWithoutConstraints: { [key: string]: string };
+  versionsWithConstraints: { [key: string]: string };
   packagesWithLatestVersions: { [key: string]: string };
-  installedVersions: { [key: string]: string };
   buildPackagesCache: {
     [key: string]: { packages: BuildPackage[]; count: number };
   };
@@ -21,24 +21,16 @@ export interface IRequestedPackagesState {
 
 const initialState: IRequestedPackagesState = {
   requestedPackages: [],
-  packageVersions: {},
+  versionsWithoutConstraints: {},
+  versionsWithConstraints: {},
   packagesWithLatestVersions: {},
-  buildPackagesCache: {},
-  installedVersions: {}
+  buildPackagesCache: {}
 };
 
 export const requestedPackagesSlice = createSlice({
   name: "requestedPackages",
   initialState,
   reducers: {
-    packageVersionAdded: (
-      state,
-      action: PayloadAction<{ packageName: string; version: string }>
-    ) => {
-      const { packageName, version } = action.payload;
-
-      state.packageVersions[packageName] = version;
-    },
     updatePackages: (state, action) => {
       const packages = action.payload;
       state.requestedPackages = packages;
@@ -96,14 +88,14 @@ export const requestedPackagesSlice = createSlice({
       ) => {
         state.requestedPackages = dependencies;
         state.packagesWithLatestVersions = {};
-        state.installedVersions = {};
+        state.versionsWithConstraints = {};
 
         dependencies.forEach(dep => {
           if (typeof dep === "string") {
             const { constraint, name, version } = requestedPackageParser(dep);
 
             if (version) {
-              state.installedVersions[name] = version;
+              state.versionsWithConstraints[name] = version;
             }
 
             if (constraint === "latest") {
@@ -118,13 +110,13 @@ export const requestedPackagesSlice = createSlice({
     builder.addMatcher(
       dependenciesApiSlice.endpoints.getBuildPackages.matchFulfilled,
       (state, { payload: { data, size, count, page } }) => {
-        state.packageVersions = {};
+        state.versionsWithoutConstraints = {};
 
         data.forEach(dep => {
           const foundPackage = state.packagesWithLatestVersions[dep.name];
 
           if (foundPackage) {
-            state.packageVersions[dep.name] = dep.version;
+            state.versionsWithoutConstraints[dep.name] = dep.version;
           }
         });
 
@@ -135,7 +127,6 @@ export const requestedPackagesSlice = createSlice({
 });
 
 export const {
-  packageVersionAdded,
   updatePackages,
   dependencyPromoted,
   packageUpdated,
