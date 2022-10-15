@@ -6,12 +6,14 @@ import {
   Dependency
 } from "../../common/models";
 import { requestedPackageParser } from "../../utils/helpers";
+import { dependenciesApiSlice } from "../dependencies";
 import { environmentDetailsApiSlice } from "../environmentDetails";
 
 export interface IRequestedPackagesState {
   requestedPackages: (string | CondaSpecificationPip)[];
   packageVersions: { [key: string]: string };
   packagesWithLatestVersions: { [key: string]: string };
+  installedVersions: { [key: string]: string };
   buildPackagesCache: {
     [key: string]: { packages: BuildPackage[]; count: number };
   };
@@ -21,7 +23,8 @@ const initialState: IRequestedPackagesState = {
   requestedPackages: [],
   packageVersions: {},
   packagesWithLatestVersions: {},
-  buildPackagesCache: {}
+  buildPackagesCache: {},
+  installedVersions: {}
 };
 
 export const requestedPackagesSlice = createSlice({
@@ -92,16 +95,40 @@ export const requestedPackagesSlice = createSlice({
         }
       ) => {
         state.requestedPackages = dependencies;
+        state.packagesWithLatestVersions = {};
+        state.installedVersions = {};
 
         dependencies.forEach(dep => {
           if (typeof dep === "string") {
-            const { constraint, name } = requestedPackageParser(dep);
+            const { constraint, name, version } = requestedPackageParser(dep);
+
+            if (version) {
+              state.installedVersions[name] = version;
+            }
 
             if (constraint === "latest") {
               state.packagesWithLatestVersions[name] = dep;
             }
           }
         });
+
+        console.log("finished build fetch");
+      }
+    );
+    builder.addMatcher(
+      dependenciesApiSlice.endpoints.getBuildPackages.matchFulfilled,
+      (state, { payload: { data, size, count, page } }) => {
+        state.packageVersions = {};
+
+        data.forEach(dep => {
+          const foundPackage = state.packagesWithLatestVersions[dep.name];
+
+          if (foundPackage) {
+            state.packageVersions[dep.name] = dep.version;
+          }
+        });
+
+        console.log("finished deps fetch");
       }
     );
   }

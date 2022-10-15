@@ -23,8 +23,8 @@ import { CodeEditor } from "../../../../features/yamlEditor";
 import { useAppDispatch, useAppSelector } from "../../../../hooks";
 import { StyledButtonPrimary } from "../../../../styles";
 import { CondaSpecificationPip } from "../../../../common/models";
-import { requestedPackageParser } from "../../../../utils/helpers";
-import { installedVersionsGenerated } from "../../environmentDetailsSlice";
+// import { requestedPackageParser } from "../../../../utils/helpers";
+// import { installedVersionsGenerated } from "../../environmentDetailsSlice";
 
 interface ISpecificationEdit {
   descriptionUpdated: boolean;
@@ -35,7 +35,7 @@ export const SpecificationEdit = ({
   onUpdateEnvironment
 }: ISpecificationEdit) => {
   const { channels } = useAppSelector(state => state.channels);
-  const { requestedPackages, packageVersions } = useAppSelector(
+  const { requestedPackages } = useAppSelector(
     state => state.requestedPackages
   );
   const { dependencies, size, count, page } = useAppSelector(
@@ -123,29 +123,29 @@ export const SpecificationEdit = ({
     dispatch(updateChannels(initialChannels.current));
   };
 
-  useEffect(() => {
-    const versions: { [key: string]: string } = {};
+  // useEffect(() => {
+  //   const versions: { [key: string]: string } = {};
 
-    requestedPackages.forEach(p => {
-      if (typeof p === "string") {
-        const { name, version } = requestedPackageParser(p as string);
+  //   requestedPackages.forEach(p => {
+  //     if (typeof p === "string") {
+  //       const { name, version } = requestedPackageParser(p as string);
 
-        if (version) {
-          versions[name] = version;
-        }
+  //       if (version) {
+  //         versions[name] = version;
+  //       }
 
-        if (packageVersions[name]) {
-          versions[name] = packageVersions[name];
-        }
-      }
-    });
+  //       if (packageVersions[name]) {
+  //         versions[name] = packageVersions[name];
+  //       }
+  //     }
+  //   });
 
-    dispatch(installedVersionsGenerated(versions));
+  //   dispatch(installedVersionsGenerated(versions));
 
-    return () => {
-      dispatch(installedVersionsGenerated({}));
-    };
-  }, []);
+  //   return () => {
+  //     dispatch(installedVersionsGenerated({}));
+  //   };
+  // }, []);
 
   useEffect(() => {
     if (descriptionUpdated) {
