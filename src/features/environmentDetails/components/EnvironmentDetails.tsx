@@ -58,14 +58,17 @@ export const EnvironmentDetails = ({
   const [createOrUpdate] = useCreateOrUpdateMutation();
   const [triggerQuery] = useLazyGetEnviromentBuildsQuery();
 
-  useGetBuildQuery(currentBuild.id, { skip: !currentBuild.id });
+  const { isFetching } = useGetBuildQuery(currentBuild.id, {
+    skip: !currentBuild.id
+  });
+
   useGetBuildPackagesQuery(
     {
       buildId: currentBuild.id,
       page,
       size: 100
     },
-    { skip: !currentBuild.id }
+    { skip: isFetching || !currentBuild.id }
   );
 
   const updateDescription = (description: string) => {

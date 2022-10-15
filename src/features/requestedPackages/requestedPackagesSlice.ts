@@ -103,8 +103,6 @@ export const requestedPackagesSlice = createSlice({
             }
           }
         });
-
-        console.log("finished build fetch");
       }
     );
     builder.addMatcher(
@@ -119,8 +117,6 @@ export const requestedPackagesSlice = createSlice({
             state.versionsWithoutConstraints[dep.name] = dep.version;
           }
         });
-
-        console.log("finished deps fetch");
       }
     );
   }
