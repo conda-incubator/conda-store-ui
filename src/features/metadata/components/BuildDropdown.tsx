@@ -1,23 +1,36 @@
 import React, { useState } from "react";
-import Select from "@mui/material/Select";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import useTheme from "@mui/material/styles/useTheme";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import IconButton from "@mui/material/IconButton";
+import { useAppDispatch } from "../../../hooks";
+import { currentBuildIdChanged } from "..";
 
 interface IBuildProps {
   /**
    * @param builds list of builds
+   * @param currentBuildName name of the current build
    */
   builds: {
     id: number;
     name: string;
   }[];
+  currentBuildName: string;
 }
 
-export const Build = ({ builds }: IBuildProps) => {
+export const Build = ({ builds, currentBuildName }: IBuildProps) => {
+  const dispatch = useAppDispatch();
   const { palette } = useTheme();
   const [open, setOpen] = useState(false);
+
+  const handleChange = (e: SelectChangeEvent<string>) => {
+    const newCurrentBuild = builds.find(build => build.name === e.target.value);
+
+    if (newCurrentBuild) {
+      dispatch(currentBuildIdChanged(newCurrentBuild.id));
+    }
+  };
 
   return (
     <Select
@@ -25,7 +38,8 @@ export const Build = ({ builds }: IBuildProps) => {
       onClose={() => setOpen(false)}
       onOpen={() => setOpen(true)}
       sx={{ marginLeft: "13px" }}
-      value={builds && builds.length > 0 ? builds[0].name : ""}
+      defaultValue={currentBuildName}
+      onChange={handleChange}
       IconComponent={() => (
         <IconButton
           sx={{ padding: "0px" }}

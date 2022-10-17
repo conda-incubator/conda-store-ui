@@ -23,16 +23,14 @@ const BaseRequestedPackagesTableRow = ({
   requestedPackage
 }: IRequestedPackagesTableRowProps) => {
   const dispatch = useAppDispatch();
-  const { packageVersions } = useAppSelector(state => state.requestedPackages);
-  const { installedVersions } = useAppSelector(
-    state => state.environmentDetails
-  );
+  const { versionsWithoutConstraints, versionsWithConstraints } =
+    useAppSelector(state => state.requestedPackages);
   const result = requestedPackageParser(requestedPackage);
   let { version } = result;
   const { constraint, name } = result;
 
   if (constraint === "latest") {
-    version = packageVersions[name];
+    version = versionsWithoutConstraints[name];
   }
 
   const updateVersion = (value: string) => {
@@ -70,7 +68,7 @@ const BaseRequestedPackagesTableRow = ({
         <Typography
           sx={{ fontSize: "16px", fontWeight: 400, color: "#676666" }}
         >
-          {installedVersions[name]}
+          {versionsWithConstraints[name] ?? versionsWithoutConstraints[name]}
         </Typography>
       </StyledRequestedPackagesTableCell>
       <StyledRequestedPackagesTableCell align="left">
