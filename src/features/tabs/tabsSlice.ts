@@ -37,12 +37,17 @@ export const tabsSlice = createSlice({
     ) => {
       const environments = state.selectedEnvironments;
       const openedEnvironment = action.payload.environment;
+      const isSingleTabMode = process.env.REACT_APP_CONTEXT === "jupyterlab";
 
       state.selectedEnvironment = openedEnvironment;
       state.value = openedEnvironment.id;
 
       if (!environments.some(env => env.id === openedEnvironment.id)) {
-        state.selectedEnvironments.push(openedEnvironment);
+        if (!isSingleTabMode) {
+          state.selectedEnvironments.push(openedEnvironment);
+        } else {
+          state.selectedEnvironments[0] = openedEnvironment;
+        }
       }
     },
     environmentClosed: (
