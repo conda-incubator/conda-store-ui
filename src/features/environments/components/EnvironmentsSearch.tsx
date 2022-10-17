@@ -38,7 +38,13 @@ export const EnvironmentsSearch = ({ onChange }: IEnvironmentsSearchProps) => {
     >
       <Typography
         data-testid="env-search-title"
-        sx={{ marginBottom: "16px", textAlign: "center" }}
+        sx={{
+          marginBottom: "16px",
+          textAlign: "center",
+          color: "#9AA0A6",
+          fontWeight: 700,
+          fontSize: "15px"
+        }}
       >
         Package Manager
       </Typography>
@@ -48,13 +54,17 @@ export const EnvironmentsSearch = ({ onChange }: IEnvironmentsSearchProps) => {
         size="small"
         endAdornment={
           <InputAdornment position="end">
-            <SearchIcon sx={{ color: "#A7A7A7" }} />
+            <SearchIcon sx={{ color: "#BCBFC4" }} />
           </InputAdornment>
         }
         placeholder="Search for environment"
-        sx={{ borderRadius: "0px", paddingRight: "5px", width: "288px" }}
+        sx={{ borderRadius: "15px", paddingRight: "10px", width: "288px" }}
         inputProps={{
-          style: { padding: "5px", paddingLeft: "15px", fontSize: "14px" }
+          style: {
+            padding: "7px",
+            paddingLeft: "15px",
+            fontSize: "14px"
+          }
         }}
       />
     </Box>
