@@ -9,8 +9,10 @@ import PersonIcon from "@mui/icons-material/Person";
 import { config } from "../../../common/constants";
 import {
   environmentSearchTitleGrayscaleStyles,
-  environmentSearchTitleGreenAccentStyles
-} from "../styles/environmentSearchTitleStyles";
+  environmentSearchTitleGreenAccentStyles,
+  searchInputGrayscaleStyles,
+  searchInputGreenAccentStyles
+} from "../styles";
 
 interface IEnvironmentsSearchProps {
   /**
@@ -25,11 +27,15 @@ export const EnvironmentsSearch = ({ onChange }: IEnvironmentsSearchProps) => {
   const pageUrl = window.location.href;
   const loginPageUrl = `${authUrl}${pageUrl}`;
   let login;
+  const isGrayscaleStyleType = config.styleType === "grayscale";
 
-  const titleStyles =
-    config.styleType === "grayscale"
-      ? environmentSearchTitleGrayscaleStyles
-      : environmentSearchTitleGreenAccentStyles;
+  const titleStyles = isGrayscaleStyleType
+    ? environmentSearchTitleGrayscaleStyles
+    : environmentSearchTitleGreenAccentStyles;
+
+  const searchBoxStyles = isGrayscaleStyleType
+    ? searchInputGrayscaleStyles
+    : searchInputGreenAccentStyles;
 
   if (isCookieAuthMethod) {
     login = (
@@ -55,13 +61,15 @@ export const EnvironmentsSearch = ({ onChange }: IEnvironmentsSearchProps) => {
         size="small"
         endAdornment={
           <InputAdornment position="end">
-            <SearchIcon sx={{ color: "#A7A7A7" }} />
+            <SearchIcon
+              sx={{ color: isGrayscaleStyleType ? "#A7A7A7" : "#BCBFC4" }}
+            />
           </InputAdornment>
         }
         placeholder="Search for environment"
-        sx={{ borderRadius: "0px", paddingRight: "5px", width: "288px" }}
+        sx={searchBoxStyles.searchStyles}
         inputProps={{
-          style: { padding: "5px", paddingLeft: "15px", fontSize: "14px" }
+          style: searchBoxStyles.inputStyles
         }}
       />
     </Box>
