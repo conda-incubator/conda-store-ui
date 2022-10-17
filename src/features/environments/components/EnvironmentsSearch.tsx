@@ -6,6 +6,11 @@ import InputAdornment from "@mui/material/InputAdornment";
 import SearchIcon from "@mui/icons-material/Search";
 import Link from "@mui/material/Link";
 import PersonIcon from "@mui/icons-material/Person";
+import { config } from "../../../common/constants";
+import {
+  environmentSearchTitleGrayscaleStyles,
+  environmentSearchTitleGreenAccentStyles
+} from "../styles/environmentSearchTitleStyles";
 
 interface IEnvironmentsSearchProps {
   /**
@@ -20,6 +25,11 @@ export const EnvironmentsSearch = ({ onChange }: IEnvironmentsSearchProps) => {
   const pageUrl = window.location.href;
   const loginPageUrl = `${authUrl}${pageUrl}`;
   let login;
+
+  const titleStyles =
+    config.styleType === "grayscale"
+      ? environmentSearchTitleGrayscaleStyles
+      : environmentSearchTitleGreenAccentStyles;
 
   if (isCookieAuthMethod) {
     login = (
@@ -36,10 +46,7 @@ export const EnvironmentsSearch = ({ onChange }: IEnvironmentsSearchProps) => {
         position: "relative"
       }}
     >
-      <Typography
-        data-testid="env-search-title"
-        sx={{ marginBottom: "16px", textAlign: "center" }}
-      >
+      <Typography data-testid="env-search-title" sx={titleStyles}>
         Package Manager
       </Typography>
       {login}
