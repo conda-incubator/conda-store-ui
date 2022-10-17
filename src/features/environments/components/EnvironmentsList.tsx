@@ -9,11 +9,11 @@ import { StyledScrollContainer } from "../../../styles";
 import { INamespaceEnvironments } from "../../../common/interfaces";
 import lodash from "lodash";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { config } from "../../../common/constants";
 import {
   environmentsTitleGrayscaleStyles,
   environmentsTitleGreenAccentStyles
 } from "../styles";
+import { getStylesForType } from "../../../utils/helpers";
 
 interface IEnvironmentsListProps {
   /**
@@ -38,10 +38,10 @@ export const EnvironmentsList = ({
   search
 }: IEnvironmentsListProps) => {
   const scrollRef = useRef<HTMLDivElement | null>(null);
-  const isGrayscaleStyleType = config.styleType === "grayscale";
-  const titleStyles = isGrayscaleStyleType
-    ? environmentsTitleGrayscaleStyles
-    : environmentsTitleGreenAccentStyles;
+  const titleStyles = getStylesForType(
+    environmentsTitleGrayscaleStyles,
+    environmentsTitleGreenAccentStyles
+  );
 
   const { defaultNamespace, sharedNamespaces } = useMemo(() => {
     let defaultNamespace: INamespaceEnvironments | null = null;
