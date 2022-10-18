@@ -56,7 +56,9 @@ export const EnvironmentDetails = ({
   });
 
   const [createOrUpdate] = useCreateOrUpdateMutation();
-  const [triggerQuery] = useLazyGetEnviromentBuildsQuery();
+  const [triggerQuery] = useLazyGetEnviromentBuildsQuery({
+    pollingInterval: 2000
+  });
 
   const { isFetching } = useGetBuildQuery(currentBuild.id, {
     skip: !currentBuild.id
@@ -134,10 +136,10 @@ export const EnvironmentDetails = ({
       )}
       <Box sx={{ marginBottom: "30px" }}>
         <EnvMetadata
-          selectedEnv={enviromentBuilds}
-          description={description}
-          current_build_id={selectedEnvironment?.current_build_id}
           mode={mode}
+          current_build_id={selectedEnvironment?.current_build_id}
+          description={description}
+          selectedEnv={enviromentBuilds}
           onUpdateDescription={updateDescription}
         />
       </Box>
