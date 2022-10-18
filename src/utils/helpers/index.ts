@@ -3,3 +3,4 @@ export * from "./requestedPackageParser";
 export * from "./buildMapper";
 export * from "./updatePackagesWithConstraints";
 export * from "./getStylesForStyleType";
+export * from "./getIconForStyleType";

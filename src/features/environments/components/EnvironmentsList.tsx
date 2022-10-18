@@ -15,6 +15,7 @@ import {
 } from "../styles";
 import { getStylesForStyleType } from "../../../utils/helpers";
 import { CondaLogo } from "../../../components";
+import { config } from "../../../common/constants";
 
 interface IEnvironmentsListProps {
   /**
@@ -39,6 +40,8 @@ export const EnvironmentsList = ({
   search
 }: IEnvironmentsListProps) => {
   const scrollRef = useRef<HTMLDivElement | null>(null);
+  const isGrayScaleStyleType = config.styleType === "grayscale";
+
   const titleStyles = getStylesForStyleType(
     environmentsTitleGrayscaleStyles,
     environmentsTitleGreenAccentStyles
@@ -134,16 +137,18 @@ export const EnvironmentsList = ({
           <EnvironmentDropdown key={namespace.namespace} data={namespace} />
         ))}
       </InfiniteScroll>
-      <Box
-        sx={{
-          position: "absolute",
-          bottom: "20px",
-          left: "30px",
-          zIndex: "-1"
-        }}
-      >
-        <CondaLogo />
-      </Box>
+      {!isGrayScaleStyleType && (
+        <Box
+          sx={{
+            position: "absolute",
+            bottom: "20px",
+            left: "30px",
+            zIndex: "-1"
+          }}
+        >
+          <CondaLogo />
+        </Box>
+      )}
     </StyledScrollContainer>
   );
 };

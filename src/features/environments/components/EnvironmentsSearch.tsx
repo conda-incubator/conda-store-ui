@@ -13,7 +13,11 @@ import {
   searchInputGrayscaleStyles,
   searchInputGreenAccentStyles
 } from "../styles";
-import { getStylesForStyleType } from "../../../utils/helpers";
+import {
+  getIconForStyleType,
+  getStylesForStyleType
+} from "../../../utils/helpers";
+import { LoginIcon } from "../../../components";
 
 interface IEnvironmentsSearchProps {
   /**
@@ -40,10 +44,15 @@ export const EnvironmentsSearch = ({ onChange }: IEnvironmentsSearchProps) => {
     searchInputGreenAccentStyles
   );
 
+  const loginIcon = getIconForStyleType(
+    <PersonIcon sx={{ color: "black" }} />,
+    <LoginIcon />
+  );
+
   if (isCookieAuthMethod) {
     login = (
-      <Link href={loginPageUrl} sx={{ position: "absolute", top: 0, right: 0 }}>
-        <PersonIcon sx={{ color: "black" }} />
+      <Link href={loginPageUrl} sx={{ position: "absolute", top: 3, right: 3 }}>
+        {loginIcon}
       </Link>
     );
   }

@@ -8,5 +8,6 @@ export const environmentSearchTitleGreenAccentStyles = {
   textAlign: "center",
   color: "#9AA0A6",
   fontWeight: 700,
-  fontSize: "15px"
+  fontSize: "15px",
+  marginTop: "35px"
 };

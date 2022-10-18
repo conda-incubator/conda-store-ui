@@ -12,6 +12,7 @@ import {
   initialState as NInitialState,
   namespacesReducer
 } from "../../../features/namespaces/reducer";
+import { getStylesForStyleType } from "../../../utils/helpers";
 
 const BaseEnvironments = ({
   refreshEnvironments,
@@ -19,8 +20,12 @@ const BaseEnvironments = ({
 }: any) => {
   const size = 100;
   const [state, dispatch] = useReducer(environmentsReducer, initialState);
-
   const [stateN, dispatchN] = useReducer(namespacesReducer, NInitialState);
+
+  const envListStyles = getStylesForStyleType(
+    { height: "calc(100vh - 103px)" },
+    { height: "calc(100vh - 105px)" }
+  );
 
   const [triggerNamespacesQuery] = useLazyFetchNamespacesQuery();
 
@@ -96,7 +101,7 @@ const BaseEnvironments = ({
       <Box sx={{ borderBottom: `1px solid ${primary.main}` }}>
         <EnvironmentsSearch onChange={e => handleChange(e.target.value)} />
       </Box>
-      <Box sx={{ height: "calc(100vh - 103px)" }}>
+      <Box sx={envListStyles}>
         {state.data && (
           <EnvironmentsList
             next={next}
