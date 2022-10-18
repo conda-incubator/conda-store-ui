@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import Accordion from "@mui/material/Accordion";
 import AddIcon from "@mui/icons-material/Add";
 import IconButton from "@mui/material/IconButton";
@@ -6,8 +7,6 @@ import Box from "@mui/material/Box";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
-import React, { useState } from "react";
-
 import { Environment } from "./Environment";
 import { INamespaceEnvironments } from "../../../common/interfaces";
 import {
@@ -24,6 +23,15 @@ import {
   StyledAccordionExpandIcon,
   StyledAccordionSummary
 } from "../../../styles";
+import {
+  getIconForStyleType,
+  getStylesForStyleType
+} from "../../../utils/helpers";
+import {
+  environmentAddIconGrayscaleStyles,
+  environmentAddIconGreenAccentStyles
+} from "../styles";
+import { ArrowIcon } from "../../../components";
 
 interface IEnvironmentDropdownProps {
   /**
@@ -39,6 +47,26 @@ export const EnvironmentDropdown = ({
   const [isExpanded, setIsExpanded] = useState(false);
   const dispatch = useAppDispatch();
 
+  const dropdownHeaderStyles = getStylesForStyleType(
+    { display: "flex", alignItems: "center" },
+    { display: "flex", alignItems: "center", marginLeft: "15px" }
+  );
+
+  const addIconStyles = getStylesForStyleType(
+    environmentAddIconGrayscaleStyles,
+    environmentAddIconGreenAccentStyles
+  );
+
+  const titleStyles = getStylesForStyleType(
+    { width: "217px" },
+    { width: "217px", fontWeight: 700, fontSize: "15px", color: "#9AA0A6" }
+  );
+
+  const expandIcon = getIconForStyleType(
+    <StyledAccordionExpandIcon />,
+    <ArrowIcon />
+  );
+
   const onCreateNewEnvironmentTab = (
     event: React.SyntheticEvent,
     namespace: string
@@ -52,7 +80,11 @@ export const EnvironmentDropdown = ({
 
   return (
     <Accordion
-      sx={{ border: "none", position: "initial" }}
+      sx={{
+        border: "none",
+        position: "initial",
+        backgroundColor: "transparent"
+      }}
       elevation={0}
       expanded={isExpanded}
       disableGutters
@@ -64,12 +96,12 @@ export const EnvironmentDropdown = ({
           paddingLeft: "16px",
           border: "none"
         }}
-        expandIcon={<StyledAccordionExpandIcon />}
+        expandIcon={expandIcon}
       >
-        <Box sx={{ display: "flex", alignItems: "center" }}>
-          <Typography sx={{ width: "217px" }}>{namespace}</Typography>
+        <Box sx={dropdownHeaderStyles}>
+          <Typography sx={titleStyles}>{namespace}</Typography>
           <IconButton onClick={e => onCreateNewEnvironmentTab(e, namespace)}>
-            <AddIcon sx={{ width: "15px", height: "15px", color: "#2B2B2B" }} />
+            <AddIcon sx={addIconStyles} />
           </IconButton>
         </Box>
       </StyledAccordionSummary>
@@ -95,6 +127,7 @@ export const EnvironmentDropdown = ({
                   dispatch(toggleNewEnvironmentView(false));
                 }}
                 environment={environment}
+                selectedEnvironmentId={selectedEnvironment?.id}
               />
             </ListItem>
           ))}
