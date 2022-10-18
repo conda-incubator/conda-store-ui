@@ -1,36 +1,43 @@
-import * as React from "react";
+import { ThemeProvider } from "@mui/material";
+import React from "react";
+import { Provider } from "react-redux";
 import { BrowserRouter as Router } from "react-router-dom";
 import { Route, Routes } from "react-router";
-import "../style/index.css";
-import { PageLayout } from "./layouts";
 
-import { ThemeProvider } from "@mui/material";
-import { Provider } from "react-redux";
+import { PageLayout } from "./layouts";
+import { IPreferences, PreferencesContext, prefDefault } from "./preferences";
 import { store } from "./store";
 import { theme } from "./theme";
 
-// TODO: fix for jlab
-export const App = () => {
+import "../style/index.css";
+
+const AppRouter = () => {
+  // for now, trivial routing is sufficient
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<PageLayout />} />
-        <Route path="/lab" element={<PageLayout />} />
+        <Route path="*" element={<PageLayout />} />
       </Routes>
     </Router>
   );
 };
 
-export const AppExample = () => {
-  return (
-    <Provider store={store}>
-      <ThemeProvider theme={theme}>
-        <App />
-      </ThemeProvider>
-    </Provider>
-  );
-};
+export const App = (pref: IPreferences = {}) => {
+  pref = {...prefDefault, ...pref};
+  const [prefState, setPrefState] = React.useState(pref);
 
-export const FooExample = () => {
-  return <span>foo text lorem ipsum</span>;
+  function setPref(pref: IPreferences = {}) {
+    pref = {...prefState, ...pref};
+    setPrefState(pref);
+  }
+
+  return (
+    <PreferencesContext.Provider value={prefState}>
+      <Provider store={store}>
+        <ThemeProvider theme={theme}>
+          <AppRouter />
+        </ThemeProvider>
+      </Provider>
+    </PreferencesContext.Provider>
+  );
 };
