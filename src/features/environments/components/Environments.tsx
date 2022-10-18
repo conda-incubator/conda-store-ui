@@ -12,7 +12,6 @@ import {
   initialState as NInitialState,
   namespacesReducer
 } from "../../../features/namespaces/reducer";
-// import { getStylesForStyleType } from "../../../utils/helpers";
 import { CondaLogo } from "../../../components";
 import { config } from "../../../common/constants";
 
@@ -24,11 +23,6 @@ const BaseEnvironments = ({
   const [state, dispatch] = useReducer(environmentsReducer, initialState);
   const [stateN, dispatchN] = useReducer(namespacesReducer, NInitialState);
   const isGrayScaleStyleType = config.styleType === "grayscale";
-
-  // const envListStyles = getStylesForStyleType(
-  //   { height: "calc(100vh - 103px)" },
-  //   { height: "calc(100vh - 105px)" }
-  // );
 
   const [triggerNamespacesQuery] = useLazyFetchNamespacesQuery();
 
