@@ -14,6 +14,8 @@ import {
 import {
   environmentSearchTitleGrayscaleStyles,
   environmentSearchTitleGreenAccentStyles,
+  searchBoxGrayscaleStyles,
+  searchBoxGreenAccentStyles,
   searchInputGrayscaleStyles,
   searchInputGreenAccentStyles
 } from "../styles";
@@ -38,9 +40,14 @@ export const EnvironmentsSearch = ({ onChange }: IEnvironmentsSearchProps) => {
   );
 
   const searchBoxStyles = getStylesForStyleType(
+    searchBoxGrayscaleStyles,
+    searchBoxGreenAccentStyles
+  );
+
+  const searchInputStyles = getStylesForStyleType(
     searchInputGrayscaleStyles,
     searchInputGreenAccentStyles
-  );
+  ) as React.CSSProperties;
 
   const loginIcon = getIconForStyleType(
     <PersonIcon sx={{ color: "black" }} />,
@@ -81,9 +88,9 @@ export const EnvironmentsSearch = ({ onChange }: IEnvironmentsSearchProps) => {
           <InputAdornment position="end">{inputIcon}</InputAdornment>
         }
         placeholder="Search for environment"
-        sx={searchBoxStyles.searchStyles}
+        sx={searchBoxStyles}
         inputProps={{
-          style: searchBoxStyles.inputStyles
+          style: searchInputStyles
         }}
       />
     </Box>

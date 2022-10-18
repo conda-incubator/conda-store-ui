@@ -1,8 +1,9 @@
+import { SxProps } from "@mui/material";
 import { config } from "../../common/constants";
 
 export const getStylesForStyleType = (
-  grayscaleStyles: any,
-  greenAccentStyles: any
+  grayscaleStyles: SxProps,
+  greenAccentStyles: SxProps
 ) => {
   const isGrayscaleStyleType = config.styleType === "grayscale";
 
