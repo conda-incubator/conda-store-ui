@@ -136,7 +136,7 @@ export const EnvironmentDetails = ({
         <EnvMetadata
           selectedEnv={enviromentBuilds}
           description={description}
-          current_build_id={selectedEnvironment?.current_build_id || 0}
+          current_build_id={selectedEnvironment?.current_build_id}
           mode={mode}
           onUpdateDescription={updateDescription}
         />

@@ -11,15 +11,22 @@ interface IBuildProps {
   /**
    * @param builds list of builds
    * @param currentBuildName name of the current build
+   * @param onChangeStatus update the build status
    */
   builds: {
     id: number;
     name: string;
+    status: string;
   }[];
   currentBuildName: string;
+  onChangeStatus: (status: string) => void;
 }
 
-export const Build = ({ builds, currentBuildName }: IBuildProps) => {
+export const Build = ({
+  builds,
+  currentBuildName,
+  onChangeStatus
+}: IBuildProps) => {
   const dispatch = useAppDispatch();
   const { palette } = useTheme();
   const [open, setOpen] = useState(false);
@@ -29,6 +36,7 @@ export const Build = ({ builds, currentBuildName }: IBuildProps) => {
 
     if (newCurrentBuild) {
       dispatch(currentBuildIdChanged(newCurrentBuild.id));
+      onChangeStatus(newCurrentBuild.status);
     }
   };
 
@@ -38,7 +46,7 @@ export const Build = ({ builds, currentBuildName }: IBuildProps) => {
       onClose={() => setOpen(false)}
       onOpen={() => setOpen(true)}
       sx={{ marginLeft: "13px" }}
-      defaultValue={currentBuildName}
+      defaultValue={currentBuildName ? currentBuildName : ""}
       onChange={handleChange}
       IconComponent={() => (
         <IconButton

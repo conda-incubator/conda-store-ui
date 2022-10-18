@@ -21,6 +21,13 @@ const isQueued = (status: string) => {
   return BUILD_STATUS.includes(status);
 };
 
+const isCompleted = (status: string) => {
+  if (status === "COMPLETED") {
+    return "Completed";
+  }
+  return STATUS_OPTIONS[status];
+};
+
 const dateToTimezone = (date: string) => {
   const zonedDate = utcToZonedTime(`${date}Z`, TIMEZONE);
   return format(zonedDate, "MMMM do, yyyy - h:mm a", {
@@ -37,30 +44,34 @@ export const buildMapper = (
       isBuilding(status) || isQueued(status) ? scheduled_on : ended_on;
     const date = dateToTimezone(dateDetails);
 
+    if (id === currentBuildId) {
+      return {
+        id,
+        name: `${date} - Active`,
+        status: isCompleted(status)
+      };
+    }
+
     if (isBuilding(status)) {
       return {
         id,
-        name: `${date} - Building`
+        name: `${date} - Building`,
+        status: "Building"
       };
     }
 
     if (isQueued(status)) {
       return {
         id,
-        name: `${date} - Queued`
-      };
-    }
-
-    if (id === currentBuildId) {
-      return {
-        id,
-        name: `${date} - Active`
+        name: `${date} - Queued`,
+        status: "Building"
       };
     }
 
     return {
       id,
-      name: `${date} - ${STATUS_OPTIONS[status]}`
+      name: `${date} - ${STATUS_OPTIONS[status]}`,
+      status: isCompleted(status)
     };
   });
 };

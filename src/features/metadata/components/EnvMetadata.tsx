@@ -23,7 +23,7 @@ interface IEnvMetadataProps {
   selectedEnv: any;
   description?: any;
   mode: "create" | "read-only" | "edit";
-  current_build_id: number;
+  current_build_id: number | undefined;
   onUpdateDescription: (description: string) => void;
 }
 
@@ -54,9 +54,11 @@ export const EnvMetadata = ({
         description={description || undefined}
         onChangeDescription={onUpdateDescription}
       />
-      {mode !== EnvironmentDetailsModes.CREATE && selectedEnv && (
-        <EnvBuilds data={selectedEnv} currentBuildId={current_build_id} />
-      )}
+      {mode !== EnvironmentDetailsModes.CREATE &&
+        selectedEnv &&
+        current_build_id && (
+          <EnvBuilds data={selectedEnv} currentBuildId={current_build_id} />
+        )}
     </StyledBox>
   );
 };
