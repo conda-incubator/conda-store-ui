@@ -2,11 +2,9 @@ FROM node:16.16-alpine3.15
 
 WORKDIR /usr/src/app
 
-COPY package*.json .
-
-RUN yarn install 
-
 COPY . .
+
+RUN yarn install
 
 RUN mv .env.example .env
 
