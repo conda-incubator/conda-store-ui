@@ -13,8 +13,11 @@ import {
   environmentsTitleGrayscaleStyles,
   environmentsTitleGreenAccentStyles
 } from "../styles";
-import { getStylesForStyleType } from "../../../utils/helpers";
-import { CondaLogo } from "../../../components";
+import {
+  getIconForStyleType,
+  getStylesForStyleType
+} from "../../../utils/helpers";
+import { CondaLogo, GroupIconAlt } from "../../../components";
 import { config } from "../../../common/constants";
 
 interface IEnvironmentsListProps {
@@ -45,6 +48,11 @@ export const EnvironmentsList = ({
   const titleStyles = getStylesForStyleType(
     environmentsTitleGrayscaleStyles,
     environmentsTitleGreenAccentStyles
+  );
+
+  const titleIcon = getIconForStyleType(
+    <GroupIcon />,
+    <GroupIconAlt style={{ marginBottom: "8px", marginLeft: "10px" }} />
   );
 
   const { defaultNamespace, sharedNamespaces } = useMemo(() => {
@@ -131,7 +139,7 @@ export const EnvironmentsList = ({
           }}
         >
           <Typography sx={titleStyles}>Shared environments</Typography>
-          <GroupIcon />
+          {titleIcon}
         </Box>
         {sharedNamespaces.map(namespace => (
           <EnvironmentDropdown key={namespace.namespace} data={namespace} />

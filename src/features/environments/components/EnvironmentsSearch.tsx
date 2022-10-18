@@ -51,7 +51,10 @@ export const EnvironmentsSearch = ({ onChange }: IEnvironmentsSearchProps) => {
 
   if (isCookieAuthMethod) {
     login = (
-      <Link href={loginPageUrl} sx={{ position: "absolute", top: 3, right: 3 }}>
+      <Link
+        href={loginPageUrl}
+        sx={{ position: "absolute", top: 14, right: 18 }}
+      >
         {loginIcon}
       </Link>
     );

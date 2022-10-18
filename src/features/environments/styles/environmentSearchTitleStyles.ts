@@ -1,6 +1,7 @@
 export const environmentSearchTitleGrayscaleStyles = {
   marginBottom: "16px",
-  textAlign: "center"
+  textAlign: "center",
+  marginTop: "45px"
 };
 
 export const environmentSearchTitleGreenAccentStyles = {
@@ -9,5 +10,5 @@ export const environmentSearchTitleGreenAccentStyles = {
   color: "#9AA0A6",
   fontWeight: 700,
   fontSize: "15px",
-  marginTop: "35px"
+  marginTop: "45px"
 };
