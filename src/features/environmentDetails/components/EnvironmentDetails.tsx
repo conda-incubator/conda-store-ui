@@ -94,7 +94,6 @@ export const EnvironmentDetails = ({
       dispatch(modeChanged(EnvironmentDetailsModes.READ));
       dispatch(updatePackages(code.dependencies));
       dispatch(updateChannels(code.channels));
-      setDescription(description);
       environmentNotification({
         show: true,
         description: `${name} environment has been updated`
