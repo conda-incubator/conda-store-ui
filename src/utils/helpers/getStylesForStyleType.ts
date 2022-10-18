@@ -1,6 +1,6 @@
 import { config } from "../../common/constants";
 
-export const getStylesForType = (
+export const getStylesForStyleType = (
   grayscaleStyles: any,
   greenAccentStyles: any
 ) => {

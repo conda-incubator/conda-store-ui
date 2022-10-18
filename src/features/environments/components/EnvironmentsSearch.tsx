@@ -13,7 +13,7 @@ import {
   searchInputGrayscaleStyles,
   searchInputGreenAccentStyles
 } from "../styles";
-import { getStylesForType } from "../../../utils/helpers";
+import { getStylesForStyleType } from "../../../utils/helpers";
 
 interface IEnvironmentsSearchProps {
   /**
@@ -30,12 +30,12 @@ export const EnvironmentsSearch = ({ onChange }: IEnvironmentsSearchProps) => {
   let login;
   const isGrayscaleStyleType = config.styleType === "grayscale";
 
-  const titleStyles = getStylesForType(
+  const titleStyles = getStylesForStyleType(
     environmentSearchTitleGrayscaleStyles,
     environmentSearchTitleGreenAccentStyles
   );
 
-  const searchBoxStyles = getStylesForType(
+  const searchBoxStyles = getStylesForStyleType(
     searchInputGrayscaleStyles,
     searchInputGreenAccentStyles
   );

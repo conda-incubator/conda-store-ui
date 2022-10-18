@@ -13,7 +13,7 @@ import {
   environmentsTitleGrayscaleStyles,
   environmentsTitleGreenAccentStyles
 } from "../styles";
-import { getStylesForType } from "../../../utils/helpers";
+import { getStylesForStyleType } from "../../../utils/helpers";
 
 interface IEnvironmentsListProps {
   /**
@@ -38,7 +38,7 @@ export const EnvironmentsList = ({
   search
 }: IEnvironmentsListProps) => {
   const scrollRef = useRef<HTMLDivElement | null>(null);
-  const titleStyles = getStylesForType(
+  const titleStyles = getStylesForStyleType(
     environmentsTitleGrayscaleStyles,
     environmentsTitleGreenAccentStyles
   );

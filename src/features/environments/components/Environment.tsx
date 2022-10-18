@@ -1,9 +1,10 @@
 import React from "react";
+import CircleIcon from "@mui/icons-material/Circle";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import useTheme from "@mui/material/styles/useTheme";
-import CircleIcon from "@mui/icons-material/Circle";
 import { Environment as EnvironmentModel } from "../../../common/models";
 import { StyledIconButton } from "../../../styles";
+import { getStylesForStyleType } from "../../../utils/helpers";
 
 interface IEnvironmentProps {
   /**
@@ -19,23 +20,24 @@ export const Environment = ({ environment, onClick }: IEnvironmentProps) => {
     palette: { primary }
   } = useTheme();
 
+  const circleIconStyles = getStylesForStyleType(
+    { width: "5px", height: "5px", color: primary.main },
+    { width: "9px", height: "9px", color: "#B9D9BD" }
+  );
+
+  const buttonStyles = getStylesForStyleType(
+    { textTransform: "none", fontSize: "16px", fontWeight: 400 },
+    { textTransform: "none", fontSize: "14px", fontWeight: 600 }
+  );
+
   return (
     <>
       <ListItemIcon
         sx={{ width: "5px", minWidth: "auto", marginRight: "12px" }}
       >
-        <CircleIcon
-          sx={{
-            color: primary.main,
-            width: "5px",
-            height: "5px"
-          }}
-        />
+        <CircleIcon sx={circleIconStyles} />
       </ListItemIcon>
-      <StyledIconButton
-        sx={{ textTransform: "none", fontSize: "16px", fontWeight: 400 }}
-        onClick={onClick}
-      >
+      <StyledIconButton sx={buttonStyles} onClick={onClick}>
         {environment.name}
       </StyledIconButton>
     </>
