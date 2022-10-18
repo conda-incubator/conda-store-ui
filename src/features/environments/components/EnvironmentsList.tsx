@@ -14,6 +14,7 @@ import {
   environmentsTitleGreenAccentStyles
 } from "../styles";
 import { getStylesForStyleType } from "../../../utils/helpers";
+import { CondaLogo } from "../../../components";
 
 interface IEnvironmentsListProps {
   /**
@@ -91,7 +92,8 @@ export const EnvironmentsList = ({
   return (
     <StyledScrollContainer
       sx={{
-        height: "100%"
+        height: "100%",
+        position: "relative"
       }}
       id="environmentsScroll"
       ref={scrollRef}
@@ -132,6 +134,16 @@ export const EnvironmentsList = ({
           <EnvironmentDropdown key={namespace.namespace} data={namespace} />
         ))}
       </InfiniteScroll>
+      <Box
+        sx={{
+          position: "absolute",
+          bottom: "20px",
+          left: "30px",
+          zIndex: "-1"
+        }}
+      >
+        <CondaLogo />
+      </Box>
     </StyledScrollContainer>
   );
 };

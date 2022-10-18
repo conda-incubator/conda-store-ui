@@ -66,7 +66,11 @@ export const EnvironmentDropdown = ({
 
   return (
     <Accordion
-      sx={{ border: "none", position: "initial" }}
+      sx={{
+        border: "none",
+        position: "initial",
+        backgroundColor: "transparent"
+      }}
       elevation={0}
       expanded={isExpanded}
       disableGutters
