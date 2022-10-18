@@ -23,11 +23,15 @@ import {
   StyledAccordionExpandIcon,
   StyledAccordionSummary
 } from "../../../styles";
-import { getStylesForStyleType } from "../../../utils/helpers";
+import {
+  getIconForStyleType,
+  getStylesForStyleType
+} from "../../../utils/helpers";
 import {
   environmentAddIconGrayscaleStyles,
   environmentAddIconGreenAccentStyles
 } from "../styles";
+import { ArrowIcon } from "../../../components";
 
 interface IEnvironmentDropdownProps {
   /**
@@ -43,6 +47,11 @@ export const EnvironmentDropdown = ({
   const [isExpanded, setIsExpanded] = useState(false);
   const dispatch = useAppDispatch();
 
+  const dropdownHeaderStyles = getStylesForStyleType(
+    { display: "flex", alignItems: "center" },
+    { display: "flex", alignItems: "center", marginLeft: "15px" }
+  );
+
   const addIconStyles = getStylesForStyleType(
     environmentAddIconGrayscaleStyles,
     environmentAddIconGreenAccentStyles
@@ -51,6 +60,11 @@ export const EnvironmentDropdown = ({
   const titleStyles = getStylesForStyleType(
     { width: "217px" },
     { width: "217px", fontWeight: 700, fontSize: "15px", color: "#9AA0A6" }
+  );
+
+  const expandIcon = getIconForStyleType(
+    <StyledAccordionExpandIcon />,
+    <ArrowIcon />
   );
 
   const onCreateNewEnvironmentTab = (
@@ -82,9 +96,9 @@ export const EnvironmentDropdown = ({
           paddingLeft: "16px",
           border: "none"
         }}
-        expandIcon={<StyledAccordionExpandIcon />}
+        expandIcon={expandIcon}
       >
-        <Box sx={{ display: "flex", alignItems: "center" }}>
+        <Box sx={dropdownHeaderStyles}>
           <Typography sx={titleStyles}>{namespace}</Typography>
           <IconButton onClick={e => onCreateNewEnvironmentTab(e, namespace)}>
             <AddIcon sx={addIconStyles} />
