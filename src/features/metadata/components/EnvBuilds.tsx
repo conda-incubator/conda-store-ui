@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { StyledMetadataItem } from "../../../styles/StyledMetadataItem";
 import { Build } from "../../../features/metadata/components";
 import { IApiResponse } from "../../../common/interfaces";
@@ -15,15 +15,6 @@ export const EnvBuilds = ({ data, currentBuildId }: IData) => {
   const { data: envData = [] } = data;
   const builds = envData.length ? buildMapper(data, currentBuildId) : [];
   const currentBuild = builds.find(build => build.id === currentBuildId);
-  const [status, setStatus] = useState("");
-
-  useEffect(() => {
-    if (builds.length) {
-      if (status === "") {
-        setStatus(currentBuild?.status);
-      }
-    }
-  }, [builds]);
 
   return (
     <>
@@ -34,7 +25,7 @@ export const EnvBuilds = ({ data, currentBuildId }: IData) => {
         <Build
           builds={builds}
           currentBuildName={currentBuild.name}
-          onChangeStatus={setStatus}
+          currentBuildStatus={currentBuild.status}
         />
       )}
       {!currentBuild && (
@@ -43,9 +34,6 @@ export const EnvBuilds = ({ data, currentBuildId }: IData) => {
           sx={{ marginLeft: "15px", marginTop: "6px", marginBottom: "7px" }}
         />
       )}
-      <StyledMetadataItem>
-        <b>Status:</b> {status}
-      </StyledMetadataItem>
     </>
   );
 };
