@@ -1,4 +1,4 @@
-import { format } from "date-fns";
+import { format, utcToZonedTime } from "date-fns-tz";
 import { IApiResponse } from "../../common/interfaces";
 import { Build } from "../../common/models";
 
@@ -8,6 +8,8 @@ const STATUS_OPTIONS: any = {
   FAILED: "Failed",
   BUILDING: "Building"
 };
+
+const TIMEZONE = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
 const isBuilding = (status: string) => {
   const BUILD_STATUS = ["BUILDING"];
@@ -19,13 +21,21 @@ const isQueued = (status: string) => {
   return BUILD_STATUS.includes(status);
 };
 
+const dateToTimezone = (date: string) => {
+  const zonedDate = utcToZonedTime(`${date}Z`, TIMEZONE);
+  return format(zonedDate, "MMMM do, yyyy - h:mm a", {
+    timeZone: TIMEZONE
+  });
+};
+
 export const buildMapper = (
   { data }: IApiResponse<Build[]>,
   currentBuildId: number
 ) => {
   return data.map(({ id, status, ended_on, scheduled_on }: Build) => {
-    const dateDetails = isBuilding(status) ? scheduled_on : ended_on;
-    const date = format(new Date(dateDetails), "MMMM do, yyyy - h:mm");
+    const dateDetails =
+      isBuilding(status) || isQueued(status) ? scheduled_on : ended_on;
+    const date = dateToTimezone(dateDetails);
 
     if (isBuilding(status)) {
       return {
