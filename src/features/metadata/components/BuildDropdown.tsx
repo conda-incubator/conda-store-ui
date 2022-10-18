@@ -38,9 +38,9 @@ export const Build = ({
   // If the user is watching his current build, update build's info
   useEffect(() => {
     if (["Queued", "Building"].includes(status)) {
-      const isStillWaiting = builds.find(build => build.id === currentBuild.id);
-      if (isStillWaiting) {
-        setStatus(isStillWaiting.status);
+      const build = builds.find(build => build.id === currentBuild.id);
+      if (build) {
+        setStatus(build.status);
       }
     }
   }, [builds]);
