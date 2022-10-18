@@ -1,5 +1,4 @@
 import { format, utcToZonedTime } from "date-fns-tz";
-import { IApiResponse } from "../../common/interfaces";
 import { Build } from "../../common/models";
 
 const STATUS_OPTIONS: any = {
@@ -35,10 +34,7 @@ const dateToTimezone = (date: string) => {
   });
 };
 
-export const buildMapper = (
-  { data }: IApiResponse<Build[]>,
-  currentBuildId: number
-) => {
+export const buildMapper = (data: Build[], currentBuildId: number) => {
   return data.map(({ id, status, ended_on, scheduled_on }: Build) => {
     const dateDetails =
       isBuilding(status) || isQueued(status) ? scheduled_on : ended_on;

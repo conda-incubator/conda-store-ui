@@ -4,6 +4,7 @@ import { environmentsApiSlice } from "./metadataApiSlice";
 
 export interface IBuildState {
   enviroments: Build[];
+  builds: any[];
   page: number;
   count: number;
   size: number;
@@ -12,6 +13,7 @@ export interface IBuildState {
 
 const initialState: IBuildState = {
   enviroments: [],
+  builds: [],
   page: 1,
   count: 0,
   size: 0,
@@ -36,6 +38,7 @@ export const enviromentsSlice = createSlice({
     builder.addMatcher(
       environmentsApiSlice.endpoints.getEnviromentBuilds.matchFulfilled,
       (state, { payload: { data } }) => {
+        state.builds = data;
         state.currentBuild = { id: data[0].id };
       }
     );
