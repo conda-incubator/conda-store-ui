@@ -1,24 +1,23 @@
-import React, { useEffect, useMemo, useRef } from "react";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import CircularProgress from "@mui/material/CircularProgress";
 import GroupIcon from "@mui/icons-material/Group";
-import { EnvironmentDropdown } from "./EnvironmentDropdown";
-import { Environment, Namespace } from "../../../common/models";
-import { StyledScrollContainer } from "../../../styles";
-import { INamespaceEnvironments } from "../../../common/interfaces";
+import Box from "@mui/material/Box";
+import CircularProgress from "@mui/material/CircularProgress";
+import Typography from "@mui/material/Typography";
 import lodash from "lodash";
+import React, { useEffect, useMemo, useRef } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
-import {
-  environmentsTitleGrayscaleStyles,
-  environmentsTitleGreenAccentStyles
-} from "../styles";
+import { INamespaceEnvironments } from "../../../common/interfaces";
+import { Environment, Namespace } from "../../../common/models";
+import { GroupIconAlt } from "../../../components";
+import { StyledScrollContainer } from "../../../styles";
 import {
   getIconForStyleType,
   getStylesForStyleType
 } from "../../../utils/helpers";
-import { CondaLogo, GroupIconAlt } from "../../../components";
-import { config } from "../../../common/constants";
+import {
+  environmentsTitleGrayscaleStyles,
+  environmentsTitleGreenAccentStyles
+} from "../styles";
+import { EnvironmentDropdown } from "./EnvironmentDropdown";
 
 interface IEnvironmentsListProps {
   /**
@@ -43,11 +42,15 @@ export const EnvironmentsList = ({
   search
 }: IEnvironmentsListProps) => {
   const scrollRef = useRef<HTMLDivElement | null>(null);
-  const isGrayScaleStyleType = config.styleType === "grayscale";
 
   const titleStyles = getStylesForStyleType(
     environmentsTitleGrayscaleStyles,
     environmentsTitleGreenAccentStyles
+  );
+
+  const containerStyles = getStylesForStyleType(
+    { height: "calc(100vh - 103px)" },
+    { minHeight: "229px", maxHeight: "725px" }
   );
 
   const titleIcon = getIconForStyleType(
@@ -102,10 +105,7 @@ export const EnvironmentsList = ({
 
   return (
     <StyledScrollContainer
-      sx={{
-        height: "100%",
-        position: "relative"
-      }}
+      sx={containerStyles}
       id="environmentsScroll"
       ref={scrollRef}
     >
@@ -145,18 +145,6 @@ export const EnvironmentsList = ({
           <EnvironmentDropdown key={namespace.namespace} data={namespace} />
         ))}
       </InfiniteScroll>
-      {!isGrayScaleStyleType && (
-        <Box
-          sx={{
-            position: "absolute",
-            bottom: "20px",
-            left: "30px",
-            zIndex: "-1"
-          }}
-        >
-          <CondaLogo />
-        </Box>
-      )}
     </StyledScrollContainer>
   );
 };
