@@ -1,8 +1,8 @@
 import { config } from "../../common/constants";
 
 export const getIconForStyleType = (
-  grayscaleIcon: any,
-  greenAccentIcon: any
+  grayscaleIcon: React.ReactNode,
+  greenAccentIcon: React.ReactNode
 ) => {
   const isGrayscaleStyleType = config.styleType === "grayscale";
 
