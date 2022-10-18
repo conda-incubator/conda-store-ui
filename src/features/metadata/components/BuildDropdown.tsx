@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import useTheme from "@mui/material/styles/useTheme";
@@ -7,11 +7,12 @@ import IconButton from "@mui/material/IconButton";
 import { StyledMetadataItem } from "../../../styles/StyledMetadataItem";
 import { useAppDispatch } from "../../../hooks";
 import { currentBuildIdChanged } from "..";
+import { useAppSelector } from "../../../hooks";
 
 interface IBuildProps {
   /**
    * @param builds list of builds
-   * @param currentBuildName name of the current build
+   * @param currentBuildId id of the current build
    * @param onChangeStatus update the build status
    */
   builds: {
@@ -19,22 +20,34 @@ interface IBuildProps {
     name: string;
     status: string;
   }[];
-  currentBuildName: string;
+  currentBuildId: number;
   currentBuildStatus: string;
 }
 
 export const Build = ({
   builds,
-  currentBuildName,
+  currentBuildId,
   currentBuildStatus
 }: IBuildProps) => {
   const dispatch = useAppDispatch();
+  const { currentBuild } = useAppSelector(state => state.enviroments);
   const { palette } = useTheme();
   const [open, setOpen] = useState(false);
   const [status, setStatus] = useState(currentBuildStatus);
 
-  const handleChange = (e: SelectChangeEvent<string>) => {
-    const newCurrentBuild = builds.find(build => build.name === e.target.value);
+  useEffect(() => {
+    if (status === "Building") {
+      const isStillWaiting = builds.find(build => build.id === currentBuild.id);
+      if (isStillWaiting) {
+        setStatus(isStillWaiting.status);
+      }
+    }
+  }, [builds]);
+
+  const handleChange = (e: SelectChangeEvent<any>) => {
+    const newCurrentBuild = builds.find(
+      build => build.id === Number(e.target.value)
+    );
 
     if (newCurrentBuild) {
       dispatch(currentBuildIdChanged(newCurrentBuild.id));
@@ -49,7 +62,7 @@ export const Build = ({
         onClose={() => setOpen(false)}
         onOpen={() => setOpen(true)}
         sx={{ marginLeft: "13px" }}
-        defaultValue={currentBuildName ? currentBuildName : ""}
+        defaultValue={currentBuildId}
         onChange={handleChange}
         IconComponent={() => (
           <IconButton
@@ -73,7 +86,7 @@ export const Build = ({
       >
         {builds
           ? builds.map(build => (
-              <MenuItem key={build.id} value={build.name}>
+              <MenuItem key={build.id} value={build.id}>
                 {build.name}
               </MenuItem>
             ))

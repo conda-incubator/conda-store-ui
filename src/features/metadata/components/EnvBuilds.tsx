@@ -22,7 +22,7 @@ export const EnvBuilds = ({ currentBuildId }: IData) => {
       {currentBuild && (
         <Build
           builds={envBuilds}
-          currentBuildName={currentBuild.name}
+          currentBuildId={currentBuild.id}
           currentBuildStatus={currentBuild.status}
         />
       )}
