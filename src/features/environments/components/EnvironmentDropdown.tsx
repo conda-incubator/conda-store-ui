@@ -109,6 +109,7 @@ export const EnvironmentDropdown = ({
                   dispatch(toggleNewEnvironmentView(false));
                 }}
                 environment={environment}
+                selectedEnvironmentId={selectedEnvironment?.id}
               />
             </ListItem>
           ))}
