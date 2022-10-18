@@ -39,7 +39,9 @@ export const enviromentsSlice = createSlice({
       environmentsApiSlice.endpoints.getEnviromentBuilds.matchFulfilled,
       (state, { payload: { data } }) => {
         state.builds = data;
-        state.currentBuild = { id: data[0].id };
+        state.currentBuild = {
+          id: state.currentBuild.id ? state.currentBuild.id : data[0].id
+        };
       }
     );
   }
