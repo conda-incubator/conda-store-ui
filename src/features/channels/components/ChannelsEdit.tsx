@@ -1,8 +1,8 @@
+import React, { useState, useRef, useEffect, memo } from "react";
 import { useTheme } from "@mui/material";
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import Box from "@mui/material/Box";
-import React, { useState, useRef, useEffect } from "react";
 import {
   DragDropContext,
   Draggable,
@@ -23,43 +23,37 @@ import { reorderArray } from "../../../utils/helpers";
 export interface IChannelsEditProps {
   /**
    * @param channelsList list of channels
-   * @param updateChannels notify the parent if there are changes in channelsList array.
+   * @param updateChannels handler that will update the channels list
    */
   channelsList: string[];
   updateChannels: (channels: string[]) => void;
 }
 
-export const ChannelsEdit = ({
+const BaseChannelsEdit = ({
   channelsList,
   updateChannels
 }: IChannelsEditProps) => {
+  const listLength = channelsList.length;
   const { palette } = useTheme();
   const scrollRef = useRef<HTMLDivElement | null>(null);
+  const expandedRef = useRef(listLength > 0);
 
-  const [list, setList] = useState(channelsList);
   const [isAdding, setIsAdding] = useState(false);
 
-  const listLength = list.length;
-
   const addNewChannel = (channelName: string) => {
-    setList([...list, channelName]);
-    updateChannels([...list, channelName]);
+    updateChannels([...channelsList, channelName]);
   };
 
   const removeChannel = (channelName: string) => {
-    const filteredList = (currentData: string[]) =>
-      currentData.filter(item => item !== channelName);
-
-    setList(filteredList);
-    updateChannels(list.filter(item => item !== channelName));
+    updateChannels(channelsList.filter(item => item !== channelName));
   };
 
   const editChannel = (channelName: string, newChannelName: string) => {
-    const newChannelsList = list.map(channel =>
+    const newChannelsList = channelsList.map(channel =>
       channel === channelName ? newChannelName : channel
     );
 
-    setList(newChannelsList);
+    updateChannels(newChannelsList);
   };
 
   const onDragEnd = (result: DropResult) => {
@@ -69,12 +63,11 @@ export const ChannelsEdit = ({
 
     const { destination, source } = result;
     const reorderedArray = reorderArray({
-      list,
+      list: channelsList,
       startIndex: source.index,
       endIndex: destination.index
     });
 
-    setList(reorderedArray);
     updateChannels(reorderedArray);
   };
 
@@ -86,7 +79,7 @@ export const ChannelsEdit = ({
 
   return (
     <Accordion
-      defaultExpanded={listLength > 0}
+      defaultExpanded={expandedRef.current}
       sx={{ width: 421, boxShadow: "none" }}
       disableGutters
     >
@@ -105,7 +98,7 @@ export const ChannelsEdit = ({
                 borderRadius: "0px"
               }}
             >
-              {list.map((channel, index) => (
+              {channelsList.map((channel, index) => (
                 <Draggable key={channel} draggableId={channel} index={index}>
                   {provided => (
                     <Box
@@ -157,3 +150,18 @@ export const ChannelsEdit = ({
     </Accordion>
   );
 };
+
+// rerender only when the passed channelsList and update handler are different then the previous props
+const compareProps = (
+  prevProps: IChannelsEditProps,
+  nextProps: IChannelsEditProps
+) => {
+  const isSameArray =
+    JSON.stringify(prevProps.channelsList) ===
+    JSON.stringify(nextProps.channelsList);
+  const isSameFunc = prevProps.updateChannels === nextProps.updateChannels;
+
+  return isSameArray && isSameFunc;
+};
+
+export const ChannelsEdit = memo(BaseChannelsEdit, compareProps);

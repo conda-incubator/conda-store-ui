@@ -1,14 +1,23 @@
-import React, { useEffect, useMemo, useRef } from "react";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import CircularProgress from "@mui/material/CircularProgress";
 import GroupIcon from "@mui/icons-material/Group";
-import { EnvironmentDropdown } from "./EnvironmentDropdown";
-import { Environment, Namespace } from "../../../common/models";
-import { StyledScrollContainer } from "../../../styles";
-import { INamespaceEnvironments } from "../../../common/interfaces";
+import Box from "@mui/material/Box";
+import CircularProgress from "@mui/material/CircularProgress";
+import Typography from "@mui/material/Typography";
 import lodash from "lodash";
+import React, { useEffect, useMemo, useRef } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
+import { INamespaceEnvironments } from "../../../common/interfaces";
+import { Environment, Namespace } from "../../../common/models";
+import { GroupIconAlt } from "../../../components";
+import { StyledScrollContainer } from "../../../styles";
+import {
+  getIconForStyleType,
+  getStylesForStyleType
+} from "../../../utils/helpers";
+import {
+  environmentsTitleGrayscaleStyles,
+  environmentsTitleGreenAccentStyles
+} from "../styles";
+import { EnvironmentDropdown } from "./EnvironmentDropdown";
 
 interface IEnvironmentsListProps {
   /**
@@ -33,6 +42,21 @@ export const EnvironmentsList = ({
   search
 }: IEnvironmentsListProps) => {
   const scrollRef = useRef<HTMLDivElement | null>(null);
+
+  const titleStyles = getStylesForStyleType(
+    environmentsTitleGrayscaleStyles,
+    environmentsTitleGreenAccentStyles
+  );
+
+  const containerStyles = getStylesForStyleType(
+    { height: "calc(100vh - 103px)" },
+    { minHeight: "229px", maxHeight: "725px" }
+  );
+
+  const titleIcon = getIconForStyleType(
+    <GroupIcon />,
+    <GroupIconAlt style={{ marginBottom: "8px", marginLeft: "10px" }} />
+  );
 
   const { defaultNamespace, sharedNamespaces } = useMemo(() => {
     let defaultNamespace: INamespaceEnvironments | null = null;
@@ -81,9 +105,7 @@ export const EnvironmentsList = ({
 
   return (
     <StyledScrollContainer
-      sx={{
-        height: "100%"
-      }}
+      sx={containerStyles}
       id="environmentsScroll"
       ref={scrollRef}
     >
@@ -116,16 +138,8 @@ export const EnvironmentsList = ({
             marginTop: "5px"
           }}
         >
-          <Typography
-            sx={{
-              textTransform: "uppercase",
-              fontWeight: 500,
-              marginRight: "10px"
-            }}
-          >
-            Shared environments
-          </Typography>
-          <GroupIcon />
+          <Typography sx={titleStyles}>Shared environments</Typography>
+          {titleIcon}
         </Box>
         {sharedNamespaces.map(namespace => (
           <EnvironmentDropdown key={namespace.namespace} data={namespace} />

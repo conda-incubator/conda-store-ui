@@ -1,33 +1,36 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-import { CondaSpecificationPip, Dependency } from "../../common/models";
+import {
+  BuildPackage,
+  CondaSpecificationPip,
+  Dependency
+} from "../../common/models";
 import { requestedPackageParser } from "../../utils/helpers";
+import { dependenciesApiSlice } from "../dependencies";
 import { environmentDetailsApiSlice } from "../environmentDetails";
 
 export interface IRequestedPackagesState {
   requestedPackages: (string | CondaSpecificationPip)[];
-  packageVersions: { [key: string]: string };
+  versionsWithoutConstraints: { [key: string]: string };
+  versionsWithConstraints: { [key: string]: string };
   packagesWithLatestVersions: { [key: string]: string };
+  buildPackagesCache: {
+    [key: string]: { packages: BuildPackage[]; count: number };
+  };
 }
 
 const initialState: IRequestedPackagesState = {
   requestedPackages: [],
-  packageVersions: {},
-  packagesWithLatestVersions: {}
+  versionsWithoutConstraints: {},
+  versionsWithConstraints: {},
+  packagesWithLatestVersions: {},
+  buildPackagesCache: {}
 };
 
 export const requestedPackagesSlice = createSlice({
   name: "requestedPackages",
   initialState,
   reducers: {
-    packageVersionAdded: (
-      state,
-      action: PayloadAction<{ packageName: string; version: string }>
-    ) => {
-      const { packageName, version } = action.payload;
-
-      state.packageVersions[packageName] = version;
-    },
     updatePackages: (state, action) => {
       const packages = action.payload;
       state.requestedPackages = packages;
@@ -36,6 +39,36 @@ export const requestedPackagesSlice = createSlice({
       const newRequestedPackage = `${action.payload.name}==${action.payload.version}`;
 
       state.requestedPackages.push(newRequestedPackage);
+    },
+    packageUpdated: (
+      state,
+      action: PayloadAction<{ currentPackage: string; updatedPackage: string }>
+    ) => {
+      const { currentPackage, updatedPackage } = action.payload;
+
+      state.requestedPackages = state.requestedPackages.map(p =>
+        p === currentPackage ? updatedPackage : p
+      );
+    },
+    packageRemoved: (state, action: PayloadAction<string>) => {
+      state.requestedPackages = state.requestedPackages.filter(
+        p => p !== action.payload
+      );
+    },
+    packageAdded: (state, action: PayloadAction<string>) => {
+      state.requestedPackages.push(action.payload);
+    },
+    buildPackagesCacheAdded: (
+      state,
+      action: PayloadAction<{
+        pkgName: string;
+        packages: BuildPackage[];
+        count: number;
+      }>
+    ) => {
+      const { pkgName, packages, count } = action.payload;
+
+      state.buildPackagesCache[pkgName] = { packages, count };
     }
   },
   extraReducers: builder => {
@@ -54,10 +87,16 @@ export const requestedPackagesSlice = createSlice({
         }
       ) => {
         state.requestedPackages = dependencies;
+        state.packagesWithLatestVersions = {};
+        state.versionsWithConstraints = {};
 
         dependencies.forEach(dep => {
           if (typeof dep === "string") {
-            const { constraint, name } = requestedPackageParser(dep);
+            const { constraint, name, version } = requestedPackageParser(dep);
+
+            if (version) {
+              state.versionsWithConstraints[name] = version;
+            }
 
             if (constraint === "latest") {
               state.packagesWithLatestVersions[name] = dep;
@@ -66,8 +105,28 @@ export const requestedPackagesSlice = createSlice({
         });
       }
     );
+    builder.addMatcher(
+      dependenciesApiSlice.endpoints.getBuildPackages.matchFulfilled,
+      (state, { payload: { data, size, count, page } }) => {
+        state.versionsWithoutConstraints = {};
+
+        data.forEach(dep => {
+          const foundPackage = state.packagesWithLatestVersions[dep.name];
+
+          if (foundPackage) {
+            state.versionsWithoutConstraints[dep.name] = dep.version;
+          }
+        });
+      }
+    );
   }
 });
 
-export const { packageVersionAdded, updatePackages, dependencyPromoted } =
-  requestedPackagesSlice.actions;
+export const {
+  updatePackages,
+  dependencyPromoted,
+  packageUpdated,
+  packageRemoved,
+  packageAdded,
+  buildPackagesCacheAdded
+} = requestedPackagesSlice.actions;

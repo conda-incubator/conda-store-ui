@@ -1,8 +1,13 @@
+import React, {
+  useState,
+  useRef,
+  useEffect,
+  useCallback,
+  useMemo
+} from "react";
 import Box from "@mui/material/Box";
-import React, { useState, useEffect } from "react";
-import { cloneDeep } from "lodash";
+import { cloneDeep, debounce } from "lodash";
 import { stringify } from "yaml";
-
 import { BlockContainerEditMode } from "../../../../components";
 import { ChannelsEdit, updateChannels } from "../../../../features/channels";
 import { Dependencies, pageChanged } from "../../../../features/dependencies";
@@ -17,7 +22,7 @@ import {
 import { CodeEditor } from "../../../../features/yamlEditor";
 import { useAppDispatch, useAppSelector } from "../../../../hooks";
 import { StyledButtonPrimary } from "../../../../styles";
-
+import { CondaSpecificationPip } from "../../../../common/models";
 interface ISpecificationEdit {
   descriptionUpdated: boolean;
   onUpdateEnvironment: (specification: any) => void;
@@ -35,89 +40,100 @@ export const SpecificationEdit = ({
   );
   const hasMore = size * page <= count;
   const dispatch = useAppDispatch();
+
   const [show, setShow] = useState(false);
-  const [code, setCode] = useState({});
-  const [newChannels, setNewChannels] = useState(channels);
-  const [backupChannels] = useState(cloneDeep(channels));
-  const [newPackages, setNewPackages] = useState(requestedPackages);
-  const [backupPackages] = useState(cloneDeep(requestedPackages));
+  const [code, setCode] = useState<{
+    dependencies: (string | CondaSpecificationPip)[];
+    channels: string[];
+  }>({ dependencies: requestedPackages, channels });
   const [envIsUpdated, setEnvIsUpdated] = useState(false);
 
-  const onUpdatePackages = (packages: string[]) => {
-    dispatch(updatePackages(packages));
-    setNewPackages(packages);
-  };
+  const initialChannels = useRef(cloneDeep(channels));
+  const initialPackages = useRef(cloneDeep(requestedPackages));
 
-  const onUpdateChannels = (channels: string[]) => {
-    setNewChannels(channels);
-  };
+  const stringifiedInitialChannels = useMemo(() => {
+    return JSON.stringify(initialChannels.current);
+  }, [initialChannels.current]);
 
-  const onUpdateEditor = ({ channels, dependencies }: any) => {
-    setNewChannels(channels);
-    setNewPackages(dependencies);
-  };
+  const stringifiedInitialPackages = useMemo(() => {
+    return JSON.stringify(initialPackages.current);
+  }, [initialPackages.current]);
+
+  const onUpdateChannels = useCallback((channels: string[]) => {
+    dispatch(updateChannels(channels));
+  }, []);
+
+  const onUpdateEditor = debounce(
+    ({
+      channels,
+      dependencies
+    }: {
+      channels: string[];
+      dependencies: string[];
+    }) => {
+      const code = { dependencies, channels };
+      const isDifferentChannels =
+        JSON.stringify(code.channels) !== stringifiedInitialChannels;
+      const isDifferentPackages =
+        JSON.stringify(code.dependencies) !== stringifiedInitialPackages;
+
+      if (!channels || channels.length === 0) {
+        code.channels = [];
+      }
+
+      if (!dependencies || dependencies.length === 0) {
+        code.dependencies = [];
+      }
+
+      if (isDifferentChannels || isDifferentPackages) {
+        setEnvIsUpdated(true);
+      }
+
+      setCode(code);
+    },
+    200
+  );
 
   const onToggleEditorView = (value: boolean) => {
-    setShow(value);
-    if (!value) {
-      // If user want to switch the yaml editor view, let's send this info to the component
-      dispatch(updatePackages(newPackages));
+    if (show) {
+      dispatch(updatePackages(code.dependencies));
+      dispatch(updateChannels(code.channels));
+    } else {
+      setCode({ dependencies: requestedPackages, channels });
     }
-    dispatch(updateChannels(newChannels));
+
+    setShow(value);
   };
 
   const onEditEnvironment = () => {
-    if (show) {
-      // If user is using the yaml editor, before make the request update the store
-      dispatch(updateChannels(newChannels));
-      dispatch(updatePackages(newPackages));
-    }
+    const envContent = show
+      ? code
+      : { dependencies: requestedPackages, channels };
 
-    onUpdateEnvironment({
-      channels: newChannels,
-      dependencies: newPackages
-    });
+    onUpdateEnvironment(envContent);
   };
 
   const onCancelEdition = () => {
     setEnvIsUpdated(false);
-    dispatch(updatePackages(backupPackages));
-    dispatch(updateChannels(backupChannels));
     dispatch(modeChanged(EnvironmentDetailsModes.READ));
+    dispatch(updatePackages(initialPackages.current));
+    dispatch(updateChannels(initialChannels.current));
   };
-
-  useEffect(() => {
-    if (channels.length) {
-      setCode({
-        channels,
-        dependencies: requestedPackages
-      });
-    } else {
-      setCode({
-        dependencies: requestedPackages
-      });
-    }
-  }, [channels, requestedPackages]);
-
-  useEffect(() => {
-    setNewPackages(requestedPackages);
-  }, [requestedPackages]);
 
   useEffect(() => {
     if (descriptionUpdated) {
       setEnvIsUpdated(true);
     }
-    if (newChannels.length !== backupChannels.length) {
-      setEnvIsUpdated(true);
-    }
-    if (newPackages.length !== backupPackages.length) {
-      setEnvIsUpdated(true);
-    }
-  }, [newChannels, newPackages, descriptionUpdated]);
 
-  useEffect(() => {
-    setNewPackages(requestedPackages);
-  }, [requestedPackages]);
+    const isDifferentChannels =
+      JSON.stringify(channels) !== stringifiedInitialChannels;
+    const isDifferentPackages =
+      JSON.stringify(requestedPackages) !== stringifiedInitialPackages;
+
+    if (isDifferentChannels || isDifferentPackages) {
+      setEnvIsUpdated(true);
+    }
+  }, [channels, requestedPackages, descriptionUpdated]);
 
   return (
     <BlockContainerEditMode
@@ -127,15 +143,14 @@ export const SpecificationEdit = ({
     >
       <Box sx={{ padding: "13px 19px" }}>
         {show ? (
-          <CodeEditor code={stringify(code)} onChangeEditor={onUpdateEditor} />
+          <CodeEditor
+            code={stringify({ channels, dependencies: requestedPackages })}
+            onChangeEditor={onUpdateEditor}
+          />
         ) : (
           <>
             <Box sx={{ marginBottom: "30px" }}>
-              <RequestedPackagesEdit
-                packageList={requestedPackages}
-                updatePackages={onUpdatePackages}
-                isCreating={false}
-              />
+              <RequestedPackagesEdit packageList={requestedPackages} />
             </Box>
             <Box sx={{ marginBottom: "30px" }}>
               <Dependencies
@@ -163,14 +178,14 @@ export const SpecificationEdit = ({
         >
           <StyledButtonPrimary
             sx={{ padding: "5px 60px" }}
-            onClick={() => onCancelEdition()}
+            onClick={onCancelEdition}
           >
             Cancel
           </StyledButtonPrimary>
           <StyledButtonPrimary
             sx={{ padding: "5px 60px" }}
+            onClick={onEditEnvironment}
             disabled={!envIsUpdated}
-            onClick={() => onEditEnvironment()}
           >
             Save
           </StyledButtonPrimary>

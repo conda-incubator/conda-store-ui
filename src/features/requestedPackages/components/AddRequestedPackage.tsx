@@ -130,7 +130,7 @@ export const AddRequestedPackage = ({
 
   return (
     <Box sx={{ display: "flex", alignItems: "center", marginTop: "15px" }}>
-      <Box sx={{ marginRight: "160px" }}>
+      <Box sx={{ marginRight: isCreating ? "158px" : "160px" }}>
         <Autocomplete
           onInputChange={(event, value, reason) => {
             if (reason === "clear") {

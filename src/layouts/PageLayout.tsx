@@ -8,6 +8,7 @@ import { EnvironmentCreate } from "../features/environmentCreate";
 import { EnvironmentDetails } from "../features/environmentDetails";
 import { PageTabs } from "../features/tabs";
 import { useAppSelector } from "../hooks";
+import { getStylesForStyleType } from "../utils/helpers";
 
 export const PageLayout = () => {
   const { selectedEnvironment, newEnvironment } = useAppSelector(
@@ -19,13 +20,18 @@ export const PageLayout = () => {
     description: null
   });
 
+  const containerStyles = getStylesForStyleType(
+    { display: "flex", width: "100%", height: "100%" },
+    { display: "flex", width: "100%" }
+  );
+
   const onCreateEnv = (notification: any) => {
     setNotification(notification);
     setIsEnvCreated(true);
   };
 
   return (
-    <Box sx={{ display: "flex", width: "100%", height: "100%" }}>
+    <Box sx={containerStyles}>
       <Environments
         refreshEnvironments={isEnvCreated}
         onUpdateRefreshEnvironments={setIsEnvCreated}

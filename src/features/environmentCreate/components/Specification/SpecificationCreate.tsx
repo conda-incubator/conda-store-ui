@@ -1,64 +1,81 @@
-import React, { useState, useEffect } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import { ChannelsEdit } from "../../../../features/channels";
-import { RequestedPackagesEdit } from "../../../../features/requestedPackages";
 import { BlockContainerEditMode } from "../../../../components";
 import { StyledButtonPrimary } from "../../../../styles";
 import { CodeEditor } from "../../../../features/yamlEditor";
 import { stringify } from "yaml";
+import { CreateEnvironmentPackages } from "../CreateEnvironmentPackages";
+import { useAppDispatch, useAppSelector } from "../../../../hooks";
+import {
+  channelsChanged,
+  editorCodeUpdated,
+  environmentCreateStateCleared
+} from "../../environmentCreateSlice";
 
 export const SpecificationCreate = ({ onCreateEnvironment }: any) => {
+  const dispatch = useAppDispatch();
+  const { channels, requestedPackages } = useAppSelector(
+    state => state.environmentCreate
+  );
   const [show, setShow] = useState(false);
-  const [channels, setChannels] = useState<string[]>([]);
-  const [requestedPackages, setPackages] = useState<string[]>([]);
-  const [newChannels, setNewChannels] = useState(channels);
-  const [newPackages, setNewPackages] = useState(requestedPackages);
-  const [code, setCode] = useState({
+  const [editorContent, setEditorContent] = useState<{
+    channels: string[];
+    dependencies: string[];
+  }>({ channels: [], dependencies: [] });
+
+  const onUpdateChannels = useCallback((channels: string[]) => {
+    dispatch(channelsChanged(channels));
+  }, []);
+
+  const onUpdateEditor = ({
     channels,
-    dependencies: requestedPackages
-  });
+    dependencies
+  }: {
+    channels: string[];
+    dependencies: string[];
+  }) => {
+    const code = { channels, dependencies };
 
-  const onUpdateChannels = (channels: string[]) => {
-    setChannels(channels);
-  };
+    if (!channels || channels.length === 0) {
+      code.channels = [];
+    }
 
-  const onUpdatePackages = (packages: string[]) => {
-    setPackages(packages);
-  };
+    if (!dependencies || dependencies.length === 0) {
+      code.dependencies = [];
+    }
 
-  const onUpdateEditor = ({ channels, dependencies }: any) => {
-    setNewChannels(channels);
-    setNewPackages(dependencies);
+    setEditorContent(code);
   };
 
   const onToggleEditorView = (value: boolean) => {
-    setShow(value);
-    if (!value) {
-      // If user want to switch the yaml editor view, let's send this info to the component
-      setChannels(newChannels);
-      setPackages(newPackages);
+    if (show) {
+      dispatch(
+        editorCodeUpdated({
+          channels: editorContent.channels,
+          dependencies: editorContent.dependencies
+        })
+      );
+    } else {
+      setEditorContent({ dependencies: requestedPackages, channels });
     }
+
+    setShow(value);
   };
 
-  const onUpdateEnvironment = () => {
-    if (show) {
-      setChannels(newChannels);
-      setPackages(newPackages);
-    }
-    onCreateEnvironment({
-      channels: newChannels,
-      dependencies: newPackages
-    });
+  const handleSubmit = () => {
+    const code = show
+      ? editorContent
+      : { dependencies: requestedPackages, channels };
+
+    onCreateEnvironment(code);
   };
 
   useEffect(() => {
-    setCode({
-      channels,
-      dependencies: requestedPackages
-    });
-    setNewChannels(channels);
-    setNewPackages(requestedPackages);
-  }, [channels, requestedPackages]);
+    return () => {
+      dispatch(environmentCreateStateCleared());
+    };
+  }, []);
 
   return (
     <BlockContainerEditMode
@@ -68,14 +85,18 @@ export const SpecificationCreate = ({ onCreateEnvironment }: any) => {
     >
       <Box sx={{ padding: "13px 19px" }}>
         {show ? (
-          <CodeEditor code={stringify(code)} onChangeEditor={onUpdateEditor} />
+          <CodeEditor
+            code={stringify({
+              channels,
+              dependencies: requestedPackages
+            })}
+            onChangeEditor={onUpdateEditor}
+          />
         ) : (
           <>
             <Box sx={{ marginBottom: "30px" }}>
-              <RequestedPackagesEdit
-                packageList={requestedPackages}
-                updatePackages={onUpdatePackages}
-                isCreating={true}
+              <CreateEnvironmentPackages
+                requestedPackages={requestedPackages}
               />
             </Box>
             <Box sx={{ margiBottom: "30px" }}>
@@ -96,7 +117,7 @@ export const SpecificationCreate = ({ onCreateEnvironment }: any) => {
         >
           <StyledButtonPrimary
             sx={{ padding: "5px 60px" }}
-            onClick={onUpdateEnvironment}
+            onClick={handleSubmit}
           >
             Create
           </StyledButtonPrimary>

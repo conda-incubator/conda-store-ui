@@ -12,6 +12,8 @@ import {
   initialState as NInitialState,
   namespacesReducer
 } from "../../../features/namespaces/reducer";
+import { CondaLogo } from "../../../components";
+import { config } from "../../../common/constants";
 
 const BaseEnvironments = ({
   refreshEnvironments,
@@ -19,8 +21,8 @@ const BaseEnvironments = ({
 }: any) => {
   const size = 100;
   const [state, dispatch] = useReducer(environmentsReducer, initialState);
-
   const [stateN, dispatchN] = useReducer(namespacesReducer, NInitialState);
+  const isGrayScaleStyleType = config.styleType === "grayscale";
 
   const [triggerNamespacesQuery] = useLazyFetchNamespacesQuery();
 
@@ -92,11 +94,17 @@ const BaseEnvironments = ({
   }, [refreshEnvironments]);
 
   return (
-    <Box sx={{ width: "313px", border: `1px solid ${primary.main}` }}>
+    <Box
+      sx={{
+        width: "313px",
+        border: `1px solid ${primary.main}`,
+        borderBottom: "none"
+      }}
+    >
       <Box sx={{ borderBottom: `1px solid ${primary.main}` }}>
         <EnvironmentsSearch onChange={e => handleChange(e.target.value)} />
       </Box>
-      <Box sx={{ height: "calc(100vh - 103px)" }}>
+      <Box>
         {state.data && (
           <EnvironmentsList
             next={next}
@@ -107,6 +115,13 @@ const BaseEnvironments = ({
           />
         )}
       </Box>
+      {!isGrayScaleStyleType && (
+        <Box
+          sx={{ marginLeft: "26px", marginTop: "45px", marginBottom: "20px" }}
+        >
+          <CondaLogo />
+        </Box>
+      )}
     </Box>
   );
 };

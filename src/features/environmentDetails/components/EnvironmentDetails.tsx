@@ -1,9 +1,8 @@
+import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import Alert from "@mui/material/Alert";
-import React, { useEffect, useState } from "react";
 import { stringify } from "yaml";
 import { parseArtifacts } from "../../../utils/helpers/parseArtifactList";
-
 import { EnvironmentDetailsHeader } from "./EnvironmentDetailsHeader";
 import { SpecificationEdit, SpecificationReadOnly } from "./Specification";
 import { useGetBuildQuery } from "../environmentDetailsApiSlice";
@@ -12,7 +11,7 @@ import { useGetBuildPackagesQuery } from "../../../features/dependencies";
 import { ArtifactList } from "../../../features/artifacts";
 import {
   EnvMetadata,
-  useLazyGetEnviromentBuildsQuery
+  useGetEnviromentBuildsQuery
 } from "../../../features/metadata";
 import {
   EnvironmentDetailsModes,
@@ -21,41 +20,57 @@ import {
 } from "../../../features/environmentDetails";
 import { useAppDispatch, useAppSelector } from "../../../hooks";
 import artifactList from "../../../utils/helpers/artifact";
+import { CondaSpecificationPip } from "../../../common/models";
+import { updatePackages } from "../../requestedPackages";
+import { updateChannels } from "../../channels";
 
 interface IEnvDetails {
   environmentNotification: (notification: any) => void;
 }
 
+interface IUpdateEnvironmentArgs {
+  dependencies: (string | CondaSpecificationPip)[];
+  channels: string[];
+}
+
+const REFRESH_POLLING_INTERVAL = 2000;
+
 export const EnvironmentDetails = ({
   environmentNotification
 }: IEnvDetails) => {
   const dispatch = useAppDispatch();
+
   const { mode } = useAppSelector(state => state.environmentDetails);
   const { page } = useAppSelector(state => state.dependencies);
   const { selectedEnvironment } = useAppSelector(state => state.tabs);
-  const [enviromentBuilds, setEnviromentBuilds] = useState<any>([]);
+  const { currentBuild } = useAppSelector(state => state.enviroments);
   const [name, setName] = useState(selectedEnvironment?.name || "");
-  const [createOrUpdate] = useCreateOrUpdateMutation();
   const [descriptionIsUpdated, setDescriptionIsUpdated] = useState(false);
   const [description, setDescription] = useState(
     selectedEnvironment ? selectedEnvironment.description : undefined
   );
-  const [envIsUpdated, setEnvIsUpdated] = useState(false);
   const [error, setError] = useState({
     message: "",
     visible: false
   });
 
-  const [triggerQuery] = useLazyGetEnviromentBuildsQuery();
+  const [createOrUpdate] = useCreateOrUpdateMutation();
+  useGetEnviromentBuildsQuery(selectedEnvironment, {
+    pollingInterval: REFRESH_POLLING_INTERVAL
+  });
 
-  if (selectedEnvironment) {
-    useGetBuildQuery(selectedEnvironment.current_build_id);
-    useGetBuildPackagesQuery({
-      buildId: selectedEnvironment.current_build_id,
+  const { isFetching } = useGetBuildQuery(currentBuild.id, {
+    skip: !currentBuild.id
+  });
+
+  useGetBuildPackagesQuery(
+    {
+      buildId: currentBuild.id,
       page,
       size: 100
-    });
-  }
+    },
+    { skip: isFetching || !currentBuild.id }
+  );
 
   const updateDescription = (description: string) => {
     setDescription(description);
@@ -65,7 +80,7 @@ export const EnvironmentDetails = ({
   const { data } = useGetArtifactsQuery(selectedEnvironment?.current_build_id);
   const apiArtifactTypes: string[] = parseArtifacts(data);
 
-  const updateEnvironment = async (code: any) => {
+  const updateEnvironment = async (code: IUpdateEnvironmentArgs) => {
     const namespace = selectedEnvironment?.namespace.name;
 
     const environmentInfo = {
@@ -82,14 +97,15 @@ export const EnvironmentDetails = ({
       });
       await createOrUpdate(environmentInfo).unwrap();
       dispatch(modeChanged(EnvironmentDetailsModes.READ));
+      dispatch(updatePackages(code.dependencies));
+      dispatch(updateChannels(code.channels));
       environmentNotification({
         show: true,
         description: `${name} environment has been updated`
       });
-      setEnvIsUpdated(true);
     } catch (e) {
       setError({
-        message: e?.data?.message ?? e.status,
+        message: e?.data?.message ?? e.error ?? e.status,
         visible: true
       });
     }
@@ -99,12 +115,7 @@ export const EnvironmentDetails = ({
     setName(selectedEnvironment?.name || "");
     setDescription(selectedEnvironment?.description || "");
     setDescriptionIsUpdated(false);
-
-    (async () => {
-      const { data } = await triggerQuery(selectedEnvironment);
-      setEnviromentBuilds(data);
-    })();
-  }, [selectedEnvironment, envIsUpdated]);
+  }, [selectedEnvironment]);
 
   return (
     <Box sx={{ padding: "14px 12px" }}>
@@ -121,10 +132,9 @@ export const EnvironmentDetails = ({
       )}
       <Box sx={{ marginBottom: "30px" }}>
         <EnvMetadata
-          selectedEnv={enviromentBuilds}
-          description={description}
-          current_build_id={selectedEnvironment?.current_build_id || 0}
           mode={mode}
+          current_build_id={selectedEnvironment?.current_build_id}
+          description={description}
           onUpdateDescription={updateDescription}
         />
       </Box>
