@@ -22,9 +22,10 @@ export const StyledAccordionDetails = styled(AccordionDetails, {
       backgroundColor: "transparent"
     },
     "&::-webkit-scrollbar-thumb": {
-      backgroundColor: `${palette.primary.main}`,
+      backgroundColor:
+        styleType === "grayscale" ? `${palette.primary.main}` : "#DADCE0",
       borderRadius: "10px",
-      border: "1px solid #666666"
+      border: styleType === "grayscale" ? "1px solid #666666" : "none"
     }
   })
 );

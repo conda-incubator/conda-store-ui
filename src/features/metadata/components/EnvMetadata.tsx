@@ -35,7 +35,7 @@ export const EnvMetadata = ({
 
   const dividerStyles = getStylesForStyleType(
     { backgroundColor: palette.primary.main },
-    { backgroundColor: "#E0E0E0" }
+    {}
   );
 
   return (
