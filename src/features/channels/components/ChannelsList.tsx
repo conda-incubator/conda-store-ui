@@ -9,6 +9,8 @@ import {
   StyledAccordionSummary,
   StyledAccordionTitle
 } from "../../../styles";
+import { getIconForStyleType } from "../../../utils/helpers";
+import { ArrowIcon } from "../../../components";
 
 export interface IChannelsListProps {
   /**
@@ -20,13 +22,18 @@ export interface IChannelsListProps {
 export const ChannelsList = ({ channelList }: IChannelsListProps) => {
   const listLength = channelList.length;
 
+  const expandIcon = getIconForStyleType(
+    <StyledAccordionExpandIcon />,
+    <ArrowIcon />
+  );
+
   return (
     <Accordion
       sx={{ width: 421, boxShadow: "none" }}
       disableGutters
       defaultExpanded
     >
-      <StyledAccordionSummary expandIcon={<StyledAccordionExpandIcon />}>
+      <StyledAccordionSummary expandIcon={expandIcon}>
         <StyledAccordionTitle>Channels</StyledAccordionTitle>
       </StyledAccordionSummary>
       <StyledAccordionDetails sx={{ padding: "11px 40px" }}>
