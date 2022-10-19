@@ -1,11 +1,16 @@
 import AccordionDetails from "@mui/material/AccordionDetails";
 import { styled } from "@mui/system";
 
-export const StyledAccordionDetails = styled(AccordionDetails)(
-  ({ theme: { palette } }) => ({
-    border: `1px solid ${palette.primary.main}`,
+export const StyledAccordionDetails = styled(AccordionDetails, {
+  shouldForwardProp: prop => prop !== "styleType"
+})<{ styleType?: string }>(
+  ({ theme: { palette }, styleType = "green-accent" }) => ({
+    border:
+      styleType === "grayscale"
+        ? `1px solid ${palette.primary.main}`
+        : "1px solid #BCBFC4",
     borderTop: "none",
-    borderRadius: "0px 0px 5px 5px",
+    borderRadius: styleType === "grayscale" ? "0px 0px 5px 5px" : "Opx",
     overflowY: "scroll",
     "&::-webkit-scrollbar": {
       width: "15px"

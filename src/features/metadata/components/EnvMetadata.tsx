@@ -1,14 +1,13 @@
+import React from "react";
 import Divider from "@mui/material/Divider";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
-import Typography from "@mui/material/Typography";
 import useTheme from "@mui/material/styles/useTheme";
-import React from "react";
-
-import { EnvBuilds, Description } from "../../../features/metadata/components";
+import Typography from "@mui/material/Typography";
+import { config } from "../../../common/constants";
+import { Description, EnvBuilds } from "../../../features/metadata/components";
 import { StyledBox } from "../../../styles";
-import { getStylesForStyleType } from "../../../utils/helpers";
 
 export enum EnvironmentDetailsModes {
   "CREATE" = "create",
@@ -33,14 +32,10 @@ export const EnvMetadata = ({
   onUpdateDescription
 }: IEnvMetadataProps) => {
   const { palette } = useTheme();
-
-  const boxStyles = getStylesForStyleType(
-    {},
-    { backgroundColor: "#E6F4EA", border: "1px solid #E0E0E0" }
-  );
+  const styleType = config.styleType;
 
   return (
-    <StyledBox sx={boxStyles}>
+    <StyledBox styleType={styleType}>
       <List>
         <ListItem>
           <ListItemText
