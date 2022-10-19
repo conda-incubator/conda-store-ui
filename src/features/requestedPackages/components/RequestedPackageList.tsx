@@ -2,7 +2,6 @@ import Accordion from "@mui/material/Accordion";
 import Box from "@mui/material/Box";
 import React, { useMemo } from "react";
 import { RequestedPackage } from ".";
-import { config } from "../../../common/constants";
 import { CondaSpecificationPip } from "../../../common/models";
 import { ArrowIcon } from "../../../components";
 import {
@@ -28,7 +27,6 @@ export const RequestedPackageList = ({
     [packageList]
   );
   const listLength = filteredPackageList.length;
-  const styleType = config.styleType;
 
   const expandIcon = getIconForStyleType(
     <StyledAccordionExpandIcon />,
@@ -41,15 +39,10 @@ export const RequestedPackageList = ({
       disableGutters
       defaultExpanded
     >
-      <StyledAccordionSummary styleType={styleType} expandIcon={expandIcon}>
-        <StyledAccordionTitle styleType={styleType}>
-          Requested Packages
-        </StyledAccordionTitle>
+      <StyledAccordionSummary expandIcon={expandIcon}>
+        <StyledAccordionTitle>Requested Packages</StyledAccordionTitle>
       </StyledAccordionSummary>
-      <StyledAccordionDetails
-        styleType={styleType}
-        sx={{ padding: "11px 40px" }}
-      >
+      <StyledAccordionDetails sx={{ padding: "11px 40px" }}>
         {filteredPackageList.map((item, index) => (
           <Box
             key={`${item}`}

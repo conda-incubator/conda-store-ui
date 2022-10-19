@@ -1,10 +1,13 @@
 import AccordionDetails from "@mui/material/AccordionDetails";
 import { styled } from "@mui/system";
+import { config } from "../common/constants";
+
+const currentStyleType = config.styleType;
 
 export const StyledAccordionDetails = styled(AccordionDetails, {
   shouldForwardProp: prop => prop !== "styleType"
 })<{ styleType?: string }>(
-  ({ theme: { palette }, styleType = "green-accent" }) => ({
+  ({ theme: { palette }, styleType = currentStyleType }) => ({
     border:
       styleType === "grayscale"
         ? `1px solid ${palette.primary.main}`

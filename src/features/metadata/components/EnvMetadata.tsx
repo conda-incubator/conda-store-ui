@@ -1,11 +1,10 @@
-import React from "react";
 import Divider from "@mui/material/Divider";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import useTheme from "@mui/material/styles/useTheme";
 import Typography from "@mui/material/Typography";
-import { config } from "../../../common/constants";
+import React from "react";
 import { Description, EnvBuilds } from "../../../features/metadata/components";
 import { StyledBox } from "../../../styles";
 
@@ -32,10 +31,9 @@ export const EnvMetadata = ({
   onUpdateDescription
 }: IEnvMetadataProps) => {
   const { palette } = useTheme();
-  const styleType = config.styleType;
 
   return (
-    <StyledBox styleType={styleType}>
+    <StyledBox>
       <List>
         <ListItem>
           <ListItemText
