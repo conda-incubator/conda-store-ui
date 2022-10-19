@@ -25,6 +25,20 @@ export const PageLayout = () => {
     { display: "flex", width: "100%" }
   );
 
+  const contentSectionStyles = getStylesForStyleType(
+    {
+      border: "1px solid #000",
+      width: "100%",
+      marginTop: "-1px"
+    },
+    {
+      border: "1px solid #E0E0E0",
+      width: "100%",
+      marginTop: "-1px",
+      backgroundColor: "#F9F9F9"
+    }
+  );
+
   const onCreateEnv = (notification: any) => {
     setNotification(notification);
     setIsEnvCreated(true);
@@ -42,25 +56,13 @@ export const PageLayout = () => {
             <PageTabs />
 
             {selectedEnvironment && !newEnvironment.isActive && (
-              <Box
-                sx={{
-                  border: "1px solid #000",
-                  width: "100%",
-                  marginTop: "-1px"
-                }}
-              >
+              <Box sx={contentSectionStyles}>
                 <EnvironmentDetails environmentNotification={setNotification} />
               </Box>
             )}
 
             {!selectedEnvironment && newEnvironment.isActive && (
-              <Box
-                sx={{
-                  border: "1px solid #000",
-                  width: "100%",
-                  marginTop: "-1px"
-                }}
-              >
+              <Box sx={contentSectionStyles}>
                 <EnvironmentCreate environmentNotification={onCreateEnv} />
               </Box>
             )}
