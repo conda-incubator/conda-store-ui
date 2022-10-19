@@ -8,6 +8,7 @@ import React from "react";
 
 import { EnvBuilds, Description } from "../../../features/metadata/components";
 import { StyledBox } from "../../../styles";
+import { getStylesForStyleType } from "../../../utils/helpers";
 
 export enum EnvironmentDetailsModes {
   "CREATE" = "create",
@@ -32,8 +33,14 @@ export const EnvMetadata = ({
   onUpdateDescription
 }: IEnvMetadataProps) => {
   const { palette } = useTheme();
+
+  const boxStyles = getStylesForStyleType(
+    {},
+    { backgroundColor: "#E6F4EA", border: "1px solid #E0E0E0" }
+  );
+
   return (
-    <StyledBox>
+    <StyledBox sx={boxStyles}>
       <List>
         <ListItem>
           <ListItemText
