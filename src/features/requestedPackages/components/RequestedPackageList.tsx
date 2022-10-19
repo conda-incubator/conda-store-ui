@@ -10,7 +10,10 @@ import {
   StyledAccordionSummary,
   StyledAccordionTitle
 } from "../../../styles";
-import { getIconForStyleType } from "../../../utils/helpers";
+import {
+  getIconForStyleType,
+  getStylesForStyleType
+} from "../../../utils/helpers";
 
 export interface IRequestedPackageListProps {
   /**
@@ -28,6 +31,11 @@ export const RequestedPackageList = ({
   );
   const listLength = filteredPackageList.length;
 
+  const accordionDetailsStyles = getStylesForStyleType(
+    { padding: "11px 40px" },
+    { padding: "11px 21px" }
+  );
+
   const expandIcon = getIconForStyleType(
     <StyledAccordionExpandIcon />,
     <ArrowIcon />
@@ -42,7 +50,7 @@ export const RequestedPackageList = ({
       <StyledAccordionSummary expandIcon={expandIcon}>
         <StyledAccordionTitle>Requested Packages</StyledAccordionTitle>
       </StyledAccordionSummary>
-      <StyledAccordionDetails sx={{ padding: "11px 40px" }}>
+      <StyledAccordionDetails sx={accordionDetailsStyles}>
         {filteredPackageList.map((item, index) => (
           <Box
             key={`${item}`}

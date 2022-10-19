@@ -2,7 +2,11 @@ import React from "react";
 import SquareIcon from "@mui/icons-material/Square";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import { requestedPackageParser } from "../../../utils/helpers";
+import {
+  getStylesForStyleType,
+  requestedPackageParser
+} from "../../../utils/helpers";
+import { config } from "../../../common/constants";
 
 interface IRequestedPackageProps {
   /**
@@ -16,6 +20,17 @@ export const RequestedPackage = ({
 }: IRequestedPackageProps) => {
   const { constraint, name, version } =
     requestedPackageParser(requestedPackage);
+  const isGrayscaleStyleType = config.styleType === "grayscale";
+
+  const packageNameStyles = getStylesForStyleType(
+    { width: 190 },
+    { width: 190, fontSize: "14px", color: "#3C4043" }
+  );
+
+  const constraintStyles = getStylesForStyleType(
+    {},
+    { fontSize: "14px", color: "#3C4043" }
+  );
 
   const displayConstraint = () => {
     if (constraint === "latest") {
@@ -28,12 +43,14 @@ export const RequestedPackage = ({
   return (
     <Box sx={{ display: "flex", alignItems: "center" }}>
       <Box sx={{ display: "flex", alignItems: "center" }}>
-        <SquareIcon
-          sx={{ color: "#000", width: 10, height: 10, marginRight: "12px" }}
-        />
-        <Typography sx={{ width: 190 }}>{name}</Typography>
+        {isGrayscaleStyleType && (
+          <SquareIcon
+            sx={{ color: "#000", width: 10, height: 10, marginRight: "12px" }}
+          />
+        )}
+        <Typography sx={packageNameStyles}>{name}</Typography>
       </Box>
-      <Typography>{displayConstraint()}</Typography>
+      <Typography sx={constraintStyles}>{displayConstraint()}</Typography>
     </Box>
   );
 };
