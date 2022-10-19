@@ -1,5 +1,4 @@
 import { format, utcToZonedTime } from "date-fns-tz";
-import { IApiResponse } from "../../common/interfaces";
 import { Build } from "../../common/models";
 
 const STATUS_OPTIONS: any = {
@@ -21,6 +20,13 @@ const isQueued = (status: string) => {
   return BUILD_STATUS.includes(status);
 };
 
+const isCompleted = (status: string) => {
+  if (status === "COMPLETED") {
+    return "Completed";
+  }
+  return STATUS_OPTIONS[status];
+};
+
 const dateToTimezone = (date: string) => {
   const zonedDate = utcToZonedTime(`${date}Z`, TIMEZONE);
   return format(zonedDate, "MMMM do, yyyy - h:mm a", {
@@ -28,39 +34,40 @@ const dateToTimezone = (date: string) => {
   });
 };
 
-export const buildMapper = (
-  { data }: IApiResponse<Build[]>,
-  currentBuildId: number
-) => {
+export const buildMapper = (data: Build[], currentBuildId: number) => {
   return data.map(({ id, status, ended_on, scheduled_on }: Build) => {
     const dateDetails =
       isBuilding(status) || isQueued(status) ? scheduled_on : ended_on;
     const date = dateToTimezone(dateDetails);
 
+    if (id === currentBuildId) {
+      return {
+        id,
+        name: `${date} - Active`,
+        status: isCompleted(status)
+      };
+    }
+
     if (isBuilding(status)) {
       return {
         id,
-        name: `${date} - Building`
+        name: `${date} - Building`,
+        status: "Building"
       };
     }
 
     if (isQueued(status)) {
       return {
         id,
-        name: `${date} - Queued`
-      };
-    }
-
-    if (id === currentBuildId) {
-      return {
-        id,
-        name: `${date} - Active`
+        name: `${date} - Queued`,
+        status: "Building"
       };
     }
 
     return {
       id,
-      name: `${date} - ${STATUS_OPTIONS[status]}`
+      name: `${date} - ${STATUS_OPTIONS[status]}`,
+      status: isCompleted(status)
     };
   });
 };

@@ -1,20 +1,18 @@
 import React from "react";
+import { CircularProgress } from "@mui/material";
 import { StyledMetadataItem } from "../../../styles/StyledMetadataItem";
 import { Build } from "../../../features/metadata/components";
-import { IApiResponse } from "../../../common/interfaces";
-import { Build as IBuild } from "../../../common/models";
 import { buildMapper } from "../../../utils/helpers/buildMapper";
-import { CircularProgress } from "@mui/material";
+import { useAppSelector } from "../../../hooks";
 
 interface IData {
-  data: IApiResponse<IBuild[]>;
   currentBuildId: number;
 }
 
-export const EnvBuilds = ({ data, currentBuildId }: IData) => {
-  const { data: envData = [] } = data;
-  const builds = envData.length ? buildMapper(data, currentBuildId) : [];
-  const currentBuild = builds.find(build => build.id === currentBuildId);
+export const EnvBuilds = ({ currentBuildId }: IData) => {
+  const { builds } = useAppSelector(state => state.enviroments);
+  const envBuilds = builds.length ? buildMapper(builds, currentBuildId) : [];
+  const currentBuild = envBuilds.find(build => build.id === currentBuildId);
 
   return (
     <>
@@ -22,7 +20,11 @@ export const EnvBuilds = ({ data, currentBuildId }: IData) => {
         <b>Build</b>
       </StyledMetadataItem>
       {currentBuild && (
-        <Build builds={builds} currentBuildName={currentBuild.name} />
+        <Build
+          builds={envBuilds}
+          currentBuildId={currentBuild.id}
+          currentBuildStatus={currentBuild.status}
+        />
       )}
       {!currentBuild && (
         <CircularProgress
@@ -30,9 +32,6 @@ export const EnvBuilds = ({ data, currentBuildId }: IData) => {
           sx={{ marginLeft: "15px", marginTop: "6px", marginBottom: "7px" }}
         />
       )}
-      <StyledMetadataItem>
-        <b>Status:</b> Completed/Building/Failed
-      </StyledMetadataItem>
     </>
   );
 };
