@@ -4,6 +4,7 @@ import { StyledMetadataItem } from "../../../styles/StyledMetadataItem";
 import { Build } from "../../../features/metadata/components";
 import { buildMapper } from "../../../utils/helpers/buildMapper";
 import { useAppSelector } from "../../../hooks";
+import { getStylesForStyleType } from "../../../utils/helpers";
 
 interface IData {
   currentBuildId: number;
@@ -14,11 +15,14 @@ export const EnvBuilds = ({ currentBuildId }: IData) => {
   const envBuilds = builds.length ? buildMapper(builds, currentBuildId) : [];
   const currentBuild = envBuilds.find(build => build.id === currentBuildId);
 
+  const textStyles = getStylesForStyleType(
+    { fontWeight: "bold" },
+    { marginBottom: "10px", fontSize: "14px", fontWeight: 500 }
+  );
+
   return (
     <>
-      <StyledMetadataItem>
-        <b>Build</b>
-      </StyledMetadataItem>
+      <StyledMetadataItem sx={textStyles}>Built</StyledMetadataItem>
       {currentBuild && (
         <Build
           builds={envBuilds}

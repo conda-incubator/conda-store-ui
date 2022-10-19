@@ -7,6 +7,7 @@ import Typography from "@mui/material/Typography";
 import React from "react";
 import { Description, EnvBuilds } from "../../../features/metadata/components";
 import { StyledBox } from "../../../styles";
+import { getStylesForStyleType } from "../../../utils/helpers";
 
 export enum EnvironmentDetailsModes {
   "CREATE" = "create",
@@ -32,6 +33,11 @@ export const EnvMetadata = ({
 }: IEnvMetadataProps) => {
   const { palette } = useTheme();
 
+  const dividerStyles = getStylesForStyleType(
+    { backgroundColor: palette.primary.main },
+    { backgroundColor: "#E0E0E0" }
+  );
+
   return (
     <StyledBox>
       <List>
@@ -44,7 +50,7 @@ export const EnvMetadata = ({
             }
           ></ListItemText>
         </ListItem>
-        <Divider sx={{ bgcolor: palette.primary.main }} />
+        <Divider sx={dividerStyles} />
       </List>
       <Description
         mode={mode}
