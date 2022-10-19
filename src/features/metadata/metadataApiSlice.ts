@@ -25,5 +25,6 @@ export const {
   useGetEnviromentsQuery,
   useGetEnviromentQuery,
   useGetEnviromentBuildsQuery,
-  useGetEnviromentBuildQuery
+  useGetEnviromentBuildQuery,
+  useLazyGetEnviromentBuildQuery
 } = environmentsApiSlice;
