@@ -31,6 +31,18 @@ export const EnvironmentDetailsHeader = ({
     { fontSize: "19px", color: "#3C4043", fontWeight: 400 }
   );
 
+  const nameInputStyles = getStylesForStyleType(
+    {
+      backgroundColor: "#ECECEC",
+      border: "1px solid #000",
+      width: "500px"
+    },
+    {
+      border: "1px solid #BCBFC4",
+      width: "500px"
+    }
+  );
+
   return (
     <Box
       sx={{
@@ -58,11 +70,7 @@ export const EnvironmentDetailsHeader = ({
       {mode === EnvironmentDetailsModes.CREATE && (
         <>
           <TextField
-            sx={{
-              backgroundColor: "#ECECEC",
-              border: "1px solid #000",
-              width: "500px"
-            }}
+            sx={nameInputStyles}
             inputProps={{
               style: {
                 padding: "8px 16px",

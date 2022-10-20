@@ -10,6 +10,7 @@ import {
 import useTheme from "@mui/material/styles/useTheme";
 import { Box } from "@mui/system";
 import React, { useEffect, useRef, useState } from "react";
+import { ArrowIcon } from "../../../components";
 import { useAppDispatch } from "../../../hooks";
 import {
   StyledAccordionDetails,
@@ -19,6 +20,7 @@ import {
   StyledButtonPrimary,
   StyledEditPackagesTableCell
 } from "../../../styles";
+import { getIconForStyleType } from "../../../utils/helpers";
 import { AddRequestedPackage } from "../../requestedPackages";
 import { requestedPackagesChanged } from "../environmentCreateSlice";
 import { CreateEnvironmentPackagesTableRow } from "./CreateEnvironmentPackagesTableRow";
@@ -38,6 +40,11 @@ export const CreateEnvironmentPackages = ({
   const scrollRef = useRef<HTMLDivElement | null>(null);
   const { palette } = useTheme();
 
+  const icon = getIconForStyleType(
+    <StyledAccordionExpandIcon />,
+    <ArrowIcon />
+  );
+
   useEffect(() => {
     if (isAdding && scrollRef.current) {
       scrollRef.current.scrollIntoView({ behavior: "smooth" });
@@ -50,7 +57,7 @@ export const CreateEnvironmentPackages = ({
       defaultExpanded
       disableGutters
     >
-      <StyledAccordionSummary expandIcon={<StyledAccordionExpandIcon />}>
+      <StyledAccordionSummary expandIcon={icon}>
         <StyledAccordionTitle>Requested Packages</StyledAccordionTitle>
       </StyledAccordionSummary>
       <StyledAccordionDetails
@@ -121,6 +128,7 @@ export const CreateEnvironmentPackages = ({
         <StyledButtonPrimary
           variant="contained"
           onClick={() => setIsAdding(true)}
+          isAltType
         >
           + Add Package
         </StyledButtonPrimary>
