@@ -23,6 +23,7 @@ import { useAppDispatch } from "../../../hooks";
 import { packageAdded } from "../requestedPackagesSlice";
 import { getIconForStyleType } from "../../../utils/helpers";
 import { ArrowIcon } from "../../../components";
+import { config } from "../../../common/constants";
 
 export interface IRequestedPackagesEditProps {
   /**
@@ -38,6 +39,7 @@ export const RequestedPackagesEdit = ({
   const [isAdding, setIsAdding] = useState(false);
   const { palette } = useTheme();
   const scrollRef = useRef<HTMLDivElement | null>(null);
+  const isGrayscaleStyleType = config.styleType === "grayscale";
 
   const handleSubmit = (packageName: string) => {
     dispatch(packageAdded(packageName));
@@ -136,7 +138,7 @@ export const RequestedPackagesEdit = ({
         sx={{
           border: `1px solid ${palette.primary.main}`,
           borderTop: "0px",
-          borderRadius: "0px 0px 5px 5px",
+          borderRadius: isGrayscaleStyleType ? "0px 0px 5px 5px" : "0px",
           padding: "15px 21px",
           display: "flex",
           justifyContent: "center"
@@ -144,6 +146,7 @@ export const RequestedPackagesEdit = ({
       >
         <StyledButtonPrimary
           variant="contained"
+          isAltType
           onClick={() => setIsAdding(true)}
         >
           + Add Package
