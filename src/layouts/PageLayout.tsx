@@ -14,7 +14,6 @@ export const PageLayout = () => {
   const { selectedEnvironment, newEnvironment } = useAppSelector(
     state => state.tabs
   );
-  const [isEnvCreated, setIsEnvCreated] = useState(false);
   const [notification, setNotification] = useState({
     show: false,
     description: null
@@ -39,17 +38,9 @@ export const PageLayout = () => {
     }
   );
 
-  const onCreateEnv = (notification: any) => {
-    setNotification(notification);
-    setIsEnvCreated(true);
-  };
-
   return (
     <Box sx={containerStyles}>
-      <Environments
-        refreshEnvironments={isEnvCreated}
-        onUpdateRefreshEnvironments={setIsEnvCreated}
-      />
+      <Environments />
       <Box sx={{ borderTop: "1px solid #A7A7A7", width: "100%" }}>
         {(selectedEnvironment || newEnvironment.isActive) && (
           <>
@@ -63,7 +54,7 @@ export const PageLayout = () => {
 
             {!selectedEnvironment && newEnvironment.isActive && (
               <Box sx={contentSectionStyles}>
-                <EnvironmentCreate environmentNotification={onCreateEnv} />
+                <EnvironmentCreate environmentNotification={setNotification} />
               </Box>
             )}
           </>

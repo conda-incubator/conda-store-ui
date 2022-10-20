@@ -14,11 +14,9 @@ import {
 } from "../../../features/namespaces/reducer";
 import { CondaLogo } from "../../../components";
 import { config } from "../../../common/constants";
+import { useInterval } from "../../../utils/helpers";
 
-const BaseEnvironments = ({
-  refreshEnvironments,
-  onUpdateRefreshEnvironments
-}: any) => {
+const BaseEnvironments = () => {
   const size = 100;
   const [state, dispatch] = useReducer(environmentsReducer, initialState);
   const [stateN, dispatchN] = useReducer(namespacesReducer, NInitialState);
@@ -74,24 +72,20 @@ const BaseEnvironments = ({
     }
   };
 
-  useEffect(() => {
-    (async () => {
-      const { data } = await triggerQuery({
-        page: state.page,
-        size,
-        search: state.search
+  useInterval(async () => {
+    const { data } = await triggerQuery({
+      page: state.page,
+      size,
+      search: state.search
+    });
+
+    if (data) {
+      dispatch({
+        type: ActionTypes.DATA_FETCHED,
+        payload: { data: data.data, count: data.count }
       });
-
-      if (data) {
-        dispatch({
-          type: ActionTypes.DATA_FETCHED,
-          payload: { data: data.data, count: data.count }
-        });
-      }
-
-      onUpdateRefreshEnvironments(false);
-    })();
-  }, [refreshEnvironments]);
+    }
+  }, 2000);
 
   return (
     <Box
