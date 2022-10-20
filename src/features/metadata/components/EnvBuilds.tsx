@@ -17,12 +17,12 @@ export const EnvBuilds = ({ currentBuildId }: IData) => {
 
   const textStyles = getStylesForStyleType(
     { fontWeight: "bold" },
-    { marginBottom: "10px", fontSize: "14px", fontWeight: 500 }
+    { fontSize: "14px", fontWeight: 500 }
   );
 
   return (
     <>
-      <StyledMetadataItem sx={textStyles}>Built</StyledMetadataItem>
+      <StyledMetadataItem sx={textStyles}>Builds:</StyledMetadataItem>
       {currentBuild && (
         <Build
           builds={envBuilds}
