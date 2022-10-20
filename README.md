@@ -6,8 +6,8 @@ React-based UI for [conda store](https://github.com/Quansight/conda-store)
 
 Checkout the project and start the `docker-compose` stack :
 ```sh
-git clone https://github.com/Quansight/conda-store.git
-cd conda-store 
+git clone https://github.com/Quansight/conda-store-ui.git
+cd conda-store-ui
 docker-compose up --build -d
 ```
 
@@ -17,8 +17,8 @@ docker-compose up --build -d
 
 Checkout the project and start the `docker-compose-dev` stack :
 ```sh
-git clone https://github.com/Quansight/conda-store.git
-cd conda-store 
+git clone https://github.com/Quansight/conda-store-ui.git
+cd conda-store-ui
 docker-compose -f docker-compose-dev.yml up --build -d      
 ```
 
