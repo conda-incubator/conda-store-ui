@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useReducer } from "react";
+import React, { memo, useReducer } from "react";
 import Box from "@mui/material/Box";
 import useTheme from "@mui/material/styles/useTheme";
 import { EnvironmentsList } from "./EnvironmentsList";
@@ -16,34 +16,17 @@ import { CondaLogo } from "../../../components";
 import { config } from "../../../common/constants";
 import { useInterval } from "../../../utils/helpers";
 
+const INTERVAL_REFRESHING = 2000;
+
 const BaseEnvironments = () => {
   const size = 100;
   const [state, dispatch] = useReducer(environmentsReducer, initialState);
   const [stateN, dispatchN] = useReducer(namespacesReducer, NInitialState);
   const isGrayScaleStyleType = config.styleType === "grayscale";
-
-  const [triggerNamespacesQuery] = useLazyFetchNamespacesQuery();
-
-  useEffect(() => {
-    (async () => {
-      const { data } = await triggerNamespacesQuery({
-        page: stateN.page,
-        size
-      });
-
-      if (data) {
-        dispatchN({
-          type: NActionTypes.DATA_FETCHED,
-          payload: { data: data.data, count: data.count }
-        });
-      }
-    })();
-  }, []);
-
   const {
     palette: { primary }
   } = useTheme();
-
+  const [triggerNamespacesQuery] = useLazyFetchNamespacesQuery();
   const [triggerQuery] = useLazyFetchEnvironmentsQuery();
 
   const handleChange = debounce(async (value: string) => {
@@ -73,19 +56,33 @@ const BaseEnvironments = () => {
   };
 
   useInterval(async () => {
-    const { data } = await triggerQuery({
+    (async () => {
+      const { data: namespacesData } = await triggerNamespacesQuery({
+        page: stateN.page,
+        size
+      });
+
+      if (namespacesData) {
+        dispatchN({
+          type: NActionTypes.DATA_FETCHED,
+          payload: { data: namespacesData.data, count: namespacesData.count }
+        });
+      }
+    })();
+
+    const { data: environmentsData } = await triggerQuery({
       page: state.page,
       size,
       search: state.search
     });
 
-    if (data) {
+    if (environmentsData) {
       dispatch({
         type: ActionTypes.DATA_FETCHED,
-        payload: { data: data.data, count: data.count }
+        payload: { data: environmentsData.data, count: environmentsData.count }
       });
     }
-  }, 2000);
+  }, INTERVAL_REFRESHING);
 
   return (
     <Box
