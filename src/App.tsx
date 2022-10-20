@@ -5,11 +5,13 @@ import { BrowserRouter as Router } from "react-router-dom";
 import { Route, Routes } from "react-router";
 
 import { PageLayout } from "./layouts";
-import { IPreferences, PreferencesContext, prefDefault } from "./preferences";
+import { IPreferences, PreferencesContext, prefDefault, PrefDispatch } from "./preferences";
 import { store } from "./store";
 import { theme } from "./theme";
 
 import "../style/index.css";
+
+
 
 const AppRouter = () => {
   // for now, trivial routing is sufficient
@@ -22,22 +24,21 @@ const AppRouter = () => {
   );
 };
 
-export const App = (pref: IPreferences = {}) => {
+export const App = (pref: IPreferences = {}, initState?: (value: PrefDispatch) => void) => {
   pref = {...prefDefault, ...pref};
   const [prefState, setPrefState] = React.useState(pref);
-
-  function setPref(pref: IPreferences = {}) {
-    pref = {...prefState, ...pref};
-    setPrefState(pref);
+  
+  if (initState !== undefined) {
+    initState(setPrefState);
   }
 
   return (
     <PreferencesContext.Provider value={prefState}>
-      <Provider store={store}>
-        <ThemeProvider theme={theme}>
+      <ThemeProvider theme={theme}>
+        <Provider store={store}>
           <AppRouter />
-        </ThemeProvider>
-      </Provider>
+        </Provider>
+      </ThemeProvider>
     </PreferencesContext.Provider>
   );
 };

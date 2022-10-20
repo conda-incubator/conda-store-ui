@@ -15,3 +15,5 @@ export const prefDefault = {
 }
 
 export const PreferencesContext = React.createContext<IPreferences>(prefDefault);
+
+export type PrefDispatch = React.Dispatch<React.SetStateAction<IPreferences>>;
