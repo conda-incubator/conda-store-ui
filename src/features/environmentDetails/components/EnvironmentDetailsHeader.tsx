@@ -8,6 +8,7 @@ import {
   EnvironmentDetailsModes,
   modeChanged
 } from "../environmentDetailsSlice";
+import { getStylesForStyleType } from "../../../utils/helpers";
 
 interface IEnvironmentDetailsHeaderProps {
   /**
@@ -25,6 +26,11 @@ export const EnvironmentDetailsHeader = ({
   const { mode } = useAppSelector(state => state.environmentDetails);
   const dispatch = useAppDispatch();
 
+  const titleStyles = getStylesForStyleType(
+    { fontSize: "24px", color: "#000" },
+    { fontSize: "19px", color: "#3C4043", fontWeight: 400 }
+  );
+
   return (
     <Box
       sx={{
@@ -37,9 +43,7 @@ export const EnvironmentDetailsHeader = ({
       {(mode === EnvironmentDetailsModes.READ ||
         mode === EnvironmentDetailsModes.EDIT) && (
         <>
-          <Typography sx={{ fontSize: "24px", color: "#000" }}>
-            {envName}
-          </Typography>
+          <Typography sx={titleStyles}>{envName}</Typography>
           {mode === EnvironmentDetailsModes.READ && (
             <StyledButtonPrimary
               onClick={() =>

@@ -3,12 +3,17 @@ import Box from "@mui/material/Box";
 import React, { useMemo } from "react";
 import { RequestedPackage } from ".";
 import { CondaSpecificationPip } from "../../../common/models";
+import { ArrowIcon } from "../../../components";
 import {
   StyledAccordionDetails,
   StyledAccordionExpandIcon,
   StyledAccordionSummary,
   StyledAccordionTitle
 } from "../../../styles";
+import {
+  getIconForStyleType,
+  getStylesForStyleType
+} from "../../../utils/helpers";
 
 export interface IRequestedPackageListProps {
   /**
@@ -26,16 +31,26 @@ export const RequestedPackageList = ({
   );
   const listLength = filteredPackageList.length;
 
+  const accordionDetailsStyles = getStylesForStyleType(
+    { padding: "11px 40px" },
+    { padding: "11px 21px" }
+  );
+
+  const expandIcon = getIconForStyleType(
+    <StyledAccordionExpandIcon />,
+    <ArrowIcon />
+  );
+
   return (
     <Accordion
       sx={{ width: 421, boxShadow: "none" }}
       disableGutters
       defaultExpanded
     >
-      <StyledAccordionSummary expandIcon={<StyledAccordionExpandIcon />}>
+      <StyledAccordionSummary expandIcon={expandIcon}>
         <StyledAccordionTitle>Requested Packages</StyledAccordionTitle>
       </StyledAccordionSummary>
-      <StyledAccordionDetails sx={{ padding: "11px 40px" }}>
+      <StyledAccordionDetails sx={accordionDetailsStyles}>
         {filteredPackageList.map((item, index) => (
           <Box
             key={`${item}`}
