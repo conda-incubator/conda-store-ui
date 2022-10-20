@@ -18,7 +18,8 @@ import {
   StyledAccordionTitle,
   StyledButtonPrimary
 } from "../../../styles";
-import { reorderArray } from "../../../utils/helpers";
+import { getIconForStyleType, reorderArray } from "../../../utils/helpers";
+import { ArrowIcon } from "../../../components";
 
 export interface IChannelsEditProps {
   /**
@@ -39,6 +40,11 @@ const BaseChannelsEdit = ({
   const expandedRef = useRef(listLength > 0);
 
   const [isAdding, setIsAdding] = useState(false);
+
+  const icon = getIconForStyleType(
+    <StyledAccordionExpandIcon />,
+    <ArrowIcon />
+  );
 
   const addNewChannel = (channelName: string) => {
     updateChannels([...channelsList, channelName]);
@@ -83,7 +89,7 @@ const BaseChannelsEdit = ({
       sx={{ width: 421, boxShadow: "none" }}
       disableGutters
     >
-      <StyledAccordionSummary expandIcon={<StyledAccordionExpandIcon />}>
+      <StyledAccordionSummary expandIcon={icon}>
         <StyledAccordionTitle>Channels</StyledAccordionTitle>
       </StyledAccordionSummary>
       <DragDropContext onDragEnd={onDragEnd}>

@@ -21,6 +21,8 @@ import {
 import { CondaSpecificationPip } from "../../../common/models";
 import { useAppDispatch } from "../../../hooks";
 import { packageAdded } from "../requestedPackagesSlice";
+import { getIconForStyleType } from "../../../utils/helpers";
+import { ArrowIcon } from "../../../components";
 
 export interface IRequestedPackagesEditProps {
   /**
@@ -41,6 +43,11 @@ export const RequestedPackagesEdit = ({
     dispatch(packageAdded(packageName));
   };
 
+  const icon = getIconForStyleType(
+    <StyledAccordionExpandIcon />,
+    <ArrowIcon />
+  );
+
   const filteredPackageList = useMemo(
     () => packageList.filter(item => typeof item !== "object") as string[],
     [packageList]
@@ -58,7 +65,7 @@ export const RequestedPackagesEdit = ({
       defaultExpanded
       disableGutters
     >
-      <StyledAccordionSummary expandIcon={<StyledAccordionExpandIcon />}>
+      <StyledAccordionSummary expandIcon={icon}>
         <StyledAccordionTitle>Requested Packages</StyledAccordionTitle>
       </StyledAccordionSummary>
       <StyledAccordionDetails
