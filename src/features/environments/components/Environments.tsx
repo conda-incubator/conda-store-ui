@@ -18,7 +18,7 @@ import { useInterval } from "../../../utils/helpers";
 
 const INTERVAL_REFRESHING = 2000;
 
-interface IBaseEnvironments {
+export interface IBaseEnvironments {
   refreshEnvironments: boolean;
   onUpdateRefreshEnvironments: (isUpdated: boolean) => void;
 }
