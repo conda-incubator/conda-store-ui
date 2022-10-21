@@ -22,9 +22,15 @@ const AppRouter = () => {
   );
 };
 
-export const App = (prefs: IPreferences = {}, initState?: (setPrefs: (prefs: IPreferences) => void) => void) => {
+interface AppProps {
+  prefs?: IPreferences,
+  initState?: (setPrefs: (prefs: IPreferences) => void) => void
+}
+
+export const App = ({prefs = {}, initState}: AppProps) => {
   prefs = {...prefGlobal, ...prefs};
-  const [prefState, setPrefState] = React.useState(prefs);
+  const [prefState, _] = React.useState(prefs);
+  // const [prefState, setPrefState] = React.useState(prefs);
   
   const setPrefs = (prefNew: IPreferences) => {
     prefGlobal.apiUrl = prefNew.apiUrl ?? prefGlobal.apiUrl;
@@ -32,9 +38,9 @@ export const App = (prefs: IPreferences = {}, initState?: (setPrefs: (prefs: IPr
     prefGlobal.authToken = prefNew.authToken ?? prefGlobal.authToken;
     prefGlobal.loginUrl = prefNew.loginUrl ?? prefGlobal.loginUrl;
 
-    setPrefState(prefPrev => {
-      return {...prefPrev, ...prefNew};
-    });
+    // setPrefState(prefPrev => {
+    //   return {...prefPrev, ...prefNew};
+    // });
   }
 
   if (initState !== undefined) {
