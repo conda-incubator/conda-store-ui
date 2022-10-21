@@ -10,7 +10,7 @@ import {
   getIconForStyleType,
   getStylesForStyleType
 } from "../../../utils/helpers";
-import { SquareIconAlt } from "../../../components";
+import { SquareIconAlt, UploadIcon } from "../../../components";
 
 interface IDependenciesItemProps {
   /**
@@ -50,6 +50,8 @@ const BaseDependenciesItem = ({
     }
   );
 
+  const promoteIcon = getIconForStyleType(<FileUploadIcon />, <UploadIcon />);
+
   const icon = getIconForStyleType(
     <SquareIcon
       sx={{
@@ -72,7 +74,7 @@ const BaseDependenciesItem = ({
       {isEditMode && (
         <Tooltip title="Promote as requested package" placement="right-start">
           <StyledIconButton onClick={handleClick}>
-            <FileUploadIcon />
+            {promoteIcon}
           </StyledIconButton>
         </Tooltip>
       )}

@@ -18,7 +18,9 @@ import {
   StyledAccordionTitle,
   StyledButtonPrimary
 } from "../../../styles";
-import { reorderArray } from "../../../utils/helpers";
+import { getIconForStyleType, reorderArray } from "../../../utils/helpers";
+import { ArrowIcon } from "../../../components";
+import { config } from "../../../common/constants";
 
 export interface IChannelsEditProps {
   /**
@@ -39,6 +41,13 @@ const BaseChannelsEdit = ({
   const expandedRef = useRef(listLength > 0);
 
   const [isAdding, setIsAdding] = useState(false);
+
+  const isGrayscaleStyleType = config.styleType === "grayscale";
+
+  const icon = getIconForStyleType(
+    <StyledAccordionExpandIcon />,
+    <ArrowIcon />
+  );
 
   const addNewChannel = (channelName: string) => {
     updateChannels([...channelsList, channelName]);
@@ -83,7 +92,7 @@ const BaseChannelsEdit = ({
       sx={{ width: 421, boxShadow: "none" }}
       disableGutters
     >
-      <StyledAccordionSummary expandIcon={<StyledAccordionExpandIcon />}>
+      <StyledAccordionSummary expandIcon={icon}>
         <StyledAccordionTitle>Channels</StyledAccordionTitle>
       </StyledAccordionSummary>
       <DragDropContext onDragEnd={onDragEnd}>
@@ -136,13 +145,16 @@ const BaseChannelsEdit = ({
         sx={{
           border: `1px solid ${palette.primary.main}`,
           borderTop: "0px",
-          borderRadius: "0px 0px 5px 5px",
-          padding: "15px 21px"
+          borderRadius: isGrayscaleStyleType ? "0px 0px 5px 5px" : "0px",
+          padding: "15px 21px",
+          display: "flex",
+          justifyContent: "center"
         }}
       >
         <StyledButtonPrimary
           variant="contained"
           onClick={() => setIsAdding(true)}
+          isAltType
         >
           + Add Channel
         </StyledButtonPrimary>

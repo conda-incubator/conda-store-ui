@@ -13,6 +13,7 @@ import {
 } from "../features/requestedPackages/reducer";
 import { useAppDispatch, useAppSelector } from "../hooks";
 import { buildPackagesCacheAdded } from "../features/requestedPackages";
+import { getStylesForStyleType } from "../utils/helpers";
 
 interface IVersionSelectProps {
   /**
@@ -40,6 +41,32 @@ export const VersionSelect = ({
   const [state, dispatch] = useReducer(requestedPackagesReducer, initialState);
 
   const [triggerQuery] = useLazyGetPackageVersionSuggestionsQuery();
+
+  const inputStyles = getStylesForStyleType(
+    {
+      padding: "7px 9px !important",
+      backgroundColor: "#ECECEC",
+      borderRadius: "0px"
+    },
+    {
+      padding: "7px 9px !important",
+      backgroundColor: "#fff",
+      borderRadius: "0px"
+    }
+  );
+
+  const iconStyles = getStylesForStyleType(
+    {
+      backgroundColor: "#ECECEC",
+      height: "37px",
+      borderLeft: `2px solid  ${palette.primary.main}`
+    },
+    {
+      backgroundColor: "#fff",
+      height: "37px",
+      borderLeft: "1px solid #BCBFC4"
+    }
+  );
 
   useEffect(() => {
     (async () => {
@@ -121,13 +148,7 @@ export const VersionSelect = ({
           sx={{ padding: "0px" }}
           onClick={() => setOpen(currState => !currState)}
         >
-          <ArrowDropDownIcon
-            sx={{
-              backgroundColor: "#ECECEC",
-              height: "37px",
-              borderLeft: `2px solid  ${palette.primary.main}`
-            }}
-          />
+          <ArrowDropDownIcon sx={iconStyles} />
         </IconButton>
       )}
       MenuProps={{ PaperProps: { sx: { maxHeight: 200 } } }}
@@ -137,11 +158,7 @@ export const VersionSelect = ({
         border: "none"
       }}
       inputProps={{
-        sx: {
-          padding: "7px 9px !important",
-          backgroundColor: "#ECECEC",
-          borderRadius: "0px"
-        }
+        sx: inputStyles
       }}
     >
       <MenuItem key="empty" value="" sx={{ height: "30px" }}>
