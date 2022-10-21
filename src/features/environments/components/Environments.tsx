@@ -1,4 +1,4 @@
-import React, { memo, useReducer } from "react";
+import React, { memo, useEffect, useReducer } from "react";
 import Box from "@mui/material/Box";
 import useTheme from "@mui/material/styles/useTheme";
 import { EnvironmentsList } from "./EnvironmentsList";
@@ -18,7 +18,10 @@ import { useInterval } from "../../../utils/helpers";
 
 const INTERVAL_REFRESHING = 2000;
 
-const BaseEnvironments = () => {
+const BaseEnvironments = ({
+  refreshEnvironments,
+  onUpdateRefreshEnvironments
+}: any) => {
   const size = 100;
   const [state, dispatch] = useReducer(environmentsReducer, initialState);
   const [stateN, dispatchN] = useReducer(namespacesReducer, NInitialState);
@@ -28,6 +31,35 @@ const BaseEnvironments = () => {
   } = useTheme();
   const [triggerNamespacesQuery] = useLazyFetchNamespacesQuery();
   const [triggerQuery] = useLazyFetchEnvironmentsQuery();
+
+  const getNamespaces = async () => {
+    const { data: namespacesData } = await triggerNamespacesQuery({
+      page: stateN.page,
+      size
+    });
+
+    if (namespacesData) {
+      dispatchN({
+        type: NActionTypes.DATA_FETCHED,
+        payload: { data: namespacesData.data, count: namespacesData.count }
+      });
+    }
+  };
+
+  const getEnvironments = async () => {
+    const { data: environmentsData } = await triggerQuery({
+      page: state.page,
+      size,
+      search: state.search
+    });
+
+    if (environmentsData) {
+      dispatch({
+        type: ActionTypes.DATA_FETCHED,
+        payload: { data: environmentsData.data, count: environmentsData.count }
+      });
+    }
+  };
 
   const handleChange = debounce(async (value: string) => {
     const { data } = await triggerQuery({ page: 1, size, search: value });
@@ -57,32 +89,19 @@ const BaseEnvironments = () => {
 
   useInterval(async () => {
     (async () => {
-      const { data: namespacesData } = await triggerNamespacesQuery({
-        page: stateN.page,
-        size
-      });
-
-      if (namespacesData) {
-        dispatchN({
-          type: NActionTypes.DATA_FETCHED,
-          payload: { data: namespacesData.data, count: namespacesData.count }
-        });
-      }
+      getNamespaces();
+      getEnvironments();
     })();
-
-    const { data: environmentsData } = await triggerQuery({
-      page: state.page,
-      size,
-      search: state.search
-    });
-
-    if (environmentsData) {
-      dispatch({
-        type: ActionTypes.DATA_FETCHED,
-        payload: { data: environmentsData.data, count: environmentsData.count }
-      });
-    }
   }, INTERVAL_REFRESHING);
+
+  useEffect(() => {
+    (async () => {
+      if (refreshEnvironments) {
+        getEnvironments();
+      }
+      onUpdateRefreshEnvironments(false);
+    })();
+  }, [refreshEnvironments]);
 
   return (
     <Box
