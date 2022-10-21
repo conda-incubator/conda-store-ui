@@ -124,7 +124,7 @@ export const SpecificationCreate = ({ onCreateEnvironment }: any) => {
           <StyledButtonPrimary
             sx={buttonStyles}
             onClick={handleSubmit}
-            isAltType
+            isalttype="true"
           >
             Create
           </StyledButtonPrimary>

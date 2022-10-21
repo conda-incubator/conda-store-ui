@@ -185,7 +185,7 @@ export const SpecificationEdit = ({
           <StyledButtonPrimary
             sx={buttonStyles}
             onClick={onCancelEdition}
-            isAltType
+            isalttype="true"
           >
             Cancel
           </StyledButtonPrimary>
@@ -193,7 +193,7 @@ export const SpecificationEdit = ({
             sx={buttonStyles}
             onClick={onEditEnvironment}
             disabled={!envIsUpdated}
-            isAltType
+            isalttype="true"
           >
             Save
           </StyledButtonPrimary>
