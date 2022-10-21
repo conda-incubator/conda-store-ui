@@ -5,13 +5,11 @@ import { BrowserRouter as Router } from "react-router-dom";
 import { Route, Routes } from "react-router";
 
 import { PageLayout } from "./layouts";
-import { IPreferences, PreferencesContext, prefDefault, PrefDispatch } from "./preferences";
+import { IPreferences, PrefContext, prefGlobal } from "./preferences";
 import { store } from "./store";
 import { theme } from "./theme";
 
 import "../style/index.css";
-
-
 
 const AppRouter = () => {
   // for now, trivial routing is sufficient
@@ -24,21 +22,32 @@ const AppRouter = () => {
   );
 };
 
-export const App = (pref: IPreferences = {}, initState?: (value: PrefDispatch) => void) => {
-  pref = {...prefDefault, ...pref};
-  const [prefState, setPrefState] = React.useState(pref);
+export const App = (prefs: IPreferences = {}, initState?: (setPrefs: (prefs: IPreferences) => void) => void) => {
+  prefs = {...prefGlobal, ...prefs};
+  const [prefState, setPrefState] = React.useState(prefs);
   
+  const setPrefs = (prefNew: IPreferences) => {
+    prefGlobal.apiUrl = prefNew.apiUrl ?? prefGlobal.apiUrl;
+    prefGlobal.authMethod = prefNew.authMethod ?? prefGlobal.authMethod;
+    prefGlobal.authToken = prefNew.authToken ?? prefGlobal.authToken;
+    prefGlobal.loginUrl = prefNew.loginUrl ?? prefGlobal.loginUrl;
+
+    setPrefState(prefPrev => {
+      return {...prefPrev, ...prefNew};
+    });
+  }
+
   if (initState !== undefined) {
-    initState(setPrefState);
+    initState(setPrefs);
   }
 
   return (
-    <PreferencesContext.Provider value={prefState}>
+    <PrefContext.Provider value={prefState}>
       <ThemeProvider theme={theme}>
         <Provider store={store}>
           <AppRouter />
         </Provider>
       </ThemeProvider>
-    </PreferencesContext.Provider>
+    </PrefContext.Provider>
   );
 };
