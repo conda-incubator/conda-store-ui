@@ -6,7 +6,7 @@ import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import IconButton from "@mui/material/IconButton";
 import { StyledMetadataItem } from "../../../styles/StyledMetadataItem";
 import { useAppDispatch } from "../../../hooks";
-import { currentBuildIdChanged } from "..";
+import { currentBuildIdChanged, buildStatusChanged } from "..";
 import { useAppSelector } from "../../../hooks";
 
 interface IBuildProps {
@@ -41,6 +41,7 @@ export const Build = ({
       const build = builds.find(build => build.id === currentBuild.id);
       if (build) {
         setStatus(build.status);
+        dispatch(buildStatusChanged(build.status));
       }
     }
   }, [builds]);
@@ -53,6 +54,7 @@ export const Build = ({
     if (newCurrentBuild) {
       dispatch(currentBuildIdChanged(newCurrentBuild.id));
       setStatus(newCurrentBuild.status);
+      dispatch(buildStatusChanged(newCurrentBuild.status));
     }
   };
 

@@ -6,7 +6,7 @@ import { parseArtifacts } from "../../../utils/helpers/parseArtifactList";
 import { EnvironmentDetailsHeader } from "./EnvironmentDetailsHeader";
 import { SpecificationEdit, SpecificationReadOnly } from "./Specification";
 import { useGetBuildQuery } from "../environmentDetailsApiSlice";
-import { useGetArtifactsQuery } from "../../artifacts";
+import { useLazyGetArtifactsQuery } from "../../artifacts";
 import { useGetBuildPackagesQuery } from "../../../features/dependencies";
 import { ArtifactList } from "../../../features/artifacts";
 import {
@@ -39,7 +39,7 @@ export const EnvironmentDetails = ({
   environmentNotification
 }: IEnvDetails) => {
   const dispatch = useAppDispatch();
-
+  const { currentBuildStatus } = useAppSelector(state => state.enviroments);
   const { mode } = useAppSelector(state => state.environmentDetails);
   const { page } = useAppSelector(state => state.dependencies);
   const { selectedEnvironment } = useAppSelector(state => state.tabs);
@@ -49,11 +49,12 @@ export const EnvironmentDetails = ({
   const [description, setDescription] = useState(
     selectedEnvironment ? selectedEnvironment.description : undefined
   );
+  const [artifactType, setArtifactType] = useState<string[] | never[]>([]);
   const [error, setError] = useState({
     message: "",
     visible: false
   });
-
+  const [triggerQuery] = useLazyGetArtifactsQuery();
   const [createOrUpdate] = useCreateOrUpdateMutation();
   useGetEnviromentBuildsQuery(selectedEnvironment, {
     pollingInterval: REFRESH_POLLING_INTERVAL
@@ -77,8 +78,15 @@ export const EnvironmentDetails = ({
     setDescriptionIsUpdated(true);
   };
 
-  const { data } = useGetArtifactsQuery(selectedEnvironment?.current_build_id);
-  const apiArtifactTypes: string[] = parseArtifacts(data);
+  const updateArtifacts = () => {
+    (async () => {
+      const { data } = await triggerQuery(
+        selectedEnvironment?.current_build_id
+      );
+      const apiArtifactTypes: string[] = parseArtifacts(data);
+      setArtifactType(apiArtifactTypes);
+    })();
+  };
 
   const updateEnvironment = async (code: IUpdateEnvironmentArgs) => {
     const namespace = selectedEnvironment?.namespace.name;
@@ -110,6 +118,10 @@ export const EnvironmentDetails = ({
       });
     }
   };
+
+  useEffect(() => {
+    updateArtifacts();
+  }, [currentBuildStatus, selectedEnvironment]);
 
   useEffect(() => {
     setName(selectedEnvironment?.name || "");
@@ -152,7 +164,7 @@ export const EnvironmentDetails = ({
           <ArtifactList
             artifacts={artifactList(
               selectedEnvironment?.current_build_id,
-              apiArtifactTypes
+              artifactType
             )}
           />
         </Box>
