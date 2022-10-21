@@ -9,7 +9,7 @@ export const requestedPackagesApiSlice = apiSlice.injectEndpoints({
       { page: number; size: number; search: string }
     >({
       query: dto =>
-        `api/v1/package?search=${dto.search}&page=${dto.page}&size=${dto.size}`
+        `api/v1/package?search=${dto.search}&page=${dto.page}&size=${dto.size}&distinct_on=name`
     })
   })
 });
