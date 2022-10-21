@@ -7,5 +7,8 @@ export default {
 } as ComponentMeta<typeof Environments>;
 
 export const Primary: ComponentStory<typeof Environments> = () => (
-  <Environments />
+  <Environments
+    refreshEnvironments={false}
+    onUpdateRefreshEnvironments={() => {}}
+  />
 );
