@@ -18,10 +18,15 @@ import { useInterval } from "../../../utils/helpers";
 
 const INTERVAL_REFRESHING = 2000;
 
+interface IBaseEnvironments {
+  refreshEnvironments: boolean;
+  onUpdateRefreshEnvironments: (isUpdated: boolean) => void;
+}
+
 const BaseEnvironments = ({
   refreshEnvironments,
   onUpdateRefreshEnvironments
-}: any) => {
+}: IBaseEnvironments) => {
   const size = 100;
   const [state, dispatch] = useReducer(environmentsReducer, initialState);
   const [stateN, dispatchN] = useReducer(namespacesReducer, NInitialState);
