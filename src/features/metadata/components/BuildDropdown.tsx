@@ -112,11 +112,11 @@ export const Build = ({
           </IconButton>
         )}
         inputProps={{
-          "data-testid": "test-select",
           sx: {
             padding: "7px 9px !important",
             fontSize: "14px"
-          }
+          },
+          "data-testid": "buildDropdown"
         }}
       >
         {builds

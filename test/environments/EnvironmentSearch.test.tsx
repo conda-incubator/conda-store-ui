@@ -1,6 +1,6 @@
-import { fireEvent, render, RenderResult } from "@testing-library/react";
 import React from "react";
-import { EnvironmentsSearch } from "../src/features/environments";
+import { fireEvent, render, RenderResult } from "@testing-library/react";
+import { EnvironmentsSearch } from "../../src/features/environments";
 
 describe("<EnvironmentsSearch />", () => {
   const mockOnChange = jest.fn();

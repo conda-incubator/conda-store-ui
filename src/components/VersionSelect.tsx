@@ -158,7 +158,8 @@ export const VersionSelect = ({
         border: "none"
       }}
       inputProps={{
-        sx: inputStyles
+        sx: inputStyles,
+        "data-testid": "VersionSelectTest"
       }}
     >
       <MenuItem key="empty" value="" sx={{ height: "30px" }}>

@@ -89,6 +89,7 @@ const BaseCreateEnvironmentPackagesTableRow = ({
           <StyledIconButton
             onClick={() => handleRemovePackage(requestedPackage)}
             sx={{ marginLeft: "24px" }}
+            data-testid="RemovePackageTest"
           >
             {icon}
           </StyledIconButton>

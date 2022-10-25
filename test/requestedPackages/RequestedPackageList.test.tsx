@@ -1,9 +1,9 @@
 import React from "react";
 import { Provider } from "react-redux";
 import { render } from "@testing-library/react";
-import { store } from "../src/store";
-import { RequestedPackageList } from "../src/features/requestedPackages/components/RequestedPackageList";
-import { PACKAGE_LIST, mockTheme } from "./testutils";
+import { store } from "../../src/store";
+import { RequestedPackageList } from "../../src/features/requestedPackages/components/RequestedPackageList";
+import { PACKAGE_LIST, mockTheme } from "../testutils";
 
 describe("<RequestedPackagesEdit />", () => {
   window.HTMLElement.prototype.scrollIntoView = jest.fn();

@@ -2,6 +2,7 @@ module.exports = {
     moduleNameMapper: {
         "^@/(.*)$": "<rootDir>/src/$1",
     },
+    testEnvironment: "jsdom",
     moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json"],
     transform: {
         "\\.[jt]sx?$": "babel-jest",
@@ -11,12 +12,18 @@ module.exports = {
     collectCoverage: true,
     collectCoverageFrom: [
         "<rootDir>/src/**/*.{ts,tsx}",
-        "!<rootDir>/src/**/*.stories.{ts,tsx}", // storybook files
+        "!<rootDir>/src/*",
+        "!<rootDir>/src/common/**",
+        "!<rootDir>/src/layouts/**",
+        "!<rootDir>/src/store/**",
+        "!<rootDir>/src/features/**/*.ts",// ignore rtk query files
+        "!<rootDir>/src/**/*.stories.{ts,tsx}", // ignore storybook files,
     ],
     moduleDirectories: ["node_modules", __dirname],
     modulePathIgnorePatterns: ["<rootDir>/lib/"],
     transformIgnorePatterns: [
         "node_modules/@mui/material/styles/useTheme/",
     ],
-    setupFilesAfterEnv: ['<rootDir>/setupTests.ts']
+    setupFilesAfterEnv: ["@testing-library/jest-dom", "<rootDir>/setupTests.ts"],
+    testTimeout: 10000
 };

@@ -1,7 +1,7 @@
 import React from "react";
 import { fireEvent, render, RenderResult } from "@testing-library/react";
-import { ChannelsEditItem } from "../src/features/channels/components/ChannelsEditItem";
-import { mockTheme } from "./testutils";
+import { ChannelsEditItem } from "../../src/features/channels/components/ChannelsEditItem";
+import { mockTheme } from "../testutils";
 
 describe("<ChannelsEditItem />", () => {
   const mockOnRemove = jest.fn();

@@ -74,6 +74,7 @@ export const SpecificationEdit = ({
       channels: string[];
       dependencies: string[];
     }) => {
+      console.log("test!");
       const code = { dependencies, channels };
       const isDifferentChannels =
         JSON.stringify(code.channels) !== stringifiedInitialChannels;

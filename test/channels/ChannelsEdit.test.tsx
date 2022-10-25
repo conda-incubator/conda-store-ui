@@ -1,17 +1,13 @@
 import React from "react";
-import {
-  fireEvent,
-  render,
-  screen,
-  RenderResult
-} from "@testing-library/react";
-import { ChannelsEdit } from "../src/features/channels/components/ChannelsEdit";
-import { mockTheme, CHANNELS_LIST } from "./testutils";
+import { fireEvent, render, RenderResult } from "@testing-library/react";
+import { ChannelsEdit } from "../../src/features/channels/components/ChannelsEdit";
+import { mockTheme, CHANNELS_LIST } from "../testutils";
 
 const channelName = "conda-store";
 
 describe("<ChannelsEdit />", () => {
   window.HTMLElement.prototype.scrollIntoView = jest.fn();
+  const spyUpdateChannels = jest.fn();
   let component: RenderResult;
 
   beforeEach(() => {
@@ -19,7 +15,7 @@ describe("<ChannelsEdit />", () => {
       mockTheme(
         <ChannelsEdit
           channelsList={CHANNELS_LIST}
-          updateChannels={() => ({})}
+          updateChannels={spyUpdateChannels}
         />
       )
     );
@@ -37,18 +33,20 @@ describe("<ChannelsEdit />", () => {
 
     const input = component.getByLabelText("Enter channel");
     fireEvent.change(input, { target: { value: "test-channel" } });
-
-    expect(screen.getByLabelText("Enter channel")).toHaveValue("test-channel");
     fireEvent.focusOut(input);
 
-    expect(component.container).toHaveTextContent("test-channel");
+    expect(spyUpdateChannels).toHaveBeenCalledWith([
+      "conda-store",
+      "default",
+      "test-channel"
+    ]);
   });
 
   it("should remove channel", () => {
-    const [deleteIcons] = component.getAllByTestId("DeleteIcon");
-    fireEvent.click(deleteIcons);
+    const [deleteIcon] = component.getAllByTestId("DeleteIcon");
+    fireEvent.click(deleteIcon);
 
-    expect(component.container).not.toHaveTextContent(channelName);
+    expect(spyUpdateChannels).toHaveBeenCalledWith(["default"]);
   });
 
   it("should edit channel", () => {
@@ -59,7 +57,10 @@ describe("<ChannelsEdit />", () => {
     fireEvent.change(input, { target: { value: "new channel name" } });
     fireEvent.focusOut(input);
 
-    expect(component.container).not.toHaveTextContent(channelName);
+    expect(spyUpdateChannels).toHaveBeenCalledWith([
+      "new channel name",
+      "default"
+    ]);
   });
 
   it("should click on close icon", () => {
