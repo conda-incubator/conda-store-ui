@@ -9,7 +9,7 @@ export const StyledAccordionSummary = styled(AccordionSummary, {
 })<{ styleType?: string }>(
   ({ theme: { palette }, styleType = currentStyleType }) => ({
     paddingLeft: "21px",
-    paddingRight: styleType === "grayscale" ? "10px" : "16px",
+    paddingRight: "16px",
     height: 50,
     border:
       styleType === "grayscale"
@@ -20,7 +20,7 @@ export const StyledAccordionSummary = styled(AccordionSummary, {
       minHeight: 50,
       maxHeight: 50,
       margin: "0px",
-      borderRadius: styleType === "grayscale" ? "5px 5px 0px 0px" : "0px",
+      borderRadius: "0",
       ".MuiAccordionSummary-expandIconWrapper": {
         transform: "rotate(90deg)"
       }

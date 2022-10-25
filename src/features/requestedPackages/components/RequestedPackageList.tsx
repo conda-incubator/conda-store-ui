@@ -6,14 +6,9 @@ import { CondaSpecificationPip } from "../../../common/models";
 import { ArrowIcon } from "../../../components";
 import {
   StyledAccordionDetails,
-  StyledAccordionExpandIcon,
   StyledAccordionSummary,
   StyledAccordionTitle
 } from "../../../styles";
-import {
-  getIconForStyleType,
-  getStylesForStyleType
-} from "../../../utils/helpers";
 
 export interface IRequestedPackageListProps {
   /**
@@ -31,26 +26,20 @@ export const RequestedPackageList = ({
   );
   const listLength = filteredPackageList.length;
 
-  const accordionDetailsStyles = getStylesForStyleType(
-    { padding: "11px 40px" },
-    { padding: "11px 21px" }
-  );
-
-  const expandIcon = getIconForStyleType(
-    <StyledAccordionExpandIcon />,
-    <ArrowIcon />
-  );
-
   return (
     <Accordion
       sx={{ width: 421, boxShadow: "none" }}
       disableGutters
       defaultExpanded
     >
-      <StyledAccordionSummary expandIcon={expandIcon}>
+      <StyledAccordionSummary expandIcon={<ArrowIcon />}>
         <StyledAccordionTitle>Requested Packages</StyledAccordionTitle>
       </StyledAccordionSummary>
-      <StyledAccordionDetails sx={accordionDetailsStyles}>
+      <StyledAccordionDetails
+        sx={{
+          padding: "11px 21px"
+        }}
+      >
         {filteredPackageList.map((item, index) => (
           <Box
             key={`${item}`}

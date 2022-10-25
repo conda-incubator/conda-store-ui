@@ -1,4 +1,3 @@
-import DeleteIcon from "@mui/icons-material/Delete";
 import Box from "@mui/material/Box";
 import TableRow from "@mui/material/TableRow";
 import Typography from "@mui/material/Typography";
@@ -13,10 +12,7 @@ import {
   StyledIconButton,
   StyledRequestedPackagesTableCell
 } from "../../../styles";
-import {
-  getIconForStyleType,
-  requestedPackageParser
-} from "../../../utils/helpers";
+import { requestedPackageParser } from "../../../utils/helpers";
 import { packageRemoved, packageUpdated } from "../requestedPackagesSlice";
 
 interface IRequestedPackagesTableRowProps {
@@ -35,8 +31,6 @@ const BaseRequestedPackagesTableRow = ({
   const result = requestedPackageParser(requestedPackage);
   let { version } = result;
   const { constraint, name } = result;
-
-  const icon = getIconForStyleType(<DeleteIcon />, <DeleteIconAlt />);
 
   if (constraint === "latest") {
     version = versionsWithoutConstraints[name];
@@ -69,13 +63,13 @@ const BaseRequestedPackagesTableRow = ({
   return (
     <TableRow>
       <StyledRequestedPackagesTableCell align="left">
-        <Typography sx={{ fontSize: "16px", fontWeight: 400, color: "#000" }}>
+        <Typography sx={{ fontSize: "14px", fontWeight: 400, color: "#000" }}>
           {name}
         </Typography>
       </StyledRequestedPackagesTableCell>
       <StyledRequestedPackagesTableCell align="left">
         <Typography
-          sx={{ fontSize: "16px", fontWeight: 400, color: "#676666" }}
+          sx={{ fontSize: "14px", fontWeight: 400, color: "#676666" }}
         >
           {versionsWithConstraints[name] ?? versionsWithoutConstraints[name]}
         </Typography>
@@ -92,7 +86,7 @@ const BaseRequestedPackagesTableRow = ({
             name={name}
           />
           <StyledIconButton onClick={handleRemove} sx={{ marginLeft: "24px" }}>
-            {icon}
+            <DeleteIconAlt />
           </StyledIconButton>
         </Box>
       </StyledRequestedPackagesTableCell>

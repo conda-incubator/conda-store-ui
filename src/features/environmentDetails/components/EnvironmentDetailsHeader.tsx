@@ -8,7 +8,6 @@ import {
   EnvironmentDetailsModes,
   modeChanged
 } from "../environmentDetailsSlice";
-import { getStylesForStyleType } from "../../../utils/helpers";
 
 interface IEnvironmentDetailsHeaderProps {
   /**
@@ -26,23 +25,6 @@ export const EnvironmentDetailsHeader = ({
   const { mode } = useAppSelector(state => state.environmentDetails);
   const dispatch = useAppDispatch();
 
-  const titleStyles = getStylesForStyleType(
-    { fontSize: "24px", color: "#000" },
-    { fontSize: "19px", color: "#3C4043", fontWeight: 400 }
-  );
-
-  const nameInputStyles = getStylesForStyleType(
-    {
-      backgroundColor: "#ECECEC",
-      border: "1px solid #000",
-      width: "500px"
-    },
-    {
-      border: "1px solid #BCBFC4",
-      width: "500px"
-    }
-  );
-
   return (
     <Box
       sx={{
@@ -55,7 +37,11 @@ export const EnvironmentDetailsHeader = ({
       {(mode === EnvironmentDetailsModes.READ ||
         mode === EnvironmentDetailsModes.EDIT) && (
         <>
-          <Typography sx={titleStyles}>{envName}</Typography>
+          <Typography
+            sx={{ fontSize: "19px", color: "#3C4043", fontWeight: 400 }}
+          >
+            {envName}
+          </Typography>
           {mode === EnvironmentDetailsModes.READ && (
             <StyledButtonPrimary
               onClick={() =>
@@ -70,16 +56,21 @@ export const EnvironmentDetailsHeader = ({
       {mode === EnvironmentDetailsModes.CREATE && (
         <>
           <TextField
-            sx={nameInputStyles}
-            inputProps={{
-              style: {
-                padding: "8px 16px",
-                border: "none",
-                fontSize: "24px",
-                fontWeight: 500
+            sx={{
+              backgroundColor: "#EBECEE",
+              minWidth: "450px",
+              "&:hover fieldset": {
+                borderColor: "grey"
               }
             }}
-            variant="filled"
+            inputProps={{
+              disableUnderline: true,
+              style: {
+                padding: "8px 15px",
+                fontSize: "20px",
+                color: "#3C4043"
+              }
+            }}
             placeholder="Environment name"
             onChange={e => onUpdateName(e.target.value)}
           />

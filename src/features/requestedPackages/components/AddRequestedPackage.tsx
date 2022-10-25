@@ -181,7 +181,10 @@ export const AddRequestedPackage = ({
         <Box>
           <Box sx={{ display: "flex", alignItems: "center" }}>
             <Box />
-            <StyledIconButton onClick={() => onCancel(false)}>
+            <StyledIconButton
+              onClick={() => onCancel(false)}
+              data-testid="cancelIcon"
+            >
               {icon}
             </StyledIconButton>
           </Box>

@@ -19,14 +19,8 @@ import {
   toggleNewEnvironmentView
 } from "../../../features/tabs";
 import { useAppDispatch, useAppSelector } from "../../../hooks";
-import {
-  StyledAccordionExpandIcon,
-  StyledAccordionSummary
-} from "../../../styles";
-import {
-  getIconForStyleType,
-  getStylesForStyleType
-} from "../../../utils/helpers";
+import { StyledAccordionSummary } from "../../../styles";
+import { getStylesForStyleType } from "../../../utils/helpers";
 import {
   environmentAddIconGrayscaleStyles,
   environmentAddIconGreenAccentStyles
@@ -47,24 +41,9 @@ export const EnvironmentDropdown = ({
   const [isExpanded, setIsExpanded] = useState(false);
   const dispatch = useAppDispatch();
 
-  const dropdownHeaderStyles = getStylesForStyleType(
-    { display: "flex", alignItems: "center" },
-    { display: "flex", alignItems: "center", marginLeft: "15px" }
-  );
-
   const addIconStyles = getStylesForStyleType(
     environmentAddIconGrayscaleStyles,
     environmentAddIconGreenAccentStyles
-  );
-
-  const titleStyles = getStylesForStyleType(
-    { width: "217px" },
-    { width: "217px", fontWeight: 700, fontSize: "15px", color: "#9AA0A6" }
-  );
-
-  const expandIcon = getIconForStyleType(
-    <StyledAccordionExpandIcon />,
-    <ArrowIcon />
   );
 
   const onCreateNewEnvironmentTab = (
@@ -93,13 +72,22 @@ export const EnvironmentDropdown = ({
       <StyledAccordionSummary
         sx={{
           flexDirection: "row-reverse",
-          paddingLeft: "16px",
+          paddingLeft: "33px",
           border: "none"
         }}
-        expandIcon={expandIcon}
+        expandIcon={<ArrowIcon />}
       >
-        <Box sx={dropdownHeaderStyles}>
-          <Typography sx={titleStyles}>{namespace}</Typography>
+        <Box sx={{ display: "flex", alignItems: "center", marginLeft: "15px" }}>
+          <Typography
+            sx={{
+              width: "217px",
+              fontWeight: 700,
+              fontSize: "15px",
+              color: "#9AA0A6"
+            }}
+          >
+            {namespace}
+          </Typography>
           <IconButton onClick={e => onCreateNewEnvironmentTab(e, namespace)}>
             <AddIcon sx={addIconStyles} />
           </IconButton>
