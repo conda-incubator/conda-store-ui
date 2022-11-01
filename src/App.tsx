@@ -5,7 +5,7 @@ import { BrowserRouter as Router } from "react-router-dom";
 import { Route, Routes } from "react-router";
 
 import { PageLayout } from "./layouts";
-import { IPreferences, PrefContext, prefGlobal } from "./preferences";
+import { IPreferences, PrefContext, prefDefault } from "./preferences";
 import { store } from "./store";
 import { theme } from "./theme";
 
@@ -22,38 +22,51 @@ const AppRouter = () => {
   );
 };
 
-interface AppProps {
-  prefs?: IPreferences,
-  initState?: (setPrefs: (prefs: IPreferences) => void) => void
+export interface IAppProps {
+  pref?: Partial<IPreferences>;
 }
 
-export const App = ({prefs = {}, initState}: AppProps) => {
-  prefs = {...prefGlobal, ...prefs};
-  const [prefState, _] = React.useState(prefs);
-  // const [prefState, setPrefState] = React.useState(prefs);
-  
-  const setPrefs = (prefNew: IPreferences) => {
-    prefGlobal.apiUrl = prefNew.apiUrl ?? prefGlobal.apiUrl;
-    prefGlobal.authMethod = prefNew.authMethod ?? prefGlobal.authMethod;
-    prefGlobal.authToken = prefNew.authToken ?? prefGlobal.authToken;
-    prefGlobal.loginUrl = prefNew.loginUrl ?? prefGlobal.loginUrl;
+export interface IAppState {
+  pref: IPreferences;
+}
 
-    // setPrefState(prefPrev => {
-    //   return {...prefPrev, ...prefNew};
-    // });
+export class App<T extends IAppProps = IAppProps, U extends IAppState = IAppState> extends React.Component<T, U> {
+  /**
+   * Returns a React component for rendering a panel for performing Git operations.
+   *
+   * @param props - component properties
+   * @returns React component
+   */
+  constructor(props: T) {
+    super(props);
+
+    const pref = {...prefDefault, ...(props.pref ?? {})};
+    this.state = {pref} as U;
   }
 
-  if (initState !== undefined) {
-    initState(setPrefs);
-  }
+  /**
+   * define `componentDidMount` in a child class in order to subscribe to pref updates
+   */
+  // componentDidMount(): void {
+  // }
 
-  return (
-    <PrefContext.Provider value={prefState}>
-      <ThemeProvider theme={theme}>
-        <Provider store={store}>
-          <AppRouter />
-        </Provider>
-      </ThemeProvider>
-    </PrefContext.Provider>
-  );
-};
+  /**
+   * if `componentDidMount` is used to subscribe to pref updates in a child class, also
+   * define `componentWillUnmount` in order to unsubscribe to pref updates and thereby
+   * properly clean up this component on its destruction
+   */
+  // componentWillUnmount(): void {
+  // }
+
+  render(): React.ReactNode {
+    return (
+      <PrefContext.Provider value={this.state.pref}>
+        <ThemeProvider theme={theme}>
+          <Provider store={store}>
+            <AppRouter />
+          </Provider>
+        </ThemeProvider>
+      </PrefContext.Provider>
+    );
+  }
+}
