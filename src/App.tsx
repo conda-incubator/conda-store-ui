@@ -5,7 +5,7 @@ import { BrowserRouter as Router } from "react-router-dom";
 import { Route, Routes } from "react-router";
 
 import { PageLayout } from "./layouts";
-import { IPreferences, PrefContext, prefDefault } from "./preferences";
+import { IPreferences, PrefContext, prefDefault, prefGlobal } from "./preferences";
 import { store } from "./store";
 import { theme } from "./theme";
 
@@ -41,7 +41,16 @@ export class App<T extends IAppProps = IAppProps, U extends IAppState = IAppStat
     super(props);
 
     const pref = {...prefDefault, ...(props.pref ?? {})};
+    prefGlobal.set(pref);
     this.state = {pref} as U;
+  }
+
+  setPref(pref: U["pref"]) {
+    pref = {...this.state.pref, ...pref};
+
+    prefGlobal.set(pref);
+    this.setState({pref});
+    // this.forceUpdate();
   }
 
   /**
