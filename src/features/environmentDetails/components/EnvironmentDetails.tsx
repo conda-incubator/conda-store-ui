@@ -33,13 +33,12 @@ interface IUpdateEnvironmentArgs {
   channels: string[];
 }
 
-const REFRESH_POLLING_INTERVAL = 2000;
+const REFRESH_POLLING_INTERVAL = 3000;
 
 export const EnvironmentDetails = ({
   environmentNotification
 }: IEnvDetails) => {
   const dispatch = useAppDispatch();
-  const { currentBuildStatus } = useAppSelector(state => state.enviroments);
   const { mode } = useAppSelector(state => state.environmentDetails);
   const { page } = useAppSelector(state => state.dependencies);
   const { selectedEnvironment } = useAppSelector(state => state.tabs);
@@ -59,6 +58,9 @@ export const EnvironmentDetails = ({
   useGetEnviromentBuildsQuery(selectedEnvironment, {
     pollingInterval: REFRESH_POLLING_INTERVAL
   });
+  const currentBuildId = currentBuild.id
+    ? currentBuild.id
+    : selectedEnvironment?.current_build_id;
 
   const { isFetching } = useGetBuildQuery(currentBuild.id, {
     skip: !currentBuild.id
@@ -80,11 +82,11 @@ export const EnvironmentDetails = ({
 
   const updateArtifacts = () => {
     (async () => {
-      const { data } = await triggerQuery(
-        selectedEnvironment?.current_build_id
-      );
-      const apiArtifactTypes: string[] = parseArtifacts(data);
-      setArtifactType(apiArtifactTypes);
+      if (currentBuildId) {
+        const { data } = await triggerQuery(currentBuildId);
+        const apiArtifactTypes: string[] = parseArtifacts(data);
+        setArtifactType(apiArtifactTypes);
+      }
     })();
   };
 
@@ -121,7 +123,7 @@ export const EnvironmentDetails = ({
 
   useEffect(() => {
     updateArtifacts();
-  }, [currentBuildStatus, selectedEnvironment]);
+  }, [currentBuildId]);
 
   useEffect(() => {
     setName(selectedEnvironment?.name || "");
@@ -162,10 +164,7 @@ export const EnvironmentDetails = ({
       {mode === "read-only" && (
         <Box>
           <ArtifactList
-            artifacts={artifactList(
-              selectedEnvironment?.current_build_id,
-              artifactType
-            )}
+            artifacts={artifactList(currentBuildId, artifactType)}
           />
         </Box>
       )}
