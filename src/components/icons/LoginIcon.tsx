@@ -1,6 +1,6 @@
 import * as React from "react";
 
-export const LoginIcon = (props: React.SVGProps<SVGSVGElement>) => {
+export const LoginIcon = ({ color }: any) => {
   return (
     <svg
       width={22}
@@ -8,11 +8,10 @@ export const LoginIcon = (props: React.SVGProps<SVGSVGElement>) => {
       viewBox="0 0 22 22"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      {...props}
     >
       <path
         d="M10.621 21.243a10.621 10.621 0 100-21.243 10.621 10.621 0 000 21.243z"
-        fill="#B9D9BD"
+        fill={color}
       />
       <path
         d="M10.927 8.788a2.518 2.518 0 10-2.518-2.511 2.512 2.512 0 002.518 2.511z"

@@ -1,15 +1,10 @@
 import React, { memo } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import SquareIcon from "@mui/icons-material/Square";
-import FileUploadIcon from "@mui/icons-material/FileUpload";
 import { Dependency } from "../../../common/models";
 import Tooltip from "@mui/material/Tooltip";
 import { StyledIconButton } from "../../../styles";
-import {
-  getIconForStyleType,
-  getStylesForStyleType
-} from "../../../utils/helpers";
+import { getIconForStyleType } from "../../../utils/helpers";
 import { SquareIconAlt, UploadIcon } from "../../../components";
 
 interface IDependenciesItemProps {
@@ -31,36 +26,8 @@ const BaseDependenciesItem = ({
   const { name, version } = dependency;
   const isEditMode = mode === "edit";
 
-  const depNameStyles = getStylesForStyleType(
-    { color: "#000" },
-    { fontSize: "14px", color: "#3C4043" }
-  );
-
-  const depVersionStyles = getStylesForStyleType(
-    {
-      color: "#000",
-      width: isEditMode ? "140px" : "auto",
-      marginLeft: isEditMode ? "20px" : "0px"
-    },
-    {
-      color: "#3C4043",
-      width: isEditMode ? "140px" : "auto",
-      marginLeft: isEditMode ? "20px" : "0px",
-      fontSize: "14px"
-    }
-  );
-
-  const promoteIcon = getIconForStyleType(<FileUploadIcon />, <UploadIcon />);
-
   const icon = getIconForStyleType(
-    <SquareIcon
-      sx={{
-        color: "#000",
-        width: 10,
-        height: 10,
-        marginRight: "12px"
-      }}
-    />,
+    <></>,
     <SquareIconAlt style={{ marginRight: "8px" }} />
   );
 
@@ -68,13 +35,24 @@ const BaseDependenciesItem = ({
     <Box sx={{ display: "flex", alignItems: "center" }}>
       <Box sx={{ display: "flex", alignItems: "center", width: "300px" }}>
         {icon}
-        <Typography sx={depNameStyles}>{name}</Typography>
+        <Typography sx={{ fontSize: "14px", color: "#3C4043" }}>
+          {name}
+        </Typography>
       </Box>
-      <Typography sx={depVersionStyles}>{version}</Typography>
+      <Typography
+        sx={{
+          color: "#3C4043",
+          width: isEditMode ? "140px" : "auto",
+          marginLeft: isEditMode ? "20px" : "0px",
+          fontSize: "14px"
+        }}
+      >
+        {version}
+      </Typography>
       {isEditMode && (
         <Tooltip title="Promote as requested package" placement="right-start">
-          <StyledIconButton onClick={handleClick}>
-            {promoteIcon}
+          <StyledIconButton onClick={handleClick} data-testid="PromoteIcon">
+            <UploadIcon />
           </StyledIconButton>
         </Tooltip>
       )}

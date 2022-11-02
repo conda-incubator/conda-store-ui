@@ -19,25 +19,11 @@ export interface IArtifactsProps {
 }
 
 export const ArtifactList = ({ artifacts }: IArtifactsProps) => {
-  const listLength = artifacts.length;
-  const { typography, palette } = useTheme();
+  const { typography } = useTheme();
 
-  const dividerStyles = getStylesForStyleType(
-    { bgcolor: palette.primary.main },
-    {}
-  );
+  const boxStyles = getStylesForStyleType({ backgroundColor: "#fff" });
 
-  const titleStyles = getStylesForStyleType(
-    { fontSize: "21px", fontWeight: 400 },
-    { fontSize: "15px", fontWeight: 400, color: "#3C4043" }
-  );
-
-  const boxStyles = getStylesForStyleType({}, { backgroundColor: "#fff" });
-
-  const linksContainerStyles = getStylesForStyleType(
-    {},
-    { padding: "5px 16px" }
-  );
+  const linksContainerStyles = getStylesForStyleType({ padding: "20px 18px" });
 
   return (
     <StyledBox sx={boxStyles}>
@@ -45,26 +31,30 @@ export const ArtifactList = ({ artifacts }: IArtifactsProps) => {
         <ListItem>
           <ListItemText
             primary={
-              <Typography sx={titleStyles}>Logs and Artifacts</Typography>
+              <Typography
+                sx={{ fontSize: "20px", fontWeight: 400, color: "#3C4043" }}
+              >
+                Logs and Artifacts
+              </Typography>
             }
           ></ListItemText>
         </ListItem>
-        <Divider sx={dividerStyles} />
+        <Divider
+          sx={{
+            backgroundColor: "#E0E0E0"
+          }}
+        />
         <Box sx={linksContainerStyles}>
           {artifacts.map((link, index) => (
             <ListItem
               key={link.name}
               sx={{
-                padding: "11px 40px",
+                padding: "0",
+                marginBottom: index === artifacts.length - 1 ? "0px" : "15px",
                 fontFamily: typography.fontFamily
               }}
             >
-              <Box
-                key={link.name}
-                sx={{ marginBottom: index === listLength - 1 ? "0px" : "10px" }}
-              >
-                <ArtifactItem artifact={link} />
-              </Box>
+              <ArtifactItem artifact={link} />
             </ListItem>
           ))}
         </Box>

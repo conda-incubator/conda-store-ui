@@ -1,24 +1,11 @@
 import React from "react";
-import PersonIcon from "@mui/icons-material/Person";
-import SearchIcon from "@mui/icons-material/Search";
 import Box from "@mui/material/Box";
 import InputAdornment from "@mui/material/InputAdornment";
 import Link from "@mui/material/Link";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import Typography from "@mui/material/Typography";
 import { LoginIcon, SearchIconAlt } from "../../../components";
-import {
-  getIconForStyleType,
-  getStylesForStyleType
-} from "../../../utils/helpers";
-import {
-  environmentSearchTitleGrayscaleStyles,
-  environmentSearchTitleGreenAccentStyles,
-  searchBoxGrayscaleStyles,
-  searchBoxGreenAccentStyles,
-  searchInputGrayscaleStyles,
-  searchInputGreenAccentStyles
-} from "../styles";
+import { getIconForStyleType } from "../../../utils/helpers";
 
 interface IEnvironmentsSearchProps {
   /**
@@ -34,29 +21,9 @@ export const EnvironmentsSearch = ({ onChange }: IEnvironmentsSearchProps) => {
   const loginPageUrl = `${authUrl}${pageUrl}`;
   let login;
 
-  const titleStyles = getStylesForStyleType(
-    environmentSearchTitleGrayscaleStyles,
-    environmentSearchTitleGreenAccentStyles
-  );
-
-  const searchBoxStyles = getStylesForStyleType(
-    searchBoxGrayscaleStyles,
-    searchBoxGreenAccentStyles
-  );
-
-  const searchInputStyles = getStylesForStyleType(
-    searchInputGrayscaleStyles,
-    searchInputGreenAccentStyles
-  ) as React.CSSProperties;
-
   const loginIcon = getIconForStyleType(
-    <PersonIcon sx={{ color: "black" }} />,
-    <LoginIcon />
-  );
-
-  const inputIcon = getIconForStyleType(
-    <SearchIcon sx={{ color: "#A7A7A7" }} />,
-    <SearchIconAlt style={{ marginRight: "5px" }} />
+    <LoginIcon color="#9AA0A6" />,
+    <LoginIcon color="#B9D9BD" />
   );
 
   if (isCookieAuthMethod) {
@@ -77,7 +44,17 @@ export const EnvironmentsSearch = ({ onChange }: IEnvironmentsSearchProps) => {
         position: "relative"
       }}
     >
-      <Typography data-testid="env-search-title" sx={titleStyles}>
+      <Typography
+        data-testid="env-search-title"
+        sx={{
+          marginBottom: "16px",
+          textAlign: "center",
+          color: "#9AA0A6",
+          fontWeight: 700,
+          fontSize: "15px",
+          marginTop: "30px"
+        }}
+      >
         Package Manager
       </Typography>
       {login}
@@ -85,12 +62,26 @@ export const EnvironmentsSearch = ({ onChange }: IEnvironmentsSearchProps) => {
         onChange={onChange}
         size="small"
         endAdornment={
-          <InputAdornment position="end">{inputIcon}</InputAdornment>
+          <InputAdornment position="end">
+            <SearchIconAlt style={{ marginRight: "5px" }} />
+          </InputAdornment>
         }
         placeholder="Search for environment"
-        sx={searchBoxStyles}
+        sx={{
+          borderRadius: "15px",
+          paddingRight: "10px",
+          width: "288px",
+          "&::placeholder": {
+            fontSize: "12px",
+            fontWeight: 400
+          }
+        }}
         inputProps={{
-          style: searchInputStyles
+          style: {
+            padding: "7px",
+            paddingLeft: "15px",
+            fontSize: "14px"
+          }
         }}
       />
     </Box>

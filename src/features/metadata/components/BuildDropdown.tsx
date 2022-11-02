@@ -37,13 +37,6 @@ export const Build = ({
   const [open, setOpen] = useState(false);
   const [status, setStatus] = useState(currentBuildStatus);
 
-  const textStyles = getStylesForStyleType(
-    { fontWeight: "bold" },
-    { marginTop: "10px", fontSize: "14px", fontWeight: 500 }
-  );
-
-  const statusStyles = getStylesForStyleType({}, { fontSize: "14px" });
-
   const selectStyles = getStylesForStyleType(
     {
       marginLeft: "13px"
@@ -126,7 +119,8 @@ export const Build = ({
         inputProps={{
           "data-testid": "test-select",
           sx: {
-            padding: "7px 9px !important"
+            padding: "7px 9px !important",
+            fontSize: "14px"
           }
         }}
       >
@@ -138,9 +132,11 @@ export const Build = ({
             ))
           : null}
       </Select>
-      <StyledMetadataItem sx={textStyles}>
+      <StyledMetadataItem
+        sx={{ marginTop: "10px", fontSize: "14px", fontWeight: 500 }}
+      >
         Status:{" "}
-        <Typography component="span" sx={statusStyles}>
+        <Typography component="span" sx={{ fontSize: "14px" }}>
           {status}
         </Typography>
       </StyledMetadataItem>

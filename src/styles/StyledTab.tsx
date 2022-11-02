@@ -17,12 +17,12 @@ export const StyledTab = styled(Tab, {
     maxWidth: "340px",
     justifyContent: "space-between",
     "&.Mui-selected": {
-      color: "#000",
-      fontWeight: 500,
-      border:
-        styleType === "grayscale" ? "1px solid #000" : "1px solid #E0E0E0",
-      borderBottom:
-        styleType === "grayscale" ? "1px solid #fff" : "1px solid #F9F9F9"
+      color: "#3C4043",
+      fontWeight: 400,
+      border: "1px solid #E0E0E0",
+      borderTop: "none",
+      borderBottom: "none",
+      background: "#F9F9F9"
     }
   })
 );

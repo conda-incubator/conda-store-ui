@@ -13,7 +13,6 @@ import {
   namespacesReducer
 } from "../../../features/namespaces/reducer";
 import { CondaLogo } from "../../../components";
-import { config } from "../../../common/constants";
 import { useInterval } from "../../../utils/helpers";
 
 const INTERVAL_REFRESHING = 2000;
@@ -30,7 +29,6 @@ const BaseEnvironments = ({
   const size = 100;
   const [state, dispatch] = useReducer(environmentsReducer, initialState);
   const [stateN, dispatchN] = useReducer(namespacesReducer, NInitialState);
-  const isGrayScaleStyleType = config.styleType === "grayscale";
   const {
     palette: { primary }
   } = useTheme();
@@ -112,8 +110,7 @@ const BaseEnvironments = ({
     <Box
       sx={{
         width: "313px",
-        border: `1px solid ${primary.main}`,
-        borderBottom: "none"
+        position: "relative"
       }}
     >
       <Box sx={{ borderBottom: `1px solid ${primary.main}` }}>
@@ -130,13 +127,16 @@ const BaseEnvironments = ({
           />
         )}
       </Box>
-      {!isGrayScaleStyleType && (
-        <Box
-          sx={{ marginLeft: "26px", marginTop: "45px", marginBottom: "20px" }}
-        >
-          <CondaLogo />
-        </Box>
-      )}
+      <Box
+        sx={{
+          position: "absolute",
+          width: "100%",
+          textAlign: "center",
+          bottom: "20px"
+        }}
+      >
+        <CondaLogo />
+      </Box>
     </Box>
   );
 };
