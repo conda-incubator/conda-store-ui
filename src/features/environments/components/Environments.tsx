@@ -14,39 +14,57 @@ import {
 } from "../../../features/namespaces/reducer";
 import { CondaLogo } from "../../../components";
 import { config } from "../../../common/constants";
+import { useInterval } from "../../../utils/helpers";
+
+const INTERVAL_REFRESHING = 2000;
+
+export interface IBaseEnvironments {
+  refreshEnvironments: boolean;
+  onUpdateRefreshEnvironments: (isUpdated: boolean) => void;
+}
 
 const BaseEnvironments = ({
   refreshEnvironments,
   onUpdateRefreshEnvironments
-}: any) => {
+}: IBaseEnvironments) => {
   const size = 100;
   const [state, dispatch] = useReducer(environmentsReducer, initialState);
   const [stateN, dispatchN] = useReducer(namespacesReducer, NInitialState);
   const isGrayScaleStyleType = config.styleType === "grayscale";
-
-  const [triggerNamespacesQuery] = useLazyFetchNamespacesQuery();
-
-  useEffect(() => {
-    (async () => {
-      const { data } = await triggerNamespacesQuery({
-        page: stateN.page,
-        size
-      });
-
-      if (data) {
-        dispatchN({
-          type: NActionTypes.DATA_FETCHED,
-          payload: { data: data.data, count: data.count }
-        });
-      }
-    })();
-  }, []);
-
   const {
     palette: { primary }
   } = useTheme();
-
+  const [triggerNamespacesQuery] = useLazyFetchNamespacesQuery();
   const [triggerQuery] = useLazyFetchEnvironmentsQuery();
+
+  const getNamespaces = async () => {
+    const { data: namespacesData } = await triggerNamespacesQuery({
+      page: stateN.page,
+      size
+    });
+
+    if (namespacesData) {
+      dispatchN({
+        type: NActionTypes.DATA_FETCHED,
+        payload: { data: namespacesData.data, count: namespacesData.count }
+      });
+    }
+  };
+
+  const getEnvironments = async () => {
+    const { data: environmentsData } = await triggerQuery({
+      page: state.page,
+      size,
+      search: state.search
+    });
+
+    if (environmentsData) {
+      dispatch({
+        type: ActionTypes.DATA_FETCHED,
+        payload: { data: environmentsData.data, count: environmentsData.count }
+      });
+    }
+  };
 
   const handleChange = debounce(async (value: string) => {
     const { data } = await triggerQuery({ page: 1, size, search: value });
@@ -74,21 +92,18 @@ const BaseEnvironments = ({
     }
   };
 
+  useInterval(async () => {
+    (async () => {
+      getNamespaces();
+      getEnvironments();
+    })();
+  }, INTERVAL_REFRESHING);
+
   useEffect(() => {
     (async () => {
-      const { data } = await triggerQuery({
-        page: state.page,
-        size,
-        search: state.search
-      });
-
-      if (data) {
-        dispatch({
-          type: ActionTypes.DATA_FETCHED,
-          payload: { data: data.data, count: data.count }
-        });
+      if (refreshEnvironments) {
+        getEnvironments();
       }
-
       onUpdateRefreshEnvironments(false);
     })();
   }, [refreshEnvironments]);

@@ -8,6 +8,7 @@ import {
   EnvironmentDetailsModes,
   modeChanged
 } from "../environmentDetailsSlice";
+import { getStylesForStyleType } from "../../../utils/helpers";
 
 interface IEnvironmentDetailsHeaderProps {
   /**
@@ -25,6 +26,23 @@ export const EnvironmentDetailsHeader = ({
   const { mode } = useAppSelector(state => state.environmentDetails);
   const dispatch = useAppDispatch();
 
+  const titleStyles = getStylesForStyleType(
+    { fontSize: "24px", color: "#000" },
+    { fontSize: "19px", color: "#3C4043", fontWeight: 400 }
+  );
+
+  const nameInputStyles = getStylesForStyleType(
+    {
+      backgroundColor: "#ECECEC",
+      border: "1px solid #000",
+      width: "500px"
+    },
+    {
+      border: "1px solid #BCBFC4",
+      width: "500px"
+    }
+  );
+
   return (
     <Box
       sx={{
@@ -37,9 +55,7 @@ export const EnvironmentDetailsHeader = ({
       {(mode === EnvironmentDetailsModes.READ ||
         mode === EnvironmentDetailsModes.EDIT) && (
         <>
-          <Typography sx={{ fontSize: "24px", color: "#000" }}>
-            {envName}
-          </Typography>
+          <Typography sx={titleStyles}>{envName}</Typography>
           {mode === EnvironmentDetailsModes.READ && (
             <StyledButtonPrimary
               onClick={() =>
@@ -54,11 +70,7 @@ export const EnvironmentDetailsHeader = ({
       {mode === EnvironmentDetailsModes.CREATE && (
         <>
           <TextField
-            sx={{
-              backgroundColor: "#ECECEC",
-              border: "1px solid #000",
-              width: "500px"
-            }}
+            sx={nameInputStyles}
             inputProps={{
               style: {
                 padding: "8px 16px",

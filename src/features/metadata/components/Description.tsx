@@ -3,6 +3,7 @@ import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import { StyledMetadataItem } from "../../../styles/StyledMetadataItem";
 import { EnvironmentDetailsModes } from "../../../features/environmentDetails";
+import { getStylesForStyleType } from "../../../utils/helpers";
 
 interface IDescriptionProps {
   /**
@@ -18,6 +19,17 @@ export const Description = ({
   description,
   onChangeDescription
 }: IDescriptionProps) => {
+  const textFieldStyles = getStylesForStyleType(
+    {
+      backgroundColor: "#ECECEC",
+      width: "100%"
+    },
+    {
+      backgroundColor: "#F1F1F1",
+      width: "100%"
+    }
+  );
+
   return (
     <Box>
       {mode === EnvironmentDetailsModes.READ ? (
@@ -41,10 +53,7 @@ export const Description = ({
               multiline
               value={description}
               placeholder="Enter here the description of your environment"
-              sx={{
-                backgroundColor: "#ECECEC",
-                width: "100%"
-              }}
+              sx={textFieldStyles}
               onChange={e => onChangeDescription(e.target.value)}
             />
           </Box>

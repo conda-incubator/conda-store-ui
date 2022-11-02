@@ -9,6 +9,7 @@ import ListItemText from "@mui/material/ListItemText";
 import Typography from "@mui/material/Typography";
 import useTheme from "@mui/material/styles/useTheme";
 import { StyledBox } from "../../../styles";
+import { getStylesForStyleType } from "../../../utils/helpers";
 
 export interface IArtifactsProps {
   /**
@@ -21,35 +22,52 @@ export const ArtifactList = ({ artifacts }: IArtifactsProps) => {
   const listLength = artifacts.length;
   const { typography, palette } = useTheme();
 
+  const dividerStyles = getStylesForStyleType(
+    { bgcolor: palette.primary.main },
+    {}
+  );
+
+  const titleStyles = getStylesForStyleType(
+    { fontSize: "21px", fontWeight: 400 },
+    { fontSize: "15px", fontWeight: 400, color: "#3C4043" }
+  );
+
+  const boxStyles = getStylesForStyleType({}, { backgroundColor: "#fff" });
+
+  const linksContainerStyles = getStylesForStyleType(
+    {},
+    { padding: "5px 16px" }
+  );
+
   return (
-    <StyledBox>
+    <StyledBox sx={boxStyles}>
       <List>
         <ListItem>
           <ListItemText
             primary={
-              <Typography sx={{ fontSize: "21px", fontWeight: 400 }}>
-                Logs and Artifacts
-              </Typography>
+              <Typography sx={titleStyles}>Logs and Artifacts</Typography>
             }
           ></ListItemText>
         </ListItem>
-        <Divider sx={{ bgcolor: palette.primary.main }} />
-        {artifacts.map((link, index) => (
-          <ListItem
-            key={link.name}
-            sx={{
-              padding: "11px 40px",
-              fontFamily: typography.fontFamily
-            }}
-          >
-            <Box
+        <Divider sx={dividerStyles} />
+        <Box sx={linksContainerStyles}>
+          {artifacts.map((link, index) => (
+            <ListItem
               key={link.name}
-              sx={{ marginBottom: index === listLength - 1 ? "0px" : "10px" }}
+              sx={{
+                padding: "11px 40px",
+                fontFamily: typography.fontFamily
+              }}
             >
-              <ArtifactItem artifact={link} />
-            </Box>
-          </ListItem>
-        ))}
+              <Box
+                key={link.name}
+                sx={{ marginBottom: index === listLength - 1 ? "0px" : "10px" }}
+              >
+                <ArtifactItem artifact={link} />
+              </Box>
+            </ListItem>
+          ))}
+        </Box>
       </List>
     </StyledBox>
   );

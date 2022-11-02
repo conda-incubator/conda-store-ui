@@ -8,6 +8,8 @@ import { StyledMetadataItem } from "../../../styles/StyledMetadataItem";
 import { useAppDispatch } from "../../../hooks";
 import { currentBuildIdChanged, buildStatusChanged } from "..";
 import { useAppSelector } from "../../../hooks";
+import { getStylesForStyleType } from "../../../utils/helpers";
+import { Typography } from "@mui/material";
 
 interface IBuildProps {
   /**
@@ -34,6 +36,41 @@ export const Build = ({
   const { palette } = useTheme();
   const [open, setOpen] = useState(false);
   const [status, setStatus] = useState(currentBuildStatus);
+
+  const textStyles = getStylesForStyleType(
+    { fontWeight: "bold" },
+    { marginTop: "10px", fontSize: "14px", fontWeight: 500 }
+  );
+
+  const statusStyles = getStylesForStyleType({}, { fontSize: "14px" });
+
+  const selectStyles = getStylesForStyleType(
+    {
+      marginLeft: "13px"
+    },
+    {
+      marginLeft: "13px",
+      borderRadius: "0px",
+      backgroundColor: open ? "#A8DAB5" : "initial"
+    }
+  );
+
+  const paperProps = getStylesForStyleType(
+    {},
+    {
+      backgroundColor: "#A8DAB5",
+      padding: "0px",
+      boxShadow: "none",
+      borderRadius: "0px",
+      marginLeft: "12px",
+      border: "1px solid #BCBFC4"
+    }
+  ) as React.CSSProperties;
+
+  const menuListProps = getStylesForStyleType(
+    {},
+    { padding: "0px" }
+  ) as React.CSSProperties;
 
   // If the user is watching his current build, update build's info
   useEffect(() => {
@@ -64,7 +101,13 @@ export const Build = ({
         open={open}
         onClose={() => setOpen(false)}
         onOpen={() => setOpen(true)}
-        sx={{ marginLeft: "13px" }}
+        sx={selectStyles}
+        MenuProps={{
+          PaperProps: {
+            style: paperProps
+          },
+          MenuListProps: { style: menuListProps }
+        }}
         defaultValue={currentBuildId}
         onChange={handleChange}
         IconComponent={() => (
@@ -95,8 +138,11 @@ export const Build = ({
             ))
           : null}
       </Select>
-      <StyledMetadataItem>
-        <b>Status:</b> {status}
+      <StyledMetadataItem sx={textStyles}>
+        Status:{" "}
+        <Typography component="span" sx={statusStyles}>
+          {status}
+        </Typography>
       </StyledMetadataItem>
     </>
   );

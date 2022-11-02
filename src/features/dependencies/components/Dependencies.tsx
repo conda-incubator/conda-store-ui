@@ -14,6 +14,8 @@ import { Dependency } from "../../../common/models";
 import { DependenciesItem } from "./DependenciesItem";
 import { useAppDispatch, useAppSelector } from "../../../hooks";
 import { dependencyPromoted } from "../../../features/requestedPackages";
+import { ArrowIcon } from "../../../components";
+import { getIconForStyleType } from "../../../utils/helpers";
 
 export interface IDependenciesProps {
   /**
@@ -38,6 +40,10 @@ export const Dependencies = ({
   const { selectedEnvironment } = useAppSelector(state => state.tabs);
   const listLength = dependencies.length;
   const scrollRef = useRef<HTMLDivElement | null>(null);
+  const expandIcon = getIconForStyleType(
+    <StyledAccordionExpandIcon />,
+    <ArrowIcon />
+  );
 
   useEffect(() => {
     scrollRef.current?.scrollTo(0, 0);
@@ -52,7 +58,7 @@ export const Dependencies = ({
       disableGutters
       defaultExpanded
     >
-      <StyledAccordionSummary expandIcon={<StyledAccordionExpandIcon />}>
+      <StyledAccordionSummary expandIcon={expandIcon}>
         <StyledAccordionTitle>
           Packages Installed as Dependencies
         </StyledAccordionTitle>

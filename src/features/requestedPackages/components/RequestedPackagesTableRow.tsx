@@ -3,13 +3,20 @@ import Box from "@mui/material/Box";
 import TableRow from "@mui/material/TableRow";
 import Typography from "@mui/material/Typography";
 import React, { memo } from "react";
-import { ConstraintSelect, VersionSelect } from "../../../components";
+import {
+  ConstraintSelect,
+  DeleteIconAlt,
+  VersionSelect
+} from "../../../components";
 import { useAppDispatch, useAppSelector } from "../../../hooks";
 import {
   StyledIconButton,
   StyledRequestedPackagesTableCell
 } from "../../../styles";
-import { requestedPackageParser } from "../../../utils/helpers";
+import {
+  getIconForStyleType,
+  requestedPackageParser
+} from "../../../utils/helpers";
 import { packageRemoved, packageUpdated } from "../requestedPackagesSlice";
 
 interface IRequestedPackagesTableRowProps {
@@ -28,6 +35,8 @@ const BaseRequestedPackagesTableRow = ({
   const result = requestedPackageParser(requestedPackage);
   let { version } = result;
   const { constraint, name } = result;
+
+  const icon = getIconForStyleType(<DeleteIcon />, <DeleteIconAlt />);
 
   if (constraint === "latest") {
     version = versionsWithoutConstraints[name];
@@ -83,7 +92,7 @@ const BaseRequestedPackagesTableRow = ({
             name={name}
           />
           <StyledIconButton onClick={handleRemove} sx={{ marginLeft: "24px" }}>
-            <DeleteIcon />
+            {icon}
           </StyledIconButton>
         </Box>
       </StyledRequestedPackagesTableCell>

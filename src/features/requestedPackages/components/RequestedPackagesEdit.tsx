@@ -21,6 +21,9 @@ import {
 import { CondaSpecificationPip } from "../../../common/models";
 import { useAppDispatch } from "../../../hooks";
 import { packageAdded } from "../requestedPackagesSlice";
+import { getIconForStyleType } from "../../../utils/helpers";
+import { ArrowIcon } from "../../../components";
+import { config } from "../../../common/constants";
 
 export interface IRequestedPackagesEditProps {
   /**
@@ -36,10 +39,16 @@ export const RequestedPackagesEdit = ({
   const [isAdding, setIsAdding] = useState(false);
   const { palette } = useTheme();
   const scrollRef = useRef<HTMLDivElement | null>(null);
+  const isGrayscaleStyleType = config.styleType === "grayscale";
 
   const handleSubmit = (packageName: string) => {
     dispatch(packageAdded(packageName));
   };
+
+  const icon = getIconForStyleType(
+    <StyledAccordionExpandIcon />,
+    <ArrowIcon />
+  );
 
   const filteredPackageList = useMemo(
     () => packageList.filter(item => typeof item !== "object") as string[],
@@ -58,7 +67,7 @@ export const RequestedPackagesEdit = ({
       defaultExpanded
       disableGutters
     >
-      <StyledAccordionSummary expandIcon={<StyledAccordionExpandIcon />}>
+      <StyledAccordionSummary expandIcon={icon}>
         <StyledAccordionTitle>Requested Packages</StyledAccordionTitle>
       </StyledAccordionSummary>
       <StyledAccordionDetails
@@ -129,7 +138,7 @@ export const RequestedPackagesEdit = ({
         sx={{
           border: `1px solid ${palette.primary.main}`,
           borderTop: "0px",
-          borderRadius: "0px 0px 5px 5px",
+          borderRadius: isGrayscaleStyleType ? "0px 0px 5px 5px" : "0px",
           padding: "15px 21px",
           display: "flex",
           justifyContent: "center"
@@ -137,6 +146,7 @@ export const RequestedPackagesEdit = ({
       >
         <StyledButtonPrimary
           variant="contained"
+          isalttype="true"
           onClick={() => setIsAdding(true)}
         >
           + Add Package

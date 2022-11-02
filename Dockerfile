@@ -4,7 +4,7 @@ WORKDIR /usr/src/app
 
 COPY . .
 
-RUN yarn install
+RUN yarn install --network-timeout 600000
 
 RUN mv .env.example .env
 

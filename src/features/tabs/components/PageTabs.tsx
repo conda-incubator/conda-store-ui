@@ -13,12 +13,18 @@ import {
   closeCreateNewEnvironmentTab,
   toggleNewEnvironmentView
 } from "../tabsSlice";
+import { getStylesForStyleType } from "../../../utils/helpers";
 
 export const PageTabs = () => {
   const { selectedEnvironments, value, selectedEnvironment, newEnvironment } =
     useAppSelector(state => state.tabs);
 
   const dispatch = useAppDispatch();
+
+  const iconStyles = getStylesForStyleType(
+    { color: "#000" },
+    { color: "#3D4043" }
+  );
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     if (typeof newValue === "number") {
@@ -81,7 +87,7 @@ export const PageTabs = () => {
               role="button"
               onClick={e => handleClick(e, env.id)}
             >
-              <CloseIcon sx={{ color: "#000" }} />
+              <CloseIcon sx={iconStyles} />
             </span>
           }
           iconPosition="end"
@@ -99,7 +105,7 @@ export const PageTabs = () => {
               role="button"
               onClick={e => closeNewEnvironment(e)}
             >
-              <CloseIcon sx={{ color: "#000" }} />
+              <CloseIcon sx={iconStyles} />
             </span>
           }
           iconPosition="end"

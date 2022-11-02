@@ -33,7 +33,7 @@ interface IUpdateEnvironmentArgs {
   channels: string[];
 }
 
-const REFRESH_POLLING_INTERVAL = 3000;
+const INTERVAL_REFRESHING = 2000;
 
 export const EnvironmentDetails = ({
   environmentNotification
@@ -56,7 +56,7 @@ export const EnvironmentDetails = ({
   const [triggerQuery] = useLazyGetArtifactsQuery();
   const [createOrUpdate] = useCreateOrUpdateMutation();
   useGetEnviromentBuildsQuery(selectedEnvironment, {
-    pollingInterval: REFRESH_POLLING_INTERVAL
+    pollingInterval: INTERVAL_REFRESHING
   });
   const currentBuildId = currentBuild.id
     ? currentBuild.id

@@ -1,9 +1,11 @@
 import React, { useState } from "react";
-import CodeMirror from "@uiw/react-codemirror";
 import { StreamLanguage } from "@codemirror/language";
 import { yaml as yamlLanguage } from "@codemirror/legacy-modes/mode/yaml";
 import Alert from "@mui/material/Alert";
+import CodeMirror from "@uiw/react-codemirror";
 import { parse } from "yaml";
+import { greenAccentTheme } from "../themes";
+import { config } from "../../../common/constants";
 
 export interface ICodeEditor {
   code: any;
@@ -15,6 +17,7 @@ export interface ICodeEditor {
 
 export const CodeEditor = ({ code, onChangeEditor }: ICodeEditor) => {
   const [isError, setIsError] = useState(false);
+  const isGrayscaleStyleType = config.styleType === "grayscale";
 
   const convertToJSON = (e: string) => {
     try {
@@ -40,6 +43,7 @@ export const CodeEditor = ({ code, onChangeEditor }: ICodeEditor) => {
       <CodeMirror
         value={code}
         height="200px"
+        theme={isGrayscaleStyleType ? undefined : greenAccentTheme}
         extensions={[StreamLanguage.define(yamlLanguage)]}
         onChange={e => convertToJSON(e)}
       />
