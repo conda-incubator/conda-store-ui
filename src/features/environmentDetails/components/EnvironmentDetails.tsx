@@ -62,17 +62,17 @@ export const EnvironmentDetails = ({
     ? currentBuild.id
     : selectedEnvironment?.current_build_id;
 
-  const { isFetching } = useGetBuildQuery(currentBuild.id, {
-    skip: !currentBuild.id
+  const { isFetching } = useGetBuildQuery(currentBuildId, {
+    skip: !currentBuildId
   });
 
   useGetBuildPackagesQuery(
     {
-      buildId: currentBuild.id,
+      buildId: currentBuildId,
       page,
       size: 100
     },
-    { skip: isFetching || !currentBuild.id }
+    { skip: isFetching || !currentBuildId }
   );
 
   const updateDescription = (description: string) => {

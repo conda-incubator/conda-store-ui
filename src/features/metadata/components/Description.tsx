@@ -20,9 +20,18 @@ export const Description = ({
 }: IDescriptionProps) => {
   return (
     <Box>
-      {mode === EnvironmentDetailsModes.READ ? (
-        <StyledMetadataItem>{description}</StyledMetadataItem>
-      ) : (
+      {mode === EnvironmentDetailsModes.READ && description && (
+        <StyledMetadataItem
+          sx={{
+            fontSize: "15px",
+            color: "#3C4043"
+          }}
+        >
+          {description}
+        </StyledMetadataItem>
+      )}
+
+      {mode !== EnvironmentDetailsModes.READ && (
         <>
           <StyledMetadataItem
             sx={{

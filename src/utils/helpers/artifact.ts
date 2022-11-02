@@ -33,12 +33,10 @@ const artifactList = (
     }
   };
 
-  const result = apiArtifactTypes.reduce(
+  return apiArtifactTypes.reduce(
     (acc, cur) => acc.concat(artifact_map[cur as keyof typeof artifactList]),
     []
   );
-
-  return result;
 };
 
 export default artifactList;
