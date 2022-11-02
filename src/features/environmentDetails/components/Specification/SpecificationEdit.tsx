@@ -52,10 +52,7 @@ export const SpecificationEdit = ({
   const initialChannels = useRef(cloneDeep(channels));
   const initialPackages = useRef(cloneDeep(requestedPackages));
 
-  const buttonStyles = getStylesForStyleType(
-    { padding: "5px 60px" },
-    { padding: "5px 48px" }
-  );
+  const buttonStyles = getStylesForStyleType({ padding: "5px 48px" });
 
   const stringifiedInitialChannels = useMemo(() => {
     return JSON.stringify(initialChannels.current);

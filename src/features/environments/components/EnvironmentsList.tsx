@@ -1,4 +1,3 @@
-import GroupIcon from "@mui/icons-material/Group";
 import Box from "@mui/material/Box";
 import CircularProgress from "@mui/material/CircularProgress";
 import Typography from "@mui/material/Typography";
@@ -9,14 +8,6 @@ import { INamespaceEnvironments } from "../../../common/interfaces";
 import { Environment, Namespace } from "../../../common/models";
 import { GroupIconAlt } from "../../../components";
 import { StyledScrollContainer } from "../../../styles";
-import {
-  getIconForStyleType,
-  getStylesForStyleType
-} from "../../../utils/helpers";
-import {
-  environmentsTitleGrayscaleStyles,
-  environmentsTitleGreenAccentStyles
-} from "../styles";
 import { EnvironmentDropdown } from "./EnvironmentDropdown";
 
 interface IEnvironmentsListProps {
@@ -42,21 +33,6 @@ export const EnvironmentsList = ({
   search
 }: IEnvironmentsListProps) => {
   const scrollRef = useRef<HTMLDivElement | null>(null);
-
-  const titleStyles = getStylesForStyleType(
-    environmentsTitleGrayscaleStyles,
-    environmentsTitleGreenAccentStyles
-  );
-
-  const containerStyles = getStylesForStyleType(
-    { height: "calc(100vh - 103px)" },
-    { minHeight: "229px", maxHeight: "725px" }
-  );
-
-  const titleIcon = getIconForStyleType(
-    <GroupIcon />,
-    <GroupIconAlt style={{ marginBottom: "8px", marginLeft: "10px" }} />
-  );
 
   const { defaultNamespace, sharedNamespaces } = useMemo(() => {
     let defaultNamespace: INamespaceEnvironments | null = null;
@@ -105,7 +81,7 @@ export const EnvironmentsList = ({
 
   return (
     <StyledScrollContainer
-      sx={containerStyles}
+      sx={{ minHeight: "229px", maxHeight: "725px" }}
       id="environmentsScroll"
       ref={scrollRef}
     >
@@ -138,8 +114,18 @@ export const EnvironmentsList = ({
             marginTop: "5px"
           }}
         >
-          <Typography sx={titleStyles}>Shared environments</Typography>
-          {titleIcon}
+          <Typography
+            sx={{
+              textTransform: "uppercase",
+              fontWeight: 700,
+              marginRight: "10px",
+              fontSize: "15px",
+              color: "#9AA0A6"
+            }}
+          >
+            Shared environments
+          </Typography>
+          <GroupIconAlt style={{ marginBottom: "8px", marginLeft: "10px" }} />
         </Box>
         {sharedNamespaces.map(namespace => (
           <EnvironmentDropdown key={namespace.namespace} data={namespace} />

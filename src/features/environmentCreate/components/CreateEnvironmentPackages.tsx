@@ -14,13 +14,11 @@ import { ArrowIcon } from "../../../components";
 import { useAppDispatch } from "../../../hooks";
 import {
   StyledAccordionDetails,
-  StyledAccordionExpandIcon,
   StyledAccordionSummary,
   StyledAccordionTitle,
   StyledButtonPrimary,
   StyledEditPackagesTableCell
 } from "../../../styles";
-import { getIconForStyleType } from "../../../utils/helpers";
 import { AddRequestedPackage } from "../../requestedPackages";
 import { requestedPackagesChanged } from "../environmentCreateSlice";
 import { CreateEnvironmentPackagesTableRow } from "./CreateEnvironmentPackagesTableRow";
@@ -40,11 +38,6 @@ export const CreateEnvironmentPackages = ({
   const scrollRef = useRef<HTMLDivElement | null>(null);
   const { palette } = useTheme();
 
-  const icon = getIconForStyleType(
-    <StyledAccordionExpandIcon />,
-    <ArrowIcon />
-  );
-
   useEffect(() => {
     if (isAdding && scrollRef.current) {
       scrollRef.current.scrollIntoView({ behavior: "smooth" });
@@ -57,7 +50,7 @@ export const CreateEnvironmentPackages = ({
       defaultExpanded
       disableGutters
     >
-      <StyledAccordionSummary expandIcon={icon}>
+      <StyledAccordionSummary expandIcon={<ArrowIcon />}>
         <StyledAccordionTitle>Requested Packages</StyledAccordionTitle>
       </StyledAccordionSummary>
       <StyledAccordionDetails

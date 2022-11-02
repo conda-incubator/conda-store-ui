@@ -12,16 +12,15 @@ export const StyledScrollContainer = styled(Box, {
     overflowX: "hidden",
     paddingRight: "0px",
     "&::-webkit-scrollbar": {
-      width: "15px"
+      width: "10px"
     },
     "&::-webkit-scrollbar-track": {
       backgroundColor: "transparent"
     },
     "&::-webkit-scrollbar-thumb": {
-      backgroundColor:
-        styleType === "grayscale" ? `${palette.primary.main}` : "#DADCE0",
-      borderRadius: "10px",
-      border: styleType === "grayscale" ? "1px solid #666666" : "none"
+      backgroundColor: "#DADCE0",
+      borderRadius: "5px",
+      border: "none"
     }
   })
 );

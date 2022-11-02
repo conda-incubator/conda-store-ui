@@ -15,10 +15,10 @@ export const EnvBuilds = ({ currentBuildId }: IData) => {
   const envBuilds = builds.length ? buildMapper(builds, currentBuildId) : [];
   const currentBuild = envBuilds.find(build => build.id === currentBuildId);
 
-  const textStyles = getStylesForStyleType(
-    { fontWeight: "bold" },
-    { fontSize: "14px", fontWeight: 500 }
-  );
+  const textStyles = getStylesForStyleType({
+    fontSize: "14px",
+    fontWeight: 500
+  });
 
   return (
     <>

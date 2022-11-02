@@ -8,19 +8,21 @@ interface IPopupInterface {
   onClose: (notification: any) => void;
 }
 export const Popup = ({ description, isVisible, onClose }: IPopupInterface) => {
+  const handleClose = () => {
+    onClose({
+      show: !isVisible,
+      description: null
+    });
+  };
+
   return (
     <Snackbar
       anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
       autoHideDuration={5000}
       open={isVisible}
-      onClose={() =>
-        onClose({
-          show: !isVisible,
-          description: null
-        })
-      }
+      onClose={handleClose}
     >
-      <Alert severity="success" sx={{ width: "100%" }}>
+      <Alert severity="success" sx={{ width: "100%" }} onClose={handleClose}>
         {description}
       </Alert>
     </Snackbar>

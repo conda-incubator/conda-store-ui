@@ -3,7 +3,6 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Switch from "@mui/material/Switch";
 import FormControlLabel from "@mui/material/FormControlLabel";
-import { getStylesForStyleType } from "../utils/helpers";
 
 interface IBlockContainerProps {
   title: string;
@@ -18,19 +17,18 @@ export const BlockContainerEditMode = ({
   onToggleEditMode,
   isEditMode
 }: IBlockContainerProps) => {
-  const containerStyles = getStylesForStyleType(
-    { border: "1px solid #000" },
-    { border: "1px solid #E0E0E0" }
-  );
-
-  const boxStyles = getStylesForStyleType(
-    { padding: "17px 19px", borderBottom: "1px solid #A7A7A7" },
-    { padding: "17px 19px", border: "1px solid #E0E0E0" }
-  );
-
   return (
-    <Box sx={containerStyles}>
-      <Box sx={boxStyles}>
+    <Box
+      sx={{
+        border: "1px solid #E0E0E0"
+      }}
+    >
+      <Box
+        sx={{
+          padding: "17px 19px",
+          border: "1px solid #E0E0E0"
+        }}
+      >
         <Box
           sx={{
             display: "flex",
@@ -43,7 +41,7 @@ export const BlockContainerEditMode = ({
             sx={{
               fontSize: "20px",
               fontWeight: 400,
-              color: "#000"
+              color: "#3C4043"
             }}
           >
             {title}
@@ -56,7 +54,11 @@ export const BlockContainerEditMode = ({
               />
             }
             label={
-              isEditMode ? "Switch to Standard View" : "Switch to YAML Editor"
+              <Typography sx={{ fontSize: "14px", color: "#3C4043" }}>
+                {isEditMode
+                  ? "Switch to Standard View"
+                  : "Switch to YAML Editor"}
+              </Typography>
             }
           />
         </Box>

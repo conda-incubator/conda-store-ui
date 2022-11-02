@@ -44,7 +44,8 @@ export const ConstraintSelect = ({
         width: "44px"
       }}
       inputProps={{
-        sx: inputStyles
+        sx: inputStyles,
+        "data-testid": "test-select"
       }}
     >
       {constraints.map(constraint => (

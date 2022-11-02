@@ -3,9 +3,7 @@ import Accordion from "@mui/material/Accordion";
 import Box from "@mui/material/Box";
 import CircularProgress from "@mui/material/CircularProgress";
 import InfiniteScroll from "react-infinite-scroll-component";
-
 import {
-  StyledAccordionExpandIcon,
   StyledAccordionDetails,
   StyledAccordionSummary,
   StyledAccordionTitle
@@ -15,7 +13,6 @@ import { DependenciesItem } from "./DependenciesItem";
 import { useAppDispatch, useAppSelector } from "../../../hooks";
 import { dependencyPromoted } from "../../../features/requestedPackages";
 import { ArrowIcon } from "../../../components";
-import { getIconForStyleType } from "../../../utils/helpers";
 
 export interface IDependenciesProps {
   /**
@@ -40,10 +37,6 @@ export const Dependencies = ({
   const { selectedEnvironment } = useAppSelector(state => state.tabs);
   const listLength = dependencies.length;
   const scrollRef = useRef<HTMLDivElement | null>(null);
-  const expandIcon = getIconForStyleType(
-    <StyledAccordionExpandIcon />,
-    <ArrowIcon />
-  );
 
   useEffect(() => {
     scrollRef.current?.scrollTo(0, 0);
@@ -58,14 +51,14 @@ export const Dependencies = ({
       disableGutters
       defaultExpanded
     >
-      <StyledAccordionSummary expandIcon={expandIcon}>
+      <StyledAccordionSummary expandIcon={<ArrowIcon />}>
         <StyledAccordionTitle>
           Packages Installed as Dependencies
         </StyledAccordionTitle>
       </StyledAccordionSummary>
       <StyledAccordionDetails
         id="infScroll"
-        sx={{ padding: "15px 40px", maxHeight: "100px" }}
+        sx={{ padding: "15px 21px", maxHeight: "100px" }}
         ref={scrollRef}
       >
         <InfiniteScroll

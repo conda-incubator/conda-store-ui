@@ -22,22 +22,15 @@ export const PageLayout = () => {
 
   const containerStyles = getStylesForStyleType(
     { display: "flex", width: "100%", height: "100%" },
-    { display: "flex", width: "100%" }
+    { display: "flex", width: "100%", height: "100%" }
   );
 
-  const contentSectionStyles = getStylesForStyleType(
-    {
-      border: "1px solid #000",
-      width: "100%",
-      marginTop: "-1px"
-    },
-    {
-      border: "1px solid #E0E0E0",
-      width: "100%",
-      marginTop: "-1px",
-      backgroundColor: "#F9F9F9"
-    }
-  );
+  const contentSectionStyles = getStylesForStyleType({
+    border: "1px solid #E0E0E0",
+    width: "100%",
+    marginTop: "-1px",
+    backgroundColor: "#F9F9F9"
+  });
 
   const onCreateEnv = (notification: any) => {
     setNotification(notification);
@@ -50,7 +43,7 @@ export const PageLayout = () => {
         refreshEnvironments={isEnvCreated}
         onUpdateRefreshEnvironments={setIsEnvCreated}
       />
-      <Box sx={{ borderTop: "1px solid #A7A7A7", width: "100%" }}>
+      <Box sx={{ width: "100%" }}>
         {(selectedEnvironment || newEnvironment.isActive) && (
           <>
             <PageTabs />
@@ -75,12 +68,11 @@ export const PageLayout = () => {
               flexDirection: "column",
               alignItems: "center",
               justifyContent: "center",
-              height: "100%"
+              height: "100%",
+              borderLeft: "1px solid #E0E0E0"
             }}
           >
-            <Typography
-              sx={{ fontSize: "20px", color: "#000", marginBottom: "100px" }}
-            >
+            <Typography sx={{ fontSize: "18px", color: "#3C4043" }}>
               Select an environment to show details
             </Typography>
           </Box>
