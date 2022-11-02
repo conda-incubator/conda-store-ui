@@ -19,7 +19,12 @@ export const ArtifactItem = ({ artifact }: IArtifactsProps) => {
 
   return (
     <Box sx={{ display: "flex", alignItems: "center" }}>
-      <Link href={artifact.route} underline="none" sx={linkStyles}>
+      <Link
+        href={artifact.route}
+        underline="none"
+        sx={linkStyles}
+        target="_blank"
+      >
         {artifact.name}
       </Link>
     </Box>
