@@ -58,9 +58,9 @@ export const EnvironmentDetails = ({
   useGetEnviromentBuildsQuery(selectedEnvironment, {
     pollingInterval: INTERVAL_REFRESHING
   });
-  const currentBuildId = currentBuild.id
-    ? currentBuild.id
-    : selectedEnvironment?.current_build_id;
+  const [currentBuildId, setCurrentBuildId] = useState(
+    selectedEnvironment?.current_build_id
+  );
 
   const { isFetching } = useGetBuildQuery(currentBuildId, {
     skip: !currentBuildId
@@ -80,13 +80,11 @@ export const EnvironmentDetails = ({
     setDescriptionIsUpdated(true);
   };
 
-  const updateArtifacts = () => {
+  const updateArtifacts = (id = selectedEnvironment?.current_build_id) => {
     (async () => {
-      if (currentBuildId) {
-        const { data } = await triggerQuery(currentBuildId);
-        const apiArtifactTypes: string[] = parseArtifacts(data);
-        setArtifactType(apiArtifactTypes);
-      }
+      const { data } = await triggerQuery(id);
+      const apiArtifactTypes: string[] = parseArtifacts(data);
+      setArtifactType(apiArtifactTypes);
     })();
   };
 
@@ -122,14 +120,19 @@ export const EnvironmentDetails = ({
   };
 
   useEffect(() => {
-    updateArtifacts();
-  }, [currentBuildId]);
-
-  useEffect(() => {
     setName(selectedEnvironment?.name || "");
     setDescription(selectedEnvironment?.description || "");
     setDescriptionIsUpdated(false);
+    setCurrentBuildId(selectedEnvironment?.current_build_id);
+    updateArtifacts();
   }, [selectedEnvironment]);
+
+  useEffect(() => {
+    if (currentBuild.id) {
+      setCurrentBuildId(currentBuild.id);
+      updateArtifacts(currentBuild.id);
+    }
+  }, [currentBuild]);
 
   return (
     <Box sx={{ padding: "14px 12px" }}>

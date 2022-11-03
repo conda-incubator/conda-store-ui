@@ -39,7 +39,8 @@ export const Build = ({
 
   const selectStyles = getStylesForStyleType(
     {
-      marginLeft: "13px"
+      marginLeft: "13px",
+      borderRadius: "0px"
     },
     {
       marginLeft: "13px",
@@ -58,11 +59,6 @@ export const Build = ({
       marginLeft: "12px",
       border: "1px solid #BCBFC4"
     }
-  ) as React.CSSProperties;
-
-  const menuListProps = getStylesForStyleType(
-    {},
-    { padding: "0px" }
   ) as React.CSSProperties;
 
   // If the user is watching his current build, update build's info
@@ -99,7 +95,11 @@ export const Build = ({
           PaperProps: {
             style: paperProps
           },
-          MenuListProps: { style: menuListProps }
+          MenuListProps: {
+            style: {
+              padding: "0px"
+            }
+          }
         }}
         defaultValue={currentBuildId}
         onChange={handleChange}
