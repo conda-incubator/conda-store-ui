@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
+import { CircularProgress } from "@mui/material";
 import MenuItem from "@mui/material/MenuItem";
 import useTheme from "@mui/material/styles/useTheme";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
@@ -135,9 +136,17 @@ export const Build = ({
       <StyledMetadataItem
         sx={{ marginTop: "10px", fontSize: "14px", fontWeight: 500 }}
       >
-        Status:{" "}
+        Status: {""}
         <Typography component="span" sx={{ fontSize: "14px" }}>
           {status}
+          {(status === "Building" || status === "Queued") && (
+            <CircularProgress
+              size={15}
+              sx={{
+                marginLeft: "10px"
+              }}
+            />
+          )}
         </Typography>
       </StyledMetadataItem>
     </>

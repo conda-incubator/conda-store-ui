@@ -164,7 +164,7 @@ export const EnvironmentDetails = ({
           />
         )}
       </Box>
-      {mode === "read-only" && (
+      {mode === "read-only" && artifactType.length > 0 && (
         <Box>
           <ArtifactList
             artifacts={artifactList(currentBuildId, artifactType)}
