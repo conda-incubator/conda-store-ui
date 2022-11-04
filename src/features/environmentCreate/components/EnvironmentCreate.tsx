@@ -9,6 +9,7 @@ import {
   useCreateOrUpdateMutation
 } from "../../../features/environmentDetails";
 import {
+  currentBuildIdChanged,
   EnvMetadata,
   useLazyGetEnviromentBuildQuery
 } from "../../../features/metadata";
@@ -77,14 +78,15 @@ export const EnvironmentCreate = ({ environmentNotification }: IEnvCreate) => {
         }
       };
 
-      dispatch(closeCreateNewEnvironmentTab());
       dispatch(modeChanged(EnvironmentDetailsModes.READ));
+      dispatch(closeCreateNewEnvironmentTab());
       dispatch(
         environmentOpened({
           environment,
           selectedEnvironmentId: newEnvId
         })
       );
+      dispatch(currentBuildIdChanged(data.build_id));
       environmentNotification({
         show: true,
         description: `${name} environment is being created`

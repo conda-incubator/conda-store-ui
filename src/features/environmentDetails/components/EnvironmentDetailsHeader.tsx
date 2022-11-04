@@ -64,7 +64,6 @@ export const EnvironmentDetailsHeader = ({
               }
             }}
             inputProps={{
-              disableUnderline: true,
               style: {
                 padding: "8px 15px",
                 fontSize: "20px",
