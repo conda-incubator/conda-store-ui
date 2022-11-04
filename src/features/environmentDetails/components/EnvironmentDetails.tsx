@@ -23,6 +23,7 @@ import artifactList from "../../../utils/helpers/artifact";
 import { CondaSpecificationPip } from "../../../common/models";
 import { updatePackages } from "../../requestedPackages";
 import { updateChannels } from "../../channels";
+import { useInterval } from "../../../utils/helpers";
 
 interface IEnvDetails {
   environmentNotification: (notification: any) => void;
@@ -49,6 +50,7 @@ export const EnvironmentDetails = ({
     selectedEnvironment ? selectedEnvironment.description : undefined
   );
   const [artifactType, setArtifactType] = useState<string[] | never[]>([]);
+  const [showArtifacts, setShowArtifacts] = useState(false);
   const [error, setError] = useState({
     message: "",
     visible: false
@@ -80,12 +82,11 @@ export const EnvironmentDetails = ({
     setDescriptionIsUpdated(true);
   };
 
-  const updateArtifacts = (id = selectedEnvironment?.current_build_id) => {
-    (async () => {
-      const { data } = await triggerQuery(id);
-      const apiArtifactTypes: string[] = parseArtifacts(data);
-      setArtifactType(apiArtifactTypes);
-    })();
+  const updateArtifacts = async () => {
+    const { data } = await triggerQuery(currentBuildId);
+    const apiArtifactTypes: string[] = parseArtifacts(data);
+    setArtifactType(apiArtifactTypes);
+    setShowArtifacts(true);
   };
 
   const updateEnvironment = async (code: IUpdateEnvironmentArgs) => {
@@ -119,18 +120,23 @@ export const EnvironmentDetails = ({
     }
   };
 
+  useInterval(async () => {
+    (async () => {
+      updateArtifacts();
+    })();
+  }, INTERVAL_REFRESHING);
+
   useEffect(() => {
     setName(selectedEnvironment?.name || "");
     setDescription(selectedEnvironment?.description || "");
-    setDescriptionIsUpdated(false);
     setCurrentBuildId(selectedEnvironment?.current_build_id);
-    updateArtifacts();
+    setDescriptionIsUpdated(false);
+    setShowArtifacts(false);
   }, [selectedEnvironment]);
 
   useEffect(() => {
     if (currentBuild.id) {
       setCurrentBuildId(currentBuild.id);
-      updateArtifacts(currentBuild.id);
     }
   }, [currentBuild]);
 
@@ -164,10 +170,11 @@ export const EnvironmentDetails = ({
           />
         )}
       </Box>
-      {mode === "read-only" && artifactType.length > 0 && (
+      {mode === "read-only" && (
         <Box>
           <ArtifactList
             artifacts={artifactList(currentBuildId, artifactType)}
+            showArtifacts={showArtifacts}
           />
         </Box>
       )}

@@ -1,4 +1,5 @@
 import Box from "@mui/material/Box";
+import { CircularProgress } from "@mui/material";
 import React from "react";
 import { ArtifactItem } from "./ArtifactsItem";
 import { Artifact } from "../../../common/models";
@@ -16,9 +17,10 @@ export interface IArtifactsProps {
    * @param artifacts list of artifacts
    */
   artifacts: Artifact[] | never[];
+  showArtifacts: boolean;
 }
 
-export const ArtifactList = ({ artifacts }: IArtifactsProps) => {
+export const ArtifactList = ({ artifacts, showArtifacts }: IArtifactsProps) => {
   const { typography } = useTheme();
 
   const boxStyles = getStylesForStyleType({ backgroundColor: "#fff" });
@@ -44,20 +46,25 @@ export const ArtifactList = ({ artifacts }: IArtifactsProps) => {
             backgroundColor: "#E0E0E0"
           }}
         />
-        <Box sx={linksContainerStyles}>
-          {artifacts.map((link, index) => (
-            <ListItem
-              key={link.name}
-              sx={{
-                padding: "0",
-                marginBottom: index === artifacts.length - 1 ? "0px" : "15px",
-                fontFamily: typography.fontFamily
-              }}
-            >
-              <ArtifactItem artifact={link} />
-            </ListItem>
-          ))}
-        </Box>
+
+        {artifacts.length && showArtifacts ? (
+          <Box sx={linksContainerStyles}>
+            {artifacts.map((link, index) => (
+              <ListItem
+                key={link.name}
+                sx={{
+                  padding: "0",
+                  marginBottom: index === artifacts.length - 1 ? "0px" : "15px",
+                  fontFamily: typography.fontFamily
+                }}
+              >
+                <ArtifactItem artifact={link} />
+              </ListItem>
+            ))}
+          </Box>
+        ) : (
+          <CircularProgress size={20} sx={{ margin: "15px 0 5px 15px" }} />
+        )}
       </List>
     </StyledBox>
   );

@@ -132,7 +132,8 @@ const BaseEnvironments = ({
           position: "absolute",
           width: "100%",
           textAlign: "center",
-          bottom: "20px"
+          bottom: "20px",
+          zIndex: "-1"
         }}
       >
         <CondaLogo />
