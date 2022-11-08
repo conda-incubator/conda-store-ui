@@ -13,6 +13,7 @@ import {
   closeCreateNewEnvironmentTab,
   toggleNewEnvironmentView
 } from "../tabsSlice";
+import { currentBuildIdChanged } from "../../metadata";
 
 export const PageTabs = () => {
   const { selectedEnvironments, value, selectedEnvironment, newEnvironment } =
@@ -45,6 +46,7 @@ export const PageTabs = () => {
           : envId
       })
     );
+    dispatch(currentBuildIdChanged(undefined));
     if (selectedEnvironments.length === 1 && newEnvironment.isOpen) {
       dispatch(modeChanged(EnvironmentDetailsModes.CREATE));
     }

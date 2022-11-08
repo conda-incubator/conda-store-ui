@@ -26,7 +26,10 @@ export const enviromentsSlice = createSlice({
   name: "environments",
   initialState,
   reducers: {
-    currentBuildIdChanged: (state, action: PayloadAction<number>) => {
+    currentBuildIdChanged: (
+      state,
+      action: PayloadAction<number | undefined>
+    ) => {
       state.currentBuild.id = action.payload;
     },
     buildStatusChanged: (state, action: PayloadAction<any>) => {

@@ -19,14 +19,16 @@ interface IEnvMetadataProps {
    */
   description?: any;
   mode: "create" | "read-only" | "edit";
-  current_build_id: number | undefined;
+  currentBuildId?: number | undefined;
+  selectedBuildId?: number;
   onUpdateDescription: (description: string) => void;
 }
 
 export const EnvMetadata = ({
   mode,
   description = "",
-  current_build_id,
+  currentBuildId,
+  selectedBuildId,
   onUpdateDescription
 }: IEnvMetadataProps) => {
   return (
@@ -54,9 +56,14 @@ export const EnvMetadata = ({
         description={description || undefined}
         onChangeDescription={onUpdateDescription}
       />
-      {mode !== EnvironmentDetailsModes.CREATE && current_build_id && (
-        <EnvBuilds currentBuildId={current_build_id} />
-      )}
+      {mode !== EnvironmentDetailsModes.CREATE &&
+        currentBuildId &&
+        selectedBuildId && (
+          <EnvBuilds
+            currentBuildId={currentBuildId}
+            selectedBuildId={selectedBuildId}
+          />
+        )}
     </StyledBox>
   );
 };
