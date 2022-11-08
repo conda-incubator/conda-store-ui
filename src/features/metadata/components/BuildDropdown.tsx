@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
+import { CircularProgress } from "@mui/material";
 import MenuItem from "@mui/material/MenuItem";
 import useTheme from "@mui/material/styles/useTheme";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import IconButton from "@mui/material/IconButton";
 import { StyledMetadataItem } from "../../../styles/StyledMetadataItem";
 import { useAppDispatch } from "../../../hooks";
-import { currentBuildIdChanged } from "..";
+import { currentBuildIdChanged, buildStatusChanged } from "..";
 import { useAppSelector } from "../../../hooks";
 import { getStylesForStyleType } from "../../../utils/helpers";
 import { Typography } from "@mui/material";
@@ -39,7 +40,8 @@ export const Build = ({
 
   const selectStyles = getStylesForStyleType(
     {
-      marginLeft: "13px"
+      marginLeft: "13px",
+      borderRadius: "0px"
     },
     {
       marginLeft: "13px",
@@ -60,17 +62,14 @@ export const Build = ({
     }
   ) as React.CSSProperties;
 
-  const menuListProps = getStylesForStyleType(
-    {},
-    { padding: "0px" }
-  ) as React.CSSProperties;
-
   // If the user is watching his current build, update build's info
   useEffect(() => {
     if (["Queued", "Building"].includes(status)) {
-      const build = builds.find(build => build.id === currentBuild.id);
+      const id = builds.length === 1 ? currentBuildId : currentBuild.id;
+      const build = builds.find(build => build.id === id);
       if (build) {
         setStatus(build.status);
+        dispatch(buildStatusChanged(build.status));
       }
     }
   }, [builds]);
@@ -83,6 +82,7 @@ export const Build = ({
     if (newCurrentBuild) {
       dispatch(currentBuildIdChanged(newCurrentBuild.id));
       setStatus(newCurrentBuild.status);
+      dispatch(buildStatusChanged(newCurrentBuild.status));
     }
   };
 
@@ -97,7 +97,11 @@ export const Build = ({
           PaperProps: {
             style: paperProps
           },
-          MenuListProps: { style: menuListProps }
+          MenuListProps: {
+            style: {
+              padding: "0px"
+            }
+          }
         }}
         defaultValue={currentBuildId}
         onChange={handleChange}
@@ -133,9 +137,17 @@ export const Build = ({
       <StyledMetadataItem
         sx={{ marginTop: "10px", fontSize: "14px", fontWeight: 500 }}
       >
-        Status:{" "}
+        Status: {""}
         <Typography component="span" sx={{ fontSize: "14px" }}>
           {status}
+          {(status === "Building" || status === "Queued") && (
+            <CircularProgress
+              size={15}
+              sx={{
+                marginLeft: "10px"
+              }}
+            />
+          )}
         </Typography>
       </StyledMetadataItem>
     </>

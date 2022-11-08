@@ -25,16 +25,18 @@ const artifactList = (
     },
     LOGS: {
       name: `Conda Env ${currentBuildId} log`,
-      route: `${apiURL}api/v1/build/${currentBuildId}/logs`
+      route: `${apiURL}api/v1/build/${currentBuildId}/logs/`
+    },
+    DOCKER_MANIFEST: {
+      name: "Docker image",
+      route: `${apiURL}api/v1/build/${currentBuildId}/docker/`
     }
   };
 
-  const result = apiArtifactTypes.reduce(
+  return apiArtifactTypes.reduce(
     (acc, cur) => acc.concat(artifact_map[cur as keyof typeof artifactList]),
     []
   );
-
-  return result;
 };
 
 export default artifactList;

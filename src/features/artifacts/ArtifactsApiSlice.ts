@@ -12,4 +12,4 @@ export const artifactsApiSlice = apiSlice.injectEndpoints({
   })
 });
 
-export const { useGetArtifactsQuery } = artifactsApiSlice;
+export const { useLazyGetArtifactsQuery } = artifactsApiSlice;

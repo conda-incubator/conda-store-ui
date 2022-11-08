@@ -6,7 +6,7 @@ import { parseArtifacts } from "../../../utils/helpers/parseArtifactList";
 import { EnvironmentDetailsHeader } from "./EnvironmentDetailsHeader";
 import { SpecificationEdit, SpecificationReadOnly } from "./Specification";
 import { useGetBuildQuery } from "../environmentDetailsApiSlice";
-import { useGetArtifactsQuery } from "../../artifacts";
+import { useLazyGetArtifactsQuery } from "../../artifacts";
 import { useGetBuildPackagesQuery } from "../../../features/dependencies";
 import { ArtifactList } from "../../../features/artifacts";
 import {
@@ -23,6 +23,7 @@ import artifactList from "../../../utils/helpers/artifact";
 import { CondaSpecificationPip } from "../../../common/models";
 import { updatePackages } from "../../requestedPackages";
 import { updateChannels } from "../../channels";
+import { useInterval } from "../../../utils/helpers";
 
 interface IEnvDetails {
   environmentNotification: (notification: any) => void;
@@ -39,7 +40,6 @@ export const EnvironmentDetails = ({
   environmentNotification
 }: IEnvDetails) => {
   const dispatch = useAppDispatch();
-
   const { mode } = useAppSelector(state => state.environmentDetails);
   const { page } = useAppSelector(state => state.dependencies);
   const { selectedEnvironment } = useAppSelector(state => state.tabs);
@@ -49,27 +49,32 @@ export const EnvironmentDetails = ({
   const [description, setDescription] = useState(
     selectedEnvironment ? selectedEnvironment.description : undefined
   );
+  const [artifactType, setArtifactType] = useState<string[] | never[]>([]);
+  const [showArtifacts, setShowArtifacts] = useState(false);
   const [error, setError] = useState({
     message: "",
     visible: false
   });
-
+  const [triggerQuery] = useLazyGetArtifactsQuery();
   const [createOrUpdate] = useCreateOrUpdateMutation();
   useGetEnviromentBuildsQuery(selectedEnvironment, {
     pollingInterval: INTERVAL_REFRESHING
   });
+  const [currentBuildId, setCurrentBuildId] = useState(
+    selectedEnvironment?.current_build_id
+  );
 
-  const { isFetching } = useGetBuildQuery(currentBuild.id, {
-    skip: !currentBuild.id
+  const { isFetching } = useGetBuildQuery(currentBuildId, {
+    skip: !currentBuildId
   });
 
   useGetBuildPackagesQuery(
     {
-      buildId: currentBuild.id,
+      buildId: currentBuildId,
       page,
       size: 100
     },
-    { skip: isFetching || !currentBuild.id }
+    { skip: isFetching || !currentBuildId }
   );
 
   const updateDescription = (description: string) => {
@@ -77,8 +82,12 @@ export const EnvironmentDetails = ({
     setDescriptionIsUpdated(true);
   };
 
-  const { data } = useGetArtifactsQuery(selectedEnvironment?.current_build_id);
-  const apiArtifactTypes: string[] = parseArtifacts(data);
+  const updateArtifacts = async () => {
+    const { data } = await triggerQuery(currentBuildId);
+    const apiArtifactTypes: string[] = parseArtifacts(data);
+    setArtifactType(apiArtifactTypes);
+    setShowArtifacts(true);
+  };
 
   const updateEnvironment = async (code: IUpdateEnvironmentArgs) => {
     const namespace = selectedEnvironment?.namespace.name;
@@ -111,11 +120,25 @@ export const EnvironmentDetails = ({
     }
   };
 
+  useInterval(async () => {
+    (async () => {
+      updateArtifacts();
+    })();
+  }, INTERVAL_REFRESHING);
+
   useEffect(() => {
     setName(selectedEnvironment?.name || "");
     setDescription(selectedEnvironment?.description || "");
+    setCurrentBuildId(selectedEnvironment?.current_build_id);
     setDescriptionIsUpdated(false);
+    setShowArtifacts(false);
   }, [selectedEnvironment]);
+
+  useEffect(() => {
+    if (currentBuild.id) {
+      setCurrentBuildId(currentBuild.id);
+    }
+  }, [currentBuild]);
 
   return (
     <Box sx={{ padding: "14px 12px" }}>
@@ -150,10 +173,8 @@ export const EnvironmentDetails = ({
       {mode === "read-only" && (
         <Box>
           <ArtifactList
-            artifacts={artifactList(
-              selectedEnvironment?.current_build_id,
-              apiArtifactTypes
-            )}
+            artifacts={artifactList(currentBuildId, artifactType)}
+            showArtifacts={showArtifacts}
           />
         </Box>
       )}

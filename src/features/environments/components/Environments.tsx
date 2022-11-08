@@ -15,7 +15,7 @@ import {
 import { CondaLogo } from "../../../components";
 import { useInterval } from "../../../utils/helpers";
 
-const INTERVAL_REFRESHING = 2000;
+const INTERVAL_REFRESHING = 5000;
 
 export interface IBaseEnvironments {
   refreshEnvironments: boolean;
@@ -132,7 +132,8 @@ const BaseEnvironments = ({
           position: "absolute",
           width: "100%",
           textAlign: "center",
-          bottom: "20px"
+          bottom: "20px",
+          zIndex: "-1"
         }}
       >
         <CondaLogo />
