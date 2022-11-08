@@ -137,9 +137,9 @@ export const Build = ({
           {status}
           {(status === "Building" || status === "Queued") && (
             <CircularProgress
-              size={15}
+              size={10}
               sx={{
-                marginLeft: "10px"
+                marginLeft: "8px"
               }}
             />
           )}
