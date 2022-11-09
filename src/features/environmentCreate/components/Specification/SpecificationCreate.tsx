@@ -12,7 +12,10 @@ import {
   editorCodeUpdated,
   environmentCreateStateCleared
 } from "../../environmentCreateSlice";
-import { getStylesForStyleType } from "../../../../utils/helpers";
+import {
+  getStylesForStyleType,
+  requestedPackagesMapper
+} from "../../../../utils/helpers";
 
 export const SpecificationCreate = ({ onCreateEnvironment }: any) => {
   const dispatch = useAppDispatch();
@@ -74,7 +77,10 @@ export const SpecificationCreate = ({ onCreateEnvironment }: any) => {
       ? editorContent
       : { dependencies: requestedPackages, channels };
 
-    onCreateEnvironment(code);
+    onCreateEnvironment({
+      ...code,
+      dependencies: requestedPackagesMapper(code.dependencies)
+    });
   };
 
   useEffect(() => {

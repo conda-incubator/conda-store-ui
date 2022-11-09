@@ -15,7 +15,8 @@ export const ConstraintSelect = ({
   constraint,
   onUpdate = (value: string) => {}
 }: IConstraintSelectProps) => {
-  const constraints = [">", "<", ">=", "<=", "=="];
+  const constraints = [">", "<", ">=", "<=", "="];
+  const selectedConstraint = constraint === "==" ? "=" : constraint;
 
   const inputStyles = getStylesForStyleType(
     {
@@ -32,7 +33,7 @@ export const ConstraintSelect = ({
 
   return (
     <Select
-      defaultValue={constraint}
+      defaultValue={selectedConstraint}
       IconComponent={() => null}
       onChange={e => {
         if (e.target.value) {
