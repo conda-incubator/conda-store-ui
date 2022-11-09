@@ -1,11 +1,14 @@
-import DeleteIcon from "@mui/icons-material/Delete";
-import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import React, { memo, useState } from "react";
+import { ChannelIcon, DeleteIconAlt } from "../../../components";
 
 import { StyledIconButton } from "../../../styles";
+import {
+  getIconForStyleType,
+  getStylesForStyleType
+} from "../../../utils/helpers";
 
 interface IChannelsEditItemProps {
   /**
@@ -26,6 +29,30 @@ const BaseChannelsEditItem = ({
   const [name, setName] = useState(channelName);
   const [isEditing, setIsEditing] = useState(false);
 
+  const dragIcon = getIconForStyleType(
+    <ChannelIcon color="#C4C7CC" />,
+    <ChannelIcon color="#A8DAB5" />
+  );
+
+  const boxStyles = getStylesForStyleType({
+    height: "100%",
+    width: "10px",
+    backgroundColor: "#C4C7CC",
+    display: "inline-block",
+    marginLeft: "-1px",
+    borderRight: "1px solid #F1F1F1",
+    borderLeft: "1px solid #F1F1F1"
+  });
+
+  const containerStyles = getStylesForStyleType({
+    height: "32px",
+    width: "205px",
+    backgroundColor: "#F1F1F1",
+    border: "1px solid #BCBFC4",
+    display: "flex",
+    alignItems: "center"
+  });
+
   const handleSubmit = () => {
     if (name) {
       onEdit(channelName, name);
@@ -42,38 +69,17 @@ const BaseChannelsEditItem = ({
 
   return (
     <Box sx={{ display: "flex", alignItems: "center" }}>
-      <Box
-        sx={{
-          height: "32px",
-          width: "205px",
-          backgroundColor: "#D9D9D9",
-          border: "1px solid #000",
-          display: "flex",
-          alignItems: "center"
-        }}
-      >
-        <Box
-          sx={{
-            height: "100%",
-            width: "10px",
-            backgroundColor: "#7E7E7E",
-            display: "inline-block",
-            marginLeft: "-1px",
-            borderRight: "1px solid #000"
-          }}
-        />
-        <DragIndicatorIcon
-          sx={{
-            color: "#9B9A9A",
-            marginRight: "10px"
-          }}
-        />
+      <Box sx={containerStyles}>
+        <Box sx={boxStyles} />
+        {dragIcon}
         {!isEditing && (
           <Box
             onClick={() => setIsEditing(true)}
             sx={{ "&:hover": { cursor: "pointer" } }}
           >
-            <Typography sx={{ color: "#4D4D4D" }}>{channelName}</Typography>
+            <Typography sx={{ fontSize: "14px", color: "#4D4D4D" }}>
+              {channelName}
+            </Typography>
           </Box>
         )}
         {isEditing && (
@@ -92,8 +98,9 @@ const BaseChannelsEditItem = ({
       <StyledIconButton
         sx={{ marginLeft: "15px" }}
         onClick={() => onRemove(channelName)}
+        data-testid="DeleteIcon"
       >
-        <DeleteIcon />
+        <DeleteIconAlt />
       </StyledIconButton>
     </Box>
   );

@@ -5,10 +5,10 @@ import React from "react";
 import { Channel } from "./Channel";
 import {
   StyledAccordionDetails,
-  StyledAccordionExpandIcon,
   StyledAccordionSummary,
   StyledAccordionTitle
 } from "../../../styles";
+import { ArrowIcon } from "../../../components";
 
 export interface IChannelsListProps {
   /**
@@ -26,10 +26,10 @@ export const ChannelsList = ({ channelList }: IChannelsListProps) => {
       disableGutters
       defaultExpanded
     >
-      <StyledAccordionSummary expandIcon={<StyledAccordionExpandIcon />}>
+      <StyledAccordionSummary expandIcon={<ArrowIcon />}>
         <StyledAccordionTitle>Channels</StyledAccordionTitle>
       </StyledAccordionSummary>
-      <StyledAccordionDetails sx={{ padding: "11px 40px" }}>
+      <StyledAccordionDetails sx={{ padding: "11px 21px" }}>
         {channelList.map((channel, index) => (
           <Box
             key={channel}

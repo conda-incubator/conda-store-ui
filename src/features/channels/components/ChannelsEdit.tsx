@@ -13,12 +13,12 @@ import { AddChannel } from "./AddChannel";
 import { ChannelsEditItem } from "./ChannelsEditItem";
 import {
   StyledAccordionDetails,
-  StyledAccordionExpandIcon,
   StyledAccordionSummary,
   StyledAccordionTitle,
   StyledButtonPrimary
 } from "../../../styles";
 import { reorderArray } from "../../../utils/helpers";
+import { ArrowIcon } from "../../../components";
 
 export interface IChannelsEditProps {
   /**
@@ -83,7 +83,7 @@ const BaseChannelsEdit = ({
       sx={{ width: 421, boxShadow: "none" }}
       disableGutters
     >
-      <StyledAccordionSummary expandIcon={<StyledAccordionExpandIcon />}>
+      <StyledAccordionSummary expandIcon={<ArrowIcon />}>
         <StyledAccordionTitle>Channels</StyledAccordionTitle>
       </StyledAccordionSummary>
       <DragDropContext onDragEnd={onDragEnd}>
@@ -136,13 +136,16 @@ const BaseChannelsEdit = ({
         sx={{
           border: `1px solid ${palette.primary.main}`,
           borderTop: "0px",
-          borderRadius: "0px 0px 5px 5px",
-          padding: "15px 21px"
+          borderRadius: "0px",
+          padding: "15px 21px",
+          display: "flex",
+          justifyContent: "center"
         }}
       >
         <StyledButtonPrimary
           variant="contained"
           onClick={() => setIsAdding(true)}
+          isalttype="true"
         >
           + Add Channel
         </StyledButtonPrimary>

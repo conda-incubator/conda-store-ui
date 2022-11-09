@@ -10,10 +10,10 @@ import {
 import useTheme from "@mui/material/styles/useTheme";
 import { Box } from "@mui/system";
 import React, { useEffect, useRef, useState } from "react";
+import { ArrowIcon } from "../../../components";
 import { useAppDispatch } from "../../../hooks";
 import {
   StyledAccordionDetails,
-  StyledAccordionExpandIcon,
   StyledAccordionSummary,
   StyledAccordionTitle,
   StyledButtonPrimary,
@@ -50,7 +50,7 @@ export const CreateEnvironmentPackages = ({
       defaultExpanded
       disableGutters
     >
-      <StyledAccordionSummary expandIcon={<StyledAccordionExpandIcon />}>
+      <StyledAccordionSummary expandIcon={<ArrowIcon />}>
         <StyledAccordionTitle>Requested Packages</StyledAccordionTitle>
       </StyledAccordionSummary>
       <StyledAccordionDetails
@@ -121,6 +121,7 @@ export const CreateEnvironmentPackages = ({
         <StyledButtonPrimary
           variant="contained"
           onClick={() => setIsAdding(true)}
+          isalttype="true"
         >
           + Add Package
         </StyledButtonPrimary>

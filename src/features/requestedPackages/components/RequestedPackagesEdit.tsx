@@ -12,7 +12,6 @@ import { RequestedPackagesTableRow } from "./RequestedPackagesTableRow";
 import { AddRequestedPackage } from "./AddRequestedPackage";
 import {
   StyledAccordionDetails,
-  StyledAccordionExpandIcon,
   StyledAccordionSummary,
   StyledAccordionTitle,
   StyledButtonPrimary,
@@ -21,6 +20,7 @@ import {
 import { CondaSpecificationPip } from "../../../common/models";
 import { useAppDispatch } from "../../../hooks";
 import { packageAdded } from "../requestedPackagesSlice";
+import { ArrowIcon } from "../../../components";
 
 export interface IRequestedPackagesEditProps {
   /**
@@ -58,7 +58,7 @@ export const RequestedPackagesEdit = ({
       defaultExpanded
       disableGutters
     >
-      <StyledAccordionSummary expandIcon={<StyledAccordionExpandIcon />}>
+      <StyledAccordionSummary expandIcon={<ArrowIcon />}>
         <StyledAccordionTitle>Requested Packages</StyledAccordionTitle>
       </StyledAccordionSummary>
       <StyledAccordionDetails
@@ -78,7 +78,7 @@ export const RequestedPackagesEdit = ({
               >
                 <Typography
                   component="p"
-                  sx={{ fontSize: "16px", fontWeight: 500 }}
+                  sx={{ fontSize: "14px", fontWeight: 500 }}
                 >
                   Name
                 </Typography>
@@ -91,7 +91,7 @@ export const RequestedPackagesEdit = ({
               >
                 <Typography
                   component="p"
-                  sx={{ fontSize: "16px", fontWeight: 500 }}
+                  sx={{ fontSize: "14px", fontWeight: 500 }}
                 >
                   Installed Version
                 </Typography>
@@ -99,7 +99,7 @@ export const RequestedPackagesEdit = ({
               <StyledEditPackagesTableCell align="left">
                 <Typography
                   component="p"
-                  sx={{ fontSize: "16px", fontWeight: 500 }}
+                  sx={{ fontSize: "14px", fontWeight: 500 }}
                 >
                   Version Constraint
                 </Typography>
@@ -129,7 +129,7 @@ export const RequestedPackagesEdit = ({
         sx={{
           border: `1px solid ${palette.primary.main}`,
           borderTop: "0px",
-          borderRadius: "0px 0px 5px 5px",
+          borderRadius: "0px",
           padding: "15px 21px",
           display: "flex",
           justifyContent: "center"
@@ -137,6 +137,7 @@ export const RequestedPackagesEdit = ({
       >
         <StyledButtonPrimary
           variant="contained"
+          isalttype="true"
           onClick={() => setIsAdding(true)}
         >
           + Add Package

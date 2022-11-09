@@ -1,16 +1,14 @@
 import Accordion from "@mui/material/Accordion";
-import { RequestedPackage } from ".";
 import Box from "@mui/material/Box";
-import React, { useEffect, useMemo } from "react";
+import React, { useMemo } from "react";
+import { RequestedPackage } from ".";
+import { CondaSpecificationPip } from "../../../common/models";
+import { ArrowIcon } from "../../../components";
 import {
   StyledAccordionDetails,
-  StyledAccordionExpandIcon,
   StyledAccordionSummary,
   StyledAccordionTitle
 } from "../../../styles";
-import { CondaSpecificationPip } from "../../../common/models";
-import { useAppDispatch, useAppSelector } from "../../../hooks";
-import { packageVersionAdded } from "../requestedPackagesSlice";
 
 export interface IRequestedPackageListProps {
   /**
@@ -22,29 +20,11 @@ export interface IRequestedPackageListProps {
 export const RequestedPackageList = ({
   packageList
 }: IRequestedPackageListProps) => {
-  const { dependencies } = useAppSelector(state => state.dependencies);
-  const { packagesWithLatestVersions } = useAppSelector(
-    state => state.requestedPackages
-  );
-  const dispatch = useAppDispatch();
-
   const filteredPackageList = useMemo(
     () => packageList.filter(item => typeof item !== "object"),
     [packageList]
   );
   const listLength = filteredPackageList.length;
-
-  useEffect(() => {
-    dependencies.forEach(dep => {
-      const foundPackage = packagesWithLatestVersions[dep.name];
-
-      if (foundPackage) {
-        dispatch(
-          packageVersionAdded({ packageName: dep.name, version: dep.version })
-        );
-      }
-    });
-  }, [packageList, dependencies]);
 
   return (
     <Accordion
@@ -52,10 +32,14 @@ export const RequestedPackageList = ({
       disableGutters
       defaultExpanded
     >
-      <StyledAccordionSummary expandIcon={<StyledAccordionExpandIcon />}>
+      <StyledAccordionSummary expandIcon={<ArrowIcon />}>
         <StyledAccordionTitle>Requested Packages</StyledAccordionTitle>
       </StyledAccordionSummary>
-      <StyledAccordionDetails sx={{ padding: "11px 40px" }}>
+      <StyledAccordionDetails
+        sx={{
+          padding: "11px 21px"
+        }}
+      >
         {filteredPackageList.map((item, index) => (
           <Box
             key={`${item}`}

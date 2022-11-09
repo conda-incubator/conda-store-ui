@@ -2,12 +2,13 @@ import Typography from "@mui/material/Typography";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import Box from "@mui/material/Box";
 import InputAdornment from "@mui/material/InputAdornment";
-import SearchIcon from "@mui/icons-material/Search";
 import Link from "@mui/material/Link";
 import PersonIcon from "@mui/icons-material/Person";
 import React from "react";
 
 import { PrefContext } from "../../../preferences";
+import { LoginIcon, SearchIconAlt } from "../../../components";
+import { getIconForStyleType } from "../../../utils/helpers";
 
 interface IEnvironmentsSearchProps {
   /**
@@ -25,10 +26,18 @@ export const EnvironmentsSearch = ({ onChange }: IEnvironmentsSearchProps) => {
   const loginPageUrl = `${authUrl}${pageUrl}`;
   let login;
 
+  const loginIcon = getIconForStyleType(
+    <LoginIcon color="#9AA0A6" />,
+    <LoginIcon color="#B9D9BD" />
+  );
+
   if (isCookieAuthMethod) {
     login = (
-      <Link href={loginPageUrl} sx={{ position: "absolute", top: 0, right: 0 }}>
-        <PersonIcon sx={{ color: "black" }} />
+      <Link
+        href={loginPageUrl}
+        sx={{ position: "absolute", top: 14, right: 18 }}
+      >
+        {loginIcon}
       </Link>
     );
   }
@@ -42,7 +51,14 @@ export const EnvironmentsSearch = ({ onChange }: IEnvironmentsSearchProps) => {
     >
       <Typography
         data-testid="env-search-title"
-        sx={{ marginBottom: "16px", textAlign: "center" }}
+        sx={{
+          marginBottom: "16px",
+          textAlign: "center",
+          color: "#9AA0A6",
+          fontWeight: 700,
+          fontSize: "15px",
+          marginTop: "30px"
+        }}
       >
         Package Manager
       </Typography>
@@ -52,13 +68,25 @@ export const EnvironmentsSearch = ({ onChange }: IEnvironmentsSearchProps) => {
         size="small"
         endAdornment={
           <InputAdornment position="end">
-            <SearchIcon sx={{ color: "#A7A7A7" }} />
+            <SearchIconAlt style={{ marginRight: "5px" }} />
           </InputAdornment>
         }
         placeholder="Search for environment"
-        sx={{ borderRadius: "0px", paddingRight: "5px", width: "288px" }}
+        sx={{
+          borderRadius: "15px",
+          paddingRight: "10px",
+          width: "288px",
+          "&::placeholder": {
+            fontSize: "12px",
+            fontWeight: 400
+          }
+        }}
         inputProps={{
-          style: { padding: "5px", paddingLeft: "15px", fontSize: "14px" }
+          style: {
+            padding: "7px",
+            paddingLeft: "15px",
+            fontSize: "14px"
+          }
         }}
       />
     </Box>

@@ -1,14 +1,14 @@
-import React, { useEffect, useMemo, useRef } from "react";
 import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
 import CircularProgress from "@mui/material/CircularProgress";
-import GroupIcon from "@mui/icons-material/Group";
-import { EnvironmentDropdown } from "./EnvironmentDropdown";
-import { Environment, Namespace } from "../../../common/models";
-import { StyledScrollContainer } from "../../../styles";
-import { INamespaceEnvironments } from "../../../common/interfaces";
+import Typography from "@mui/material/Typography";
 import lodash from "lodash";
+import React, { useEffect, useMemo, useRef } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
+import { INamespaceEnvironments } from "../../../common/interfaces";
+import { Environment, Namespace } from "../../../common/models";
+import { GroupIconAlt } from "../../../components";
+import { StyledScrollContainer } from "../../../styles";
+import { EnvironmentDropdown } from "./EnvironmentDropdown";
 
 interface IEnvironmentsListProps {
   /**
@@ -81,9 +81,7 @@ export const EnvironmentsList = ({
 
   return (
     <StyledScrollContainer
-      sx={{
-        height: "100%"
-      }}
+      sx={{ minHeight: "229px", maxHeight: "725px" }}
       id="environmentsScroll"
       ref={scrollRef}
     >
@@ -119,13 +117,15 @@ export const EnvironmentsList = ({
           <Typography
             sx={{
               textTransform: "uppercase",
-              fontWeight: 500,
-              marginRight: "10px"
+              fontWeight: 700,
+              marginRight: "10px",
+              fontSize: "15px",
+              color: "#9AA0A6"
             }}
           >
             Shared environments
           </Typography>
-          <GroupIcon />
+          <GroupIconAlt style={{ marginBottom: "8px", marginLeft: "10px" }} />
         </Box>
         {sharedNamespaces.map(namespace => (
           <EnvironmentDropdown key={namespace.namespace} data={namespace} />

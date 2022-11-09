@@ -12,6 +12,7 @@ import {
   editorCodeUpdated,
   environmentCreateStateCleared
 } from "../../environmentCreateSlice";
+import { getStylesForStyleType } from "../../../../utils/helpers";
 
 export const SpecificationCreate = ({ onCreateEnvironment }: any) => {
   const dispatch = useAppDispatch();
@@ -23,6 +24,11 @@ export const SpecificationCreate = ({ onCreateEnvironment }: any) => {
     channels: string[];
     dependencies: string[];
   }>({ channels: [], dependencies: [] });
+
+  const buttonStyles = getStylesForStyleType(
+    { padding: "5px 60px" },
+    { padding: "5px 48px" }
+  );
 
   const onUpdateChannels = useCallback((channels: string[]) => {
     dispatch(channelsChanged(channels));
@@ -116,8 +122,9 @@ export const SpecificationCreate = ({ onCreateEnvironment }: any) => {
           }}
         >
           <StyledButtonPrimary
-            sx={{ padding: "5px 60px" }}
+            sx={buttonStyles}
             onClick={handleSubmit}
+            isalttype="true"
           >
             Create
           </StyledButtonPrimary>

@@ -1,9 +1,12 @@
-import DeleteIcon from "@mui/icons-material/Delete";
 import Box from "@mui/material/Box";
 import TableRow from "@mui/material/TableRow";
 import Typography from "@mui/material/Typography";
 import React, { memo } from "react";
-import { ConstraintSelect, VersionSelect } from "../../../components";
+import {
+  ConstraintSelect,
+  DeleteIconAlt,
+  VersionSelect
+} from "../../../components";
 import { useAppDispatch, useAppSelector } from "../../../hooks";
 import {
   StyledIconButton,
@@ -23,16 +26,14 @@ const BaseRequestedPackagesTableRow = ({
   requestedPackage
 }: IRequestedPackagesTableRowProps) => {
   const dispatch = useAppDispatch();
-  const { packageVersions } = useAppSelector(state => state.requestedPackages);
-  const { installedVersions } = useAppSelector(
-    state => state.environmentDetails
-  );
+  const { versionsWithoutConstraints, versionsWithConstraints } =
+    useAppSelector(state => state.requestedPackages);
   const result = requestedPackageParser(requestedPackage);
   let { version } = result;
   const { constraint, name } = result;
 
   if (constraint === "latest") {
-    version = packageVersions[name];
+    version = versionsWithoutConstraints[name];
   }
 
   const updateVersion = (value: string) => {
@@ -62,15 +63,15 @@ const BaseRequestedPackagesTableRow = ({
   return (
     <TableRow>
       <StyledRequestedPackagesTableCell align="left">
-        <Typography sx={{ fontSize: "16px", fontWeight: 400, color: "#000" }}>
+        <Typography sx={{ fontSize: "14px", fontWeight: 400, color: "#000" }}>
           {name}
         </Typography>
       </StyledRequestedPackagesTableCell>
       <StyledRequestedPackagesTableCell align="left">
         <Typography
-          sx={{ fontSize: "16px", fontWeight: 400, color: "#676666" }}
+          sx={{ fontSize: "14px", fontWeight: 400, color: "#676666" }}
         >
-          {installedVersions[name]}
+          {versionsWithConstraints[name] ?? versionsWithoutConstraints[name]}
         </Typography>
       </StyledRequestedPackagesTableCell>
       <StyledRequestedPackagesTableCell align="left">
@@ -85,7 +86,7 @@ const BaseRequestedPackagesTableRow = ({
             name={name}
           />
           <StyledIconButton onClick={handleRemove} sx={{ marginLeft: "24px" }}>
-            <DeleteIcon />
+            <DeleteIconAlt />
           </StyledIconButton>
         </Box>
       </StyledRequestedPackagesTableCell>

@@ -18,15 +18,30 @@ export const BlockContainerEditMode = ({
   isEditMode
 }: IBlockContainerProps) => {
   return (
-    <Box sx={{ border: "1px solid #000" }}>
-      <Box sx={{ padding: "17px 19px", borderBottom: "1px solid #A7A7A7" }}>
-        <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+    <Box
+      sx={{
+        border: "1px solid #E0E0E0"
+      }}
+    >
+      <Box
+        sx={{
+          padding: "17px 19px",
+          border: "1px solid #E0E0E0"
+        }}
+      >
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center"
+          }}
+        >
           <Typography
             data-testid="block-container-title"
             sx={{
               fontSize: "20px",
               fontWeight: 400,
-              color: "#000"
+              color: "#3C4043"
             }}
           >
             {title}
@@ -39,7 +54,11 @@ export const BlockContainerEditMode = ({
               />
             }
             label={
-              isEditMode ? "Switch to Standard View" : "Switch to YAML Editor"
+              <Typography sx={{ fontSize: "14px", color: "#3C4043" }}>
+                {isEditMode
+                  ? "Switch to Standard View"
+                  : "Switch to YAML Editor"}
+              </Typography>
             }
           />
         </Box>

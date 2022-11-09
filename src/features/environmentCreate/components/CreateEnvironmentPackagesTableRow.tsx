@@ -1,12 +1,19 @@
 import React, { memo } from "react";
 import { Box, TableRow, Typography } from "@mui/material";
-import { ConstraintSelect, VersionSelect } from "../../../components";
+import {
+  ConstraintSelect,
+  DeleteIconAlt,
+  VersionSelect
+} from "../../../components";
 import DeleteIcon from "@mui/icons-material/Delete";
 import {
   StyledIconButton,
   StyledRequestedPackagesTableCell
 } from "../../../styles";
-import { requestedPackageParser } from "../../../utils/helpers";
+import {
+  getIconForStyleType,
+  requestedPackageParser
+} from "../../../utils/helpers";
 import { useAppDispatch } from "../../../hooks";
 import {
   requestedPackageRemoved,
@@ -26,6 +33,8 @@ const BaseCreateEnvironmentPackagesTableRow = ({
   const dispatch = useAppDispatch();
   const { version, constraint, name } =
     requestedPackageParser(requestedPackage);
+
+  const icon = getIconForStyleType(<DeleteIcon />, <DeleteIconAlt />);
 
   const handleUpdateConstraint = (value: string) => {
     const updatedPackage = `${name}${value}${version}`;
@@ -81,7 +90,7 @@ const BaseCreateEnvironmentPackagesTableRow = ({
             onClick={() => handleRemovePackage(requestedPackage)}
             sx={{ marginLeft: "24px" }}
           >
-            <DeleteIcon />
+            {icon}
           </StyledIconButton>
         </Box>
       </StyledRequestedPackagesTableCell>

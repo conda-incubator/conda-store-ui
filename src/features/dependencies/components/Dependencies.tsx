@@ -3,9 +3,7 @@ import Accordion from "@mui/material/Accordion";
 import Box from "@mui/material/Box";
 import CircularProgress from "@mui/material/CircularProgress";
 import InfiniteScroll from "react-infinite-scroll-component";
-
 import {
-  StyledAccordionExpandIcon,
   StyledAccordionDetails,
   StyledAccordionSummary,
   StyledAccordionTitle
@@ -14,6 +12,7 @@ import { Dependency } from "../../../common/models";
 import { DependenciesItem } from "./DependenciesItem";
 import { useAppDispatch, useAppSelector } from "../../../hooks";
 import { dependencyPromoted } from "../../../features/requestedPackages";
+import { ArrowIcon } from "../../../components";
 
 export interface IDependenciesProps {
   /**
@@ -52,14 +51,14 @@ export const Dependencies = ({
       disableGutters
       defaultExpanded
     >
-      <StyledAccordionSummary expandIcon={<StyledAccordionExpandIcon />}>
+      <StyledAccordionSummary expandIcon={<ArrowIcon />}>
         <StyledAccordionTitle>
           Packages Installed as Dependencies
         </StyledAccordionTitle>
       </StyledAccordionSummary>
       <StyledAccordionDetails
         id="infScroll"
-        sx={{ padding: "15px 40px", maxHeight: "100px" }}
+        sx={{ padding: "15px 21px", maxHeight: "100px" }}
         ref={scrollRef}
       >
         <InfiniteScroll

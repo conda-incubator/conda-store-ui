@@ -11,14 +11,12 @@ export interface IEnvironmentDetailsState {
   mode: EnvironmentDetailsModes;
   name: string;
   prefix: string | null | undefined;
-  installedVersions: { [key: string]: string };
 }
 
 const initialState: IEnvironmentDetailsState = {
   mode: EnvironmentDetailsModes.READ,
   name: "",
-  prefix: null,
-  installedVersions: {}
+  prefix: null
 };
 
 export const environmentDetailsSlice = createSlice({
@@ -30,12 +28,6 @@ export const environmentDetailsSlice = createSlice({
       action: PayloadAction<IEnvironmentDetailsState["mode"]>
     ) => {
       state.mode = action.payload;
-    },
-    installedVersionsGenerated: (
-      state,
-      action: PayloadAction<IEnvironmentDetailsState["installedVersions"]>
-    ) => {
-      state.installedVersions = action.payload;
     }
   },
   extraReducers: builder => {
@@ -60,5 +52,4 @@ export const environmentDetailsSlice = createSlice({
   }
 });
 
-export const { modeChanged, installedVersionsGenerated } =
-  environmentDetailsSlice.actions;
+export const { modeChanged } = environmentDetailsSlice.actions;

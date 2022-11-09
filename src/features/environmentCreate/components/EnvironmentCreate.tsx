@@ -8,7 +8,11 @@ import {
   EnvironmentDetailsModes,
   useCreateOrUpdateMutation
 } from "../../../features/environmentDetails";
-import { EnvMetadata } from "../../../features/metadata";
+import {
+  currentBuildIdChanged,
+  EnvMetadata,
+  useLazyGetEnviromentBuildQuery
+} from "../../../features/metadata";
 import {
   environmentOpened,
   closeCreateNewEnvironmentTab
@@ -38,6 +42,7 @@ export const EnvironmentCreate = ({ environmentNotification }: IEnvCreate) => {
     visible: false
   });
   const [createOrUpdate] = useCreateOrUpdateMutation();
+  const [triggerQuery] = useLazyGetEnviromentBuildQuery();
 
   const handleChangeName = debounce((value: string) => {
     dispatch(nameChanged(value));
@@ -58,12 +63,15 @@ export const EnvironmentCreate = ({ environmentNotification }: IEnvCreate) => {
 
     try {
       const { data } = await createOrUpdate(environmentInfo).unwrap();
+      const { data: envInfo } = await triggerQuery(data.build_id);
+      const newEnvId = envInfo?.data?.environment_id ?? data.build_id;
+
       const environment = {
         name,
         current_build: null,
         current_build_id: data.build_id,
         description,
-        id: data.build_id,
+        id: newEnvId,
         namespace: {
           id: data.build_id,
           name: namespace
@@ -75,9 +83,10 @@ export const EnvironmentCreate = ({ environmentNotification }: IEnvCreate) => {
       dispatch(
         environmentOpened({
           environment,
-          selectedEnvironmentId: data.build_id
+          selectedEnvironmentId: newEnvId
         })
       );
+      dispatch(currentBuildIdChanged(data.build_id));
       environmentNotification({
         show: true,
         description: `${name} environment is being created`
@@ -105,7 +114,6 @@ export const EnvironmentCreate = ({ environmentNotification }: IEnvCreate) => {
       )}
       <Box sx={{ marginBottom: "30px" }}>
         <EnvMetadata
-          selectedEnv={{}}
           current_build_id={0}
           mode={mode}
           onUpdateDescription={handleChangeDescription}

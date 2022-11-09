@@ -12,6 +12,8 @@ import {
   initialState,
   requestedPackagesReducer
 } from "../reducer";
+import { getIconForStyleType } from "../../../utils/helpers";
+import { DeleteIconAlt } from "../../../components";
 
 interface IAddRequestedPackageProps {
   /**
@@ -33,6 +35,8 @@ export const AddRequestedPackage = ({
   const [state, dispatch] = useReducer(requestedPackagesReducer, initialState);
 
   const [triggerQuery] = useLazyGetPackageSuggestionsQuery();
+
+  const icon = getIconForStyleType(<DeleteIcon />, <DeleteIconAlt />);
 
   const uniquePackageNamesList = useMemo(() => {
     const packageNames = new Set();
@@ -177,8 +181,11 @@ export const AddRequestedPackage = ({
         <Box>
           <Box sx={{ display: "flex", alignItems: "center" }}>
             <Box />
-            <StyledIconButton onClick={() => onCancel(false)}>
-              <DeleteIcon />
+            <StyledIconButton
+              onClick={() => onCancel(false)}
+              data-testid="cancelIcon"
+            >
+              {icon}
             </StyledIconButton>
           </Box>
         </Box>
@@ -190,7 +197,7 @@ export const AddRequestedPackage = ({
               onClick={() => onCancel(false)}
               sx={{ marginLeft: "24px" }}
             >
-              <DeleteIcon />
+              {icon}
             </StyledIconButton>
           </Box>
         </Box>

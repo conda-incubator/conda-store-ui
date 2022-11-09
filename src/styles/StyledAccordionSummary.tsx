@@ -1,18 +1,26 @@
 import AccordionSummary from "@mui/material/AccordionSummary";
 import { styled } from "@mui/system";
+import { config } from "../common/constants";
 
-export const StyledAccordionSummary = styled(AccordionSummary)(
-  ({ theme: { palette } }) => ({
+const currentStyleType = config.styleType;
+
+export const StyledAccordionSummary = styled(AccordionSummary, {
+  shouldForwardProp: prop => prop !== "styleType"
+})<{ styleType?: string }>(
+  ({ theme: { palette }, styleType = currentStyleType }) => ({
     paddingLeft: "21px",
-    paddingRight: "10px",
+    paddingRight: "16px",
     height: 50,
-    border: `1px solid ${palette.primary.main}`,
-    borderRadius: "5px",
+    border:
+      styleType === "grayscale"
+        ? `1px solid ${palette.primary.main}`
+        : "1px solid #BCBFC4",
+    borderRadius: styleType === "grayscale" ? "5px" : "0px",
     "&.Mui-expanded": {
       minHeight: 50,
       maxHeight: 50,
       margin: "0px",
-      borderRadius: "5px 5px 0px 0px",
+      borderRadius: "0",
       ".MuiAccordionSummary-expandIconWrapper": {
         transform: "rotate(90deg)"
       }

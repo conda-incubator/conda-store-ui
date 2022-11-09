@@ -1,11 +1,11 @@
 import React, { memo } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import SquareIcon from "@mui/icons-material/Square";
-import FileUploadIcon from "@mui/icons-material/FileUpload";
 import { Dependency } from "../../../common/models";
 import Tooltip from "@mui/material/Tooltip";
 import { StyledIconButton } from "../../../styles";
+import { getIconForStyleType } from "../../../utils/helpers";
+import { SquareIconAlt, UploadIcon } from "../../../components";
 
 interface IDependenciesItemProps {
   /**
@@ -26,32 +26,33 @@ const BaseDependenciesItem = ({
   const { name, version } = dependency;
   const isEditMode = mode === "edit";
 
+  const icon = getIconForStyleType(
+    <></>,
+    <SquareIconAlt style={{ marginRight: "8px" }} />
+  );
+
   return (
     <Box sx={{ display: "flex", alignItems: "center" }}>
       <Box sx={{ display: "flex", alignItems: "center", width: "300px" }}>
-        <SquareIcon
-          sx={{
-            color: "#000",
-            width: 10,
-            height: 10,
-            marginRight: "12px"
-          }}
-        />
-        <Typography sx={{ color: "#000" }}>{name}</Typography>
+        {icon}
+        <Typography sx={{ fontSize: "14px", color: "#3C4043" }}>
+          {name}
+        </Typography>
       </Box>
       <Typography
         sx={{
-          color: "#000",
+          color: "#3C4043",
           width: isEditMode ? "140px" : "auto",
-          marginLeft: isEditMode ? "20px" : "0px"
+          marginLeft: isEditMode ? "20px" : "0px",
+          fontSize: "14px"
         }}
       >
         {version}
       </Typography>
       {isEditMode && (
         <Tooltip title="Promote as requested package" placement="right-start">
-          <StyledIconButton onClick={handleClick}>
-            <FileUploadIcon />
+          <StyledIconButton onClick={handleClick} data-testid="PromoteIcon">
+            <UploadIcon />
           </StyledIconButton>
         </Tooltip>
       )}

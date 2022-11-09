@@ -1,4 +1,5 @@
 import Box from "@mui/material/Box";
+import { CircularProgress } from "@mui/material";
 import React from "react";
 import { ArtifactItem } from "./ArtifactsItem";
 import { Artifact } from "../../../common/models";
@@ -9,47 +10,61 @@ import ListItemText from "@mui/material/ListItemText";
 import Typography from "@mui/material/Typography";
 import useTheme from "@mui/material/styles/useTheme";
 import { StyledBox } from "../../../styles";
+import { getStylesForStyleType } from "../../../utils/helpers";
 
 export interface IArtifactsProps {
   /**
    * @param artifacts list of artifacts
    */
-  artifacts: Artifact[];
+  artifacts: Artifact[] | never[];
+  showArtifacts: boolean;
 }
 
-export const ArtifactList = ({ artifacts }: IArtifactsProps) => {
-  const listLength = artifacts.length;
-  const { typography, palette } = useTheme();
+export const ArtifactList = ({ artifacts, showArtifacts }: IArtifactsProps) => {
+  const { typography } = useTheme();
+
+  const boxStyles = getStylesForStyleType({ backgroundColor: "#fff" });
+
+  const linksContainerStyles = getStylesForStyleType({ padding: "20px 18px" });
 
   return (
-    <StyledBox>
+    <StyledBox sx={boxStyles}>
       <List>
         <ListItem>
           <ListItemText
             primary={
-              <Typography sx={{ fontSize: "21px", fontWeight: 400 }}>
+              <Typography
+                sx={{ fontSize: "20px", fontWeight: 400, color: "#3C4043" }}
+              >
                 Logs and Artifacts
               </Typography>
             }
           ></ListItemText>
         </ListItem>
-        <Divider sx={{ bgcolor: palette.primary.main }} />
-        {artifacts.map((link, index) => (
-          <ListItem
-            key={link.name}
-            sx={{
-              padding: "11px 40px",
-              fontFamily: typography.fontFamily
-            }}
-          >
-            <Box
-              key={link.name}
-              sx={{ marginBottom: index === listLength - 1 ? "0px" : "10px" }}
-            >
-              <ArtifactItem artifact={link} />
-            </Box>
-          </ListItem>
-        ))}
+        <Divider
+          sx={{
+            backgroundColor: "#E0E0E0"
+          }}
+        />
+
+        {artifacts.length && showArtifacts ? (
+          <Box sx={linksContainerStyles}>
+            {artifacts.map((link, index) => (
+              <ListItem
+                key={link.name}
+                sx={{
+                  padding: "0",
+                  marginBottom: index === artifacts.length - 1 ? "0px" : "15px",
+                  fontFamily: typography.fontFamily
+                }}
+              >
+                <ArtifactItem artifact={link} />
+              </ListItem>
+            ))}
+          </Box>
+        ) : (
+          <CircularProgress size={20} sx={{ margin: "15px 0 5px 15px" }} />
+        )}
       </List>
     </StyledBox>
   );

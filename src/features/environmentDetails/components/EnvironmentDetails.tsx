@@ -2,14 +2,16 @@ import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import Alert from "@mui/material/Alert";
 import { stringify } from "yaml";
+import { parseArtifacts } from "../../../utils/helpers/parseArtifactList";
 import { EnvironmentDetailsHeader } from "./EnvironmentDetailsHeader";
 import { SpecificationEdit, SpecificationReadOnly } from "./Specification";
 import { useGetBuildQuery } from "../environmentDetailsApiSlice";
+import { useLazyGetArtifactsQuery } from "../../artifacts";
 import { useGetBuildPackagesQuery } from "../../../features/dependencies";
 import { ArtifactList } from "../../../features/artifacts";
 import {
   EnvMetadata,
-  useLazyGetEnviromentBuildsQuery
+  useGetEnviromentBuildsQuery
 } from "../../../features/metadata";
 import {
   EnvironmentDetailsModes,
@@ -21,17 +23,18 @@ import artifactList from "../../../utils/helpers/artifact";
 import { CondaSpecificationPip } from "../../../common/models";
 import { updatePackages } from "../../requestedPackages";
 import { updateChannels } from "../../channels";
+import { useInterval } from "../../../utils/helpers";
 
 interface IEnvDetails {
   environmentNotification: (notification: any) => void;
 }
 
 interface IUpdateEnvironmentArgs {
-  code: {
-    dependencies: (string | CondaSpecificationPip)[];
-    channels: string[];
-  };
+  dependencies: (string | CondaSpecificationPip)[];
+  channels: string[];
 }
+
+const INTERVAL_REFRESHING = 2000;
 
 export const EnvironmentDetails = ({
   environmentNotification
@@ -40,33 +43,50 @@ export const EnvironmentDetails = ({
   const { mode } = useAppSelector(state => state.environmentDetails);
   const { page } = useAppSelector(state => state.dependencies);
   const { selectedEnvironment } = useAppSelector(state => state.tabs);
-  const [enviromentBuilds, setEnviromentBuilds] = useState<any>([]);
+  const { currentBuild } = useAppSelector(state => state.enviroments);
   const [name, setName] = useState(selectedEnvironment?.name || "");
-  const [createOrUpdate] = useCreateOrUpdateMutation();
   const [descriptionIsUpdated, setDescriptionIsUpdated] = useState(false);
   const [description, setDescription] = useState(
     selectedEnvironment ? selectedEnvironment.description : undefined
   );
-  const [envIsUpdated, setEnvIsUpdated] = useState(false);
+  const [artifactType, setArtifactType] = useState<string[] | never[]>([]);
+  const [showArtifacts, setShowArtifacts] = useState(false);
   const [error, setError] = useState({
     message: "",
     visible: false
   });
+  const [triggerQuery] = useLazyGetArtifactsQuery();
+  const [createOrUpdate] = useCreateOrUpdateMutation();
+  useGetEnviromentBuildsQuery(selectedEnvironment, {
+    pollingInterval: INTERVAL_REFRESHING
+  });
+  const [currentBuildId, setCurrentBuildId] = useState(
+    selectedEnvironment?.current_build_id
+  );
 
-  const [triggerQuery] = useLazyGetEnviromentBuildsQuery();
+  const { isFetching } = useGetBuildQuery(currentBuildId, {
+    skip: !currentBuildId
+  });
 
-  if (selectedEnvironment) {
-    useGetBuildQuery(selectedEnvironment.current_build_id);
-    useGetBuildPackagesQuery({
-      buildId: selectedEnvironment.current_build_id,
+  useGetBuildPackagesQuery(
+    {
+      buildId: currentBuildId,
       page,
       size: 100
-    });
-  }
+    },
+    { skip: isFetching || !currentBuildId }
+  );
 
   const updateDescription = (description: string) => {
     setDescription(description);
     setDescriptionIsUpdated(true);
+  };
+
+  const updateArtifacts = async () => {
+    const { data } = await triggerQuery(currentBuildId);
+    const apiArtifactTypes: string[] = parseArtifacts(data);
+    setArtifactType(apiArtifactTypes);
+    setShowArtifacts(true);
   };
 
   const updateEnvironment = async (code: IUpdateEnvironmentArgs) => {
@@ -86,31 +106,39 @@ export const EnvironmentDetails = ({
       });
       await createOrUpdate(environmentInfo).unwrap();
       dispatch(modeChanged(EnvironmentDetailsModes.READ));
-      dispatch(updatePackages(code.code.dependencies));
-      dispatch(updateChannels(code.code.channels));
+      dispatch(updatePackages(code.dependencies));
+      dispatch(updateChannels(code.channels));
       environmentNotification({
         show: true,
         description: `${name} environment has been updated`
       });
-      setEnvIsUpdated(true);
     } catch (e) {
       setError({
-        message: e?.data?.message ?? e.status,
+        message: e?.data?.message ?? e.error ?? e.status,
         visible: true
       });
     }
   };
 
+  useInterval(async () => {
+    (async () => {
+      updateArtifacts();
+    })();
+  }, INTERVAL_REFRESHING);
+
   useEffect(() => {
     setName(selectedEnvironment?.name || "");
     setDescription(selectedEnvironment?.description || "");
+    setCurrentBuildId(selectedEnvironment?.current_build_id);
     setDescriptionIsUpdated(false);
+    setShowArtifacts(false);
+  }, [selectedEnvironment]);
 
-    (async () => {
-      const { data } = await triggerQuery(selectedEnvironment);
-      setEnviromentBuilds(data);
-    })();
-  }, [selectedEnvironment, envIsUpdated]);
+  useEffect(() => {
+    if (currentBuild.id) {
+      setCurrentBuildId(currentBuild.id);
+    }
+  }, [currentBuild]);
 
   return (
     <Box sx={{ padding: "14px 12px" }}>
@@ -127,10 +155,9 @@ export const EnvironmentDetails = ({
       )}
       <Box sx={{ marginBottom: "30px" }}>
         <EnvMetadata
-          selectedEnv={enviromentBuilds}
-          description={description}
-          current_build_id={selectedEnvironment?.current_build_id || 0}
           mode={mode}
+          current_build_id={selectedEnvironment?.current_build_id}
+          description={description}
           onUpdateDescription={updateDescription}
         />
       </Box>
@@ -146,7 +173,8 @@ export const EnvironmentDetails = ({
       {mode === "read-only" && (
         <Box>
           <ArtifactList
-            artifacts={artifactList(selectedEnvironment?.current_build_id)}
+            artifacts={artifactList(currentBuildId, artifactType)}
+            showArtifacts={showArtifacts}
           />
         </Box>
       )}

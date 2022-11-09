@@ -6,19 +6,21 @@ React-based UI for [conda store](https://github.com/Quansight/conda-store)
 
 Checkout the project and start the `docker-compose` stack :
 ```sh
-git clone https://github.com/Quansight/conda-store.git
-cd conda-store 
+git clone https://github.com/Quansight/conda-store-ui.git
+cd conda-store-ui
 docker-compose up --build -d
 ```
 
-- once running, you can log in with the default credentials `admin/password`
+- once running, open `http://localhost/` to access the UI.
+- by clicking on the login icon <img width="38" alt="conda-store-ui_login_icon" src="https://user-images.githubusercontent.com/756464/199689492-1c15ae14-32ce-4745-bddf-c339d0d62313.png" alt="conda-store UI login icon">, you'll be redirected to the authentication page where you can use the default credentials :  `admin/password`
+
 
 ## How to run locally - dev mode
 
 Checkout the project and start the `docker-compose-dev` stack :
 ```sh
-git clone https://github.com/Quansight/conda-store.git
-cd conda-store 
+git clone https://github.com/Quansight/conda-store-ui.git
+cd conda-store-ui
 docker-compose -f docker-compose-dev.yml up --build -d      
 ```
 

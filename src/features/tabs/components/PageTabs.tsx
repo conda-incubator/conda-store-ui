@@ -80,8 +80,9 @@ export const PageTabs = () => {
               style={{ marginTop: "5px" }}
               role="button"
               onClick={e => handleClick(e, env.id)}
+              data-testid="closeTab"
             >
-              <CloseIcon sx={{ color: "#000" }} />
+              <CloseIcon sx={{ color: "#3D4043" }} />
             </span>
           }
           iconPosition="end"
@@ -98,8 +99,9 @@ export const PageTabs = () => {
               style={{ marginTop: "5px" }}
               role="button"
               onClick={e => closeNewEnvironment(e)}
+              data-testid="closeNewTab"
             >
-              <CloseIcon sx={{ color: "#000" }} />
+              <CloseIcon sx={{ color: "#3D4043" }} />
             </span>
           }
           iconPosition="end"

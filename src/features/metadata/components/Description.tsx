@@ -20,14 +20,24 @@ export const Description = ({
 }: IDescriptionProps) => {
   return (
     <Box>
-      {mode === EnvironmentDetailsModes.READ ? (
-        <StyledMetadataItem>{description}</StyledMetadataItem>
-      ) : (
+      {mode === EnvironmentDetailsModes.READ && description && (
+        <StyledMetadataItem
+          sx={{
+            fontSize: "15px",
+            color: "#3C4043"
+          }}
+        >
+          {description}
+        </StyledMetadataItem>
+      )}
+
+      {mode !== EnvironmentDetailsModes.READ && (
         <>
           <StyledMetadataItem
             sx={{
               fontWeight: 500,
-              paddingBottom: "0"
+              paddingBottom: "0",
+              color: "#3C4043"
             }}
           >
             Description:
@@ -42,8 +52,9 @@ export const Description = ({
               value={description}
               placeholder="Enter here the description of your environment"
               sx={{
-                backgroundColor: "#ECECEC",
-                width: "100%"
+                backgroundColor: "#F1F1F1",
+                width: "100%",
+                fontSize: "14px"
               }}
               onChange={e => onChangeDescription(e.target.value)}
             />

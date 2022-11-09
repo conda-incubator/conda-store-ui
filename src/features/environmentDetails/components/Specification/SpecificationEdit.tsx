@@ -23,9 +23,7 @@ import { CodeEditor } from "../../../../features/yamlEditor";
 import { useAppDispatch, useAppSelector } from "../../../../hooks";
 import { StyledButtonPrimary } from "../../../../styles";
 import { CondaSpecificationPip } from "../../../../common/models";
-import { requestedPackageParser } from "../../../../utils/helpers";
-import { installedVersionsGenerated } from "../../environmentDetailsSlice";
-
+import { getStylesForStyleType } from "../../../../utils/helpers";
 interface ISpecificationEdit {
   descriptionUpdated: boolean;
   onUpdateEnvironment: (specification: any) => void;
@@ -35,7 +33,7 @@ export const SpecificationEdit = ({
   onUpdateEnvironment
 }: ISpecificationEdit) => {
   const { channels } = useAppSelector(state => state.channels);
-  const { requestedPackages, packageVersions } = useAppSelector(
+  const { requestedPackages } = useAppSelector(
     state => state.requestedPackages
   );
   const { dependencies, size, count, page } = useAppSelector(
@@ -53,6 +51,8 @@ export const SpecificationEdit = ({
 
   const initialChannels = useRef(cloneDeep(channels));
   const initialPackages = useRef(cloneDeep(requestedPackages));
+
+  const buttonStyles = getStylesForStyleType({ padding: "5px 48px" });
 
   const stringifiedInitialChannels = useMemo(() => {
     return JSON.stringify(initialChannels.current);
@@ -124,30 +124,6 @@ export const SpecificationEdit = ({
   };
 
   useEffect(() => {
-    const versions: { [key: string]: string } = {};
-
-    requestedPackages.forEach(p => {
-      if (typeof p === "string") {
-        const { name, version } = requestedPackageParser(p as string);
-
-        if (version) {
-          versions[name] = version;
-        }
-
-        if (packageVersions[name]) {
-          versions[name] = packageVersions[name];
-        }
-      }
-    });
-
-    dispatch(installedVersionsGenerated(versions));
-
-    return () => {
-      dispatch(installedVersionsGenerated({}));
-    };
-  }, []);
-
-  useEffect(() => {
     if (descriptionUpdated) {
       setEnvIsUpdated(true);
     }
@@ -204,15 +180,17 @@ export const SpecificationEdit = ({
           }}
         >
           <StyledButtonPrimary
-            sx={{ padding: "5px 60px" }}
+            sx={buttonStyles}
             onClick={onCancelEdition}
+            isalttype="true"
           >
             Cancel
           </StyledButtonPrimary>
           <StyledButtonPrimary
-            sx={{ padding: "5px 60px" }}
+            sx={buttonStyles}
             onClick={onEditEnvironment}
             disabled={!envIsUpdated}
+            isalttype="true"
           >
             Save
           </StyledButtonPrimary>
