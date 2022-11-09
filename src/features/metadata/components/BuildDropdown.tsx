@@ -7,7 +7,7 @@ import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import IconButton from "@mui/material/IconButton";
 import { StyledMetadataItem } from "../../../styles/StyledMetadataItem";
 import { useAppDispatch } from "../../../hooks";
-import { currentBuildIdChanged, buildStatusChanged } from "..";
+import { currentBuildIdChanged } from "..";
 import { getStylesForStyleType } from "../../../utils/helpers";
 import { Typography } from "@mui/material";
 
@@ -64,7 +64,6 @@ export const Build = ({
   useEffect(() => {
     const build = builds.find(build => build.id === selectedBuildId);
     if (build) {
-      dispatch(buildStatusChanged(build.status));
       setStatus(build.status);
     }
   }, [builds]);
@@ -76,7 +75,6 @@ export const Build = ({
 
     if (newCurrentBuild) {
       dispatch(currentBuildIdChanged(newCurrentBuild.id));
-      dispatch(buildStatusChanged(newCurrentBuild.status));
       setStatus(newCurrentBuild.status);
     }
   };
