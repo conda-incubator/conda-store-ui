@@ -14,6 +14,9 @@ interface IArtifactsProps {
 }
 
 export const ArtifactItem = ({ artifact }: IArtifactsProps) => {
+  const pref = React.useContext(PrefContext);
+  const route = new URL(artifact.route, pref.apiUrl).toString();
+
   const linkStyles = getStylesForStyleType(
     { color: "#000", fontSize: "14px" },
     { color: "#3C4043", fontSize: "14px", fontWeight: 400 }
@@ -21,12 +24,7 @@ export const ArtifactItem = ({ artifact }: IArtifactsProps) => {
 
   return (
     <Box sx={{ display: "flex", alignItems: "center" }}>
-      <Link
-        href={route}
-        underline="none"
-        sx={linkStyles}
-        target="_blank"
-      >
+      <Link href={route} underline="none" sx={linkStyles} target="_blank">
         {artifact.name}
       </Link>
     </Box>

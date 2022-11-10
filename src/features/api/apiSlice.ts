@@ -1,25 +1,27 @@
-import { createApi, fetchBaseQuery, BaseQueryFn, FetchArgs, FetchBaseQueryError } from "@reduxjs/toolkit/query/react";
+import {
+  createApi,
+  fetchBaseQuery,
+  BaseQueryFn,
+  FetchArgs,
+  FetchBaseQueryError
+} from "@reduxjs/toolkit/query/react";
 
 import { prefGlobal } from "../../preferences";
 
-const dynamicBaseQuery: BaseQueryFn<string | FetchArgs,
+const dynamicBaseQuery: BaseQueryFn<
+  string | FetchArgs,
   unknown,
-  FetchBaseQueryError> = async (args, WebApi, extraOptions) => {
+  FetchBaseQueryError
+> = async (args, WebApi, extraOptions) => {
   const baseUrl = prefGlobal.apiUrl;
   const rawBaseQuery = fetchBaseQuery({
     baseUrl,
     credentials: "include",
     prepareHeaders: headers => {
-      if (
-        prefGlobal.authMethod === "token" &&
-        prefGlobal.authToken
-      ) {
-        headers.set(
-          "Authorization",
-          `Bearer ${prefGlobal.authToken}`
-        );
+      if (prefGlobal.authMethod === "token" && prefGlobal.authToken) {
+        headers.set("Authorization", `Bearer ${prefGlobal.authToken}`);
       }
-  
+
       return headers;
     }
   });
@@ -31,5 +33,5 @@ export const apiSlice = createApi({
   endpoints: builder => ({}),
   reducerPath: "api",
   refetchOnMountOrArgChange: true,
-  tagTypes: [], // add tag types when needed to utilize the cache, see https://redux-toolkit.js.org/rtk-query/api/createApi#tagtypes
+  tagTypes: [] // add tag types when needed to utilize the cache, see https://redux-toolkit.js.org/rtk-query/api/createApi#tagtypes
 });

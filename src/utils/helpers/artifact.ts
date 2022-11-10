@@ -24,7 +24,7 @@ const artifactList = (
     },
     DOCKER_MANIFEST: {
       name: "Docker image",
-      route: `${apiURL}api/v1/build/${currentBuildId}/docker/`
+      route: `$api/v1/build/${currentBuildId}/docker/`
     }
   };
 

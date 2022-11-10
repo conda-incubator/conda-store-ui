@@ -5,7 +5,12 @@ import { BrowserRouter as Router } from "react-router-dom";
 import { Route, Routes } from "react-router";
 
 import { PageLayout } from "./layouts";
-import { IPreferences, PrefContext, prefDefault, prefGlobal } from "./preferences";
+import {
+  IPreferences,
+  PrefContext,
+  prefDefault,
+  prefGlobal
+} from "./preferences";
 import { store } from "./store";
 import { theme } from "./theme";
 
@@ -30,7 +35,10 @@ export interface IAppState {
   pref: IPreferences;
 }
 
-export class App<T extends IAppProps = IAppProps, U extends IAppState = IAppState> extends React.Component<T, U> {
+export class App<
+  T extends IAppProps = IAppProps,
+  U extends IAppState = IAppState
+> extends React.Component<T, U> {
   /**
    * Returns a React component for rendering a panel for performing Git operations.
    *
@@ -40,16 +48,16 @@ export class App<T extends IAppProps = IAppProps, U extends IAppState = IAppStat
   constructor(props: T) {
     super(props);
 
-    const pref = {...prefDefault, ...(props.pref ?? {})};
+    const pref = { ...prefDefault, ...(props.pref ?? {}) };
     prefGlobal.set(pref);
-    this.state = {pref} as U;
+    this.state = { pref } as U;
   }
 
   setPref(pref: U["pref"]) {
-    pref = {...this.state.pref, ...pref};
+    pref = { ...this.state.pref, ...pref };
 
     prefGlobal.set(pref);
-    this.setState({pref});
+    this.setState({ pref });
     // this.forceUpdate();
   }
 

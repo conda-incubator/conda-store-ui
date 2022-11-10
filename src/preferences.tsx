@@ -9,10 +9,14 @@ export interface IPreferences {
 
 export const prefDefault: Readonly<IPreferences> = {
   apiUrl: process.env.REACT_APP_API_URL ?? "http://localhost:5000/conda-store/",
-  authMethod: process.env.REACT_APP_AUTH_METHOD as IPreferences["authMethod"] ?? "cookie",
+  authMethod:
+    (process.env.REACT_APP_AUTH_METHOD as IPreferences["authMethod"]) ??
+    "cookie",
   authToken: process.env.REACT_APP_AUTH_TOKEN ?? "",
-  loginUrl: process.env.REACT_APP_LOGIN_PAGE_URL ?? "http://localhost:5000/conda-store/login?next",
-}
+  loginUrl:
+    process.env.REACT_APP_LOGIN_PAGE_URL ??
+    "http://localhost:5000/conda-store/login?next"
+};
 
 export class Preferences implements IPreferences {
   constructor(pref: IPreferences = prefDefault) {

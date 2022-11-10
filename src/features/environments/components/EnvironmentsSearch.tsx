@@ -3,7 +3,6 @@ import OutlinedInput from "@mui/material/OutlinedInput";
 import Box from "@mui/material/Box";
 import InputAdornment from "@mui/material/InputAdornment";
 import Link from "@mui/material/Link";
-import PersonIcon from "@mui/icons-material/Person";
 import React from "react";
 
 import { PrefContext } from "../../../preferences";
