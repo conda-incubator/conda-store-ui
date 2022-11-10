@@ -8,9 +8,10 @@ import { getStylesForStyleType } from "../../../utils/helpers";
 
 interface IData {
   currentBuildId: number;
+  selectedBuildId: number;
 }
 
-export const EnvBuilds = ({ currentBuildId }: IData) => {
+export const EnvBuilds = ({ currentBuildId, selectedBuildId }: IData) => {
   const { builds } = useAppSelector(state => state.enviroments);
   const envBuilds = builds.length ? buildMapper(builds, currentBuildId) : [];
   const currentBuild = envBuilds.find(build => build.id === currentBuildId);
@@ -26,8 +27,8 @@ export const EnvBuilds = ({ currentBuildId }: IData) => {
       {currentBuild && (
         <Build
           builds={envBuilds}
-          currentBuildId={currentBuild.id}
           currentBuildStatus={currentBuild.status}
+          selectedBuildId={selectedBuildId}
         />
       )}
       {!currentBuild && (

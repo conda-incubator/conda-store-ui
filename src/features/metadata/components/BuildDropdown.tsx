@@ -7,8 +7,7 @@ import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import IconButton from "@mui/material/IconButton";
 import { StyledMetadataItem } from "../../../styles/StyledMetadataItem";
 import { useAppDispatch } from "../../../hooks";
-import { currentBuildIdChanged, buildStatusChanged } from "..";
-import { useAppSelector } from "../../../hooks";
+import { currentBuildIdChanged } from "..";
 import { getStylesForStyleType } from "../../../utils/helpers";
 import { Typography } from "@mui/material";
 
@@ -23,17 +22,16 @@ interface IBuildProps {
     name: string;
     status: string;
   }[];
-  currentBuildId: number;
+  selectedBuildId: number;
   currentBuildStatus: string;
 }
 
 export const Build = ({
   builds,
-  currentBuildId,
+  selectedBuildId,
   currentBuildStatus
 }: IBuildProps) => {
   const dispatch = useAppDispatch();
-  const { currentBuild } = useAppSelector(state => state.enviroments);
   const { palette } = useTheme();
   const [open, setOpen] = useState(false);
   const [status, setStatus] = useState(currentBuildStatus);
@@ -64,13 +62,9 @@ export const Build = ({
 
   // If the user is watching his current build, update build's info
   useEffect(() => {
-    if (["Queued", "Building"].includes(status)) {
-      const id = builds.length === 1 ? currentBuildId : currentBuild.id;
-      const build = builds.find(build => build.id === id);
-      if (build) {
-        setStatus(build.status);
-        dispatch(buildStatusChanged(build.status));
-      }
+    const build = builds.find(build => build.id === selectedBuildId);
+    if (build) {
+      setStatus(build.status);
     }
   }, [builds]);
 
@@ -82,7 +76,6 @@ export const Build = ({
     if (newCurrentBuild) {
       dispatch(currentBuildIdChanged(newCurrentBuild.id));
       setStatus(newCurrentBuild.status);
-      dispatch(buildStatusChanged(newCurrentBuild.status));
     }
   };
 
@@ -103,7 +96,7 @@ export const Build = ({
             }
           }
         }}
-        defaultValue={currentBuildId}
+        value={selectedBuildId}
         onChange={handleChange}
         IconComponent={() => (
           <IconButton
@@ -142,9 +135,9 @@ export const Build = ({
           {status}
           {(status === "Building" || status === "Queued") && (
             <CircularProgress
-              size={15}
+              size={10}
               sx={{
-                marginLeft: "10px"
+                marginLeft: "8px"
               }}
             />
           )}

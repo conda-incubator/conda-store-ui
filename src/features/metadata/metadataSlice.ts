@@ -9,7 +9,6 @@ export interface IBuildState {
   count: number;
   size: number;
   currentBuild: { id: number | undefined };
-  currentBuildStatus: string;
 }
 
 const initialState: IBuildState = {
@@ -18,19 +17,18 @@ const initialState: IBuildState = {
   page: 1,
   count: 0,
   size: 0,
-  currentBuild: { id: undefined },
-  currentBuildStatus: ""
+  currentBuild: { id: undefined }
 };
 
 export const enviromentsSlice = createSlice({
   name: "environments",
   initialState,
   reducers: {
-    currentBuildIdChanged: (state, action: PayloadAction<number>) => {
+    currentBuildIdChanged: (
+      state,
+      action: PayloadAction<number | undefined>
+    ) => {
       state.currentBuild.id = action.payload;
-    },
-    buildStatusChanged: (state, action: PayloadAction<any>) => {
-      state.currentBuildStatus = action.payload;
     }
   },
   extraReducers: builder => {
@@ -49,5 +47,4 @@ export const enviromentsSlice = createSlice({
   }
 });
 
-export const { currentBuildIdChanged, buildStatusChanged } =
-  enviromentsSlice.actions;
+export const { currentBuildIdChanged } = enviromentsSlice.actions;

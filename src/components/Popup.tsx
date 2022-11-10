@@ -18,7 +18,7 @@ export const Popup = ({ description, isVisible, onClose }: IPopupInterface) => {
   return (
     <Snackbar
       anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-      autoHideDuration={5000}
+      autoHideDuration={3000}
       open={isVisible}
       onClose={handleClose}
     >

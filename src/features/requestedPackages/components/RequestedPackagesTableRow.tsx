@@ -51,7 +51,7 @@ const BaseRequestedPackagesTableRow = ({
   };
 
   const updateConstraint = (value: string) => {
-    const updatedPackage = `${name}${value}${version}`;
+    const updatedPackage = `${name}${value}${version ? version : ""}`;
 
     dispatch(
       packageUpdated({ currentPackage: requestedPackage, updatedPackage })

@@ -11,6 +11,7 @@ import { useGetBuildPackagesQuery } from "../../../features/dependencies";
 import { ArtifactList } from "../../../features/artifacts";
 import {
   EnvMetadata,
+  currentBuildIdChanged,
   useGetEnviromentBuildsQuery
 } from "../../../features/metadata";
 import {
@@ -21,8 +22,6 @@ import {
 import { useAppDispatch, useAppSelector } from "../../../hooks";
 import artifactList from "../../../utils/helpers/artifact";
 import { CondaSpecificationPip } from "../../../common/models";
-import { updatePackages } from "../../requestedPackages";
-import { updateChannels } from "../../channels";
 import { useInterval } from "../../../utils/helpers";
 
 interface IEnvDetails {
@@ -89,6 +88,20 @@ export const EnvironmentDetails = ({
     setShowArtifacts(true);
   };
 
+  useEffect(() => {
+    setName(selectedEnvironment?.name || "");
+    setDescription(selectedEnvironment?.description || "");
+    setCurrentBuildId(selectedEnvironment?.current_build_id);
+    setDescriptionIsUpdated(false);
+    setShowArtifacts(false);
+  }, [selectedEnvironment]);
+
+  useEffect(() => {
+    if (currentBuild.id) {
+      setCurrentBuildId(currentBuild.id);
+    }
+  }, [currentBuild]);
+
   const updateEnvironment = async (code: IUpdateEnvironmentArgs) => {
     const namespace = selectedEnvironment?.namespace.name;
 
@@ -104,10 +117,10 @@ export const EnvironmentDetails = ({
         message: "",
         visible: false
       });
-      await createOrUpdate(environmentInfo).unwrap();
+      const { data } = await createOrUpdate(environmentInfo).unwrap();
       dispatch(modeChanged(EnvironmentDetailsModes.READ));
-      dispatch(updatePackages(code.dependencies));
-      dispatch(updateChannels(code.channels));
+      setCurrentBuildId(data.build_id);
+      dispatch(currentBuildIdChanged(data.build_id));
       environmentNotification({
         show: true,
         description: `${name} environment has been updated`
@@ -126,20 +139,6 @@ export const EnvironmentDetails = ({
     })();
   }, INTERVAL_REFRESHING);
 
-  useEffect(() => {
-    setName(selectedEnvironment?.name || "");
-    setDescription(selectedEnvironment?.description || "");
-    setCurrentBuildId(selectedEnvironment?.current_build_id);
-    setDescriptionIsUpdated(false);
-    setShowArtifacts(false);
-  }, [selectedEnvironment]);
-
-  useEffect(() => {
-    if (currentBuild.id) {
-      setCurrentBuildId(currentBuild.id);
-    }
-  }, [currentBuild]);
-
   return (
     <Box sx={{ padding: "14px 12px" }}>
       <EnvironmentDetailsHeader envName={name} onUpdateName={setName} />
@@ -156,7 +155,8 @@ export const EnvironmentDetails = ({
       <Box sx={{ marginBottom: "30px" }}>
         <EnvMetadata
           mode={mode}
-          current_build_id={selectedEnvironment?.current_build_id}
+          currentBuildId={selectedEnvironment?.current_build_id}
+          selectedBuildId={currentBuildId}
           description={description}
           onUpdateDescription={updateDescription}
         />
