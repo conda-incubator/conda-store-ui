@@ -23,10 +23,7 @@ import { CodeEditor } from "../../../../features/yamlEditor";
 import { useAppDispatch, useAppSelector } from "../../../../hooks";
 import { StyledButtonPrimary } from "../../../../styles";
 import { CondaSpecificationPip } from "../../../../common/models";
-import {
-  getStylesForStyleType,
-  requestedPackagesMapper
-} from "../../../../utils/helpers";
+import { getStylesForStyleType } from "../../../../utils/helpers";
 interface ISpecificationEdit {
   descriptionUpdated: boolean;
   onUpdateEnvironment: (specification: any) => void;
@@ -116,10 +113,7 @@ export const SpecificationEdit = ({
       ? code
       : { dependencies: requestedPackages, channels };
 
-    onUpdateEnvironment({
-      ...envContent,
-      dependencies: requestedPackagesMapper(envContent.dependencies)
-    });
+    onUpdateEnvironment(envContent);
   };
 
   const onCancelEdition = () => {

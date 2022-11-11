@@ -5,10 +5,7 @@ import {
   CondaSpecificationPip,
   Dependency
 } from "../../common/models";
-import {
-  requestedPackageParser,
-  requestedPackagesMapper
-} from "../../utils/helpers";
+import { requestedPackageParser } from "../../utils/helpers";
 import { dependenciesApiSlice } from "../dependencies";
 import { environmentDetailsApiSlice } from "../environmentDetails";
 
@@ -89,7 +86,7 @@ export const requestedPackagesSlice = createSlice({
           }
         }
       ) => {
-        state.requestedPackages = requestedPackagesMapper(dependencies);
+        state.requestedPackages = dependencies;
         state.packagesWithLatestVersions = {};
         state.versionsWithConstraints = {};
 

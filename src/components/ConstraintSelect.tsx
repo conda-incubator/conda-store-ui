@@ -15,7 +15,7 @@ export const ConstraintSelect = ({
   constraint,
   onUpdate = (value: string) => {}
 }: IConstraintSelectProps) => {
-  const constraints = [">", "<", ">=", "<=", "="];
+  const constraints = ["=", ">", "<", ">=", "<="];
   const selectedConstraint = constraint === "==" ? "=" : constraint;
 
   const inputStyles = getStylesForStyleType(
