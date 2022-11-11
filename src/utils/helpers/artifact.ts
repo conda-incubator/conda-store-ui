@@ -1,8 +1,3 @@
-// TODO: fix for jlab
-// const apiURL = "http://localhost:5000/conda-store";
-
-const apiURL = process.env.REACT_APP_API_URL;
-
 const artifactList = (
   currentBuildId: number | undefined,
   apiArtifactTypes: string[]
@@ -13,23 +8,23 @@ const artifactList = (
   const artifact_map = {
     LOCKFILE: {
       name: "Link to lockfile",
-      route: `${apiURL}api/v1/build/${currentBuildId}/lockfile/`
+      route: `api/v1/build/${currentBuildId}/lockfile/`
     },
     YAML: {
       name: "Link to yml file",
-      route: `${apiURL}api/v1/build/${currentBuildId}/yaml/`
+      route: `api/v1/build/${currentBuildId}/yaml/`
     },
     CONDA_PACK: {
       name: "Link to archive",
-      route: `${apiURL}api/v1/build/${currentBuildId}/archive/`
+      route: `api/v1/build/${currentBuildId}/archive/`
     },
     LOGS: {
       name: `Conda Env ${currentBuildId} log`,
-      route: `${apiURL}api/v1/build/${currentBuildId}/logs/`
+      route: `api/v1/build/${currentBuildId}/logs`
     },
     DOCKER_MANIFEST: {
       name: "Docker image",
-      route: `${apiURL}api/v1/build/${currentBuildId}/docker/`
+      route: `$api/v1/build/${currentBuildId}/docker/`
     }
   };
 
