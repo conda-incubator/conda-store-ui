@@ -19,8 +19,8 @@ export const RequestedPackage = ({
     if (constraint === "latest") {
       return "";
     }
-
-    return `${constraint}${version}`;
+    const newConstraint = constraint === "==" ? "=" : constraint;
+    return `${newConstraint}${version}`;
   };
 
   return (

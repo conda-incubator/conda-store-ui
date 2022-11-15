@@ -1,9 +1,11 @@
-import React from "react";
+import Typography from "@mui/material/Typography";
+import OutlinedInput from "@mui/material/OutlinedInput";
 import Box from "@mui/material/Box";
 import InputAdornment from "@mui/material/InputAdornment";
 import Link from "@mui/material/Link";
-import OutlinedInput from "@mui/material/OutlinedInput";
-import Typography from "@mui/material/Typography";
+import React from "react";
+
+import { PrefContext } from "../../../preferences";
 import { LoginIcon, SearchIconAlt } from "../../../components";
 import { getIconForStyleType } from "../../../utils/helpers";
 
@@ -15,8 +17,10 @@ interface IEnvironmentsSearchProps {
 }
 
 export const EnvironmentsSearch = ({ onChange }: IEnvironmentsSearchProps) => {
-  const isCookieAuthMethod = process.env.REACT_APP_AUTH_METHOD === "cookie";
-  const authUrl = process.env.REACT_APP_LOGIN_PAGE_URL;
+  const prefs = React.useContext(PrefContext);
+
+  const isCookieAuthMethod = prefs.authMethod === "cookie";
+  const authUrl = prefs.loginUrl;
   const pageUrl = window.location.href;
   const loginPageUrl = `${authUrl}${pageUrl}`;
   let login;
