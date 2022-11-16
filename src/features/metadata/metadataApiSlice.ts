@@ -8,10 +8,10 @@ export const environmentsApiSlice = apiSlice.injectEndpoints({
       query: () => "/api/v1/build/"
     }),
     getEnviromentBuild: builder.query<IApiResponse<Build>, number>({
-      query: environmentId => `/api/v1/build/${environmentId}`
+      query: environmentId => `/api/v1/build/${environmentId}/`
     }),
     getEnviroment: builder.query<IApiResponse<Build>, any>({
-      query: env => `/api/v1/environment/${env.namespace.name}/${env.name}`
+      query: env => `/api/v1/environment/${env.namespace.name}/${env.name}/`
     }),
     getEnviromentBuilds: builder.query<IApiResponse<Build[]>, any>({
       query: env =>

@@ -20,11 +20,6 @@ export const PageLayout = () => {
     description: null
   });
 
-  const containerStyles = getStylesForStyleType(
-    { display: "flex", width: "100%", height: "100%" },
-    { display: "flex", width: "100%", height: "100%" }
-  );
-
   const contentSectionStyles = getStylesForStyleType({
     border: "1px solid #E0E0E0",
     width: "100%",
@@ -38,7 +33,14 @@ export const PageLayout = () => {
   };
 
   return (
-    <Box sx={containerStyles}>
+    <Box
+      sx={{
+        display: "flex",
+        width: "100%",
+        height: "100%",
+        background: "#FFF"
+      }}
+    >
       <Environments
         refreshEnvironments={isEnvCreated}
         onUpdateRefreshEnvironments={setIsEnvCreated}
