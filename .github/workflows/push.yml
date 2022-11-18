@@ -13,3 +13,9 @@ jobs:
       run: yarn
     - name: Run ESLint
       run: yarn eslint:check
+    - name: Build artifacts
+      run: yarn run webpack bundle
+    - uses: actions/upload-artifact@v3
+      with:
+        name: webpack-bundle
+        path: dist/
