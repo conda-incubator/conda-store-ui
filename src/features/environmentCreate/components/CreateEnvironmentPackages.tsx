@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import useTheme from "@mui/material/styles/useTheme";
 import { Box } from "@mui/system";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useMemo } from "react";
 import { ArrowIcon } from "../../../components";
 import { useAppDispatch } from "../../../hooks";
 import {
@@ -37,6 +37,11 @@ export const CreateEnvironmentPackages = ({
   const [isAdding, setIsAdding] = useState(false);
   const scrollRef = useRef<HTMLDivElement | null>(null);
   const { palette } = useTheme();
+
+  const filteredRequestedPackages = useMemo(
+    () => requestedPackages.filter(item => typeof item !== "object"),
+    [requestedPackages]
+  );
 
   useEffect(() => {
     if (isAdding && scrollRef.current) {
@@ -86,7 +91,7 @@ export const CreateEnvironmentPackages = ({
             </TableRow>
           </TableHead>
           <TableBody>
-            {requestedPackages.map(requestedPackage => (
+            {filteredRequestedPackages.map(requestedPackage => (
               <CreateEnvironmentPackagesTableRow
                 key={requestedPackage}
                 requestedPackage={requestedPackage}
@@ -99,7 +104,10 @@ export const CreateEnvironmentPackages = ({
             <AddRequestedPackage
               onSubmit={(value: string) =>
                 dispatch(
-                  requestedPackagesChanged([...requestedPackages, value])
+                  requestedPackagesChanged([
+                    ...filteredRequestedPackages,
+                    value
+                  ])
                 )
               }
               onCancel={() => setIsAdding(false)}
