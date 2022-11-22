@@ -8,7 +8,7 @@ export const namespacesApiSlice = apiSlice.injectEndpoints({
       IApiResponse<Namespace[]>,
       { page: number; size: number }
     >({
-      query: dto => `/api/v1/namespace?page=${dto.page}&size=${dto.size}`
+      query: dto => `/api/v1/namespace/?page=${dto.page}&size=${dto.size}`
     })
   })
 });
