@@ -16,7 +16,7 @@ export const prefDefault: Readonly<IPreferences> = {
   authToken: process.env.REACT_APP_AUTH_TOKEN ?? "",
   loginUrl:
     process.env.REACT_APP_LOGIN_PAGE_URL ??
-    "http://localhost:5000/conda-store/login?next",
+    "http://localhost:5000/conda-store/login?next=",
   appStyle: process.env.REACT_APP_STYLE_TYPE ?? "grayscale"
 };
 
