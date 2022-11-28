@@ -1,8 +1,8 @@
 import React from "react";
+import { Provider } from "react-redux";
 import { act, render, RenderResult } from "@testing-library/react";
 import { EnvBuilds } from "../../src/features/metadata/components";
 import { BUILD } from "../testutils";
-import { Provider } from "react-redux";
 import { store } from "../../src/store";
 import { updateBuilds } from "../../src/features/metadata";
 

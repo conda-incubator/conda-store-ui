@@ -1,6 +1,6 @@
 import React from "react";
-import { fireEvent, render } from "@testing-library/react";
 import { Provider } from "react-redux";
+import { fireEvent, render } from "@testing-library/react";
 import { mockTheme } from "../testutils";
 import { mockDependenciesList } from "../../src/features/dependencies/mocks";
 import { store } from "../../src/store";

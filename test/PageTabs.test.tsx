@@ -1,18 +1,13 @@
 import React from "react";
+import { Provider } from "react-redux";
 import { act, fireEvent, render, RenderResult } from "@testing-library/react";
-import { configureStore } from "@reduxjs/toolkit";
 import {
   environmentOpened,
   openCreateNewEnvironmentTab,
-  PageTabs,
-  tabsSlice
+  PageTabs
 } from "../src/features/tabs";
-import { Provider } from "react-redux";
+import { store } from "../src/store";
 import { ENVIRONMENTS } from "./testutils";
-
-export const store = configureStore({
-  reducer: { tabs: tabsSlice.reducer }
-});
 
 describe("<PageTabs />", () => {
   let component: RenderResult;

@@ -1,3 +1,5 @@
+import React from "react";
+import { Provider } from "react-redux";
 import {
   render,
   RenderResult,
@@ -5,10 +7,8 @@ import {
   waitFor,
   fireEvent
 } from "@testing-library/react";
-import React from "react";
 import { EnvironmentCreate } from "../../src/features/environmentCreate";
 import { store } from "../../src/store";
-import { Provider } from "react-redux";
 import {
   EnvironmentDetailsModes,
   modeChanged

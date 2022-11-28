@@ -1,6 +1,6 @@
 import React from "react";
-import { act, fireEvent, render, waitFor } from "@testing-library/react";
 import { Provider } from "react-redux";
+import { act, fireEvent, render, waitFor } from "@testing-library/react";
 import {
   EnvironmentDetailsHeader,
   EnvironmentDetailsModes,
