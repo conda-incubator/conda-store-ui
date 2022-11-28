@@ -69,5 +69,25 @@ describe("<PageTabs />", () => {
     expect(component.container).toHaveTextContent(
       `${ENVIRONMENTS[0].name}${ENVIRONMENTS[1].name}`
     );
+
+    const [envTabCloseIcon] = component.getAllByTestId("closeTab");
+    fireEvent.click(envTabCloseIcon);
+  });
+
+  it("should maintain the new environment tab open ", () => {
+    act(() => {
+      store.dispatch(openCreateNewEnvironmentTab("default"));
+    });
+
+    const envTab = component.getByText(ENVIRONMENTS[1].name);
+    fireEvent.click(envTab);
+
+    const newEnvTab = component.getByText("Create Environment");
+    fireEvent.click(newEnvTab);
+
+    const envTabCloseIcon = component.getByTestId("closeTab");
+    fireEvent.click(envTabCloseIcon);
+
+    expect(component.container).toHaveTextContent("Create Environment");
   });
 });
