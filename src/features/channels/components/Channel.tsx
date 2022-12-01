@@ -1,10 +1,7 @@
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import React from "react";
-import {
-  getIconForStyleType,
-  getStylesForStyleType
-} from "../../../utils/helpers";
+import { getIconForStyleType } from "../../../utils/helpers";
 import { SquareIconAlt } from "../../../components";
 
 interface IChannelProps {
@@ -15,11 +12,6 @@ interface IChannelProps {
 }
 
 export const Channel = ({ channelName }: IChannelProps) => {
-  const channelNameStyles = getStylesForStyleType(
-    { color: "#333", fontSize: "13px" },
-    { color: "#333", fontSize: "13px" }
-  );
-
   const icon = getIconForStyleType(
     <></>,
     <SquareIconAlt style={{ marginRight: "8px" }} />
@@ -28,7 +20,10 @@ export const Channel = ({ channelName }: IChannelProps) => {
   return (
     <Box className="box" sx={{ display: "flex", alignItems: "center" }}>
       {icon}
-      <Typography className="typography" sx={channelNameStyles}>
+      <Typography
+        className="typography"
+        sx={{ color: "#333", fontSize: "13px" }}
+      >
         {channelName}
       </Typography>
     </Box>
