@@ -1,7 +1,6 @@
 import React from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import { getStylesForStyleType } from "../utils/helpers";
 
 interface IBlockContainerProps {
   title: string;
@@ -9,19 +8,9 @@ interface IBlockContainerProps {
 }
 
 export const BlockContainer = ({ title, children }: IBlockContainerProps) => {
-  const containerStyles = getStylesForStyleType({
-    border: "1px solid #E0E0E0",
-    paddingBottom: "15px"
-  });
-
-  const boxStyles = getStylesForStyleType({
-    padding: "10px 15px",
-    borderBottom: "1px solid #E0E0E0"
-  });
-
   return (
-    <Box sx={containerStyles}>
-      <Box sx={boxStyles}>
+    <Box sx={{ border: "1px solid #E0E0E0", paddingBottom: "15px" }}>
+      <Box sx={{ padding: "10px 15px", borderBottom: "1px solid #E0E0E0" }}>
         <Typography
           data-testid="block-container-title"
           sx={{ fontSize: "14px", fontWeight: 700, color: "#3C4043" }}

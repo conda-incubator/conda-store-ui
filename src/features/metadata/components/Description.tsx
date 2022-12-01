@@ -21,24 +21,14 @@ export const Description = ({
   return (
     <Box>
       {mode === EnvironmentDetailsModes.READ && description && (
-        <StyledMetadataItem
-          sx={{
-            fontSize: "13px",
-            color: "#3C4043"
-          }}
-        >
-          {description}
-        </StyledMetadataItem>
+        <StyledMetadataItem>{description}</StyledMetadataItem>
       )}
 
       {mode !== EnvironmentDetailsModes.READ && (
         <>
           <StyledMetadataItem
             sx={{
-              fontWeight: 500,
-              padding: "0",
-              color: "#3C4043",
-              fontSize: "13px"
+              fontWeight: 500
             }}
           >
             Description:
@@ -50,7 +40,8 @@ export const Description = ({
               placeholder="Enter here the description of your environment"
               sx={{
                 backgroundColor: "#F1F1F1",
-                width: "100%"
+                width: "100%",
+                marginBottom: "10px"
               }}
               inputProps={{
                 style: {

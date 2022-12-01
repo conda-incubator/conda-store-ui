@@ -36,7 +36,7 @@ export const ArtifactList = ({ artifacts, showArtifacts }: IArtifactsProps) => {
           ))}
         </Box>
       ) : (
-        <CircularProgress size={20} sx={{ margin: "15px 0 5px 0" }} />
+        <CircularProgress size={20} />
       )}
     </BlockContainer>
   );

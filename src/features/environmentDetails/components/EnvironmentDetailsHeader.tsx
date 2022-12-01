@@ -31,7 +31,7 @@ export const EnvironmentDetailsHeader = ({
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
-        marginBottom: "19px"
+        marginBottom: "15px"
       }}
     >
       {(mode === EnvironmentDetailsModes.READ ||

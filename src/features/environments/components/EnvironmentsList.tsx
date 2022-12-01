@@ -110,8 +110,7 @@ export const EnvironmentsList = ({
           sx={{
             display: "flex",
             alignItems: "center",
-            marginLeft: "20px",
-            marginTop: "5px"
+            margin: "5px 0 5px 12px"
           }}
         >
           <Typography
@@ -119,13 +118,13 @@ export const EnvironmentsList = ({
               textTransform: "uppercase",
               fontWeight: 700,
               marginRight: "10px",
-              fontSize: "14px",
+              fontSize: "13px",
               color: " #54595e"
             }}
           >
             Shared environments
           </Typography>
-          <GroupIconAlt style={{ marginBottom: "8px", marginLeft: "10px" }} />
+          <GroupIconAlt style={{ marginLeft: "10px", scale: ".8" }} />
         </Box>
         {sharedNamespaces.map(namespace => (
           <EnvironmentDropdown key={namespace.namespace} data={namespace} />

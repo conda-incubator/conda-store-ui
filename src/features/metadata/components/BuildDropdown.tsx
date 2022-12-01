@@ -38,10 +38,12 @@ export const Build = ({
 
   const selectStyles = getStylesForStyleType(
     {
-      borderRadius: "0px"
+      borderRadius: "0px",
+      marginBottom: "10px"
     },
     {
       borderRadius: "0px",
+      marginBottom: "10px",
       backgroundColor: open ? "#A8DAB5" : "initial"
     }
   );
