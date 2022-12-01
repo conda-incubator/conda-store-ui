@@ -10,7 +10,8 @@ interface IBlockContainerProps {
 
 export const BlockContainer = ({ title, children }: IBlockContainerProps) => {
   const containerStyles = getStylesForStyleType({
-    border: "1px solid #E0E0E0"
+    border: "1px solid #E0E0E0",
+    paddingBottom: "15px"
   });
 
   const boxStyles = getStylesForStyleType({
@@ -28,7 +29,13 @@ export const BlockContainer = ({ title, children }: IBlockContainerProps) => {
           {title}
         </Typography>
       </Box>
-      {children}
+      <Box
+        sx={{
+          padding: "15px 15px 0 15px"
+        }}
+      >
+        {children}
+      </Box>
     </Box>
   );
 };

@@ -89,7 +89,7 @@ export const SpecificationCreate = ({ onCreateEnvironment }: any) => {
       onToggleEditMode={onToggleEditorView}
       isEditMode={show}
     >
-      <Box sx={{ padding: "13px 19px" }}>
+      <Box>
         {show ? (
           <CodeEditor
             code={stringify({

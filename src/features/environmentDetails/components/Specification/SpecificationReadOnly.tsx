@@ -21,25 +21,23 @@ export const SpecificationReadOnly = () => {
 
   return (
     <BlockContainer title="Specification">
-      <Box sx={{ padding: "13px 19px" }}>
-        <Box sx={{ marginBottom: "30px" }}>
-          <RequestedPackageList packageList={requestedPackages} />
-        </Box>
-        {/* Hide component if dependencies are empty.
+      <Box sx={{ marginBottom: "30px" }}>
+        <RequestedPackageList packageList={requestedPackages} />
+      </Box>
+      {/* Hide component if dependencies are empty.
          When an env is being created, the first call returns [] */}
-        {dependencies.length > 0 && (
-          <Box sx={{ marginBottom: "30px" }}>
-            <Dependencies
-              mode="read-only"
-              dependencies={dependencies}
-              hasMore={hasMore}
-              next={() => dispatch(pageChanged(page + 1))}
-            />
-          </Box>
-        )}
-        <Box sx={{ margiBottom: "30px" }}>
-          <ChannelsList channelList={channels} />
+      {dependencies.length > 0 && (
+        <Box sx={{ marginBottom: "30px" }}>
+          <Dependencies
+            mode="read-only"
+            dependencies={dependencies}
+            hasMore={hasMore}
+            next={() => dispatch(pageChanged(page + 1))}
+          />
         </Box>
+      )}
+      <Box sx={{ margiBottom: "30px" }}>
+        <ChannelsList channelList={channels} />
       </Box>
     </BlockContainer>
   );

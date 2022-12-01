@@ -8,7 +8,6 @@ import { EnvironmentCreate } from "../features/environmentCreate";
 import { EnvironmentDetails } from "../features/environmentDetails";
 import { PageTabs } from "../features/tabs";
 import { useAppSelector } from "../hooks";
-import { getStylesForStyleType } from "../utils/helpers";
 
 export const PageLayout = () => {
   const { selectedEnvironment, newEnvironment } = useAppSelector(
@@ -18,12 +17,6 @@ export const PageLayout = () => {
   const [notification, setNotification] = useState({
     show: false,
     description: null
-  });
-
-  const contentSectionStyles = getStylesForStyleType({
-    width: "100%",
-    marginTop: "-1px"
-    // backgroundColor: "#F9F9F9",
   });
 
   const onCreateEnv = (notification: any) => {
@@ -57,13 +50,13 @@ export const PageLayout = () => {
             <PageTabs />
 
             {selectedEnvironment && !newEnvironment.isActive && (
-              <Box sx={contentSectionStyles}>
+              <Box>
                 <EnvironmentDetails environmentNotification={setNotification} />
               </Box>
             )}
 
             {!selectedEnvironment && newEnvironment.isActive && (
-              <Box sx={contentSectionStyles}>
+              <Box>
                 <EnvironmentCreate environmentNotification={onCreateEnv} />
               </Box>
             )}

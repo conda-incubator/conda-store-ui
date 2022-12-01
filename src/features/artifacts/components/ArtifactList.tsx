@@ -5,7 +5,6 @@ import { ArtifactItem } from "./ArtifactsItem";
 import { Artifact } from "../../../common/models";
 import ListItem from "@mui/material/ListItem";
 import useTheme from "@mui/material/styles/useTheme";
-import { getStylesForStyleType } from "../../../utils/helpers";
 import { BlockContainer } from "../../../components";
 
 export interface IArtifactsProps {
@@ -18,12 +17,11 @@ export interface IArtifactsProps {
 
 export const ArtifactList = ({ artifacts, showArtifacts }: IArtifactsProps) => {
   const { typography } = useTheme();
-  const linksContainerStyles = getStylesForStyleType({ padding: "20px 18px" });
 
   return (
     <BlockContainer title="Logs and Artifacts">
       {artifacts.length && showArtifacts ? (
-        <Box sx={linksContainerStyles}>
+        <Box>
           {artifacts.map((link, index) => (
             <ListItem
               key={link.name}
@@ -38,7 +36,7 @@ export const ArtifactList = ({ artifacts, showArtifacts }: IArtifactsProps) => {
           ))}
         </Box>
       ) : (
-        <CircularProgress size={20} sx={{ margin: "15px 0 5px 15px" }} />
+        <CircularProgress size={20} sx={{ margin: "15px 0 5px 0" }} />
       )}
     </BlockContainer>
   );

@@ -66,7 +66,7 @@ export const EnvironmentDetailsHeader = ({
             inputProps={{
               style: {
                 padding: "8px 15px",
-                fontSize: "14px",
+                fontSize: "15px",
                 color: "#3C4043"
               }
             }}

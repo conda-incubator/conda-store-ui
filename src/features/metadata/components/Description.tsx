@@ -36,25 +36,26 @@ export const Description = ({
           <StyledMetadataItem
             sx={{
               fontWeight: 500,
-              paddingBottom: "0",
-              color: "#3C4043"
+              padding: "0",
+              color: "#3C4043",
+              fontSize: "13px"
             }}
           >
             Description:
           </StyledMetadataItem>
-          <Box
-            style={{
-              padding: "11px 14px"
-            }}
-          >
+          <Box>
             <TextField
               multiline
               value={description}
               placeholder="Enter here the description of your environment"
               sx={{
                 backgroundColor: "#F1F1F1",
-                width: "100%",
-                fontSize: "13px"
+                width: "100%"
+              }}
+              inputProps={{
+                style: {
+                  fontSize: "13px"
+                }
               }}
               onChange={e => onChangeDescription(e.target.value)}
             />

@@ -20,13 +20,14 @@ export const BlockContainerEditMode = ({
   return (
     <Box
       sx={{
-        border: "1px solid #E0E0E0"
+        border: "1px solid #E0E0E0",
+        paddingBottom: "15px"
       }}
     >
       <Box
         sx={{
           padding: "10px 15px",
-          border: "1px solid #E0E0E0"
+          borderBottom: "1px solid #E0E0E0"
         }}
       >
         <Box
@@ -50,7 +51,7 @@ export const BlockContainerEditMode = ({
               />
             }
             label={
-              <Typography sx={{ fontSize: "14px", color: "#3C4043" }}>
+              <Typography sx={{ fontSize: "13px", color: "#3C4043" }}>
                 {isEditMode
                   ? "Switch to Standard View"
                   : "Switch to YAML Editor"}
@@ -59,7 +60,13 @@ export const BlockContainerEditMode = ({
           />
         </Box>
       </Box>
-      {children}
+      <Box
+        sx={{
+          padding: "15px 15px 0 15px"
+        }}
+      >
+        {children}
+      </Box>
     </Box>
   );
 };

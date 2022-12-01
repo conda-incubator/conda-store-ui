@@ -38,11 +38,9 @@ export const Build = ({
 
   const selectStyles = getStylesForStyleType(
     {
-      marginLeft: "13px",
       borderRadius: "0px"
     },
     {
-      marginLeft: "13px",
       borderRadius: "0px",
       backgroundColor: open ? "#A8DAB5" : "initial"
     }
@@ -55,7 +53,6 @@ export const Build = ({
       padding: "0px",
       boxShadow: "none",
       borderRadius: "0px",
-      marginLeft: "12px",
       border: "1px solid #BCBFC4"
     }
   ) as React.CSSProperties;
@@ -129,7 +126,12 @@ export const Build = ({
           : null}
       </Select>
       <StyledMetadataItem
-        sx={{ marginTop: "0", fontSize: "13px", fontWeight: 500 }}
+        sx={{
+          marginTop: "0",
+          fontSize: "13px",
+          fontWeight: 500,
+          paddingBottom: "0"
+        }}
       >
         Status: {""}
         <Typography component="span" sx={{ fontSize: "13px" }}>

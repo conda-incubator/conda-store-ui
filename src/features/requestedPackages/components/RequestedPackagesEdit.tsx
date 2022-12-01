@@ -63,7 +63,7 @@ export const RequestedPackagesEdit = ({
       </StyledAccordionSummary>
       <StyledAccordionDetails
         sx={{
-          padding: "23px 21px",
+          padding: "20px 15px",
           borderRadius: "0px"
         }}
       >

@@ -144,7 +144,7 @@ export const SpecificationEdit = ({
       onToggleEditMode={onToggleEditorView}
       isEditMode={show}
     >
-      <Box sx={{ padding: "13px 19px" }}>
+      <Box>
         {show ? (
           <CodeEditor
             code={stringify({ channels, dependencies: requestedPackages })}
