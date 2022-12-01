@@ -45,7 +45,7 @@ export const Dependencies = ({
   return (
     <Accordion
       sx={{
-        maxWidth: mode === "read-only" ? "490px" : "576px",
+        width: "100%",
         boxShadow: "none"
       }}
       disableGutters

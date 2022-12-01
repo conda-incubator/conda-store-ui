@@ -54,7 +54,7 @@ export const RequestedPackagesEdit = ({
 
   return (
     <Accordion
-      sx={{ width: 576, boxShadow: "none" }}
+      sx={{ width: "100%", boxShadow: "none" }}
       defaultExpanded
       disableGutters
     >
