@@ -26,7 +26,7 @@ export const EnvironmentsSearch = ({ onChange }: IEnvironmentsSearchProps) => {
   let login;
 
   const loginIcon = getIconForStyleType(
-    <LoginIcon color=" #9AA0A6" />,
+    <LoginIcon color="#686868" />,
     <LoginIcon color="#B9D9BD" />
   );
 
@@ -53,8 +53,8 @@ export const EnvironmentsSearch = ({ onChange }: IEnvironmentsSearchProps) => {
         sx={{
           marginBottom: "14px",
           textAlign: "center",
-          color: " #454545",
-          fontWeight: 700,
+          color: " #333",
+          fontWeight: 600,
           fontSize: "14px",
           marginTop: "30px"
         }}

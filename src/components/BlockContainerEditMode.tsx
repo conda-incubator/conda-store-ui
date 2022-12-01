@@ -39,7 +39,7 @@ export const BlockContainerEditMode = ({
         >
           <Typography
             data-testid="block-container-title"
-            sx={{ fontSize: "14px", fontWeight: 700, color: "#454545" }}
+            sx={{ fontSize: "14px", fontWeight: 600, color: "#333" }}
           >
             {title}
           </Typography>
@@ -51,7 +51,7 @@ export const BlockContainerEditMode = ({
               />
             }
             label={
-              <Typography sx={{ fontSize: "13px", color: "#454545" }}>
+              <Typography sx={{ fontSize: "13px", color: "#333" }}>
                 {isEditMode
                   ? "Switch to Standard View"
                   : "Switch to YAML Editor"}

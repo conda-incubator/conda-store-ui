@@ -13,7 +13,7 @@ export const SquareIconAlt = (props: React.SVGProps<SVGSVGElement>) => {
       <path
         d="M12.42 1H1v11.42h11.42V1z"
         fill="#fff"
-        stroke="#454545"
+        stroke="#333"
         strokeMiterlimit={10}
         strokeLinecap="round"
       />

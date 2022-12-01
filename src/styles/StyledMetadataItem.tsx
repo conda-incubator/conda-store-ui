@@ -5,5 +5,5 @@ export const StyledMetadataItem = styled(Typography)(({ theme }) => ({
   padding: "0 0 10px 0",
   fontSize: "13px",
   fontFamily: '"Inter", sans-serif',
-  color: "#454545"
+  color: "#333"
 }));

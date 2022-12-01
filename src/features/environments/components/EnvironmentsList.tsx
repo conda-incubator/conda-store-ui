@@ -116,10 +116,10 @@ export const EnvironmentsList = ({
           <Typography
             sx={{
               textTransform: "uppercase",
-              fontWeight: 700,
+              fontWeight: 600,
               marginRight: "10px",
               fontSize: "13px",
-              color: " #454545"
+              color: " #333"
             }}
           >
             Shared environments

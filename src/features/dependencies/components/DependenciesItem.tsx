@@ -35,13 +35,13 @@ const BaseDependenciesItem = ({
     <Box sx={{ display: "flex", alignItems: "center" }}>
       <Box sx={{ display: "flex", alignItems: "center", width: "300px" }}>
         {icon}
-        <Typography sx={{ fontSize: "13px", color: "#454545" }}>
+        <Typography sx={{ fontSize: "13px", color: "#333" }}>
           {name}
         </Typography>
       </Box>
       <Typography
         sx={{
-          color: "#454545",
+          color: "#333",
           width: isEditMode ? "140px" : "auto",
           marginLeft: isEditMode ? "20px" : "0px",
           fontSize: "13px"

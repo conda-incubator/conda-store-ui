@@ -72,7 +72,7 @@ export const PageLayout = () => {
               height: "100%"
             }}
           >
-            <Typography sx={{ fontSize: "18px", color: "#454545" }}>
+            <Typography sx={{ fontSize: "18px", color: "#333" }}>
               Select an environment to show details
             </Typography>
           </Box>

@@ -17,7 +17,7 @@ export const StyledTab = styled(Tab, {
     maxWidth: "340px",
     justifyContent: "space-between",
     "&.Mui-selected": {
-      color: "#454545",
+      color: "#333",
       fontWeight: 400,
       border: "1px solid #E0E0E0",
       borderTop: "none",

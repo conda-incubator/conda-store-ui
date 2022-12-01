@@ -16,8 +16,8 @@ interface IChannelProps {
 
 export const Channel = ({ channelName }: IChannelProps) => {
   const channelNameStyles = getStylesForStyleType(
-    { color: "#454545", fontSize: "13px" },
-    { color: "#454545", fontSize: "13px" }
+    { color: "#333", fontSize: "13px" },
+    { color: "#333", fontSize: "13px" }
   );
 
   const icon = getIconForStyleType(

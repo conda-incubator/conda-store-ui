@@ -77,7 +77,7 @@ const BaseChannelsEditItem = ({
             onClick={() => setIsEditing(true)}
             sx={{ "&:hover": { cursor: "pointer" } }}
           >
-            <Typography sx={{ fontSize: "13px", color: "#454545" }}>
+            <Typography sx={{ fontSize: "13px", color: "#333" }}>
               {channelName}
             </Typography>
           </Box>

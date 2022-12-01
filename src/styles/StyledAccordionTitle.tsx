@@ -9,5 +9,5 @@ export const StyledAccordionTitle = styled(Typography, {
 })<{ styleType?: string }>(({ theme, styleType = currentStyleType }) => ({
   fontSize: "13px",
   fontWeight: 500,
-  color: "#454545"
+  color: "#333"
 }));

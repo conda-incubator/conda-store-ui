@@ -24,7 +24,7 @@ export const Environment = ({
   const isSelected = selectedEnvironmentId === environment.id;
 
   const circleIconStyles = getStylesForStyleType(
-    { width: "9px", height: "9px", color: isSelected ? "#454545" : "#5f6367" },
+    { width: "9px", height: "9px", color: isSelected ? "#333" : "#5f6367" },
     { width: "9px", height: "9px", color: isSelected ? "#33A852" : "#B9D9BD" }
   );
 
@@ -33,13 +33,13 @@ export const Environment = ({
       textTransform: "none",
       fontSize: "13px",
       fontWeight: isSelected ? 600 : 400,
-      color: "#454545"
+      color: "#333"
     },
     {
       textTransform: "none",
       fontSize: "13px",
       fontWeight: isSelected ? 600 : 400,
-      color: isSelected ? "#33A852" : "#454545"
+      color: isSelected ? "#33A852" : "#333"
     }
   );
 
