@@ -103,7 +103,7 @@ export const EnvironmentsList = ({
           </Box>
         }
       >
-        <Box sx={{ minHeight: "50px" }}>
+        <Box sx={{ minHeight: "50px", paddingTop: "10px" }}>
           {defaultNamespace && <EnvironmentDropdown data={defaultNamespace} />}
         </Box>
         <Box
@@ -119,7 +119,7 @@ export const EnvironmentsList = ({
               fontWeight: 700,
               marginRight: "10px",
               fontSize: "13px",
-              color: " #3C4043"
+              color: " #454545"
             }}
           >
             Shared environments

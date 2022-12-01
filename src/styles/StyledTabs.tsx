@@ -8,11 +8,11 @@ export const StyledTabs = styled(Tabs, {
   shouldForwardProp: prop => prop !== "styleType"
 })<{ styleType?: string }>(
   ({ theme: { palette }, styleType = currentStyleType }) => ({
-    backgroundColor: styleType === "grayscale" ? "#fff" : "#F9F9F9",
+    backgroundColor: "#FFF",
     "& .MuiTabs-indicator": {
       display: "flex",
       justifyContent: "center",
-      backgroundColor: "#fff"
+      backgroundColor: "#FFF"
     }
   })
 );

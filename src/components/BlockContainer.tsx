@@ -13,7 +13,7 @@ export const BlockContainer = ({ title, children }: IBlockContainerProps) => {
       <Box sx={{ padding: "10px 15px", borderBottom: "1px solid #E0E0E0" }}>
         <Typography
           data-testid="block-container-title"
-          sx={{ fontSize: "14px", fontWeight: 700, color: "#3C4043" }}
+          sx={{ fontSize: "14px", fontWeight: 700, color: "#454545" }}
         >
           {title}
         </Typography>

@@ -83,7 +83,7 @@ export const EnvironmentDropdown = ({
               width: "217px",
               fontWeight: 700,
               fontSize: "14px",
-              color: " #3C4043"
+              color: " #454545"
             }}
           >
             {namespace}

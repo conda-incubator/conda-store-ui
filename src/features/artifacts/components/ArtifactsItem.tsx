@@ -21,7 +21,7 @@ export const ArtifactItem = ({ artifact }: IArtifactsProps) => {
       <Link
         href={route}
         underline="none"
-        sx={{ color: "#3C4043", fontSize: "13px" }}
+        sx={{ color: "#454545", fontSize: "13px" }}
         target="_blank"
       >
         {artifact.name}

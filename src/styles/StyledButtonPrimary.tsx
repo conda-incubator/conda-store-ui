@@ -26,7 +26,8 @@ export const StyledButtonPrimary = styled(Button, {
       backgroundColor: styleType === "grayscale" ? "#3C4043" : "#fff"
     },
     "&:disabled": {
-      backgroundColor: "#dddcdc"
+      backgroundColor: "#dddcdc",
+      border: "none"
     }
   })
 );
