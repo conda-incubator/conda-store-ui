@@ -119,7 +119,7 @@ export const EnvironmentsList = ({
               fontWeight: 700,
               marginRight: "10px",
               fontSize: "13px",
-              color: " #54595e"
+              color: " #3C4043"
             }}
           >
             Shared environments

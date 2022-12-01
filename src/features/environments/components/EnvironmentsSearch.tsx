@@ -53,7 +53,7 @@ export const EnvironmentsSearch = ({ onChange }: IEnvironmentsSearchProps) => {
         sx={{
           marginBottom: "14px",
           textAlign: "center",
-          color: " #54595e",
+          color: " #3C4043",
           fontWeight: 700,
           fontSize: "14px",
           marginTop: "30px"
