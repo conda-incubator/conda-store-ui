@@ -14,7 +14,7 @@ export const BlockContainer = ({ title, children }: IBlockContainerProps) => {
   });
 
   const boxStyles = getStylesForStyleType({
-    padding: "17px 19px",
+    padding: "10px 15px",
     borderBottom: "1px solid #E0E0E0"
   });
 
@@ -23,7 +23,7 @@ export const BlockContainer = ({ title, children }: IBlockContainerProps) => {
       <Box sx={boxStyles}>
         <Typography
           data-testid="block-container-title"
-          sx={{ fontSize: "20px", fontWeight: 400, color: "#3C4043" }}
+          sx={{ fontSize: "14px", fontWeight: 700, color: "#3C4043" }}
         >
           {title}
         </Typography>

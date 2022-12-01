@@ -17,8 +17,9 @@ export const EnvBuilds = ({ currentBuildId, selectedBuildId }: IData) => {
   const currentBuild = envBuilds.find(build => build.id === currentBuildId);
 
   const textStyles = getStylesForStyleType({
-    fontSize: "14px",
-    fontWeight: 500
+    fontSize: "13px",
+    fontWeight: 500,
+    paddingBottom: "5px"
   });
 
   return (

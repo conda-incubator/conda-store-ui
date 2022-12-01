@@ -11,7 +11,7 @@ export const StyledTab = styled(Tab, {
     border: "transparent",
     padding: "7px 12px",
     textTransform: "none",
-    fontSize: "20px",
+    fontSize: "14px",
     minHeight: "48px",
     maxHeight: "48px",
     maxWidth: "340px",
@@ -22,7 +22,8 @@ export const StyledTab = styled(Tab, {
       border: "1px solid #E0E0E0",
       borderTop: "none",
       borderBottom: "none",
-      background: "#F9F9F9"
+      background: "#F9F9F9",
+      marginLeft: "-1px"
     }
   })
 );

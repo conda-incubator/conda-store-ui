@@ -26,7 +26,7 @@ export const EnvironmentsSearch = ({ onChange }: IEnvironmentsSearchProps) => {
   let login;
 
   const loginIcon = getIconForStyleType(
-    <LoginIcon color="#9AA0A6" />,
+    <LoginIcon color=" #9AA0A6" />,
     <LoginIcon color="#B9D9BD" />
   );
 
@@ -51,11 +51,11 @@ export const EnvironmentsSearch = ({ onChange }: IEnvironmentsSearchProps) => {
       <Typography
         data-testid="env-search-title"
         sx={{
-          marginBottom: "16px",
+          marginBottom: "14px",
           textAlign: "center",
-          color: "#9AA0A6",
+          color: " #54595e",
           fontWeight: 700,
-          fontSize: "15px",
+          fontSize: "14px",
           marginTop: "30px"
         }}
       >
@@ -74,9 +74,9 @@ export const EnvironmentsSearch = ({ onChange }: IEnvironmentsSearchProps) => {
         sx={{
           borderRadius: "15px",
           paddingRight: "10px",
-          width: "288px",
+          width: "100%",
           "&::placeholder": {
-            fontSize: "12px",
+            fontSize: "14px",
             fontWeight: 400
           }
         }}

@@ -109,14 +109,20 @@ const BaseEnvironments = ({
   return (
     <Box
       sx={{
-        width: "313px",
-        position: "relative"
+        width: "290px",
+        position: "relative",
+        borderRight: "1px solid #E0E0E0"
       }}
     >
       <Box sx={{ borderBottom: `1px solid ${primary.main}` }}>
         <EnvironmentsSearch onChange={e => handleChange(e.target.value)} />
       </Box>
-      <Box>
+      <Box
+        sx={{
+          position: "relative",
+          zIndex: "1"
+        }}
+      >
         {state.data && (
           <EnvironmentsList
             next={next}
@@ -133,7 +139,7 @@ const BaseEnvironments = ({
           width: "100%",
           textAlign: "center",
           bottom: "20px",
-          zIndex: "-1"
+          zIndex: "0"
         }}
       >
         <CondaLogo />

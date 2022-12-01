@@ -18,8 +18,8 @@ export const ArtifactItem = ({ artifact }: IArtifactsProps) => {
   const route = new URL(artifact.route, pref.apiUrl).toString();
 
   const linkStyles = getStylesForStyleType(
-    { color: "#000", fontSize: "14px" },
-    { color: "#3C4043", fontSize: "14px", fontWeight: 400 }
+    { color: "#000", fontSize: "13px" },
+    { color: "#3C4043", fontSize: "13px", fontWeight: 400 }
   );
 
   return (

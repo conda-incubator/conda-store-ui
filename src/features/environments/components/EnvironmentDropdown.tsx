@@ -82,8 +82,8 @@ export const EnvironmentDropdown = ({
             sx={{
               width: "217px",
               fontWeight: 700,
-              fontSize: "15px",
-              color: "#9AA0A6"
+              fontSize: "14px",
+              color: " #54595e"
             }}
           >
             {namespace}
@@ -94,7 +94,7 @@ export const EnvironmentDropdown = ({
         </Box>
       </StyledAccordionSummary>
       <AccordionDetails
-        sx={{ paddingLeft: "42px", paddingTop: "5px", paddingBottom: "0px" }}
+        sx={{ paddingLeft: "30px", paddingTop: "5px", paddingBottom: "0px" }}
       >
         <List sx={{ padding: "0px" }}>
           {environments.map(environment => (

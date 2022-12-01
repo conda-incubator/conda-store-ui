@@ -71,7 +71,7 @@ const BaseCreateEnvironmentPackagesTableRow = ({
   return (
     <TableRow>
       <StyledRequestedPackagesTableCell align="left">
-        <Typography sx={{ fontSize: "16px", fontWeight: 400, color: "#000" }}>
+        <Typography sx={{ fontSize: "13px", fontWeight: 400, color: "#000" }}>
           {name}
         </Typography>
       </StyledRequestedPackagesTableCell>

@@ -38,7 +38,7 @@ export const EnvironmentDetailsHeader = ({
         mode === EnvironmentDetailsModes.EDIT) && (
         <>
           <Typography
-            sx={{ fontSize: "19px", color: "#3C4043", fontWeight: 400 }}
+            sx={{ fontSize: "16px", color: "#3C4043", fontWeight: 700 }}
           >
             {envName}
           </Typography>
@@ -66,7 +66,7 @@ export const EnvironmentDetailsHeader = ({
             inputProps={{
               style: {
                 padding: "8px 15px",
-                fontSize: "20px",
+                fontSize: "14px",
                 color: "#3C4043"
               }
             }}

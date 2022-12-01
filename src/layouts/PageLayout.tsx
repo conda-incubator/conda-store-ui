@@ -21,10 +21,9 @@ export const PageLayout = () => {
   });
 
   const contentSectionStyles = getStylesForStyleType({
-    border: "1px solid #E0E0E0",
     width: "100%",
-    marginTop: "-1px",
-    backgroundColor: "#F9F9F9"
+    marginTop: "-1px"
+    // backgroundColor: "#F9F9F9",
   });
 
   const onCreateEnv = (notification: any) => {
@@ -45,7 +44,14 @@ export const PageLayout = () => {
         refreshEnvironments={isEnvCreated}
         onUpdateRefreshEnvironments={setIsEnvCreated}
       />
-      <Box sx={{ width: "100%" }}>
+      <Box
+        sx={{
+          width: "100%",
+          backgroundColor: "#F9F9F9",
+          height: "100%",
+          overflowY: "scroll"
+        }}
+      >
         {(selectedEnvironment || newEnvironment.isActive) && (
           <>
             <PageTabs />
@@ -70,8 +76,7 @@ export const PageLayout = () => {
               flexDirection: "column",
               alignItems: "center",
               justifyContent: "center",
-              height: "100%",
-              borderLeft: "1px solid #E0E0E0"
+              height: "100%"
             }}
           >
             <Typography sx={{ fontSize: "18px", color: "#3C4043" }}>

@@ -7,7 +7,7 @@ const currentStyleType = config.styleType;
 export const StyledAccordionTitle = styled(Typography, {
   shouldForwardProp: prop => prop !== "styleType"
 })<{ styleType?: string }>(({ theme, styleType = currentStyleType }) => ({
-  fontSize: "15px",
+  fontSize: "13px",
   fontWeight: 500,
-  color: styleType === "grayscale" ? "#000" : "#3C4043"
+  color: "#3C4043"
 }));

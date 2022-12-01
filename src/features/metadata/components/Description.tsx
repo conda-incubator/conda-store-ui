@@ -23,7 +23,7 @@ export const Description = ({
       {mode === EnvironmentDetailsModes.READ && description && (
         <StyledMetadataItem
           sx={{
-            fontSize: "15px",
+            fontSize: "13px",
             color: "#3C4043"
           }}
         >
@@ -54,7 +54,7 @@ export const Description = ({
               sx={{
                 backgroundColor: "#F1F1F1",
                 width: "100%",
-                fontSize: "14px"
+                fontSize: "13px"
               }}
               onChange={e => onChangeDescription(e.target.value)}
             />

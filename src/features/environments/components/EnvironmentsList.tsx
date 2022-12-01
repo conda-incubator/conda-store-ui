@@ -119,8 +119,8 @@ export const EnvironmentsList = ({
               textTransform: "uppercase",
               fontWeight: 700,
               marginRight: "10px",
-              fontSize: "15px",
-              color: "#9AA0A6"
+              fontSize: "14px",
+              color: " #54595e"
             }}
           >
             Shared environments

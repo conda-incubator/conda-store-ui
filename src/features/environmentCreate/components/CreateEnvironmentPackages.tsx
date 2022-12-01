@@ -75,7 +75,7 @@ export const CreateEnvironmentPackages = ({
               >
                 <Typography
                   component="p"
-                  sx={{ fontSize: "16px", fontWeight: 500 }}
+                  sx={{ fontSize: "14px", fontWeight: 500 }}
                 >
                   Name
                 </Typography>
@@ -83,7 +83,7 @@ export const CreateEnvironmentPackages = ({
               <StyledEditPackagesTableCell align="left">
                 <Typography
                   component="p"
-                  sx={{ fontSize: "16px", fontWeight: 500 }}
+                  sx={{ fontSize: "14px", fontWeight: 500 }}
                 >
                   Version Constraint
                 </Typography>

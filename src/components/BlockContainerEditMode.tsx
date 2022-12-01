@@ -25,7 +25,7 @@ export const BlockContainerEditMode = ({
     >
       <Box
         sx={{
-          padding: "17px 19px",
+          padding: "10px 15px",
           border: "1px solid #E0E0E0"
         }}
       >
@@ -38,11 +38,7 @@ export const BlockContainerEditMode = ({
         >
           <Typography
             data-testid="block-container-title"
-            sx={{
-              fontSize: "20px",
-              fontWeight: 400,
-              color: "#3C4043"
-            }}
+            sx={{ fontSize: "14px", fontWeight: 700, color: "#3C4043" }}
           >
             {title}
           </Typography>
