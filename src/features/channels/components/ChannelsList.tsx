@@ -22,7 +22,7 @@ export const ChannelsList = ({ channelList }: IChannelsListProps) => {
 
   return (
     <Accordion
-      sx={{ width: "100%", boxShadow: "none" }}
+      sx={{ maxWidth: 420, boxShadow: "none" }}
       disableGutters
       defaultExpanded
     >

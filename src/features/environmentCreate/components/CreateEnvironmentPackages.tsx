@@ -51,7 +51,7 @@ export const CreateEnvironmentPackages = ({
 
   return (
     <Accordion
-      sx={{ width: 421, boxShadow: "none" }}
+      sx={{ maxWidth: 500, boxShadow: "none" }}
       defaultExpanded
       disableGutters
     >

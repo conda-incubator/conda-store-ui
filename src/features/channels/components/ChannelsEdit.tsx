@@ -80,7 +80,7 @@ const BaseChannelsEdit = ({
   return (
     <Accordion
       defaultExpanded={expandedRef.current}
-      sx={{ width: 421, boxShadow: "none" }}
+      sx={{ maxWidth: 420, boxShadow: "none" }}
       disableGutters
     >
       <StyledAccordionSummary expandIcon={<ArrowIcon />}>
