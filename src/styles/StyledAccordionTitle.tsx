@@ -1,12 +1,9 @@
 import Typography from "@mui/material/Typography";
 import { styled } from "@mui/system";
-import { config } from "../common/constants";
-
-const currentStyleType = config.styleType;
 
 export const StyledAccordionTitle = styled(Typography, {
   shouldForwardProp: prop => prop !== "styleType"
-})<{ styleType?: string }>(({ theme, styleType = currentStyleType }) => ({
+})<{ styleType?: string }>(({ theme }) => ({
   fontSize: "13px",
   fontWeight: 500,
   color: "#333"

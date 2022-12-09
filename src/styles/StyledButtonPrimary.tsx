@@ -1,15 +1,14 @@
 import Button from "@mui/material/Button";
 import { styled } from "@mui/system";
-import { config } from "../common/constants";
-
-const currentStyleType = config.styleType;
+import React from "react";
+import { PrefContext } from "../preferences";
 
 export const StyledButtonPrimary = styled(Button, {
   shouldForwardProp: prop => prop !== "styleType"
 })<{ styleType?: string; isalttype?: string }>(
   ({
     theme: { palette },
-    styleType = currentStyleType,
+    styleType = React.useContext(PrefContext).styleType,
     isalttype = "false"
   }) => ({
     padding: isalttype === "true" ? "3px 18px" : "3px 35px",

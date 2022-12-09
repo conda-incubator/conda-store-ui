@@ -5,7 +5,7 @@ export interface IPreferences {
   authMethod: "cookie" | "token";
   authToken: string;
   loginUrl: string;
-  appStyle: string;
+  styleType: string;
   showLoginIcon: boolean;
 }
 
@@ -18,7 +18,7 @@ export const prefDefault: Readonly<IPreferences> = {
   loginUrl:
     process.env.REACT_APP_LOGIN_PAGE_URL ??
     "http://localhost:5000/conda-store/login?next=",
-  appStyle: process.env.REACT_APP_STYLE_TYPE ?? "grayscale",
+  styleType: process.env.REACT_APP_STYLE_TYPE ?? "grayscale",
   showLoginIcon: process.env.REACT_APP_SHOW_LOGIN_ICON === "true" ?? true
 };
 
@@ -43,8 +43,8 @@ export class Preferences implements IPreferences {
     return this._loginUrl;
   }
 
-  get appStyle() {
-    return this._appStyle;
+  get styleType() {
+    return this._styleType;
   }
 
   get showLoginIcon() {
@@ -56,7 +56,7 @@ export class Preferences implements IPreferences {
     this._authMethod = pref.authMethod;
     this._authToken = pref.authToken;
     this._loginUrl = pref.loginUrl;
-    this._appStyle = pref.appStyle;
+    this._styleType = pref.styleType;
     this._showLoginIcon = pref.showLoginIcon;
   }
 
@@ -64,7 +64,7 @@ export class Preferences implements IPreferences {
   private _authMethod: IPreferences["authMethod"];
   private _authToken: IPreferences["authToken"];
   private _loginUrl: IPreferences["loginUrl"];
-  private _appStyle: IPreferences["appStyle"];
+  private _styleType: IPreferences["styleType"];
   private _showLoginIcon: IPreferences["showLoginIcon"];
 }
 

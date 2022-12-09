@@ -1,4 +1,5 @@
-import { config } from "../../common/constants";
+import React from "react";
+import { PrefContext } from "../../preferences";
 
 export const getIconForStyleType = (
   grayscaleIcon: React.ReactNode,
@@ -7,7 +8,8 @@ export const getIconForStyleType = (
   if (!greenAccentIcon) {
     return grayscaleIcon;
   }
-  const isGrayscaleStyleType = config.styleType === "grayscale";
+  const prefs = React.useContext(PrefContext);
+  const isGrayscaleStyleType = prefs.styleType === "grayscale";
 
   return isGrayscaleStyleType ? grayscaleIcon : greenAccentIcon;
 };

@@ -37,9 +37,7 @@ export const EnvironmentDetailsHeader = ({
       {(mode === EnvironmentDetailsModes.READ ||
         mode === EnvironmentDetailsModes.EDIT) && (
         <>
-          <Typography
-            sx={{ fontSize: "16px", color: "#333", fontWeight: 600 }}
-          >
+          <Typography sx={{ fontSize: "16px", color: "#333", fontWeight: 600 }}>
             {envName}
           </Typography>
           {mode === EnvironmentDetailsModes.READ && (
@@ -60,7 +58,7 @@ export const EnvironmentDetailsHeader = ({
               backgroundColor: "#EBECEE",
               minWidth: "450px",
               "&:hover fieldset": {
-                borderColor: "grey"
+                borderColor: "gray"
               }
             }}
             inputProps={{
