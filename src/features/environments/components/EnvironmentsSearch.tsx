@@ -18,7 +18,7 @@ interface IEnvironmentsSearchProps {
 
 export const EnvironmentsSearch = ({ onChange }: IEnvironmentsSearchProps) => {
   const prefs = React.useContext(PrefContext);
-
+  const showLoginIcon = prefs.showLoginIcon;
   const isCookieAuthMethod = prefs.authMethod === "cookie";
   const authUrl = prefs.loginUrl;
   const pageUrl = window.location.href;
@@ -30,7 +30,7 @@ export const EnvironmentsSearch = ({ onChange }: IEnvironmentsSearchProps) => {
     <LoginIcon color="#B9D9BD" />
   );
 
-  if (isCookieAuthMethod) {
+  if (showLoginIcon && isCookieAuthMethod) {
     login = (
       <Link
         href={loginPageUrl}
