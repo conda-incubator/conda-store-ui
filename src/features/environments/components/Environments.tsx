@@ -109,7 +109,7 @@ const BaseEnvironments = ({
   return (
     <Box
       sx={{
-        width: "290px",
+        width: "100%",
         position: "relative",
         borderRight: "1px solid #E0E0E0"
       }}
