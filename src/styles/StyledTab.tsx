@@ -18,7 +18,6 @@ export const StyledTab = styled(Tab, {
     border: "1px solid #E0E0E0",
     borderTop: "none",
     borderBottom: "none",
-    background: "#F9F9F9",
-    marginLeft: "-1px"
+    background: "#F9F9F9"
   }
 }));
