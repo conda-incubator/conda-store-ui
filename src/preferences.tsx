@@ -19,7 +19,9 @@ export const prefDefault: Readonly<IPreferences> = {
     process.env.REACT_APP_LOGIN_PAGE_URL ??
     "http://localhost:5000/conda-store/login?next=",
   styleType: process.env.REACT_APP_STYLE_TYPE ?? "grayscale",
-  showLoginIcon: process.env.REACT_APP_SHOW_LOGIN_ICON === "true" ?? true
+  showLoginIcon: process.env.REACT_APP_SHOW_LOGIN_ICON
+    ? JSON.parse(process.env.REACT_APP_SHOW_LOGIN_ICON)
+    : true
 };
 
 export class Preferences implements IPreferences {
