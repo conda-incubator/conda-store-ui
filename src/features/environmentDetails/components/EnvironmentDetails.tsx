@@ -140,7 +140,7 @@ export const EnvironmentDetails = ({
   }, INTERVAL_REFRESHING);
 
   return (
-    <Box sx={{ padding: "14px 12px" }}>
+    <Box sx={{ padding: "15px 12px" }}>
       <EnvironmentDetailsHeader envName={name} onUpdateName={setName} />
       {error.visible && (
         <Alert

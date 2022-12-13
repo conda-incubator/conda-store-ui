@@ -1,11 +1,6 @@
-import Divider from "@mui/material/Divider";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemText from "@mui/material/ListItemText";
-import Typography from "@mui/material/Typography";
 import React from "react";
+import { BlockContainer } from "../../../components";
 import { Description, EnvBuilds } from "../../../features/metadata/components";
-import { StyledBox } from "../../../styles";
 
 export enum EnvironmentDetailsModes {
   "CREATE" = "create",
@@ -32,25 +27,7 @@ export const EnvMetadata = ({
   onUpdateDescription
 }: IEnvMetadataProps) => {
   return (
-    <StyledBox>
-      <List>
-        <ListItem>
-          <ListItemText
-            primary={
-              <Typography
-                sx={{ fontSize: "20px", fontWeight: 400, color: "#3C4043" }}
-              >
-                Environment Metadata
-              </Typography>
-            }
-          ></ListItemText>
-        </ListItem>
-        <Divider
-          sx={{
-            backgroundColor: "#BDC1C6"
-          }}
-        />
-      </List>
+    <BlockContainer title="Environment Metadata">
       <Description
         mode={mode}
         description={description || undefined}
@@ -64,6 +41,6 @@ export const EnvMetadata = ({
             selectedBuildId={selectedBuildId}
           />
         )}
-    </StyledBox>
+    </BlockContainer>
   );
 };

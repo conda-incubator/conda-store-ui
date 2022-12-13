@@ -31,15 +31,13 @@ export const EnvironmentDetailsHeader = ({
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
-        marginBottom: "19px"
+        marginBottom: "15px"
       }}
     >
       {(mode === EnvironmentDetailsModes.READ ||
         mode === EnvironmentDetailsModes.EDIT) && (
         <>
-          <Typography
-            sx={{ fontSize: "19px", color: "#3C4043", fontWeight: 400 }}
-          >
+          <Typography sx={{ fontSize: "16px", color: "#333", fontWeight: 600 }}>
             {envName}
           </Typography>
           {mode === EnvironmentDetailsModes.READ && (
@@ -60,14 +58,14 @@ export const EnvironmentDetailsHeader = ({
               backgroundColor: "#EBECEE",
               minWidth: "450px",
               "&:hover fieldset": {
-                borderColor: "grey"
+                borderColor: "gray"
               }
             }}
             inputProps={{
               style: {
                 padding: "8px 15px",
-                fontSize: "20px",
-                color: "#3C4043"
+                fontSize: "15px",
+                color: "#333"
               }
             }}
             placeholder="Environment name"

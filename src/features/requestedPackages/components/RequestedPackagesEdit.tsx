@@ -54,7 +54,7 @@ export const RequestedPackagesEdit = ({
 
   return (
     <Accordion
-      sx={{ width: 576, boxShadow: "none" }}
+      sx={{ maxWidth: 500, boxShadow: "none" }}
       defaultExpanded
       disableGutters
     >
@@ -63,7 +63,7 @@ export const RequestedPackagesEdit = ({
       </StyledAccordionSummary>
       <StyledAccordionDetails
         sx={{
-          padding: "23px 21px",
+          padding: "20px 15px",
           borderRadius: "0px"
         }}
       >
@@ -78,7 +78,7 @@ export const RequestedPackagesEdit = ({
               >
                 <Typography
                   component="p"
-                  sx={{ fontSize: "14px", fontWeight: 500 }}
+                  sx={{ fontSize: "13px", fontWeight: 500 }}
                 >
                   Name
                 </Typography>
@@ -91,7 +91,7 @@ export const RequestedPackagesEdit = ({
               >
                 <Typography
                   component="p"
-                  sx={{ fontSize: "14px", fontWeight: 500 }}
+                  sx={{ fontSize: "13px", fontWeight: 500 }}
                 >
                   Installed Version
                 </Typography>
@@ -99,7 +99,7 @@ export const RequestedPackagesEdit = ({
               <StyledEditPackagesTableCell align="left">
                 <Typography
                   component="p"
-                  sx={{ fontSize: "14px", fontWeight: 500 }}
+                  sx={{ fontSize: "13px", fontWeight: 500 }}
                 >
                   Version Constraint
                 </Typography>

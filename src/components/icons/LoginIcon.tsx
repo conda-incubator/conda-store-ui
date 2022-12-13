@@ -16,7 +16,7 @@ export const LoginIcon = ({ color }: any) => {
       <path
         d="M10.927 8.788a2.518 2.518 0 10-2.518-2.511 2.512 2.512 0 002.518 2.511z"
         fill="#fff"
-        stroke="#3C4043"
+        stroke="#333"
         strokeWidth={0.611}
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -24,7 +24,7 @@ export const LoginIcon = ({ color }: any) => {
       <path
         d="M15.877 16.495H5.97c.138-3.057 2.34-5.428 4.956-5.428 2.61 0 4.812 2.371 4.95 5.428z"
         fill="#fff"
-        stroke="#3C4043"
+        stroke="#333"
         strokeWidth={0.61}
       />
     </svg>

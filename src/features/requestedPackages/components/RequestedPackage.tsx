@@ -26,11 +26,11 @@ export const RequestedPackage = ({
   return (
     <Box sx={{ display: "flex", alignItems: "center" }}>
       <Box sx={{ display: "flex", alignItems: "center" }}>
-        <Typography sx={{ width: 190, fontSize: "14px", color: "#3C4043" }}>
+        <Typography sx={{ width: 190, fontSize: "13px", color: "#333" }}>
           {name}
         </Typography>
       </Box>
-      <Typography sx={{ fontSize: "14px", color: "#3C4043" }}>
+      <Typography sx={{ fontSize: "13px", color: "#333" }}>
         {displayConstraint()}
       </Typography>
     </Box>

@@ -103,29 +103,28 @@ export const EnvironmentsList = ({
           </Box>
         }
       >
-        <Box sx={{ minHeight: "50px" }}>
+        <Box sx={{ minHeight: "50px", paddingTop: "10px" }}>
           {defaultNamespace && <EnvironmentDropdown data={defaultNamespace} />}
         </Box>
         <Box
           sx={{
             display: "flex",
             alignItems: "center",
-            marginLeft: "20px",
-            marginTop: "5px"
+            margin: "5px 0 5px 12px"
           }}
         >
           <Typography
             sx={{
               textTransform: "uppercase",
-              fontWeight: 700,
+              fontWeight: 600,
               marginRight: "10px",
-              fontSize: "15px",
-              color: "#9AA0A6"
+              fontSize: "13px",
+              color: " #333"
             }}
           >
             Shared environments
           </Typography>
-          <GroupIconAlt style={{ marginBottom: "8px", marginLeft: "10px" }} />
+          <GroupIconAlt style={{ marginLeft: "10px", scale: ".8" }} />
         </Box>
         {sharedNamespaces.map(namespace => (
           <EnvironmentDropdown key={namespace.namespace} data={namespace} />

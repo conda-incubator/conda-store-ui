@@ -1,17 +1,17 @@
 export const environmentSearchTitleGrayscaleStyles = {
-  fontSize: "15px",
-  marginBottom: "16px",
+  fontSize: "14px",
+  marginBottom: "14px",
   textAlign: "center",
-  fontWeight: 700,
+  fontWeight: 600,
   marginTop: "45px",
-  color: "#9AA0A6"
+  color: " #333"
 };
 
 export const environmentSearchTitleGreenAccentStyles = {
-  marginBottom: "16px",
+  marginBottom: "14px",
   textAlign: "center",
-  color: "#9AA0A6",
-  fontWeight: 700,
-  fontSize: "15px",
+  color: " #333",
+  fontWeight: 600,
+  fontSize: "14px",
   marginTop: "45px"
 };

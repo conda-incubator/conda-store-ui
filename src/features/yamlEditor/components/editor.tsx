@@ -5,7 +5,7 @@ import Alert from "@mui/material/Alert";
 import CodeMirror from "@uiw/react-codemirror";
 import { parse } from "yaml";
 import { greenAccentTheme } from "../themes";
-import { config } from "../../../common/constants";
+import { PrefContext } from "../../../preferences";
 
 export interface ICodeEditor {
   code: any;
@@ -16,8 +16,9 @@ export interface ICodeEditor {
 }
 
 export const CodeEditor = ({ code, onChangeEditor }: ICodeEditor) => {
+  const prefs = React.useContext(PrefContext);
+  const isGrayscaleStyleType = prefs.styleType === "grayscale";
   const [isError, setIsError] = useState(false);
-  const isGrayscaleStyleType = config.styleType === "grayscale";
 
   const convertToJSON = (e: string) => {
     try {
