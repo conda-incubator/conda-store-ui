@@ -52,7 +52,6 @@ export const EnvironmentDetails = ({
     selectedEnvironment ? selectedEnvironment.description : undefined
   );
   const [artifactType, setArtifactType] = useState<string[]>([]);
-  const [showArtifacts, setShowArtifacts] = useState(false);
   const [error, setError] = useState({
     message: "",
     visible: false
@@ -86,14 +85,15 @@ export const EnvironmentDetails = ({
   };
 
   const loadArtifacts = async () => {
+    console.log(artifactType);
     if (artifactType.includes("DOCKER_MANIFEST")) {
       return;
     }
 
     const { data } = await triggerQuery(currentBuildId);
     const apiArtifactTypes: string[] = parseArtifacts(data);
+    console.log("call it", apiArtifactTypes);
     setArtifactType(apiArtifactTypes);
-    setShowArtifacts(true);
   };
 
   const loadDependencies = async () => {
@@ -113,7 +113,7 @@ export const EnvironmentDetails = ({
     setDescription(selectedEnvironment?.description || "");
     setCurrentBuildId(selectedEnvironment?.current_build_id);
     setDescriptionIsUpdated(false);
-    setShowArtifacts(false);
+    setArtifactType([]);
   }, [selectedEnvironment]);
 
   useEffect(() => {
@@ -196,7 +196,6 @@ export const EnvironmentDetails = ({
         <Box>
           <ArtifactList
             artifacts={artifactList(currentBuildId, artifactType)}
-            showArtifacts={showArtifacts}
           />
         </Box>
       )}

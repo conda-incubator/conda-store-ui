@@ -12,15 +12,14 @@ export interface IArtifactsProps {
    * @param artifacts list of artifacts
    */
   artifacts: Artifact[] | never[];
-  showArtifacts: boolean;
 }
 
-export const ArtifactList = ({ artifacts, showArtifacts }: IArtifactsProps) => {
+export const ArtifactList = ({ artifacts }: IArtifactsProps) => {
   const { typography } = useTheme();
 
   return (
     <BlockContainer title="Logs and Artifacts">
-      {artifacts.length && showArtifacts ? (
+      {artifacts.length ? (
         <Box>
           {artifacts.map((link, index) => (
             <ListItem

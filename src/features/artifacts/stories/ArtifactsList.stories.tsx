@@ -26,5 +26,5 @@ export default {
 } as ComponentMeta<typeof ArtifactList>;
 
 export const Primary: ComponentStory<typeof ArtifactList> = () => (
-  <ArtifactList artifacts={artifactList} showArtifacts={true} />
+  <ArtifactList artifacts={artifactList} />
 );
