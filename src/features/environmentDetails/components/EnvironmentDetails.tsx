@@ -51,7 +51,7 @@ export const EnvironmentDetails = ({
   const [description, setDescription] = useState(
     selectedEnvironment ? selectedEnvironment.description : undefined
   );
-  const [artifactType, setArtifactType] = useState<string[] | never[]>([]);
+  const [artifactType, setArtifactType] = useState<string[]>([]);
   const [showArtifacts, setShowArtifacts] = useState(false);
   const [error, setError] = useState({
     message: "",
@@ -85,7 +85,11 @@ export const EnvironmentDetails = ({
     setDescriptionIsUpdated(true);
   };
 
-  const updateArtifacts = async () => {
+  const loadArtifacts = async () => {
+    if (artifactType.includes("DOCKER_MANIFEST")) {
+      return;
+    }
+
     const { data } = await triggerQuery(currentBuildId);
     const apiArtifactTypes: string[] = parseArtifacts(data);
     setArtifactType(apiArtifactTypes);
@@ -115,6 +119,7 @@ export const EnvironmentDetails = ({
   useEffect(() => {
     if (currentBuild.id) {
       setCurrentBuildId(currentBuild.id);
+      setArtifactType([]);
     }
   }, [currentBuild]);
 
@@ -151,7 +156,7 @@ export const EnvironmentDetails = ({
 
   useInterval(async () => {
     (async () => {
-      updateArtifacts();
+      loadArtifacts();
       loadDependencies();
     })();
   }, INTERVAL_REFRESHING);
