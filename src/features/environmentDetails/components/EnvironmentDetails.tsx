@@ -85,14 +85,12 @@ export const EnvironmentDetails = ({
   };
 
   const loadArtifacts = async () => {
-    console.log(artifactType);
     if (artifactType.includes("DOCKER_MANIFEST")) {
       return;
     }
 
     const { data } = await triggerQuery(currentBuildId);
     const apiArtifactTypes: string[] = parseArtifacts(data);
-    console.log("call it", apiArtifactTypes);
     setArtifactType(apiArtifactTypes);
   };
 
