@@ -100,6 +100,9 @@ export const Build = ({ builds, selectedBuildId }: IBuildProps) => {
         }
       }}
     >
+      <MenuItem key="empty" value="" sx={{ display: "none" }}>
+        {" "}
+      </MenuItem>
       {builds
         ? builds.map(build => (
             <MenuItem key={build.id} value={build.id}>
