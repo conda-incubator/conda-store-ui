@@ -9,7 +9,7 @@
     "clean:slate": "yarn run clean && rimraf node_modules",
     "eslint": "eslint . --ext .ts,.tsx --fix",
     "eslint:check": "eslint . --ext .ts,.tsx",
-    "prepare": "yarnpkg run build",
+    "prepare": "yarnpkg run build && husky install",
     "prepublishOnly": "yarnpkg run clean",
     "start": "webpack server --history-api-fallback",
     "start:chromium": "webpack serve --open 'chromium'",
