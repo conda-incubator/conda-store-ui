@@ -1,15 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
-import { CircularProgress } from "@mui/material";
 import MenuItem from "@mui/material/MenuItem";
 import useTheme from "@mui/material/styles/useTheme";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import IconButton from "@mui/material/IconButton";
-import { StyledMetadataItem } from "../../../styles/StyledMetadataItem";
 import { useAppDispatch } from "../../../hooks";
 import { currentBuildIdChanged } from "..";
 import { getStylesForStyleType } from "../../../utils/helpers";
-import { Typography } from "@mui/material";
 
 interface IBuildProps {
   /**
@@ -23,27 +20,21 @@ interface IBuildProps {
     status: string;
   }[];
   selectedBuildId: number;
-  currentBuildStatus: string;
 }
 
-export const Build = ({
-  builds,
-  selectedBuildId,
-  currentBuildStatus
-}: IBuildProps) => {
+export const Build = ({ builds, selectedBuildId }: IBuildProps) => {
   const dispatch = useAppDispatch();
   const { palette } = useTheme();
   const [open, setOpen] = useState(false);
-  const [status, setStatus] = useState(currentBuildStatus);
 
   const selectStyles = getStylesForStyleType(
     {
-      marginLeft: "13px",
-      borderRadius: "0px"
+      borderRadius: "0px",
+      marginBottom: "10px"
     },
     {
-      marginLeft: "13px",
       borderRadius: "0px",
+      marginBottom: "10px",
       backgroundColor: open ? "#A8DAB5" : "initial"
     }
   );
@@ -55,18 +46,9 @@ export const Build = ({
       padding: "0px",
       boxShadow: "none",
       borderRadius: "0px",
-      marginLeft: "12px",
       border: "1px solid #BCBFC4"
     }
   ) as React.CSSProperties;
-
-  // If the user is watching his current build, update build's info
-  useEffect(() => {
-    const build = builds.find(build => build.id === selectedBuildId);
-    if (build) {
-      setStatus(build.status);
-    }
-  }, [builds]);
 
   const handleChange = (e: SelectChangeEvent<any>) => {
     const newCurrentBuild = builds.find(
@@ -75,74 +57,59 @@ export const Build = ({
 
     if (newCurrentBuild) {
       dispatch(currentBuildIdChanged(newCurrentBuild.id));
-      setStatus(newCurrentBuild.status);
     }
   };
 
   return (
-    <>
-      <Select
-        open={open}
-        onClose={() => setOpen(false)}
-        onOpen={() => setOpen(true)}
-        sx={selectStyles}
-        MenuProps={{
-          PaperProps: {
-            style: paperProps
-          },
-          MenuListProps: {
-            style: {
-              padding: "0px"
-            }
+    <Select
+      open={open}
+      onClose={() => setOpen(false)}
+      onOpen={() => setOpen(true)}
+      sx={selectStyles}
+      MenuProps={{
+        PaperProps: {
+          style: paperProps
+        },
+        MenuListProps: {
+          style: {
+            padding: "0px"
           }
-        }}
-        value={selectedBuildId}
-        onChange={handleChange}
-        IconComponent={() => (
-          <IconButton
-            sx={{ padding: "0px" }}
-            onClick={() => setOpen(currState => !currState)}
-          >
-            <ArrowDropDownIcon
-              sx={{
-                height: "37px",
-                borderLeft: `1px solid  ${palette.primary.main}`
-              }}
-            />
-          </IconButton>
-        )}
-        inputProps={{
-          sx: {
-            padding: "7px 9px !important",
-            fontSize: "14px"
-          },
-          "data-testid": "buildDropdown"
-        }}
-      >
-        {builds
-          ? builds.map(build => (
-              <MenuItem key={build.id} value={build.id}>
-                {build.name}
-              </MenuItem>
-            ))
-          : null}
-      </Select>
-      <StyledMetadataItem
-        sx={{ marginTop: "10px", fontSize: "14px", fontWeight: 500 }}
-      >
-        Status: {""}
-        <Typography component="span" sx={{ fontSize: "14px" }}>
-          {status}
-          {(status === "Building" || status === "Queued") && (
-            <CircularProgress
-              size={10}
-              sx={{
-                marginLeft: "8px"
-              }}
-            />
-          )}
-        </Typography>
-      </StyledMetadataItem>
-    </>
+        }
+      }}
+      value={selectedBuildId}
+      onChange={handleChange}
+      IconComponent={() => (
+        <IconButton
+          sx={{ padding: "0px" }}
+          onClick={() => setOpen(currState => !currState)}
+        >
+          <ArrowDropDownIcon
+            sx={{
+              height: "37px",
+              borderLeft: `1px solid  ${palette.primary.main}`
+            }}
+          />
+        </IconButton>
+      )}
+      inputProps={{
+        "data-testid": "test-select",
+        sx: {
+          padding: "7px 9px !important",
+          fontSize: "13px",
+          background: "#FFF"
+        }
+      }}
+    >
+      <MenuItem key="empty" value="" sx={{ display: "none" }}>
+        {" "}
+      </MenuItem>
+      {builds
+        ? builds.map(build => (
+            <MenuItem key={build.id} value={build.id}>
+              {build.name}
+            </MenuItem>
+          ))
+        : null}
+    </Select>
   );
 };

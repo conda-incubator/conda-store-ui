@@ -45,7 +45,7 @@ export const Dependencies = ({
   return (
     <Accordion
       sx={{
-        maxWidth: mode === "read-only" ? "490px" : "576px",
+        maxWidth: 420,
         boxShadow: "none"
       }}
       disableGutters
@@ -79,18 +79,26 @@ export const Dependencies = ({
           scrollableTarget="infScroll"
           style={{ overflow: "hidden" }}
         >
-          {dependencies.map((dependency, index) => (
-            <Box
-              key={dependency.id}
-              sx={{ marginBottom: index === listLength - 1 ? "0px" : "20px" }}
-            >
-              <DependenciesItem
-                mode={mode}
-                dependency={dependency}
-                handleClick={() => dispatch(dependencyPromoted(dependency))}
-              />
-            </Box>
-          ))}
+          {dependencies.length ? (
+            <>
+              {dependencies.map((dependency, index) => (
+                <Box
+                  key={dependency.id}
+                  sx={{
+                    marginBottom: index === listLength - 1 ? "0px" : "20px"
+                  }}
+                >
+                  <DependenciesItem
+                    mode={mode}
+                    dependency={dependency}
+                    handleClick={() => dispatch(dependencyPromoted(dependency))}
+                  />
+                </Box>
+              ))}
+            </>
+          ) : (
+            <CircularProgress size={20} />
+          )}
         </InfiniteScroll>
       </StyledAccordionDetails>
     </Accordion>

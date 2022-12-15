@@ -1,5 +1,4 @@
 import React, { useEffect, useMemo, useReducer } from "react";
-import DeleteIcon from "@mui/icons-material/Delete";
 import Autocomplete from "@mui/material/Autocomplete";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
@@ -12,7 +11,6 @@ import {
   initialState,
   requestedPackagesReducer
 } from "../reducer";
-import { getIconForStyleType } from "../../../utils/helpers";
 import { DeleteIconAlt } from "../../../components";
 
 interface IAddRequestedPackageProps {
@@ -35,8 +33,6 @@ export const AddRequestedPackage = ({
   const [state, dispatch] = useReducer(requestedPackagesReducer, initialState);
 
   const [triggerQuery] = useLazyGetPackageSuggestionsQuery();
-
-  const icon = getIconForStyleType(<DeleteIcon />, <DeleteIconAlt />);
 
   const uniquePackageNamesList = useMemo(() => {
     const packageNames = new Set();
@@ -133,8 +129,16 @@ export const AddRequestedPackage = ({
   }, []);
 
   return (
-    <Box sx={{ display: "flex", alignItems: "center", marginTop: "15px" }}>
-      <Box sx={{ marginRight: isCreating ? "158px" : "160px" }}>
+    <Box
+      sx={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        marginTop: "15px",
+        width: isCreating ? 330 : "100%"
+      }}
+    >
+      <Box>
         <Autocomplete
           onInputChange={(event, value, reason) => {
             if (reason === "clear") {
@@ -177,31 +181,18 @@ export const AddRequestedPackage = ({
           )}
         />
       </Box>
-      {isCreating ? (
-        <Box>
-          <Box sx={{ display: "flex", alignItems: "center" }}>
-            <Box />
-            <StyledIconButton
-              onClick={() => onCancel(false)}
-              data-testid="cancelIcon"
-            >
-              {icon}
-            </StyledIconButton>
-          </Box>
-        </Box>
-      ) : (
-        <Box>
-          <Box sx={{ display: "flex", alignItems: "center" }}>
-            <Box sx={{ width: "154px" }} />
-            <StyledIconButton
-              onClick={() => onCancel(false)}
-              sx={{ marginLeft: "24px" }}
-            >
-              {icon}
-            </StyledIconButton>
-          </Box>
-        </Box>
-      )}
+      <Box
+        sx={{
+          marginRight: "16px"
+        }}
+      >
+        <StyledIconButton
+          onClick={() => onCancel(false)}
+          data-testid="cancelIcon"
+        >
+          <DeleteIconAlt />
+        </StyledIconButton>
+      </Box>
     </Box>
   );
 };

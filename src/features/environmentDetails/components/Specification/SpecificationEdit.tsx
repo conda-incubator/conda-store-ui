@@ -23,7 +23,6 @@ import { CodeEditor } from "../../../../features/yamlEditor";
 import { useAppDispatch, useAppSelector } from "../../../../hooks";
 import { StyledButtonPrimary } from "../../../../styles";
 import { CondaSpecificationPip } from "../../../../common/models";
-import { getStylesForStyleType } from "../../../../utils/helpers";
 interface ISpecificationEdit {
   descriptionUpdated: boolean;
   onUpdateEnvironment: (specification: any) => void;
@@ -51,8 +50,6 @@ export const SpecificationEdit = ({
 
   const initialChannels = useRef(cloneDeep(channels));
   const initialPackages = useRef(cloneDeep(requestedPackages));
-
-  const buttonStyles = getStylesForStyleType({ padding: "5px 48px" });
 
   const stringifiedInitialChannels = useMemo(() => {
     return JSON.stringify(initialChannels.current);
@@ -144,7 +141,7 @@ export const SpecificationEdit = ({
       onToggleEditMode={onToggleEditorView}
       isEditMode={show}
     >
-      <Box sx={{ padding: "13px 19px" }}>
+      <Box>
         {show ? (
           <CodeEditor
             code={stringify({ channels, dependencies: requestedPackages })}
@@ -180,14 +177,14 @@ export const SpecificationEdit = ({
           }}
         >
           <StyledButtonPrimary
-            sx={buttonStyles}
+            sx={{ padding: "5px 48px" }}
             onClick={onCancelEdition}
             isalttype="true"
           >
             Cancel
           </StyledButtonPrimary>
           <StyledButtonPrimary
-            sx={buttonStyles}
+            sx={{ padding: "5px 48px" }}
             onClick={onEditEnvironment}
             disabled={!envIsUpdated}
             isalttype="true"

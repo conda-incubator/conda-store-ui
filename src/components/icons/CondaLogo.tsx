@@ -1,8 +1,9 @@
 import * as React from "react";
-import { config } from "../../common/constants";
+import { PrefContext } from "../../preferences";
 
 export const CondaLogo = (props: React.SVGProps<SVGSVGElement>) => {
-  const isGrayscaleStyleType = config.styleType === "grayscale";
+  const prefs = React.useContext(PrefContext);
+  const isGrayscaleStyleType = prefs.styleType === "grayscale";
   const colorTheme = {
     gray: ["#CCCFD2", "#E4E4E5"],
     green: ["#33A852", "#B9D9BD"]

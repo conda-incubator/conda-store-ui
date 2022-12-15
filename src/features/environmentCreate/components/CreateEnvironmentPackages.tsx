@@ -51,7 +51,7 @@ export const CreateEnvironmentPackages = ({
 
   return (
     <Accordion
-      sx={{ width: 421, boxShadow: "none" }}
+      sx={{ maxWidth: 420, boxShadow: "none" }}
       defaultExpanded
       disableGutters
     >
@@ -60,7 +60,7 @@ export const CreateEnvironmentPackages = ({
       </StyledAccordionSummary>
       <StyledAccordionDetails
         sx={{
-          padding: "23px 21px",
+          padding: "20px 15px",
           borderRadius: "0px"
         }}
       >
@@ -75,7 +75,7 @@ export const CreateEnvironmentPackages = ({
               >
                 <Typography
                   component="p"
-                  sx={{ fontSize: "16px", fontWeight: 500 }}
+                  sx={{ fontSize: "13px", fontWeight: 500 }}
                 >
                   Name
                 </Typography>
@@ -83,7 +83,7 @@ export const CreateEnvironmentPackages = ({
               <StyledEditPackagesTableCell align="left">
                 <Typography
                   component="p"
-                  sx={{ fontSize: "16px", fontWeight: 500 }}
+                  sx={{ fontSize: "13px", fontWeight: 500 }}
                 >
                   Version Constraint
                 </Typography>

@@ -1,5 +1,6 @@
+import React from "react";
 import { SxProps } from "@mui/material";
-import { config } from "../../common/constants";
+import { PrefContext } from "../../preferences";
 
 export const getStylesForStyleType = (
   grayscaleStyles: SxProps,
@@ -8,7 +9,8 @@ export const getStylesForStyleType = (
   if (!greenAccentStyles) {
     return grayscaleStyles;
   }
-  const isGrayscaleStyleType = config.styleType === "grayscale";
+  const prefs = React.useContext(PrefContext);
+  const isGrayscaleStyleType = prefs.styleType === "grayscale";
 
   return isGrayscaleStyleType ? grayscaleStyles : greenAccentStyles;
 };

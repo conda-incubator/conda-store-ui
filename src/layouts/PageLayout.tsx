@@ -8,7 +8,6 @@ import { EnvironmentCreate } from "../features/environmentCreate";
 import { EnvironmentDetails } from "../features/environmentDetails";
 import { PageTabs } from "../features/tabs";
 import { useAppSelector } from "../hooks";
-import { getStylesForStyleType } from "../utils/helpers";
 
 export const PageLayout = () => {
   const { selectedEnvironment, newEnvironment } = useAppSelector(
@@ -20,13 +19,6 @@ export const PageLayout = () => {
     description: null
   });
 
-  const contentSectionStyles = getStylesForStyleType({
-    border: "1px solid #E0E0E0",
-    width: "100%",
-    marginTop: "-1px",
-    backgroundColor: "#F9F9F9"
-  });
-
   const onCreateEnv = (notification: any) => {
     setNotification(notification);
     setIsEnvCreated(true);
@@ -35,7 +27,8 @@ export const PageLayout = () => {
   return (
     <Box
       sx={{
-        display: "flex",
+        display: "grid",
+        gridTemplateColumns: "260px 1fr",
         width: "100%",
         height: "100%",
         background: "#FFF"
@@ -45,19 +38,26 @@ export const PageLayout = () => {
         refreshEnvironments={isEnvCreated}
         onUpdateRefreshEnvironments={setIsEnvCreated}
       />
-      <Box sx={{ width: "100%" }}>
+      <Box
+        sx={{
+          width: "100%",
+          backgroundColor: "#F9F9F9",
+          height: "100%",
+          overflowY: "scroll"
+        }}
+      >
         {(selectedEnvironment || newEnvironment.isActive) && (
           <>
             <PageTabs />
 
             {selectedEnvironment && !newEnvironment.isActive && (
-              <Box sx={contentSectionStyles}>
+              <Box>
                 <EnvironmentDetails environmentNotification={setNotification} />
               </Box>
             )}
 
             {!selectedEnvironment && newEnvironment.isActive && (
-              <Box sx={contentSectionStyles}>
+              <Box>
                 <EnvironmentCreate environmentNotification={onCreateEnv} />
               </Box>
             )}
@@ -70,11 +70,10 @@ export const PageLayout = () => {
               flexDirection: "column",
               alignItems: "center",
               justifyContent: "center",
-              height: "100%",
-              borderLeft: "1px solid #E0E0E0"
+              height: "100%"
             }}
           >
-            <Typography sx={{ fontSize: "18px", color: "#3C4043" }}>
+            <Typography sx={{ fontSize: "18px", color: "#333" }}>
               Select an environment to show details
             </Typography>
           </Box>

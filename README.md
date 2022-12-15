@@ -56,8 +56,10 @@ In order to setup the environment variables correctly, you should create a .env 
 - `REACT_APP_AUTH_METHOD` - method of authentication.
   - value `cookie` lets users authenticate with a login process. **This is the prefered option. conda-store API and conda-store UI must both be under the same domain.**
   - value `token` lets you set up a token in conda-store, and use conda-store authenticated as the user who created the token.
-- `REACT_APP_AUTH_METHOD` - URL endpoint to authenticate. Check the example below.
+- `REACT_APP_LOGIN_PAGE_URL` - URL endpoint to authenticate. Check the example below.
 - `REACT_APP_AUTH_TOKEN` - authentication token required when the auth method is `token`
+- `REACT_APP_STYLE_TYPE` - set the style theme of the app; `grayscale` or `green-accent` are the valid options.
+- `REACT_APP_SHOW_LOGIN_ICON` - show or hide the login icon, which is located at the top
 
 
 Here is an example if you run conda-store locally :
@@ -66,4 +68,6 @@ REACT_APP_API_URL=http://localhost:5000/conda-store
 REACT_APP_AUTH_METHOD=cookie
 REACT_APP_LOGIN_PAGE_URL=http://localhost:5000/conda-store/login?next=
 REACT_APP_AUTH_TOKEN=
+REACT_APP_STYLE_TYPE=grayscale
+REACT_APP_SHOW_LOGIN_ICON=true
 ```

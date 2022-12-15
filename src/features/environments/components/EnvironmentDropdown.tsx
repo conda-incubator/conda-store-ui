@@ -72,18 +72,25 @@ export const EnvironmentDropdown = ({
       <StyledAccordionSummary
         sx={{
           flexDirection: "row-reverse",
-          paddingLeft: "33px",
-          border: "none"
+          border: "none",
+          paddingRight: 0
         }}
         expandIcon={<ArrowIcon />}
       >
-        <Box sx={{ display: "flex", alignItems: "center", marginLeft: "15px" }}>
+        <Box
+          sx={{
+            width: "100%",
+            marginLeft: "15px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between"
+          }}
+        >
           <Typography
             sx={{
-              width: "217px",
-              fontWeight: 700,
-              fontSize: "15px",
-              color: "#9AA0A6"
+              fontWeight: 600,
+              fontSize: "14px",
+              color: " #333"
             }}
           >
             {namespace}
@@ -94,7 +101,7 @@ export const EnvironmentDropdown = ({
         </Box>
       </StyledAccordionSummary>
       <AccordionDetails
-        sx={{ paddingLeft: "42px", paddingTop: "5px", paddingBottom: "0px" }}
+        sx={{ paddingLeft: "30px", paddingTop: "5px", paddingBottom: "0px" }}
       >
         <List sx={{ padding: "0px" }}>
           {environments.map(environment => (

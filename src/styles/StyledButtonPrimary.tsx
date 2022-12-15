@@ -1,20 +1,19 @@
 import Button from "@mui/material/Button";
 import { styled } from "@mui/system";
-import { config } from "../common/constants";
-
-const currentStyleType = config.styleType;
+import React from "react";
+import { PrefContext } from "../preferences";
 
 export const StyledButtonPrimary = styled(Button, {
   shouldForwardProp: prop => prop !== "styleType"
 })<{ styleType?: string; isalttype?: string }>(
   ({
     theme: { palette },
-    styleType = currentStyleType,
+    styleType = React.useContext(PrefContext).styleType,
     isalttype = "false"
   }) => ({
     padding: isalttype === "true" ? "3px 18px" : "3px 35px",
     border: styleType === "grayscale" ? "none" : "1px solid #33A852",
-    fontSize: "14px",
+    fontSize: "13px",
     color: "#fff",
     textTransform: "none",
     backgroundColor: styleType === "grayscale" ? "#5F6368" : "#33A852",
@@ -26,7 +25,8 @@ export const StyledButtonPrimary = styled(Button, {
       backgroundColor: styleType === "grayscale" ? "#3C4043" : "#fff"
     },
     "&:disabled": {
-      backgroundColor: "#dddcdc"
+      backgroundColor: "#dddcdc",
+      border: "none"
     }
   })
 );

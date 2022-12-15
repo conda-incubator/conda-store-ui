@@ -21,32 +21,19 @@ export const Description = ({
   return (
     <Box>
       {mode === EnvironmentDetailsModes.READ && description && (
-        <StyledMetadataItem
-          sx={{
-            fontSize: "15px",
-            color: "#3C4043"
-          }}
-        >
-          {description}
-        </StyledMetadataItem>
+        <StyledMetadataItem>{description}</StyledMetadataItem>
       )}
 
       {mode !== EnvironmentDetailsModes.READ && (
         <>
           <StyledMetadataItem
             sx={{
-              fontWeight: 500,
-              paddingBottom: "0",
-              color: "#3C4043"
+              fontWeight: 500
             }}
           >
             Description:
           </StyledMetadataItem>
-          <Box
-            style={{
-              padding: "11px 14px"
-            }}
-          >
+          <Box>
             <TextField
               multiline
               value={description}
@@ -54,7 +41,12 @@ export const Description = ({
               sx={{
                 backgroundColor: "#F1F1F1",
                 width: "100%",
-                fontSize: "14px"
+                marginBottom: "10px"
+              }}
+              inputProps={{
+                style: {
+                  fontSize: "13px"
+                }
               }}
               onChange={e => onChangeDescription(e.target.value)}
             />

@@ -18,7 +18,7 @@ interface IEnvironmentsSearchProps {
 
 export const EnvironmentsSearch = ({ onChange }: IEnvironmentsSearchProps) => {
   const prefs = React.useContext(PrefContext);
-
+  const showLoginIcon = prefs.showLoginIcon;
   const isCookieAuthMethod = prefs.authMethod === "cookie";
   const authUrl = prefs.loginUrl;
   const pageUrl = window.location.href;
@@ -26,11 +26,11 @@ export const EnvironmentsSearch = ({ onChange }: IEnvironmentsSearchProps) => {
   let login;
 
   const loginIcon = getIconForStyleType(
-    <LoginIcon color="#9AA0A6" />,
+    <LoginIcon color="#686868" />,
     <LoginIcon color="#B9D9BD" />
   );
 
-  if (isCookieAuthMethod) {
+  if (showLoginIcon && isCookieAuthMethod) {
     login = (
       <Link
         href={loginPageUrl}
@@ -51,11 +51,11 @@ export const EnvironmentsSearch = ({ onChange }: IEnvironmentsSearchProps) => {
       <Typography
         data-testid="env-search-title"
         sx={{
-          marginBottom: "16px",
+          marginBottom: "14px",
           textAlign: "center",
-          color: "#9AA0A6",
-          fontWeight: 700,
-          fontSize: "15px",
+          color: " #333",
+          fontWeight: 600,
+          fontSize: "14px",
           marginTop: "30px"
         }}
       >
@@ -74,9 +74,9 @@ export const EnvironmentsSearch = ({ onChange }: IEnvironmentsSearchProps) => {
         sx={{
           borderRadius: "15px",
           paddingRight: "10px",
-          width: "288px",
+          width: "100%",
           "&::placeholder": {
-            fontSize: "12px",
+            fontSize: "14px",
             fontWeight: 400
           }
         }}

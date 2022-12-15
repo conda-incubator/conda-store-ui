@@ -4,7 +4,6 @@ import React from "react";
 
 import { Artifact } from "../../../common/models";
 import { PrefContext } from "../../../preferences";
-import { getStylesForStyleType } from "../../../utils/helpers";
 
 interface IArtifactsProps {
   /**
@@ -17,14 +16,14 @@ export const ArtifactItem = ({ artifact }: IArtifactsProps) => {
   const pref = React.useContext(PrefContext);
   const route = new URL(artifact.route, pref.apiUrl).toString();
 
-  const linkStyles = getStylesForStyleType(
-    { color: "#000", fontSize: "14px" },
-    { color: "#3C4043", fontSize: "14px", fontWeight: 400 }
-  );
-
   return (
     <Box sx={{ display: "flex", alignItems: "center" }}>
-      <Link href={route} underline="none" sx={linkStyles} target="_blank">
+      <Link
+        href={route}
+        underline="none"
+        sx={{ color: "#333", fontSize: "13px" }}
+        target="_blank"
+      >
         {artifact.name}
       </Link>
     </Box>
