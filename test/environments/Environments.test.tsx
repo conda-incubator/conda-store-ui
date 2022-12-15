@@ -6,6 +6,7 @@ import {
   RenderResult,
   waitFor
 } from "@testing-library/react";
+import { mockTheme } from "../testutils";
 import { Environments } from "../../src/features/environments";
 import { store } from "../../src/store";
 
@@ -49,12 +50,14 @@ describe("<Environment />", () => {
 
   beforeEach(async () => {
     component = render(
-      <Provider store={store}>
-        <Environments
-          refreshEnvironments={true}
-          onUpdateRefreshEnvironments={mockOnUpdateRefreshEnvironments}
-        />
-      </Provider>
+      mockTheme(
+        <Provider store={store}>
+          <Environments
+            refreshEnvironments={true}
+            onUpdateRefreshEnvironments={mockOnUpdateRefreshEnvironments}
+          />
+        </Provider>
+      )
     );
     await waitFor(() => {
       expect(component.queryByText("default")).toBeInTheDocument();

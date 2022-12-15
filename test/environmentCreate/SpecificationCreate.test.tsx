@@ -69,7 +69,7 @@ describe("<SpecificationCreate />", () => {
     });
 
     await waitFor(() => {
-      expect(screen.getByText("- conda-channel")).not.toBeNull();
+      expect(screen.getByText("conda-channel")).not.toBeNull();
     });
 
     const emptyCode = stringify({

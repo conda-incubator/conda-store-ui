@@ -7,6 +7,7 @@ import {
   screen,
   waitFor
 } from "@testing-library/react";
+import { mockTheme } from "../testutils";
 import { SpecificationEdit } from "../../src/features/environmentDetails";
 import { store } from "../../src/store";
 import { updatePackages } from "../../src/features/requestedPackages";
@@ -24,12 +25,14 @@ describe("<SpecificationEdit />", () => {
 
   it("should show the available packages", () => {
     const component = render(
-      <Provider store={store}>
-        <SpecificationEdit
-          descriptionUpdated={false}
-          onUpdateEnvironment={jest.fn()}
-        />
-      </Provider>
+      mockTheme(
+        <Provider store={store}>
+          <SpecificationEdit
+            descriptionUpdated={false}
+            onUpdateEnvironment={jest.fn()}
+          />
+        </Provider>
+      )
     );
 
     act(() => {
@@ -40,12 +43,14 @@ describe("<SpecificationEdit />", () => {
 
   it("should toggle to yaml editor", async () => {
     const component = render(
-      <Provider store={store}>
-        <SpecificationEdit
-          descriptionUpdated={false}
-          onUpdateEnvironment={jest.fn()}
-        />
-      </Provider>
+      mockTheme(
+        <Provider store={store}>
+          <SpecificationEdit
+            descriptionUpdated={false}
+            onUpdateEnvironment={jest.fn()}
+          />
+        </Provider>
+      )
     );
     const switchButton = component.getByLabelText("Switch to YAML Editor");
     fireEvent.click(switchButton);
@@ -62,12 +67,14 @@ describe("<SpecificationEdit />", () => {
 
   it("should cancel environment edition", () => {
     const component = render(
-      <Provider store={store}>
-        <SpecificationEdit
-          descriptionUpdated={false}
-          onUpdateEnvironment={jest.fn()}
-        />
-      </Provider>
+      mockTheme(
+        <Provider store={store}>
+          <SpecificationEdit
+            descriptionUpdated={false}
+            onUpdateEnvironment={jest.fn()}
+          />
+        </Provider>
+      )
     );
     const cancelButton = component.getByText("Cancel");
     fireEvent.click(cancelButton);
@@ -77,12 +84,14 @@ describe("<SpecificationEdit />", () => {
 
   it("should update channels and dependencies", async () => {
     const component = render(
-      <Provider store={store}>
-        <SpecificationEdit
-          descriptionUpdated={false}
-          onUpdateEnvironment={jest.fn()}
-        />
-      </Provider>
+      mockTheme(
+        <Provider store={store}>
+          <SpecificationEdit
+            descriptionUpdated={false}
+            onUpdateEnvironment={jest.fn()}
+          />
+        </Provider>
+      )
     );
     const switchButton = component.getByLabelText("Switch to YAML Editor");
     fireEvent.click(switchButton);
@@ -97,7 +106,7 @@ describe("<SpecificationEdit />", () => {
     });
 
     await waitFor(() => {
-      expect(screen.getByText("- conda-channel")).not.toBeNull();
+      expect(screen.getByText("conda-channel")).not.toBeNull();
     });
 
     const emptyCode = stringify({
