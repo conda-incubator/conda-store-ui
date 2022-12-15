@@ -7,7 +7,10 @@ import { EnvironmentDetailsHeader } from "./EnvironmentDetailsHeader";
 import { SpecificationEdit, SpecificationReadOnly } from "./Specification";
 import { useGetBuildQuery } from "../environmentDetailsApiSlice";
 import { useLazyGetArtifactsQuery } from "../../artifacts";
-import { useGetBuildPackagesQuery } from "../../../features/dependencies";
+import {
+  useGetBuildPackagesQuery,
+  useLazyGetBuildPackagesQuery
+} from "../../../features/dependencies";
 import { ArtifactList } from "../../../features/artifacts";
 import {
   EnvMetadata,
@@ -40,7 +43,7 @@ export const EnvironmentDetails = ({
 }: IEnvDetails) => {
   const dispatch = useAppDispatch();
   const { mode } = useAppSelector(state => state.environmentDetails);
-  const { page } = useAppSelector(state => state.dependencies);
+  const { page, dependencies } = useAppSelector(state => state.dependencies);
   const { selectedEnvironment } = useAppSelector(state => state.tabs);
   const { currentBuild } = useAppSelector(state => state.enviroments);
   const [name, setName] = useState(selectedEnvironment?.name || "");
@@ -48,13 +51,13 @@ export const EnvironmentDetails = ({
   const [description, setDescription] = useState(
     selectedEnvironment ? selectedEnvironment.description : undefined
   );
-  const [artifactType, setArtifactType] = useState<string[] | never[]>([]);
-  const [showArtifacts, setShowArtifacts] = useState(false);
+  const [artifactType, setArtifactType] = useState<string[]>([]);
   const [error, setError] = useState({
     message: "",
     visible: false
   });
   const [triggerQuery] = useLazyGetArtifactsQuery();
+  const [triggerBuildPackages] = useLazyGetBuildPackagesQuery();
   const [createOrUpdate] = useCreateOrUpdateMutation();
   useGetEnviromentBuildsQuery(selectedEnvironment, {
     pollingInterval: INTERVAL_REFRESHING
@@ -81,11 +84,26 @@ export const EnvironmentDetails = ({
     setDescriptionIsUpdated(true);
   };
 
-  const updateArtifacts = async () => {
+  const loadArtifacts = async () => {
+    if (artifactType.includes("DOCKER_MANIFEST")) {
+      return;
+    }
+
     const { data } = await triggerQuery(currentBuildId);
     const apiArtifactTypes: string[] = parseArtifacts(data);
     setArtifactType(apiArtifactTypes);
-    setShowArtifacts(true);
+  };
+
+  const loadDependencies = async () => {
+    if (dependencies.length) {
+      return;
+    }
+
+    await triggerBuildPackages({
+      buildId: currentBuildId,
+      page,
+      size: 100
+    });
   };
 
   useEffect(() => {
@@ -93,12 +111,13 @@ export const EnvironmentDetails = ({
     setDescription(selectedEnvironment?.description || "");
     setCurrentBuildId(selectedEnvironment?.current_build_id);
     setDescriptionIsUpdated(false);
-    setShowArtifacts(false);
+    setArtifactType([]);
   }, [selectedEnvironment]);
 
   useEffect(() => {
     if (currentBuild.id) {
       setCurrentBuildId(currentBuild.id);
+      setArtifactType([]);
     }
   }, [currentBuild]);
 
@@ -135,7 +154,8 @@ export const EnvironmentDetails = ({
 
   useInterval(async () => {
     (async () => {
-      updateArtifacts();
+      loadArtifacts();
+      loadDependencies();
     })();
   }, INTERVAL_REFRESHING);
 
@@ -174,7 +194,6 @@ export const EnvironmentDetails = ({
         <Box>
           <ArtifactList
             artifacts={artifactList(currentBuildId, artifactType)}
-            showArtifacts={showArtifacts}
           />
         </Box>
       )}

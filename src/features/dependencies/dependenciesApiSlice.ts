@@ -15,4 +15,5 @@ export const dependenciesApiSlice = apiSlice.injectEndpoints({
   })
 });
 
-export const { useGetBuildPackagesQuery } = dependenciesApiSlice;
+export const { useGetBuildPackagesQuery, useLazyGetBuildPackagesQuery } =
+  dependenciesApiSlice;
