@@ -46,7 +46,7 @@ export const ConstraintSelect = ({
       }}
       inputProps={{
         sx: inputStyles,
-        "data-testid": "test-select"
+        "data-testid": "ConstraintSelectTest"
       }}
     >
       {constraints.map(constraint => (

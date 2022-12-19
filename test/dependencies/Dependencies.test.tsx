@@ -1,9 +1,10 @@
 import React from "react";
-import { fireEvent, render } from "@testing-library/react";
-import { Dependencies } from "../src/features/dependencies";
-import { DEPENDENCIES, mockTheme } from "./testutils";
-import { store } from "../src/store";
 import { Provider } from "react-redux";
+import { fireEvent, render } from "@testing-library/react";
+import { mockTheme } from "../testutils";
+import { mockDependenciesList } from "../../src/features/dependencies/mocks";
+import { store } from "../../src/store";
+import { Dependencies } from "../../src/features/dependencies";
 
 describe("<Dependencies />", () => {
   let mockNext: () => void;
@@ -30,10 +31,10 @@ describe("<Dependencies />", () => {
       mockTheme(
         <Provider store={store}>
           <Dependencies
+            mode="edit"
+            dependencies={mockDependenciesList}
             hasMore={true}
             next={mockNext}
-            mode="edit"
-            dependencies={DEPENDENCIES}
           />
         </Provider>
       )
@@ -55,7 +56,7 @@ describe("<Dependencies />", () => {
             hasMore={false}
             next={mockNext}
             mode="edit"
-            dependencies={DEPENDENCIES}
+            dependencies={mockDependenciesList}
           />
         </Provider>
       )

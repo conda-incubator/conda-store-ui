@@ -85,7 +85,11 @@ const BaseRequestedPackagesTableRow = ({
             version={constraint === "latest" ? "" : version}
             name={name}
           />
-          <StyledIconButton onClick={handleRemove} sx={{ marginLeft: "24px" }}>
+          <StyledIconButton
+            onClick={handleRemove}
+            sx={{ marginLeft: "24px" }}
+            data-testid="RemovePackageTest"
+          >
             <DeleteIconAlt />
           </StyledIconButton>
         </Box>

@@ -1,7 +1,7 @@
-import { fireEvent, render, RenderResult } from "@testing-library/react";
 import React from "react";
-import { ENVIRONMENT, mockTheme } from "./testutils";
-import { Environment } from "../src/features/environments";
+import { fireEvent, render, RenderResult } from "@testing-library/react";
+import { Environment } from "../../src/features/environments";
+import { ENVIRONMENT, mockTheme } from "../testutils";
 
 describe("<Environment />", () => {
   const mockOnClick = jest.fn();
@@ -9,7 +9,13 @@ describe("<Environment />", () => {
 
   beforeEach(() => {
     component = render(
-      mockTheme(<Environment environment={ENVIRONMENT} onClick={mockOnClick} />)
+      mockTheme(
+        <Environment
+          environment={ENVIRONMENT}
+          onClick={mockOnClick}
+          selectedEnvironmentId={1}
+        />
+      )
     );
   });
 

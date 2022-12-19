@@ -29,6 +29,9 @@ export const enviromentsSlice = createSlice({
       action: PayloadAction<number | undefined>
     ) => {
       state.currentBuild.id = action.payload;
+    },
+    updateBuilds: (state, action: PayloadAction<Build[]>) => {
+      state.builds = action.payload;
     }
   },
   extraReducers: builder => {
@@ -47,4 +50,4 @@ export const enviromentsSlice = createSlice({
   }
 });
 
-export const { currentBuildIdChanged } = enviromentsSlice.actions;
+export const { currentBuildIdChanged, updateBuilds } = enviromentsSlice.actions;

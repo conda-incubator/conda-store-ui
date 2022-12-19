@@ -1,6 +1,6 @@
 import React from "react";
 import { render, RenderResult } from "@testing-library/react";
-import { BlockContainer } from "../src/components";
+import { BlockContainer } from "../../src/components";
 
 describe("<BlockContainer />", () => {
   let component: RenderResult;

@@ -21,6 +21,10 @@ export const dependenciesSlice = createSlice({
   name: "dependencies",
   initialState,
   reducers: {
+    updateDependencies: (state, action) => {
+      const dependencies = action.payload;
+      state.dependencies = dependencies;
+    },
     pageChanged: (state, action: PayloadAction<number>) => {
       state.page = action.payload;
     }
@@ -74,4 +78,4 @@ export const dependenciesSlice = createSlice({
   }
 });
 
-export const { pageChanged } = dependenciesSlice.actions;
+export const { pageChanged, updateDependencies } = dependenciesSlice.actions;
