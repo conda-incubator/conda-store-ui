@@ -20,11 +20,11 @@ const artifactList = (
     },
     LOGS: {
       name: `Conda Env ${currentBuildId} log`,
-      route: `api/v1/build/${currentBuildId}/logs`
+      route: `api/v1/build/${currentBuildId}/logs/`
     },
     DOCKER_MANIFEST: {
       name: "Docker image",
-      route: `$api/v1/build/${currentBuildId}/docker/`
+      route: `api/v1/build/${currentBuildId}/docker/`
     }
   };
 

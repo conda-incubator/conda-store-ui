@@ -4,6 +4,7 @@ import React from "react";
 
 import { Artifact } from "../../../common/models";
 import { PrefContext } from "../../../preferences";
+import { isPathAbsolute } from "../../../utils/helpers";
 
 interface IArtifactsProps {
   /**
@@ -14,7 +15,10 @@ interface IArtifactsProps {
 
 export const ArtifactItem = ({ artifact }: IArtifactsProps) => {
   const pref = React.useContext(PrefContext);
-  const route = new URL(artifact.route, pref.apiUrl).toString();
+  const url = isPathAbsolute(pref.apiUrl)
+    ? pref.apiUrl
+    : `${window.location.origin}${pref.apiUrl}`;
+  const route = new URL(artifact.route, url).toString();
 
   return (
     <Box sx={{ display: "flex", alignItems: "center" }}>

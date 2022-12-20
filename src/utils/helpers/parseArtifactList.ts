@@ -8,3 +8,7 @@ export const parseArtifacts = (artifact_list: string[] | undefined) => {
     return artifact_list.includes(artifact);
   });
 };
+
+export const isPathAbsolute = (path: string) => {
+  return new RegExp("^(?:[a-z]+:)?//", "i").test(path);
+};
