@@ -1,4 +1,5 @@
 export type Namespace = {
-  id: number;
+  id: number | undefined;
   name: string;
+  isPrimary?: boolean;
 };

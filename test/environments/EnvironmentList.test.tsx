@@ -2,13 +2,13 @@ import React from "react";
 import { Provider } from "react-redux";
 import { render } from "@testing-library/react";
 import { EnvironmentsList } from "../../src/features/environments";
-import { ENVIRONMENT, mockTheme } from "../testutils";
+import { ENVIRONMENT, ENVIRONMENTS, mockTheme } from "../testutils";
 import { store } from "../../src/store";
 
 describe("<EnvironmentsList />", () => {
   window.HTMLElement.prototype.scrollTo = jest.fn();
 
-  it("should display namespaces and their environments", () => {
+  it("should display primary namespace", () => {
     const component = render(
       mockTheme(
         <Provider store={store}>
@@ -16,20 +16,14 @@ describe("<EnvironmentsList />", () => {
             environmentsList={[
               {
                 ...ENVIRONMENT,
-                namespace: {
-                  id: 2,
-                  name: "new-shared-env"
-                }
+                namespace: { id: 2, name: "python-flask-env" }
               }
             ]}
             namespacesList={[
               {
-                name: "default",
-                id: 1
-              },
-              {
-                name: "shared-env",
-                id: 2
+                id: 2,
+                name: "python-flask-env",
+                isPrimary: true
               }
             ]}
             hasMore={false}
@@ -40,7 +34,30 @@ describe("<EnvironmentsList />", () => {
       )
     );
 
+    expect(component.container).toHaveTextContent("python-flask-env");
+  });
+
+  it("should display shared environments", () => {
+    const component = render(
+      mockTheme(
+        <Provider store={store}>
+          <EnvironmentsList
+            environmentsList={ENVIRONMENTS}
+            namespacesList={[
+              {
+                name: "default",
+                id: 1
+              }
+            ]}
+            hasMore={false}
+            next={jest.fn()}
+            search={""}
+          ></EnvironmentsList>
+        </Provider>
+      )
+    );
+
+    expect(component.container).toHaveTextContent("Shared environments");
     expect(component.container).toHaveTextContent("default");
-    expect(component.container).toHaveTextContent("python-flask-env-2");
   });
 });

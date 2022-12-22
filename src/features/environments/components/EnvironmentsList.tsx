@@ -1,13 +1,17 @@
 import Box from "@mui/material/Box";
 import CircularProgress from "@mui/material/CircularProgress";
 import Typography from "@mui/material/Typography";
-import lodash from "lodash";
 import React, { useEffect, useMemo, useRef } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { INamespaceEnvironments } from "../../../common/interfaces";
 import { Environment, Namespace } from "../../../common/models";
 import { GroupIconAlt } from "../../../components";
 import { StyledScrollContainer } from "../../../styles";
+import {
+  getMyPrimaryNamespace,
+  groupEnvsByNamespace,
+  getSharedNamespaces
+} from "../../../utils/helpers/namespaces";
 import { EnvironmentDropdown } from "./EnvironmentDropdown";
 
 interface IEnvironmentsListProps {
@@ -34,45 +38,24 @@ export const EnvironmentsList = ({
 }: IEnvironmentsListProps) => {
   const scrollRef = useRef<HTMLDivElement | null>(null);
 
-  const { defaultNamespace, sharedNamespaces } = useMemo(() => {
-    let defaultNamespace: INamespaceEnvironments | null = null;
-    const sharedNamespaces: INamespaceEnvironments[] = [];
+  const { primaryNamespace, sharedNamespaces } = useMemo(() => {
+    const myPrimaryNamespace = namespacesList.find(
+      namespace => namespace.isPrimary
+    );
 
-    //List of all namespaces without environments inside
-    const emptyNamespaces = namespacesList
-      .map(namespace => namespace.name)
-      .filter(
-        elemen =>
-          !environmentsList
-            .map(environment => environment.namespace.name)
-            .includes(elemen)
-      );
+    console.log(myPrimaryNamespace);
 
-    emptyNamespaces.forEach(element => {
-      const value: Environment[] = [];
-      const obj = { namespace: element, environments: value };
-      if (element === "default") {
-        defaultNamespace = obj;
-      } else {
-        sharedNamespaces.push(obj);
-      }
-    });
+    // Group existing environments by namespace...
+    const envsGroupedByNamespace = groupEnvsByNamespace(
+      environmentsList,
+      myPrimaryNamespace
+    );
+    const primaryNamespace = getMyPrimaryNamespace(envsGroupedByNamespace);
+    const sharedNamespaces = getSharedNamespaces(envsGroupedByNamespace);
 
-    lodash(environmentsList)
-      .groupBy((x: Environment) => x.namespace.name)
-      .map((value: Environment[], key: string) => {
-        const obj = { namespace: key, environments: value };
+    console.log(primaryNamespace, sharedNamespaces);
 
-        if (obj.namespace === "default") {
-          defaultNamespace = obj;
-          return;
-        }
-
-        sharedNamespaces.push(obj);
-      })
-      .value();
-
-    return { defaultNamespace, sharedNamespaces };
+    return { primaryNamespace, sharedNamespaces };
   }, [environmentsList, namespacesList]);
 
   useEffect(() => {
@@ -103,14 +86,16 @@ export const EnvironmentsList = ({
           </Box>
         }
       >
-        <Box sx={{ minHeight: "50px", paddingTop: "10px" }}>
-          {defaultNamespace && <EnvironmentDropdown data={defaultNamespace} />}
-        </Box>
+        {primaryNamespace && (
+          <Box sx={{ minHeight: "50px", margin: "-5px 0 5px 0px" }}>
+            <EnvironmentDropdown data={primaryNamespace} />
+          </Box>
+        )}
         <Box
           sx={{
             display: "flex",
             alignItems: "center",
-            margin: "5px 0 5px 12px"
+            margin: "0 0 5px 12px"
           }}
         >
           <Typography
@@ -126,9 +111,10 @@ export const EnvironmentsList = ({
           </Typography>
           <GroupIconAlt style={{ marginLeft: "10px", scale: ".8" }} />
         </Box>
-        {sharedNamespaces.map(namespace => (
-          <EnvironmentDropdown key={namespace.namespace} data={namespace} />
-        ))}
+        {sharedNamespaces &&
+          sharedNamespaces.map((namespace: INamespaceEnvironments) => (
+            <EnvironmentDropdown key={namespace.namespace} data={namespace} />
+          ))}
       </InfiniteScroll>
     </StyledScrollContainer>
   );

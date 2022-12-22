@@ -22,6 +22,17 @@ jest.mock("../../src/features/namespaces/namespacesApiSlice", () => ({
         ]
       }
     })
+  ]),
+  useLazyFetchPrimaryNamespaceQuery: jest.fn(() => [
+    () => ({
+      data: {
+        data: [
+          {
+            primary_namespace: "admin"
+          }
+        ]
+      }
+    })
   ])
 }));
 jest.mock("../../src/features/environments/environmentsApiSlice", () => ({
