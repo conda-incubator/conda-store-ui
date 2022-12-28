@@ -4,6 +4,7 @@ import {
   fireEvent,
   render,
   RenderResult,
+  screen,
   waitFor
 } from "@testing-library/react";
 import { mockTheme } from "../testutils";
@@ -17,7 +18,7 @@ jest.mock("../../src/features/namespaces/namespacesApiSlice", () => ({
         data: [
           {
             id: 1,
-            name: "default"
+            name: "filesystem"
           }
         ]
       }
@@ -42,7 +43,7 @@ jest.mock("../../src/features/environments/environmentsApiSlice", () => ({
         data: [
           {
             id: 1,
-            namespace: { id: 1, name: "default" },
+            namespace: { id: 1, name: "filesystem" },
             name: "python-flask-env-2",
             current_build_id: 1,
             current_build: 1,
@@ -71,7 +72,7 @@ describe("<Environment />", () => {
       )
     );
     await waitFor(() => {
-      expect(component.queryByText("default")).toBeInTheDocument();
+      expect(component.queryByText("filesystem")).toBeInTheDocument();
     });
   });
 
@@ -85,12 +86,14 @@ describe("<Environment />", () => {
     expect(mockOnUpdateRefreshEnvironments).toHaveBeenCalledWith(false);
   });
 
-  it("should use search input to filter the environment ", () => {
+  it("should use search input to filter the environment ", async () => {
     const searchInput = component.getByPlaceholderText(
       "Search for environment"
     );
     fireEvent.change(searchInput, { target: { value: "python-flask-env-2" } });
 
-    expect(component.queryByText("python-flask-env-2")).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByText("python-flask-env-2")).not.toBeNull();
+    });
   });
 });

@@ -1,6 +1,13 @@
 import { INamespaceEnvironments } from "../../common/interfaces";
 import { Environment, Namespace } from "../../common/models";
 
+const DEFAULT = "default";
+const DEFAULT_NAMESPACE = {
+  isPrimary: false,
+  environments: [],
+  namespace: DEFAULT
+};
+
 /**
  * Validate if my own namespace is already listed in the namespace array.
  *
@@ -10,7 +17,7 @@ import { Environment, Namespace } from "../../common/models";
  */
 export const isNamespaceListed = (list: any, primaryNamespace: Namespace) => {
   if (
-    primaryNamespace.name === "default" ||
+    primaryNamespace.name === DEFAULT ||
     list.some((item: Namespace) => item.name === primaryNamespace.name)
   ) {
     return true;
@@ -33,7 +40,7 @@ export const checkMyPrimaryNamespace = (
     if (item.name === primaryNamespace.name) {
       return {
         ...item,
-        isPrimary: primaryNamespace.name !== "default"
+        isPrimary: primaryNamespace.name !== DEFAULT
       };
     }
     return item;
@@ -50,9 +57,23 @@ export const checkMyPrimaryNamespace = (
 export const groupEnvsByNamespace = (
   environmentsList: Environment[],
   primaryNamespace: Namespace | undefined
-): INamespaceEnvironments[] => {
+) => {
+  // if the environment array is empty, let's retrieve the default and the primary namespace if it exists.
+  if (!environmentsList.length) {
+    return {
+      default: DEFAULT_NAMESPACE,
+      ...(primaryNamespace && {
+        [primaryNamespace.name]: {
+          isPrimary: true,
+          environments: [],
+          namespace: primaryNamespace.name
+        }
+      })
+    };
+  }
+
   return environmentsList.reduce((acc: any, curr: any) => {
-    // initialize with primary namespace
+    // initialize with the default and primary namespace
     if (primaryNamespace && !acc[primaryNamespace.name]) {
       acc[primaryNamespace.name] = {
         isPrimary: true,
@@ -60,6 +81,11 @@ export const groupEnvsByNamespace = (
         namespace: primaryNamespace.name
       };
     }
+
+    if (!acc[DEFAULT]) {
+      acc[DEFAULT] = DEFAULT_NAMESPACE;
+    }
+
     // set the initial value per each namespace
     if (!acc[curr.namespace.name]) {
       acc[curr.namespace.name] = {
@@ -68,6 +94,7 @@ export const groupEnvsByNamespace = (
         isPrimary: true
       };
     }
+
     // fill every position with current namespace data
     acc[curr.namespace.name] = {
       namespace: curr.namespace.name,
