@@ -43,8 +43,6 @@ export const EnvironmentsList = ({
       namespace => namespace.isPrimary
     );
 
-    console.log(myPrimaryNamespace);
-
     // Group existing environments by namespace...
     const envsGroupedByNamespace = groupEnvsByNamespace(
       environmentsList,
@@ -52,8 +50,6 @@ export const EnvironmentsList = ({
     );
     const primaryNamespace = getMyPrimaryNamespace(envsGroupedByNamespace);
     const sharedNamespaces = getSharedNamespaces(envsGroupedByNamespace);
-
-    console.log(primaryNamespace, sharedNamespaces);
 
     return { primaryNamespace, sharedNamespaces };
   }, [environmentsList, namespacesList]);
