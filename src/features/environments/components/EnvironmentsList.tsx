@@ -9,8 +9,8 @@ import { GroupIconAlt } from "../../../components";
 import { StyledScrollContainer } from "../../../styles";
 import {
   getMyPrimaryNamespace,
-  groupEnvsByNamespace,
-  getSharedNamespaces
+  getSharedNamespaces,
+  namespaceMapper
 } from "../../../utils/helpers/namespaces";
 import { EnvironmentDropdown } from "./EnvironmentDropdown";
 
@@ -39,15 +39,12 @@ export const EnvironmentsList = ({
   const scrollRef = useRef<HTMLDivElement | null>(null);
 
   const { primaryNamespace, sharedNamespaces } = useMemo(() => {
-    const myPrimaryNamespace = namespacesList.find(
-      namespace => namespace.isPrimary
+    // Group existing environments by namespace...
+    const envsGroupedByNamespace = namespaceMapper(
+      environmentsList,
+      namespacesList
     );
 
-    // Group existing environments by namespace...
-    const envsGroupedByNamespace = groupEnvsByNamespace(
-      environmentsList,
-      myPrimaryNamespace
-    );
     const primaryNamespace = getMyPrimaryNamespace(envsGroupedByNamespace);
     const sharedNamespaces = getSharedNamespaces(envsGroupedByNamespace);
 

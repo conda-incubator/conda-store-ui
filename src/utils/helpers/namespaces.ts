@@ -2,11 +2,6 @@ import { INamespaceEnvironments } from "../../common/interfaces";
 import { Environment, Namespace } from "../../common/models";
 
 const DEFAULT = "default";
-const DEFAULT_NAMESPACE = {
-  isPrimary: false,
-  environments: [],
-  namespace: DEFAULT
-};
 
 /**
  * Validate if my own namespace is already listed in the namespace array.
@@ -51,58 +46,37 @@ export const checkMyPrimaryNamespace = (
  * Environments are grouped according to their own namespaces.
  *
  * @param environmentsList - list of environments
- * @param primaryNamespace - primary namespace
- * @returns a new array with namespace info
  */
-export const groupEnvsByNamespace = (
-  environmentsList: Environment[],
-  primaryNamespace: Namespace | undefined
-) => {
-  // if the environment array is empty, let's retrieve the default and the primary namespace if it exists.
-  if (!environmentsList.length) {
-    return {
-      default: DEFAULT_NAMESPACE,
-      ...(primaryNamespace && {
-        [primaryNamespace.name]: {
-          isPrimary: true,
-          environments: [],
-          namespace: primaryNamespace.name
-        }
-      })
-    };
-  }
-
+const groupEnvsByNamespace = (environmentsList: Environment[]) => {
   return environmentsList.reduce((acc: any, curr: any) => {
-    // initialize with the default and primary namespace
-    if (primaryNamespace && !acc[primaryNamespace.name]) {
-      acc[primaryNamespace.name] = {
-        isPrimary: true,
-        environments: [],
-        namespace: primaryNamespace.name
-      };
-    }
-
-    if (!acc[DEFAULT]) {
-      acc[DEFAULT] = DEFAULT_NAMESPACE;
-    }
-
-    // set the initial value per each namespace
     if (!acc[curr.namespace.name]) {
-      acc[curr.namespace.name] = {
-        namespace: curr.namespace.name,
-        environments: [],
-        isPrimary: true
-      };
+      acc[curr.namespace.name] = [];
     }
 
-    // fill every position with current namespace data
-    acc[curr.namespace.name] = {
-      namespace: curr.namespace.name,
-      environments: [...acc[curr.namespace.name].environments, curr],
-      isPrimary: curr.namespace.name === primaryNamespace?.name
-    };
+    acc[curr.namespace.name] = [...acc[curr.namespace.name], curr];
     return acc;
   }, {});
+};
+
+/**
+ * Map the namespace array to add the environments
+ *
+ * @param environmentsList - list of environments
+ * @param namespacesList - list of namespaces
+ * @returns a new namespace array with their enviroments included
+ */
+export const namespaceMapper = (
+  environmentsList: Environment[],
+  namespacesList: Namespace[]
+) => {
+  const environments = groupEnvsByNamespace(environmentsList);
+  return namespacesList.map((namespace: Namespace) => {
+    return {
+      namespace: namespace.name,
+      environments: environments[namespace.name] ?? [],
+      isPrimary: !!namespace.isPrimary
+    };
+  });
 };
 
 /**
