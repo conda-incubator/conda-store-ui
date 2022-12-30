@@ -4,7 +4,8 @@ import {
   checkMyPrimaryNamespace,
   groupEnvsByNamespace,
   getMyPrimaryNamespace,
-  getSharedNamespaces
+  getSharedNamespaces,
+  namespaceMapper
 } from "../../src/utils/helpers/namespaces";
 
 const NEW_NAMESPACE = {
@@ -57,13 +58,9 @@ describe("namespaces", () => {
 
   describe("groupEnvsByNamespace", () => {
     it("should group environments by namespace prop", () => {
-      const envsGroupedByNamespace = groupEnvsByNamespace(ENVIRONMENTS, {
-        id: 1,
-        name: "admin"
-      });
+      const envsGroupedByNamespace = groupEnvsByNamespace(ENVIRONMENTS);
 
-      expect(envsGroupedByNamespace["default"].environments).toHaveLength(2);
-      expect(envsGroupedByNamespace["admin"].environments).toHaveLength(0);
+      expect(envsGroupedByNamespace["default"]).toHaveLength(2);
     });
   });
 
@@ -76,8 +73,15 @@ describe("namespaces", () => {
 
   describe("getSharedNamespaces", () => {
     it("should return my shared namespaces", () => {
-      const myPrimaryNamespace = getSharedNamespaces(PARSED_NAMESPACES);
-      expect(myPrimaryNamespace).toEqual([PARSED_NAMESPACES[0]]);
+      const sharedNamespaces = getSharedNamespaces(PARSED_NAMESPACES);
+      expect(sharedNamespaces).toEqual([PARSED_NAMESPACES[0]]);
+    });
+  });
+
+  describe("namespaceMapper", () => {
+    it("should pap the namespace array to add the environments", () => {
+      const namespaces = namespaceMapper(ENVIRONMENTS, NAMESPACES);
+      expect(namespaces[0].environments).toHaveLength(2);
     });
   });
 });

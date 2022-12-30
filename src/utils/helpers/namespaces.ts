@@ -47,7 +47,7 @@ export const checkMyPrimaryNamespace = (
  *
  * @param environmentsList - list of environments
  */
-const groupEnvsByNamespace = (environmentsList: Environment[]) => {
+export const groupEnvsByNamespace = (environmentsList: Environment[]) => {
   return environmentsList.reduce((acc: any, curr: any) => {
     if (!acc[curr.namespace.name]) {
       acc[curr.namespace.name] = [];
