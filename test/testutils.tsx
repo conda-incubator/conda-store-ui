@@ -3,6 +3,16 @@ import React from "react";
 import { CondaSpecification } from "../src/common/models";
 import { theme } from "../src/theme";
 
+export const NAMESPACES = [
+  {
+    id: 0,
+    name: "default"
+  },
+  {
+    id: 1,
+    name: "admin"
+  }
+];
 export const DEPENDENCIES = [
   {
     id: 3685,

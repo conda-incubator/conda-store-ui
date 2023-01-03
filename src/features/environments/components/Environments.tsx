@@ -1,11 +1,13 @@
 import React, { memo, useEffect, useReducer } from "react";
 import Box from "@mui/material/Box";
-import useTheme from "@mui/material/styles/useTheme";
 import { EnvironmentsList } from "./EnvironmentsList";
 import { debounce } from "lodash";
 import { EnvironmentsSearch } from "./EnvironmentsSearch";
 import { useLazyFetchEnvironmentsQuery } from "../environmentsApiSlice";
-import { useLazyFetchNamespacesQuery } from "../../../features/namespaces";
+import {
+  useLazyFetchNamespacesQuery,
+  useLazyFetchPrimaryNamespaceQuery
+} from "../../../features/namespaces";
 import { ActionTypes, initialState, environmentsReducer } from "../reducer";
 import {
   ActionTypes as NActionTypes,
@@ -14,6 +16,10 @@ import {
 } from "../../../features/namespaces/reducer";
 import { CondaLogo } from "../../../components";
 import { useInterval } from "../../../utils/helpers";
+import {
+  isNamespaceListed,
+  checkMyPrimaryNamespace
+} from "../../../utils/helpers/namespaces";
 
 const INTERVAL_REFRESHING = 5000;
 
@@ -29,13 +35,13 @@ const BaseEnvironments = ({
   const size = 100;
   const [state, dispatch] = useReducer(environmentsReducer, initialState);
   const [stateN, dispatchN] = useReducer(namespacesReducer, NInitialState);
-  const {
-    palette: { primary }
-  } = useTheme();
+
   const [triggerNamespacesQuery] = useLazyFetchNamespacesQuery();
+  const [triggerPrimaryNamespace] = useLazyFetchPrimaryNamespaceQuery();
   const [triggerQuery] = useLazyFetchEnvironmentsQuery();
 
   const getNamespaces = async () => {
+    const primaryNamespace = await getMyPrimaryNamespace();
     const { data: namespacesData } = await triggerNamespacesQuery({
       page: stateN.page,
       size
@@ -44,8 +50,28 @@ const BaseEnvironments = ({
     if (namespacesData) {
       dispatchN({
         type: NActionTypes.DATA_FETCHED,
-        payload: { data: namespacesData.data, count: namespacesData.count }
+        payload: {
+          data: !isNamespaceListed(namespacesData.data, primaryNamespace)
+            ? [...namespacesData.data, { ...primaryNamespace, isPrimary: true }]
+            : checkMyPrimaryNamespace(namespacesData.data, primaryNamespace),
+          count: namespacesData.count
+        }
       });
+    }
+  };
+
+  const getMyPrimaryNamespace = async () => {
+    try {
+      const { data: primaryNamespace } = await triggerPrimaryNamespace();
+      return {
+        id: undefined, // API does not retrieve an ID if the namespace is empty
+        name: primaryNamespace.data.primary_namespace
+      };
+    } catch (e) {
+      return {
+        id: undefined,
+        name: "default"
+      };
     }
   };
 
@@ -92,13 +118,13 @@ const BaseEnvironments = ({
 
   useInterval(async () => {
     (async () => {
-      getNamespaces();
       getEnvironments();
     })();
   }, INTERVAL_REFRESHING);
 
   useEffect(() => {
     (async () => {
+      getNamespaces();
       if (refreshEnvironments) {
         getEnvironments();
       }
@@ -114,13 +140,14 @@ const BaseEnvironments = ({
         borderRight: "1px solid #E0E0E0"
       }}
     >
-      <Box sx={{ borderBottom: `1px solid ${primary.main}` }}>
+      <Box>
         <EnvironmentsSearch onChange={e => handleChange(e.target.value)} />
       </Box>
       <Box
         sx={{
           position: "relative",
-          zIndex: "1"
+          zIndex: "1",
+          paddingTop: "15px"
         }}
       >
         {state.data && (
