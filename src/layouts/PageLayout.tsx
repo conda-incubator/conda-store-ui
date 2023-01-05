@@ -28,7 +28,7 @@ export const PageLayout = () => {
     <Box
       sx={{
         display: "grid",
-        gridTemplateColumns: "260px 1fr",
+        gridTemplateColumns: "minmax(max-content, 275px) 1fr",
         width: "100%",
         height: "100%",
         background: "#FFF"
