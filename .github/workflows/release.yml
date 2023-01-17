@@ -1,0 +1,44 @@
+name: "Release"
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build-conda-store-ui:
+    name: 'Build conda-store-ui'
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Checkout code'
+        uses: actions/checkout@main
+      - name: Install modules
+        run: yarn
+      - name: version
+        run: yarn info . version --silent
+        id: version
+      - name: Build artifacts
+        run: |
+          yarn run webpack bundle
+          zip --junk-paths ${{ steps.version.outputs.version }}.zip dist/*
+      - name: create release
+        uses: actions/create-release@v1
+        id: create_release
+        with:
+          draft: false
+          prerelease: false
+          release_name: ${{ steps.version.outputs.version }}
+          tag_name: ${{ github.ref }}
+          body_path: CHANGELOG.md
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+      - name: upload artifacts
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./${{ steps.version.outputs.version }}.zip
+          asset_name: ${{ steps.version.outputs.version }}.zip
+          asset_content_type: application/gzip
+

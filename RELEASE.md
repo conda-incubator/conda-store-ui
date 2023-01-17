@@ -17,3 +17,4 @@
   # push both any unpushed commits and the new tag
   git push && git push --tags
   ```
+Creating the tag will automatically create a release on Github (see `.github/workflows/release.yml`)
