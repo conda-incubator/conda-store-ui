@@ -4,7 +4,7 @@ import MenuItem from "@mui/material/MenuItem";
 import useTheme from "@mui/material/styles/useTheme";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import IconButton from "@mui/material/IconButton";
-import { compareVersions, compare } from "compare-versions";
+import { compareVersions, compare, validate } from "compare-versions";
 import { useLazyGetPackageVersionSuggestionsQuery } from "../features/requestedPackages/requestedPackageVersionApiSlice";
 import {
   ActionTypes,
@@ -120,7 +120,9 @@ export const VersionSelect = ({
       }
     });
 
-    sortedVersions = result.sort(compareVersions);
+    // Remove non-standard versions (eg 0.5.0.pre) to avoid error on sort
+    const validVersions = result.filter(v => validate(v));
+    sortedVersions = validVersions.sort(compareVersions);
 
     sortedVersions.forEach(v => {
       if (v !== "" && value !== "") {
