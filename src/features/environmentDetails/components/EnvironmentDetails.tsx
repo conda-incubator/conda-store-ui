@@ -6,12 +6,14 @@ import { parseArtifacts } from "../../../utils/helpers/parseArtifactList";
 import { EnvironmentDetailsHeader } from "./EnvironmentDetailsHeader";
 import { SpecificationEdit, SpecificationReadOnly } from "./Specification";
 import { useGetBuildQuery } from "../environmentDetailsApiSlice";
-import { useLazyGetArtifactsQuery } from "../../artifacts";
 import {
   useGetBuildPackagesQuery,
   useLazyGetBuildPackagesQuery
 } from "../../../features/dependencies";
-import { ArtifactList } from "../../../features/artifacts";
+import {
+  useLazyGetArtifactsQuery,
+  ArtifactList
+} from "../../../features/artifacts";
 import {
   EnvMetadata,
   currentBuildIdChanged,
@@ -20,8 +22,10 @@ import {
 import {
   EnvironmentDetailsModes,
   useCreateOrUpdateMutation,
+  useUpdateBuildIdMutation,
   modeChanged
 } from "../../../features/environmentDetails";
+import { updateEnvironmentBuildId } from "../../../features/tabs";
 import { useAppDispatch, useAppSelector } from "../../../hooks";
 import artifactList from "../../../utils/helpers/artifact";
 import { CondaSpecificationPip } from "../../../common/models";
@@ -59,13 +63,13 @@ export const EnvironmentDetails = ({
   const [triggerQuery] = useLazyGetArtifactsQuery();
   const [triggerBuildPackages] = useLazyGetBuildPackagesQuery();
   const [createOrUpdate] = useCreateOrUpdateMutation();
+  const [updateBuildId] = useUpdateBuildIdMutation();
   useGetEnviromentBuildsQuery(selectedEnvironment, {
     pollingInterval: INTERVAL_REFRESHING
   });
   const [currentBuildId, setCurrentBuildId] = useState(
     selectedEnvironment?.current_build_id
   );
-
   const { isFetching } = useGetBuildQuery(currentBuildId, {
     skip: !currentBuildId
   });
@@ -152,6 +156,26 @@ export const EnvironmentDetails = ({
     }
   };
 
+  const updateBuild = async (buildId: number) => {
+    try {
+      await updateBuildId({
+        namespace: selectedEnvironment?.namespace.name,
+        environment: selectedEnvironment?.name,
+        buildId
+      });
+      dispatch(updateEnvironmentBuildId(buildId));
+      environmentNotification({
+        show: true,
+        description: "The environment has been updated with the selected build"
+      });
+    } catch (e) {
+      setError({
+        message: "An error occurred while processing your request",
+        visible: true
+      });
+    }
+  };
+
   useInterval(async () => {
     (async () => {
       loadArtifacts();
@@ -179,6 +203,7 @@ export const EnvironmentDetails = ({
           selectedBuildId={currentBuildId}
           description={description}
           onUpdateDescription={updateDescription}
+          onUpdateBuildId={updateBuild}
         />
       </Box>
       <Box sx={{ marginBottom: "30px" }}>
