@@ -28,6 +28,9 @@ const isCompleted = (status: string) => {
 };
 
 const dateToTimezone = (date: string) => {
+  if (!date) {
+    return "";
+  }
   const zonedDate = utcToZonedTime(`${date}Z`, TIMEZONE);
   return format(zonedDate, "MMMM do, yyyy - h:mm a", {
     timeZone: TIMEZONE
@@ -36,14 +39,10 @@ const dateToTimezone = (date: string) => {
 
 export const buildMapper = (data: Build[], currentBuildId: number) => {
   return data.map(({ id, status, ended_on, scheduled_on }: Build) => {
-    const dateDetails =
-      isBuilding(status) || isQueued(status) ? scheduled_on : ended_on;
-    const date = dateToTimezone(dateDetails);
-
     if (id === currentBuildId) {
       return {
         id,
-        name: `${date} - Active`,
+        name: `${dateToTimezone(ended_on ?? scheduled_on)} - Active`,
         status: isCompleted(status)
       };
     }
@@ -51,7 +50,7 @@ export const buildMapper = (data: Build[], currentBuildId: number) => {
     if (isBuilding(status)) {
       return {
         id,
-        name: `${date} - Building`,
+        name: `${dateToTimezone(scheduled_on)} - Building`,
         status: "Building"
       };
     }
@@ -59,14 +58,16 @@ export const buildMapper = (data: Build[], currentBuildId: number) => {
     if (isQueued(status)) {
       return {
         id,
-        name: `${date} - Queued`,
+        name: `${dateToTimezone(scheduled_on)} - Queued`,
         status: "Building"
       };
     }
 
     return {
       id,
-      name: `${date} - ${STATUS_OPTIONS[status]}`,
+      name: `${dateToTimezone(ended_on ?? scheduled_on)} - ${
+        STATUS_OPTIONS[status]
+      }`,
       status: isCompleted(status)
     };
   });

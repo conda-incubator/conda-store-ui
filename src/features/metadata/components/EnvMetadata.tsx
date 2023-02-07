@@ -35,7 +35,12 @@ export const EnvMetadata = ({
       />
       {mode !== EnvironmentDetailsModes.CREATE &&
         currentBuildId &&
-        selectedBuildId && <EnvBuilds selectedBuildId={selectedBuildId} />}
+        selectedBuildId && (
+          <EnvBuilds
+            currentBuildId={currentBuildId}
+            selectedBuildId={selectedBuildId}
+          />
+        )}
     </BlockContainer>
   );
 };
