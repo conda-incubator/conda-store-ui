@@ -50,7 +50,7 @@ const isProd = process.env.NODE_ENV === "production";
 
 const basicConfig = {
   devtool: isProd ? false : "source-map",
-  entry: ["src/index.tsx", "src/AppExample.tsx"],
+  entry: ["src/index.tsx", ...(isProd ? [] : ["src/AppExample.tsx"])],
   watch: false,
   ...getContext(__dirname),
 
@@ -90,7 +90,7 @@ const basicConfig = {
 
   plugins: [
     new HtmlWebpackPlugin({
-      // template: "./src/index.html",
+      template: "./src/index.html",
       scriptLoading: "module",
       title: "conda-store-ui",
     }),

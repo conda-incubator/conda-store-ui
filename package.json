@@ -13,7 +13,7 @@
     "prepublishOnly": "yarnpkg run clean",
     "start": "webpack server --history-api-fallback",
     "start:chromium": "webpack serve --open 'chromium'",
-    "start:prod": "NODE_ENV=production webpack serve",
+    "start:prod": "NODE_ENV=production webpack server --history-api-fallback",
     "storybook": "start-storybook -p 6006",
     "storybook:build": "build-storybook",
     "test": "jest --coverage",
