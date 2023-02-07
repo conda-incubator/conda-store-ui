@@ -4,6 +4,29 @@
  * This file is part of the tree-finder library, distributed under the terms of
  * the BSD 3 Clause license. The full license can be found in the LICENSE file.
  */
+// import HtmlWebpackPlugin from "html-webpack-plugin";
+// import path from "path";
+// import MiniCssExtractPlugin from "mini-css-extract-plugin";
+// import Dotenv from "dotenv-webpack";
+// import { fileURLToPath } from 'url';
+
+// // import TsconfigPathsPlugin from "tsconfig-paths-webpack-plugin";
+// // // To improve build times for large projects enable fork-ts-checker-webpack-plugin
+// // import ForkTsCheckerWebpackPlugin from "fork-ts-checker-webpack-plugin";
+
+// import {
+//   dependencySrcMapRules,
+//   stylingRules,
+//   svgUrlRules,
+//   getContext,
+//   getOptimization,
+//   getResolve,
+//   tsRules
+// } from "./webpack.rules.js";
+
+// const __filename = fileURLToPath(import.meta.url);
+// const __dirname = path.dirname(__filename);
+
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const path = require("path");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
@@ -32,8 +55,15 @@ const basicConfig = {
   ...getContext(__dirname),
 
   output: {
+    filename: "conda-store-ui.js",
     path: path.resolve(__dirname, "dist"),
-    filename: "[name].js"
+    // publicPath: "/dist/",
+    library: {
+      type: "module",
+    },
+  },
+  experiments: {
+    outputModule: true,
   },
 
   module: {
@@ -41,7 +71,7 @@ const basicConfig = {
       ...dependencySrcMapRules,
       ...stylingRules,
       ...svgUrlRules,
-      ...tsRules
+      ...tsRules,
     ]
   },
 
@@ -60,9 +90,13 @@ const basicConfig = {
 
   plugins: [
     new HtmlWebpackPlugin({
-      title: "conda-store"
+      // template: "./src/index.html",
+      scriptLoading: "module",
+      title: "conda-store-ui",
     }),
-    new MiniCssExtractPlugin(),
+    new MiniCssExtractPlugin({
+      filename: "conda-store-ui.css",
+    }),
     new Dotenv()
   ],
 
@@ -70,8 +104,10 @@ const basicConfig = {
 
   optimization: {
     minimize: isProd,
-    ...(isProd && getOptimization())
+    ...(isProd && getOptimization()),
   }
 };
+
+// export default [basicConfig];
 
 module.exports = [basicConfig];
