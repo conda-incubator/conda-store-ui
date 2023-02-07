@@ -3,17 +3,12 @@
 
 <head>
   <meta charset="utf-8" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no" name="viewport">
-  <script src="conda-store-ui.js" type="module"></script>
-  <link href="conda-store-ui.css" rel="stylesheet">
 </head>
 
 <body>
 
   <script type="module">
-    import React from "react";
-    import { createRoot } from "react-dom/client";
-
-    import { App } from "conda-store-ui";
+    import { createApp } from "./conda-store-ui.js";
 
     const container = document.createElement("div");
     const body = document.querySelector("body");
@@ -21,9 +16,7 @@
     container.setAttribute("id", "app");
     body?.appendChild(container);
 
-    // const root = ReactDOM.createRoot(document.getElementById('root'));
-    const root = createRoot(container);
-    root.render(React.createElement(App, null, null));
+    const root = createApp(container);
   </script>
 
 </body>
