@@ -10,7 +10,7 @@
     "eslint": "eslint . --ext .ts,.tsx --fix",
     "eslint:check": "eslint . --ext .ts,.tsx",
     "prepare": "yarnpkg run build && husky install",
-    "prepublishOnly": "yarnpkg run clean",
+    "prepublishOnly": "yarnpkg run clean && yarnpkg run webpack:prod",
     "start": "webpack server --history-api-fallback",
     "start:chromium": "webpack serve --open 'chromium'",
     "start:prod": "NODE_ENV=production webpack serve",
@@ -28,6 +28,7 @@
   ],
   "license": "BSD-3-Clause",
   "files": [
+    "dist/**/*",
     "lib/**/*",
     "src/**/*",
     "style/**/*.{css,eot,gif,html,jpg,json,less,png,scss,svg,ttf,woff2}"
