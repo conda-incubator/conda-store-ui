@@ -1,17 +1,21 @@
 import React from "react";
 import { CircularProgress, Typography } from "@mui/material";
 import { StyledMetadataItem } from "../../../styles/StyledMetadataItem";
+import { Build as IBuild } from "../../../common/models";
 import { Build } from "../../../features/metadata/components";
 import { buildMapper } from "../../../utils/helpers/buildMapper";
-import { useAppSelector } from "../../../hooks";
 
 interface IData {
   currentBuildId: number;
   selectedBuildId: number;
+  builds: IBuild[];
 }
 
-export const EnvBuilds = ({ currentBuildId, selectedBuildId }: IData) => {
-  const { builds } = useAppSelector(state => state.enviroments);
+export const EnvBuilds = ({
+  currentBuildId,
+  selectedBuildId,
+  builds
+}: IData) => {
   const envBuilds = builds.length ? buildMapper(builds, currentBuildId) : [];
   const currentBuild = envBuilds.find(build => build.id === selectedBuildId);
 

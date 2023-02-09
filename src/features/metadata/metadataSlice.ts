@@ -9,6 +9,7 @@ export interface IBuildState {
   count: number;
   size: number;
   currentBuild: { id: number | undefined };
+  newCurrentBuild: number | undefined;
 }
 
 const initialState: IBuildState = {
@@ -17,7 +18,8 @@ const initialState: IBuildState = {
   page: 1,
   count: 0,
   size: 0,
-  currentBuild: { id: undefined }
+  currentBuild: { id: undefined },
+  newCurrentBuild: undefined
 };
 
 export const enviromentsSlice = createSlice({
@@ -28,7 +30,12 @@ export const enviromentsSlice = createSlice({
       state,
       action: PayloadAction<number | undefined>
     ) => {
-      state.currentBuild.id = action.payload;
+      const newBuildId = action.payload;
+      state.currentBuild.id = newBuildId;
+
+      const build = state.builds.find(build => build.id === newBuildId);
+      state.newCurrentBuild =
+        build && build.status === "COMPLETED" ? build.id : undefined;
     },
     updateBuilds: (state, action: PayloadAction<Build[]>) => {
       state.builds = action.payload;

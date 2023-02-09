@@ -116,6 +116,7 @@ export const EnvironmentCreate = ({ environmentNotification }: IEnvCreate) => {
         <EnvMetadata
           mode={mode}
           onUpdateDescription={handleChangeDescription}
+          onUpdateBuildId={() => {}}
         />
       </Box>
       <Box sx={{ marginBottom: "30px" }}>

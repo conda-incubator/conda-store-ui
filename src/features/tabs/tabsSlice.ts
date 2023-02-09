@@ -117,6 +117,11 @@ export const tabsSlice = createSlice({
         state.selectedEnvironment = null;
       }
       state.newEnvironment.isActive = action.payload;
+    },
+    updateEnvironmentBuildId: (state, action) => {
+      if (state.selectedEnvironment) {
+        state.selectedEnvironment.current_build_id = action.payload;
+      }
     }
   }
 });
@@ -127,5 +132,6 @@ export const {
   tabChanged,
   openCreateNewEnvironmentTab,
   closeCreateNewEnvironmentTab,
-  toggleNewEnvironmentView
+  toggleNewEnvironmentView,
+  updateEnvironmentBuildId
 } = tabsSlice.actions;

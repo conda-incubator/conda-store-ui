@@ -1,6 +1,8 @@
 import React from "react";
+import { useAppSelector } from "../../../hooks";
 import { BlockContainer } from "../../../components";
 import { Description, EnvBuilds } from "../../../features/metadata/components";
+import { StyledButtonPrimary } from "../../../styles";
 
 export enum EnvironmentDetailsModes {
   "CREATE" = "create",
@@ -17,6 +19,7 @@ interface IEnvMetadataProps {
   currentBuildId?: number | undefined;
   selectedBuildId?: number;
   onUpdateDescription: (description: string) => void;
+  onUpdateBuildId: (buildId: number) => void;
 }
 
 export const EnvMetadata = ({
@@ -24,8 +27,13 @@ export const EnvMetadata = ({
   description = "",
   currentBuildId,
   selectedBuildId,
-  onUpdateDescription
+  onUpdateDescription,
+  onUpdateBuildId
 }: IEnvMetadataProps) => {
+  const { builds, newCurrentBuild } = useAppSelector(
+    state => state.enviroments
+  );
+
   return (
     <BlockContainer title="Environment Metadata">
       <Description
@@ -33,14 +41,37 @@ export const EnvMetadata = ({
         description={description || undefined}
         onChangeDescription={onUpdateDescription}
       />
-      {mode !== EnvironmentDetailsModes.CREATE &&
-        currentBuildId &&
-        selectedBuildId && (
-          <EnvBuilds
-            currentBuildId={currentBuildId}
-            selectedBuildId={selectedBuildId}
-          />
-        )}
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: "15px"
+        }}
+      >
+        {mode !== EnvironmentDetailsModes.CREATE &&
+          currentBuildId &&
+          selectedBuildId && (
+            <div>
+              <EnvBuilds
+                currentBuildId={currentBuildId}
+                selectedBuildId={selectedBuildId}
+                builds={builds}
+              />
+            </div>
+          )}
+
+        {mode === EnvironmentDetailsModes.EDIT &&
+          newCurrentBuild &&
+          currentBuildId !== newCurrentBuild && (
+            <StyledButtonPrimary
+              variant="contained"
+              onClick={() => onUpdateBuildId(newCurrentBuild)}
+              isalttype="true"
+            >
+              Update Environment Build
+            </StyledButtonPrimary>
+          )}
+      </div>
     </BlockContainer>
   );
 };

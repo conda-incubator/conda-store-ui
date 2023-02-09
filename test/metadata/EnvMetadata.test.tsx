@@ -1,5 +1,7 @@
 import React from "react";
+import { Provider } from "react-redux";
 import { fireEvent, render } from "@testing-library/react";
+import { store } from "../../src/store";
 import { EnvMetadata } from "../../src/features/metadata/components/EnvMetadata";
 import { mockTheme } from "../testutils";
 
@@ -7,12 +9,15 @@ describe("<EnvMetadata />", () => {
   it("should render component in read-only mode", () => {
     const component = render(
       mockTheme(
-        <EnvMetadata
-          mode="read-only"
-          description="test"
-          currentBuildId={0}
-          onUpdateDescription={() => ({})}
-        />
+        <Provider store={store}>
+          <EnvMetadata
+            mode="read-only"
+            description="test"
+            currentBuildId={0}
+            onUpdateDescription={() => ({})}
+            onUpdateBuildId={() => {}}
+          />
+        </Provider>
       )
     );
 
@@ -23,12 +28,15 @@ describe("<EnvMetadata />", () => {
     let description;
     const component = render(
       mockTheme(
-        <EnvMetadata
-          mode="edit"
-          description="test"
-          currentBuildId={0}
-          onUpdateDescription={e => (description = e)}
-        />
+        <Provider store={store}>
+          <EnvMetadata
+            mode="edit"
+            description="test"
+            currentBuildId={0}
+            onUpdateDescription={e => (description = e)}
+            onUpdateBuildId={() => {}}
+          />
+        </Provider>
       )
     );
     const newDescription = "Awesome new description";

@@ -14,9 +14,21 @@ export const environmentDetailsApiSlice = apiSlice.injectEndpoints({
         method: "POST",
         body: code
       })
+    }),
+    updateBuildId: builder.mutation({
+      query: ({ namespace, environment, buildId }) => ({
+        url: `/api/v1/environment/${namespace}/${environment}/`,
+        method: "PUT",
+        body: {
+          build_id: buildId
+        }
+      })
     })
   })
 });
 
-export const { useGetBuildQuery, useCreateOrUpdateMutation } =
-  environmentDetailsApiSlice;
+export const {
+  useGetBuildQuery,
+  useCreateOrUpdateMutation,
+  useUpdateBuildIdMutation
+} = environmentDetailsApiSlice;
