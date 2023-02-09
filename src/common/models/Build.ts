@@ -17,6 +17,6 @@ export type Build = {
   size: number;
   scheduled_on: string;
   started_on: string;
-  ended_on: string;
+  ended_on: string | null;
   build_artifacts: BuildArtifact[];
 };

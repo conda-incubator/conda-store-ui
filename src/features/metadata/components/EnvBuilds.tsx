@@ -6,12 +6,13 @@ import { buildMapper } from "../../../utils/helpers/buildMapper";
 import { useAppSelector } from "../../../hooks";
 
 interface IData {
+  currentBuildId: number;
   selectedBuildId: number;
 }
 
-export const EnvBuilds = ({ selectedBuildId }: IData) => {
+export const EnvBuilds = ({ currentBuildId, selectedBuildId }: IData) => {
   const { builds } = useAppSelector(state => state.enviroments);
-  const envBuilds = builds.length ? buildMapper(builds, selectedBuildId) : [];
+  const envBuilds = builds.length ? buildMapper(builds, currentBuildId) : [];
   const currentBuild = envBuilds.find(build => build.id === selectedBuildId);
 
   return (

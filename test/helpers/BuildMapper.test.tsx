@@ -37,4 +37,18 @@ describe("buildMapper", () => {
     const [mappedBuild] = buildMapper(builds, 2);
     expect(mappedBuild.name).toContain("Failed");
   });
+
+  it("should use the scheduled_on date if the ended_on prop is null", () => {
+    const [mappedBuild] = buildMapper(
+      [
+        {
+          ...BUILD,
+          status: "FAILED",
+          ended_on: null
+        }
+      ],
+      2
+    );
+    expect(mappedBuild.name).toContain("November 8th, 2022 - 9:28 AM - Failed");
+  });
 });
