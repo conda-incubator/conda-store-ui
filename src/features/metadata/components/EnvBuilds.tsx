@@ -6,12 +6,17 @@ import { Build } from "../../../features/metadata/components";
 import { buildMapper } from "../../../utils/helpers/buildMapper";
 
 interface IData {
+  currentBuildId: number;
   selectedBuildId: number;
   builds: IBuild[];
 }
 
-export const EnvBuilds = ({ selectedBuildId, builds }: IData) => {
-  const envBuilds = builds.length ? buildMapper(builds, selectedBuildId) : [];
+export const EnvBuilds = ({
+  currentBuildId,
+  selectedBuildId,
+  builds
+}: IData) => {
+  const envBuilds = builds.length ? buildMapper(builds, currentBuildId) : [];
   const currentBuild = envBuilds.find(build => build.id === selectedBuildId);
 
   return (

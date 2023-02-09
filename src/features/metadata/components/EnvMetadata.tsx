@@ -52,7 +52,11 @@ export const EnvMetadata = ({
           currentBuildId &&
           selectedBuildId && (
             <div>
-              <EnvBuilds selectedBuildId={selectedBuildId} builds={builds} />
+              <EnvBuilds
+                currentBuildId={currentBuildId}
+                selectedBuildId={selectedBuildId}
+                builds={builds}
+              />
             </div>
           )}
 

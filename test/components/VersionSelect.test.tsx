@@ -17,6 +17,9 @@ jest.mock(
             },
             {
               version: "2.0"
+            },
+            {
+              version: "0.5.0.pre" // Real-world example: pyarrow 0.5.0.pre
             }
           ]
         }
