@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useReducer } from "react";
+import React, { useMemo, useReducer } from "react";
 import Autocomplete from "@mui/material/Autocomplete";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
@@ -51,14 +51,19 @@ export const AddRequestedPackage = ({
     return result;
   }, [state.data]);
 
-  const handleSubmit = () => {
-    if (state.name) {
-      onSubmit(state.name);
+  const handleSubmit = (value: string | null) => {
+    if (value) {
+      onSubmit(value);
       onCancel(false);
     }
   };
 
   const handleSearch = debounce(async (value: string) => {
+    // Wait for at least two characters before calling the endpoint
+    if (value.length < 2) {
+      return;
+    }
+
     dispatch({ type: ActionTypes.LOADING, payload: { loading: true } });
 
     const { data } = await triggerQuery({
@@ -108,26 +113,6 @@ export const AddRequestedPackage = ({
     }
   };
 
-  useEffect(() => {
-    (async () => {
-      dispatch({ type: ActionTypes.LOADING, payload: { loading: true } });
-      const { data } = await triggerQuery({
-        page: state.page,
-        search: "",
-        size
-      });
-
-      if (data) {
-        dispatch({
-          type: ActionTypes.DATA_FETCHED,
-          payload: { data: data.data, count: data.count }
-        });
-      }
-
-      dispatch({ type: ActionTypes.LOADING, payload: { loading: false } });
-    })();
-  }, []);
-
   return (
     <Box
       sx={{
@@ -140,24 +125,27 @@ export const AddRequestedPackage = ({
     >
       <Box>
         <Autocomplete
+          freeSolo
+          selectOnFocus
+          sx={{ width: "140px" }}
+          options={uniquePackageNamesList}
+          onChange={(event, value) => handleSubmit(value)}
+          ListboxProps={{
+            onScroll: handleScroll
+          }}
           onInputChange={(event, value, reason) => {
             if (reason === "clear") {
               dispatch({ type: ActionTypes.CLEARED });
               return;
             }
-
             handleSearch(value);
-          }}
-          freeSolo
-          options={uniquePackageNamesList}
-          sx={{ width: "140px" }}
-          ListboxProps={{
-            onScroll: handleScroll
           }}
           renderInput={params => (
             <TextField
+              label="Enter package"
               autoFocus
               {...params}
+              size="small"
               InputProps={{
                 ...params.InputProps,
                 endAdornment: (
@@ -174,9 +162,6 @@ export const AddRequestedPackage = ({
                   </React.Fragment>
                 )
               }}
-              label="Enter package"
-              onBlur={handleSubmit}
-              size="small"
             />
           )}
         />
