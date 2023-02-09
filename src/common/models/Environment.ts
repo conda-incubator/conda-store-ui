@@ -5,4 +5,5 @@ export type Environment = {
   current_build_id: number;
   current_build: number | null;
   description: string;
+  canUpdate?: boolean;
 };

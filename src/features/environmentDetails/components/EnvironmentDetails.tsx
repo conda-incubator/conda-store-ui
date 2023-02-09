@@ -185,7 +185,11 @@ export const EnvironmentDetails = ({
 
   return (
     <Box sx={{ padding: "15px 12px" }}>
-      <EnvironmentDetailsHeader envName={name} onUpdateName={setName} />
+      <EnvironmentDetailsHeader
+        envName={name}
+        onUpdateName={setName}
+        showEditButton={selectedEnvironment?.canUpdate}
+      />
       {error.visible && (
         <Alert
           severity="error"

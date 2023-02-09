@@ -33,13 +33,17 @@ export const tabsSlice = createSlice({
       action: PayloadAction<{
         environment: Environment;
         selectedEnvironmentId: number | undefined;
+        canUpdate?: boolean;
       }>
     ) => {
       const environments = state.selectedEnvironments;
       const openedEnvironment = action.payload.environment;
       const isSingleTabMode = process.env.REACT_APP_CONTEXT === "jupyterlab";
 
-      state.selectedEnvironment = openedEnvironment;
+      state.selectedEnvironment = {
+        ...openedEnvironment,
+        canUpdate: action.payload.canUpdate
+      };
       state.value = openedEnvironment.id;
 
       if (!environments.some(env => env.id === openedEnvironment.id)) {

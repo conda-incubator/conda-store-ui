@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Accordion from "@mui/material/Accordion";
 import AddIcon from "@mui/icons-material/Add";
+import Tooltip from "@mui/material/Tooltip";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
@@ -35,7 +36,7 @@ interface IEnvironmentDropdownProps {
 }
 
 export const EnvironmentDropdown = ({
-  data: { namespace, environments }
+  data: { namespace, environments, canCreate, canUpdate }
 }: IEnvironmentDropdownProps) => {
   const { selectedEnvironment } = useAppSelector(state => state.tabs);
   const [isExpanded, setIsExpanded] = useState(false);
@@ -50,6 +51,11 @@ export const EnvironmentDropdown = ({
     event: React.SyntheticEvent,
     namespace: string
   ) => {
+    if (!canCreate) {
+      event.stopPropagation();
+      return;
+    }
+
     if (isExpanded) {
       event.stopPropagation();
     }
@@ -95,9 +101,22 @@ export const EnvironmentDropdown = ({
           >
             {namespace}
           </Typography>
-          <IconButton onClick={e => onCreateNewEnvironmentTab(e, namespace)}>
-            <AddIcon sx={addIconStyles} />
-          </IconButton>
+          <Tooltip
+            title={
+              canCreate
+                ? "Create a new environment"
+                : "You do not have permission to create an environment"
+            }
+          >
+            <IconButton onClick={e => onCreateNewEnvironmentTab(e, namespace)}>
+              <AddIcon
+                sx={{
+                  ...addIconStyles,
+                  ...(!canCreate && { color: "#e5e5e5" })
+                }}
+              />
+            </IconButton>
+          </Tooltip>
         </Box>
       </StyledAccordionSummary>
       <AccordionDetails
@@ -115,7 +134,8 @@ export const EnvironmentDropdown = ({
                   dispatch(
                     environmentOpened({
                       environment,
-                      selectedEnvironmentId: selectedEnvironment?.id
+                      selectedEnvironmentId: selectedEnvironment?.id,
+                      canUpdate
                     })
                   );
                   dispatch(modeChanged(EnvironmentDetailsModes.READ));

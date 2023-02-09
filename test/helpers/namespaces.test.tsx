@@ -5,7 +5,8 @@ import {
   groupEnvsByNamespace,
   getMyPrimaryNamespace,
   getSharedNamespaces,
-  namespaceMapper
+  namespaceMapper,
+  namespacesPermissionsMapper
 } from "../../src/utils/helpers/namespaces";
 
 const NEW_NAMESPACE = {
@@ -16,12 +17,16 @@ const NEW_NAMESPACE = {
 const PARSED_NAMESPACES = [
   {
     namespace: "default",
-    environments: []
+    environments: [],
+    canCreate: true,
+    canUpdate: true
   },
   {
     namespace: "admin",
     environments: [],
-    isPrimary: true
+    isPrimary: true,
+    canCreate: true,
+    canUpdate: true
   }
 ];
 
@@ -79,9 +84,39 @@ describe("namespaces", () => {
   });
 
   describe("namespaceMapper", () => {
-    it("should pap the namespace array to add the environments", () => {
+    it("should map the namespace array to add the environments", () => {
       const namespaces = namespaceMapper(ENVIRONMENTS, NAMESPACES);
       expect(namespaces[0].environments).toHaveLength(2);
+    });
+  });
+
+  describe("namespacesPermissionsMapper", () => {
+    it("should return the namespaces with their permissions", () => {
+      const namespaces = [
+        {
+          id: 1,
+          name: "filesystem"
+        }
+      ];
+      const permissions = {
+        data: {
+          entity_permissions: {
+            "filesystem/*": [
+              "environment::read",
+              "namespace::create",
+              "environment::delete"
+            ]
+          }
+        }
+      };
+
+      const namespacesPermissions = namespacesPermissionsMapper(
+        namespaces,
+        permissions
+      );
+      expect(namespacesPermissions).toEqual([
+        { id: 1, name: "filesystem", canCreate: true, canUpdate: false }
+      ]);
     });
   });
 });

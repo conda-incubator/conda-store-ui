@@ -83,7 +83,8 @@ export const EnvironmentCreate = ({ environmentNotification }: IEnvCreate) => {
       dispatch(
         environmentOpened({
           environment,
-          selectedEnvironmentId: newEnvId
+          selectedEnvironmentId: newEnvId,
+          canUpdate: true
         })
       );
       dispatch(currentBuildIdChanged(data.build_id));
@@ -101,7 +102,10 @@ export const EnvironmentCreate = ({ environmentNotification }: IEnvCreate) => {
 
   return (
     <Box sx={{ padding: "14px 12px" }}>
-      <EnvironmentDetailsHeader onUpdateName={handleChangeName} />
+      <EnvironmentDetailsHeader
+        onUpdateName={handleChangeName}
+        showEditButton={true}
+      />
       {error.visible && (
         <Alert
           severity="error"
