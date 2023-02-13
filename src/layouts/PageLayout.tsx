@@ -1,12 +1,12 @@
 import { Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import React, { useState } from "react";
-
 import { Popup } from "../components";
 import { Environments } from "../features/environments";
 import { EnvironmentCreate } from "../features/environmentCreate";
 import { EnvironmentDetails } from "../features/environmentDetails";
 import { PageTabs } from "../features/tabs";
+import { StyledScrollContainer } from "../styles";
 import { useAppSelector } from "../hooks";
 
 export const PageLayout = () => {
@@ -38,11 +38,10 @@ export const PageLayout = () => {
         refreshEnvironments={isEnvCreated}
         onUpdateRefreshEnvironments={setIsEnvCreated}
       />
-      <Box
+      <StyledScrollContainer
         sx={{
-          width: "100%",
           backgroundColor: "#F9F9F9",
-          height: "100%",
+          height: "100vh",
           overflowY: "scroll"
         }}
       >
@@ -78,7 +77,7 @@ export const PageLayout = () => {
             </Typography>
           </Box>
         )}
-      </Box>
+      </StyledScrollContainer>
       <Popup
         isVisible={notification.show}
         description={notification.description}

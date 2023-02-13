@@ -57,13 +57,13 @@ export const EnvironmentsList = ({
 
   return (
     <StyledScrollContainer
-      sx={{ minHeight: "229px", maxHeight: "725px" }}
+      sx={{ height: "calc(100vh - 130px)" }}
       id="environmentsScroll"
       ref={scrollRef}
     >
       <InfiniteScroll
         scrollableTarget="environmentsScroll"
-        style={{ overflow: "hidden" }}
+        style={{ overflow: "hidden", paddingBottom: "25px" }}
         dataLength={environmentsList.length}
         hasMore={hasMore}
         next={next}
