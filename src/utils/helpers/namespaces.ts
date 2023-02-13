@@ -2,6 +2,11 @@ import { INamespaceEnvironments } from "../../common/interfaces";
 import { Environment, Namespace } from "../../common/models";
 
 const DEFAULT = "default";
+const PERMISSIONS = {
+  environmentUpdate: "environment::update",
+  namespaceCreate: "namespace::create",
+  environmentDelete: "environment::delete"
+};
 
 /**
  * Validate if my own namespace is already listed in the namespace array.
@@ -35,7 +40,9 @@ export const checkMyPrimaryNamespace = (
     if (item.name === primaryNamespace.name) {
       return {
         ...item,
-        isPrimary: primaryNamespace.name !== DEFAULT
+        isPrimary: primaryNamespace.name !== DEFAULT,
+        canUpdate: true,
+        canCreate: true
       };
     }
     return item;
@@ -74,7 +81,9 @@ export const namespaceMapper = (
     return {
       namespace: namespace.name,
       environments: environments[namespace.name] ?? [],
-      isPrimary: !!namespace.isPrimary
+      isPrimary: !!namespace.isPrimary,
+      canCreate: namespace.canCreate,
+      canUpdate: namespace.canUpdate
     };
   });
 };
@@ -119,4 +128,27 @@ export const getSharedNamespaces = (
       return undefined;
     }
   );
+};
+
+export const namespacesPermissionsMapper = (
+  namespaces: Namespace[],
+  permissions: any
+) => {
+  return namespaces.map((namespace: Namespace) => {
+    const entity = `${namespace.name}/*`;
+    const allPermissions = permissions.data.entity_permissions["*/*"];
+    const namespacePermissions =
+      permissions.data.entity_permissions[entity] ?? [];
+
+    return {
+      id: namespace.id,
+      name: namespace.name,
+      canCreate: allPermissions
+        ? true
+        : namespacePermissions.includes(PERMISSIONS.namespaceCreate),
+      canUpdate: allPermissions
+        ? true
+        : namespacePermissions.includes(PERMISSIONS.environmentUpdate)
+    };
+  });
 };

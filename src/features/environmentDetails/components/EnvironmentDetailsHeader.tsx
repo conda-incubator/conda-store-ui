@@ -15,12 +15,14 @@ interface IEnvironmentDetailsHeaderProps {
    * @param onUpdateName change environment name
    */
   envName?: string;
+  showEditButton: boolean | undefined;
   onUpdateName: (value: string) => void;
 }
 
 export const EnvironmentDetailsHeader = ({
   envName = "",
-  onUpdateName
+  onUpdateName,
+  showEditButton = true
 }: IEnvironmentDetailsHeaderProps) => {
   const { mode } = useAppSelector(state => state.environmentDetails);
   const dispatch = useAppDispatch();
@@ -42,6 +44,8 @@ export const EnvironmentDetailsHeader = ({
           </Typography>
           {mode === EnvironmentDetailsModes.READ && (
             <StyledButtonPrimary
+              // TODO: Add this prop when the toggle button (YAML view) feature is added to the read-only view. #213
+              // disabled={!showEditButton}
               onClick={() =>
                 dispatch(modeChanged(EnvironmentDetailsModes.EDIT))
               }
@@ -54,6 +58,8 @@ export const EnvironmentDetailsHeader = ({
       {mode === EnvironmentDetailsModes.CREATE && (
         <>
           <TextField
+            autoFocus
+            placeholder="Environment name"
             sx={{
               backgroundColor: "#EBECEE",
               minWidth: "450px",
@@ -68,7 +74,6 @@ export const EnvironmentDetailsHeader = ({
                 color: "#333"
               }
             }}
-            placeholder="Environment name"
             onChange={e => onUpdateName(e.target.value)}
           />
           {/* <StyledButtonPrimary>Archive</StyledButtonPrimary> */}

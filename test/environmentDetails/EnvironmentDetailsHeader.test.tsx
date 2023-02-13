@@ -17,6 +17,7 @@ describe("<EnvironmentDetailsHeader />", () => {
           <EnvironmentDetailsHeader
             envName="Environment name"
             onUpdateName={jest.fn()}
+            showEditButton={true}
           />
         </Provider>
       )
@@ -39,6 +40,7 @@ describe("<EnvironmentDetailsHeader />", () => {
           <EnvironmentDetailsHeader
             envName="Environment name"
             onUpdateName={jest.fn()}
+            showEditButton={true}
           />
         </Provider>
       )
@@ -59,6 +61,7 @@ describe("<EnvironmentDetailsHeader />", () => {
           <EnvironmentDetailsHeader
             envName={undefined}
             onUpdateName={mockOnUpdateName}
+            showEditButton={true}
           />
         </Provider>
       )

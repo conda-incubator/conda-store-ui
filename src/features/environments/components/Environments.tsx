@@ -15,13 +15,12 @@ import {
   namespacesReducer
 } from "../../../features/namespaces/reducer";
 import { CondaLogo } from "../../../components";
-import { useInterval } from "../../../utils/helpers";
 import {
   isNamespaceListed,
-  checkMyPrimaryNamespace
+  checkMyPrimaryNamespace,
+  namespacesPermissionsMapper
 } from "../../../utils/helpers/namespaces";
-
-const INTERVAL_REFRESHING = 5000;
+import { Namespace } from "../../../common/models";
 
 export interface IBaseEnvironments {
   refreshEnvironments: boolean;
@@ -41,36 +40,55 @@ const BaseEnvironments = ({
   const [triggerQuery] = useLazyFetchEnvironmentsQuery();
 
   const getNamespaces = async () => {
-    const primaryNamespace = await getMyPrimaryNamespace();
     const { data: namespacesData } = await triggerNamespacesQuery({
       page: stateN.page,
       size
     });
 
     if (namespacesData) {
+      const { primaryNamespace, namespaces } = await getNamespacesData(
+        namespacesData.data
+      );
+
       dispatchN({
         type: NActionTypes.DATA_FETCHED,
         payload: {
-          data: !isNamespaceListed(namespacesData.data, primaryNamespace)
-            ? [...namespacesData.data, { ...primaryNamespace, isPrimary: true }]
-            : checkMyPrimaryNamespace(namespacesData.data, primaryNamespace),
+          data: !isNamespaceListed(namespaces, primaryNamespace)
+            ? [...namespaces, { ...primaryNamespace, isPrimary: true }]
+            : checkMyPrimaryNamespace(namespaces, primaryNamespace),
           count: namespacesData.count
         }
       });
+      await getEnvironments();
     }
   };
 
-  const getMyPrimaryNamespace = async () => {
+  const getNamespacesData = async (namespaces: Namespace[]) => {
     try {
-      const { data: primaryNamespace } = await triggerPrimaryNamespace();
+      const { data: permissions } = await triggerPrimaryNamespace();
+      const namespacesWithPermissions = namespacesPermissionsMapper(
+        namespaces,
+        permissions
+      );
+
       return {
-        id: undefined, // API does not retrieve an ID if the namespace is empty
-        name: primaryNamespace.data.primary_namespace
+        namespaces: namespacesWithPermissions,
+        primaryNamespace: {
+          id: undefined, // API does not retrieve an ID if the namespace is empty
+          name: permissions.data.primary_namespace,
+          canCreate: true,
+          canUpdate: true
+        }
       };
     } catch (e) {
       return {
-        id: undefined,
-        name: "default"
+        namespaces: [],
+        primaryNamespace: {
+          id: undefined,
+          name: "default",
+          canCreate: true,
+          canUpdate: true
+        }
       };
     }
   };
@@ -116,19 +134,18 @@ const BaseEnvironments = ({
     }
   };
 
-  useInterval(async () => {
-    (async () => {
-      getEnvironments();
-    })();
-  }, INTERVAL_REFRESHING);
-
   useEffect(() => {
     (async () => {
       getNamespaces();
+    })();
+  }, []);
+
+  useEffect(() => {
+    (async () => {
       if (refreshEnvironments) {
-        getEnvironments();
+        getNamespaces();
+        onUpdateRefreshEnvironments(false);
       }
-      onUpdateRefreshEnvironments(false);
     })();
   }, [refreshEnvironments]);
 
