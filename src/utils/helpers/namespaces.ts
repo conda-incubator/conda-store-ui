@@ -3,9 +3,9 @@ import { Environment, Namespace } from "../../common/models";
 
 const DEFAULT = "default";
 const PERMISSIONS = {
-  update: "environment::update",
-  create: "namespace::create",
-  delete: "environment::delete"
+  environmentUpdate: "environment::update",
+  namespaceCreate: "namespace::create",
+  environmentDelete: "environment::delete"
 };
 
 /**
@@ -145,10 +145,10 @@ export const namespacesPermissionsMapper = (
       name: namespace.name,
       canCreate: allPermissions
         ? true
-        : namespacePermissions.includes(PERMISSIONS.create),
+        : namespacePermissions.includes(PERMISSIONS.namespaceCreate),
       canUpdate: allPermissions
         ? true
-        : namespacePermissions.includes(PERMISSIONS.update)
+        : namespacePermissions.includes(PERMISSIONS.environmentUpdate)
     };
   });
 };

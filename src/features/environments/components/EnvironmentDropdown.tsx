@@ -104,8 +104,8 @@ export const EnvironmentDropdown = ({
           <Tooltip
             title={
               canCreate
-                ? "Create a new environment"
-                : "You do not have permission to create an environment"
+                ? `Create a new environment in the ${namespace} namespace`
+                : `You do not have permission to create an environment in the ${namespace} namespace`
             }
           >
             <IconButton onClick={e => onCreateNewEnvironmentTab(e, namespace)}>
