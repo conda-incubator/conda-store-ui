@@ -6,6 +6,7 @@ import React, {
   useMemo
 } from "react";
 import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
 import { cloneDeep, debounce } from "lodash";
 import { stringify } from "yaml";
 import { BlockContainerEditMode } from "../../../../components";
@@ -26,10 +27,12 @@ import { CondaSpecificationPip } from "../../../../common/models";
 interface ISpecificationEdit {
   descriptionUpdated: boolean;
   onUpdateEnvironment: (specification: any) => void;
+  onShowDialogAlert: (showDialog: boolean) => void;
 }
 export const SpecificationEdit = ({
   descriptionUpdated,
-  onUpdateEnvironment
+  onUpdateEnvironment,
+  onShowDialogAlert
 }: ISpecificationEdit) => {
   const { channels } = useAppSelector(state => state.channels);
   const { requestedPackages } = useAppSelector(
@@ -171,11 +174,24 @@ export const SpecificationEdit = ({
         <Box
           sx={{
             display: "flex",
-            justifyContent: "space-around",
-            marginTop: "30px",
+            justifyContent: "flex-end",
+            alignItems: "flex-end",
+            gap: "30px",
+            marginTop: "45px",
             marginBottom: "10px"
           }}
         >
+          <Typography
+            sx={{
+              fontSize: "13px",
+              color: "#333",
+              textDecoration: "underline",
+              cursor: "pointer"
+            }}
+            onClick={() => onShowDialogAlert(true)}
+          >
+            Delete environment
+          </Typography>
           <StyledButtonPrimary
             sx={{ padding: "5px 48px" }}
             onClick={onCancelEdition}

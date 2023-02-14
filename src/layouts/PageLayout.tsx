@@ -1,6 +1,6 @@
-import { Typography } from "@mui/material";
+import React, { useState, useRef } from "react";
 import Box from "@mui/material/Box";
-import React, { useState } from "react";
+import { Typography } from "@mui/material";
 import { Popup } from "../components";
 import { Environments } from "../features/environments";
 import { EnvironmentCreate } from "../features/environmentCreate";
@@ -9,19 +9,27 @@ import { PageTabs } from "../features/tabs";
 import { StyledScrollContainer } from "../styles";
 import { useAppSelector } from "../hooks";
 
+interface IUpdateEnvironment {
+  data: {
+    show: boolean;
+    description: string;
+  };
+}
+
 export const PageLayout = () => {
   const { selectedEnvironment, newEnvironment } = useAppSelector(
     state => state.tabs
   );
-  const [isEnvCreated, setIsEnvCreated] = useState(false);
+  const [refreshEnvironments, setRefreshEnvironments] = useState(false);
   const [notification, setNotification] = useState({
     show: false,
-    description: null
+    description: ""
   });
+  const scrollRef = useRef<HTMLDivElement | null>(null);
 
-  const onCreateEnv = (notification: any) => {
-    setNotification(notification);
-    setIsEnvCreated(true);
+  const onUpdateOrCreateEnv = ({ data }: IUpdateEnvironment) => {
+    setRefreshEnvironments(true);
+    setNotification(data);
   };
 
   return (
@@ -35,14 +43,16 @@ export const PageLayout = () => {
       }}
     >
       <Environments
-        refreshEnvironments={isEnvCreated}
-        onUpdateRefreshEnvironments={setIsEnvCreated}
+        refreshEnvironments={refreshEnvironments}
+        onUpdateRefreshEnvironments={setRefreshEnvironments}
       />
       <StyledScrollContainer
+        ref={scrollRef}
         sx={{
           backgroundColor: "#F9F9F9",
           height: "100vh",
-          overflowY: "scroll"
+          overflowY: "scroll",
+          scrollBehavior: "smooth"
         }}
       >
         {(selectedEnvironment || newEnvironment.isActive) && (
@@ -51,13 +61,18 @@ export const PageLayout = () => {
 
             {selectedEnvironment && !newEnvironment.isActive && (
               <Box>
-                <EnvironmentDetails environmentNotification={setNotification} />
+                <EnvironmentDetails
+                  environmentNotification={onUpdateOrCreateEnv}
+                  scrollRef={scrollRef}
+                />
               </Box>
             )}
 
             {!selectedEnvironment && newEnvironment.isActive && (
               <Box>
-                <EnvironmentCreate environmentNotification={onCreateEnv} />
+                <EnvironmentCreate
+                  environmentNotification={onUpdateOrCreateEnv}
+                />
               </Box>
             )}
           </>
