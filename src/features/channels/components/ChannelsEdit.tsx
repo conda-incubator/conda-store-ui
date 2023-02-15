@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, memo } from "react";
+import React, { useState, useRef, memo } from "react";
 import { useTheme } from "@mui/material";
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
@@ -35,7 +35,6 @@ const BaseChannelsEdit = ({
 }: IChannelsEditProps) => {
   const listLength = channelsList.length;
   const { palette } = useTheme();
-  const scrollRef = useRef<HTMLDivElement | null>(null);
   const expandedRef = useRef(listLength > 0);
 
   const [isAdding, setIsAdding] = useState(false);
@@ -70,12 +69,6 @@ const BaseChannelsEdit = ({
 
     updateChannels(reorderedArray);
   };
-
-  useEffect(() => {
-    if (isAdding && scrollRef.current) {
-      scrollRef.current.scrollIntoView({ behavior: "smooth" });
-    }
-  }, [isAdding]);
 
   return (
     <Accordion
@@ -120,7 +113,7 @@ const BaseChannelsEdit = ({
                 </Draggable>
               ))}
               {provided.placeholder}
-              <Box ref={scrollRef}>
+              <Box>
                 {isAdding && (
                   <AddChannel
                     onSubmit={addNewChannel}

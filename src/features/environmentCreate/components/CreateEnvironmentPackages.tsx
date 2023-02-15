@@ -1,3 +1,4 @@
+import React, { useState, useMemo } from "react";
 import {
   Accordion,
   AccordionDetails,
@@ -9,7 +10,6 @@ import {
 } from "@mui/material";
 import useTheme from "@mui/material/styles/useTheme";
 import { Box } from "@mui/system";
-import React, { useEffect, useRef, useState, useMemo } from "react";
 import { ArrowIcon } from "../../../components";
 import { useAppDispatch } from "../../../hooks";
 import {
@@ -35,19 +35,12 @@ export const CreateEnvironmentPackages = ({
 }: ICreateEnvironmentPackagesProps) => {
   const dispatch = useAppDispatch();
   const [isAdding, setIsAdding] = useState(false);
-  const scrollRef = useRef<HTMLDivElement | null>(null);
   const { palette } = useTheme();
 
   const filteredRequestedPackages = useMemo(
     () => requestedPackages.filter(item => typeof item !== "object"),
     [requestedPackages]
   );
-
-  useEffect(() => {
-    if (isAdding && scrollRef.current) {
-      scrollRef.current.scrollIntoView({ behavior: "smooth" });
-    }
-  }, [isAdding]);
 
   return (
     <Accordion
@@ -99,7 +92,7 @@ export const CreateEnvironmentPackages = ({
             ))}
           </TableBody>
         </Table>
-        <Box ref={scrollRef}>
+        <Box>
           {isAdding && (
             <AddRequestedPackage
               onSubmit={(value: string) =>

@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useMemo, useState } from "react";
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import Box from "@mui/material/Box";
@@ -35,7 +35,6 @@ export const RequestedPackagesEdit = ({
   const dispatch = useAppDispatch();
   const [isAdding, setIsAdding] = useState(false);
   const { palette } = useTheme();
-  const scrollRef = useRef<HTMLDivElement | null>(null);
 
   const handleSubmit = (packageName: string) => {
     dispatch(packageAdded(packageName));
@@ -45,12 +44,6 @@ export const RequestedPackagesEdit = ({
     () => packageList.filter(item => typeof item !== "object") as string[],
     [packageList]
   );
-
-  useEffect(() => {
-    if (isAdding && scrollRef.current) {
-      scrollRef.current.scrollIntoView({ behavior: "smooth" });
-    }
-  }, [isAdding]);
 
   return (
     <Accordion
@@ -115,7 +108,7 @@ export const RequestedPackagesEdit = ({
             ))}
           </TableBody>
         </Table>
-        <Box ref={scrollRef}>
+        <Box>
           {isAdding && (
             <AddRequestedPackage
               onSubmit={handleSubmit}
