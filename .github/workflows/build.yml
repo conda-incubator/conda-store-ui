@@ -1,9 +1,13 @@
-name: "Build"
+name: Build 
 on:
   pull_request:
+    branches: 
+      - '*'
   push:
-    branches:
+    branches: 
       - main
+
+  workflow_call:
 
 jobs:
   build:
@@ -19,11 +23,17 @@ jobs:
 
       - name: Install dependencies
         run: yarn
+  
+      - name: Lint code
+        run: yarn eslint:check
 
-      - name: Build Image
+      - name: Build application
         run: yarn run build
 
-      - name: Test Install
-        run: yarn link 
+      - name: Build application artifacts
+        run: yarn run webpack bundle
       
-      
+      - uses: actions/upload-artifact@v3
+        with:
+          name: webpack-bundle
+          path: dist/
