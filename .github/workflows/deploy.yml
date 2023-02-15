@@ -1,0 +1,30 @@
+name: Deploy
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+
+  call-build:
+    uses: Quansight/conda-store-ui/.github/workflows/build.yml@main
+
+  deploy-build:
+    runs-on: ubuntu-latest
+    needs: call-build
+
+    steps:
+      - name: Checkout
+        uses: actions/Checkout@v3
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: webpack-bundle
+          path: dist/
+
+      - name: Upload to npm
+        run: yarn publish --verbose --access public --tag ${{ env.RELEASE_TAG }}
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
