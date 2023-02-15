@@ -27,4 +27,4 @@ jobs:
       - name: Upload to npm
         run: yarn publish --verbose --access public --tag ${{ env.RELEASE_TAG }}
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
