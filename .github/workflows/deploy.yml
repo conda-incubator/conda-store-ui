@@ -31,6 +31,6 @@ jobs:
         run: echo "RELEASE_TAG=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
 
       - name: Upload to npm
-        run: yarn publish --verbose --access public --tag ${ env.RELEASE_TAG }
+        run: yarn publish --verbose --access public --tag ${{ env.RELEASE_TAG }}
         env:
           NPM_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
