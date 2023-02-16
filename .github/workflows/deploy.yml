@@ -30,6 +30,9 @@ jobs:
       - name: Get release tag
         run: echo "RELEASE_TAG=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
 
+      - name: Set package version
+        run: yarn version --new-version ${{ env.RELEASE_TAG }}
+
       - name: Upload to npm
         run: yarn publish --verbose --access public --tag ${{ env.RELEASE_TAG }}
         env:
