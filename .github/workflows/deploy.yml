@@ -33,8 +33,8 @@ jobs:
           name: webpack-bundle
           path: dist/
 
-      - name: Set package new-version
-        run: yarn version --new-version ${{ env.RELEASE_TAG }}
+    # - name: Set package new-version
+    #   run: yarn version --new-version ${{ env.RELEASE_TAG }}
 
       - name: Generate package tarball
         run: yarn pack --filename conda-store-ui.tgz
