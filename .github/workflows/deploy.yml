@@ -24,6 +24,9 @@ jobs:
       - name: Get dependencies for tsc
         run: yarn
 
+      - name: Lint code
+        run: yarn eslint:check
+
       - name: Download generated dist
         uses: actions/download-artifact@v3
         with:
