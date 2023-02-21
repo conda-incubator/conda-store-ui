@@ -5,7 +5,7 @@
   "scripts": {
     "build": "tsc --build",
     "build:watch": "tsc --build --watch",
-    "clean": "rimraf conda-store*.tgz coverage dist lib storybook-static types .env  *.tsbuildinfo",
+    "clean": "rimraf coverage dist lib storybook-static types .env  *.tsbuildinfo",
     "clean:slate": "yarn run clean && rimraf node_modules",
     "eslint": "eslint . --ext .ts,.tsx --fix",
     "eslint:check": "eslint . --ext .ts,.tsx",
