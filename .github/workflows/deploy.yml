@@ -18,11 +18,20 @@ jobs:
       - name: Checkout
         uses: actions/Checkout@v3
 
+      - name: Set release tag
+        run: echo "RELEASE_TAG=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+
       - name: Get dependencies for tsc
         run: yarn
 
-      - name: Get release tag
-        run: echo "RELEASE_TAG=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+      - name: Download generated dist
+        uses: actions/download-artifact@v3
+        with:
+          name: webpack-bundle
+          path: dist/
+
+      - name: Set package new-version
+        run: yarn version --new-version ${{ env.RELEASE_TAG }}
 
       - name: Generate package tarball
         run: yarn pack --filename conda-store-ui.tgz
