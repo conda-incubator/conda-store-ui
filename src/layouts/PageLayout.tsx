@@ -29,6 +29,7 @@ export const PageLayout = () => {
       sx={{
         display: "grid",
         gridTemplateColumns: "minmax(max-content, 275px) 1fr",
+        gridTemplateRows: "100%",
         width: "100%",
         height: "100%",
         background: "#FFF"
@@ -41,7 +42,7 @@ export const PageLayout = () => {
       <StyledScrollContainer
         sx={{
           backgroundColor: "#F9F9F9",
-          height: "100vh",
+          height: "100%",
           overflowY: "scroll"
         }}
       >
