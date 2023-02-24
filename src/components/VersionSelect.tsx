@@ -4,7 +4,8 @@ import MenuItem from "@mui/material/MenuItem";
 import useTheme from "@mui/material/styles/useTheme";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import IconButton from "@mui/material/IconButton";
-import { compareVersions, compare, validate } from "compare-versions";
+import { compareVersions } from "compare-versions";
+import { coerce } from "semver";
 import { useLazyGetPackageVersionSuggestionsQuery } from "../features/requestedPackages/requestedPackageVersionApiSlice";
 import {
   ActionTypes,
@@ -111,7 +112,7 @@ export const VersionSelect = ({
     let sortedVersions: string[] = [];
 
     state.data.forEach(packageVersions => {
-      const packageVersion = packageVersions.version.replace(/[^0-9.]+/, "");
+      const packageVersion = packageVersions.version;
       const hasPackageVersion = uniqueVersions.has(packageVersion);
 
       if (!hasPackageVersion) {
@@ -120,13 +121,20 @@ export const VersionSelect = ({
       }
     });
 
-    // Remove non-standard versions (eg 0.5.0.pre) to avoid error on sort
-    const validVersions = result.filter(v => validate(v));
-    sortedVersions = validVersions.sort(compareVersions);
+    // compare-versions will throw an error if a version doesn't match the semver spec.
+    // Since it's possible to encounter python packages with non-semver versions, let's be more lenient.
+    // We should only use this for sorting, not determining exact matches, since some information
+    // may be removed from the version number. E.g. "0.5.0.pre" is treated as "0.5.0"
+    const safeCompareVersions = (v1: string, v2: string) => {
+      const safeV1 = (coerce(v1) || "").toString();
+      const safeV2 = (coerce(v2) || "").toString();
+      return compareVersions(safeV1, safeV2);
+    };
+    sortedVersions = result.sort(safeCompareVersions);
 
     sortedVersions.forEach(v => {
       if (v !== "" && value !== "") {
-        if (compare(v, value, "=")) {
+        if (v === value) {
           setValue(v);
         }
       }
