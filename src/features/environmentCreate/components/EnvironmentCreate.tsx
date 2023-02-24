@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import Alert from "@mui/material/Alert";
 import { stringify } from "yaml";
+import { debounce } from "lodash";
 import {
   EnvironmentDetailsHeader,
   modeChanged,
@@ -19,8 +20,8 @@ import {
 } from "../../../features/tabs";
 import { useAppDispatch, useAppSelector } from "../../../hooks";
 import { SpecificationCreate, SpecificationReadOnly } from "./Specification";
-import { debounce } from "lodash";
 import { descriptionChanged, nameChanged } from "../environmentCreateSlice";
+import createLabel from "../../../common/config/labels";
 
 export interface IEnvCreate {
   environmentNotification: (notification: any) => void;
@@ -89,8 +90,10 @@ export const EnvironmentCreate = ({ environmentNotification }: IEnvCreate) => {
       );
       dispatch(currentBuildIdChanged(data.build_id));
       environmentNotification({
-        show: true,
-        description: `${name} environment is being created`
+        data: {
+          show: true,
+          description: createLabel(name, "create")
+        }
       });
     } catch ({ data }) {
       setError({

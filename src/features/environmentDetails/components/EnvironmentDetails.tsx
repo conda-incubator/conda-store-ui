@@ -7,6 +7,10 @@ import { EnvironmentDetailsHeader } from "./EnvironmentDetailsHeader";
 import { SpecificationEdit, SpecificationReadOnly } from "./Specification";
 import { useGetBuildQuery } from "../environmentDetailsApiSlice";
 import {
+  updateEnvironmentBuildId,
+  environmentClosed
+} from "../../../features/tabs";
+import {
   useGetBuildPackagesQuery,
   useLazyGetBuildPackagesQuery
 } from "../../../features/dependencies";
@@ -23,26 +27,29 @@ import {
   EnvironmentDetailsModes,
   useCreateOrUpdateMutation,
   useUpdateBuildIdMutation,
+  useDeleteEnvironmentMutation,
   modeChanged
 } from "../../../features/environmentDetails";
-import { updateEnvironmentBuildId } from "../../../features/tabs";
-import { useAppDispatch, useAppSelector } from "../../../hooks";
 import artifactList from "../../../utils/helpers/artifact";
+import createLabel from "../../../common/config/labels";
+import { AlertDialog } from "../../../components/Dialog";
+import { useAppDispatch, useAppSelector } from "../../../hooks";
 import { CondaSpecificationPip } from "../../../common/models";
 import { useInterval } from "../../../utils/helpers";
 
 interface IEnvDetails {
+  scrollRef: any;
   environmentNotification: (notification: any) => void;
 }
-
 interface IUpdateEnvironmentArgs {
   dependencies: (string | CondaSpecificationPip)[];
   channels: string[];
 }
 
-const INTERVAL_REFRESHING = 2000;
+const INTERVAL_REFRESHING = 5000;
 
 export const EnvironmentDetails = ({
+  scrollRef,
   environmentNotification
 }: IEnvDetails) => {
   const dispatch = useAppDispatch();
@@ -51,25 +58,31 @@ export const EnvironmentDetails = ({
   const { selectedEnvironment } = useAppSelector(state => state.tabs);
   const { currentBuild } = useAppSelector(state => state.enviroments);
   const [name, setName] = useState(selectedEnvironment?.name || "");
+
   const [descriptionIsUpdated, setDescriptionIsUpdated] = useState(false);
   const [description, setDescription] = useState(
     selectedEnvironment ? selectedEnvironment.description : undefined
   );
+  const [currentBuildId, setCurrentBuildId] = useState(
+    selectedEnvironment?.current_build_id
+  );
   const [artifactType, setArtifactType] = useState<string[]>([]);
+  const [showDialog, setShowDialog] = useState(false);
   const [error, setError] = useState({
     message: "",
     visible: false
   });
+
   const [triggerQuery] = useLazyGetArtifactsQuery();
   const [triggerBuildPackages] = useLazyGetBuildPackagesQuery();
   const [createOrUpdate] = useCreateOrUpdateMutation();
   const [updateBuildId] = useUpdateBuildIdMutation();
+  const [deleteEnvironment] = useDeleteEnvironmentMutation();
+
   useGetEnviromentBuildsQuery(selectedEnvironment, {
     pollingInterval: INTERVAL_REFRESHING
   });
-  const [currentBuildId, setCurrentBuildId] = useState(
-    selectedEnvironment?.current_build_id
-  );
+
   const { isFetching } = useGetBuildQuery(currentBuildId, {
     skip: !currentBuildId
   });
@@ -114,6 +127,10 @@ export const EnvironmentDetails = ({
     setName(selectedEnvironment?.name || "");
     setDescription(selectedEnvironment?.description || "");
     setCurrentBuildId(selectedEnvironment?.current_build_id);
+    setError({
+      message: "",
+      visible: false
+    });
     setDescriptionIsUpdated(false);
     setArtifactType([]);
   }, [selectedEnvironment]);
@@ -126,54 +143,99 @@ export const EnvironmentDetails = ({
   }, [currentBuild]);
 
   const updateEnvironment = async (code: IUpdateEnvironmentArgs) => {
-    const namespace = selectedEnvironment?.namespace.name;
+    if (!selectedEnvironment) {
+      return;
+    }
 
+    const namespace = selectedEnvironment.namespace.name;
+    const environment = selectedEnvironment.name;
     const environmentInfo = {
       specification: `${stringify(
         code
-      )}\ndescription: ${description}\nname: ${name}\nprefix: null`,
+      )}\ndescription: ${description}\nname: ${environment}\nprefix: null`,
       namespace
     };
 
     try {
-      setError({
-        message: "",
-        visible: false
-      });
       const { data } = await createOrUpdate(environmentInfo).unwrap();
       dispatch(modeChanged(EnvironmentDetailsModes.READ));
       setCurrentBuildId(data.build_id);
       dispatch(currentBuildIdChanged(data.build_id));
       environmentNotification({
-        show: true,
-        description: `${name} environment has been updated`
+        data: {
+          show: true,
+          description: createLabel(environment, "update")
+        }
       });
     } catch (e) {
       setError({
-        message: e?.data?.message ?? e.error ?? e.status,
+        message:
+          e?.data?.message ??
+          e.error ??
+          e.status ??
+          createLabel(undefined, "error"),
+        visible: true
+      });
+    }
+    scrollRef.current.scrollTo(0, 0);
+  };
+
+  const updateBuild = async (buildId: number) => {
+    if (!selectedEnvironment) {
+      return;
+    }
+    try {
+      await updateBuildId({
+        namespace: selectedEnvironment.namespace.name,
+        environment: selectedEnvironment.name,
+        buildId
+      }).unwrap();
+      dispatch(updateEnvironmentBuildId(buildId));
+      environmentNotification({
+        data: {
+          show: true,
+          description: createLabel(selectedEnvironment.name, "updateBuild")
+        }
+      });
+    } catch (e) {
+      setError({
+        message: createLabel(undefined, "error"),
         visible: true
       });
     }
   };
 
-  const updateBuild = async (buildId: number) => {
+  const deleteSelectedEnvironment = async () => {
+    if (!selectedEnvironment) {
+      return;
+    }
     try {
-      await updateBuildId({
-        namespace: selectedEnvironment?.namespace.name,
-        environment: selectedEnvironment?.name,
-        buildId
-      });
-      dispatch(updateEnvironmentBuildId(buildId));
+      await deleteEnvironment({
+        namespace: selectedEnvironment.namespace.name,
+        environment: selectedEnvironment.name
+      }).unwrap();
+
+      dispatch(modeChanged(EnvironmentDetailsModes.READ));
+      dispatch(
+        environmentClosed({
+          envId: selectedEnvironment.id,
+          selectedEnvironmentId: selectedEnvironment.id
+        })
+      );
       environmentNotification({
-        show: true,
-        description: "The environment has been updated with the selected build"
+        data: {
+          show: true,
+          description: createLabel(selectedEnvironment.name, "delete")
+        }
       });
     } catch (e) {
       setError({
-        message: "An error occurred while processing your request",
+        message: createLabel(undefined, "error"),
         visible: true
       });
     }
+    scrollRef.current.scrollTo(0, 0);
+    setShowDialog(false);
   };
 
   useInterval(async () => {
@@ -216,6 +278,7 @@ export const EnvironmentDetails = ({
           <SpecificationEdit
             descriptionUpdated={descriptionIsUpdated}
             onUpdateEnvironment={updateEnvironment}
+            onShowDialogAlert={showDialog => setShowDialog(showDialog)}
           />
         )}
       </Box>
@@ -225,6 +288,15 @@ export const EnvironmentDetails = ({
             artifacts={artifactList(currentBuildId, artifactType)}
           />
         </Box>
+      )}
+      {selectedEnvironment && (
+        <AlertDialog
+          title="Delete Environment"
+          description={createLabel(selectedEnvironment.name, "confirm")}
+          isOpen={showDialog}
+          closeAction={() => setShowDialog(false)}
+          confirmAction={deleteSelectedEnvironment}
+        />
       )}
     </Box>
   );
