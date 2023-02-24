@@ -37,6 +37,7 @@ export const PageLayout = () => {
       sx={{
         display: "grid",
         gridTemplateColumns: "minmax(max-content, 275px) 1fr",
+        gridTemplateRows: "100%",
         width: "100%",
         height: "100%",
         background: "#FFF"
@@ -50,9 +51,8 @@ export const PageLayout = () => {
         ref={scrollRef}
         sx={{
           backgroundColor: "#F9F9F9",
-          height: "100vh",
-          overflowY: "scroll",
-          scrollBehavior: "smooth"
+          height: "100%",
+          overflowY: "scroll"
         }}
       >
         {(selectedEnvironment || newEnvironment.isActive) && (
