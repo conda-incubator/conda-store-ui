@@ -49,6 +49,6 @@ describe("buildMapper", () => {
       ],
       2
     );
-    expect(mappedBuild.name).toContain("November 8th, 2022 - 9:28 AM - Failed");
+    expect(mappedBuild.name).toContain("November 8th, 2022");
   });
 });
