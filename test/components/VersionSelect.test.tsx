@@ -34,7 +34,11 @@ describe("<VersionSelect />", () => {
       mockTheme(
         <Provider store={store}>
           <VersionSelect name="numpy" version="1.0" onUpdate={() => ({})} />
-          <VersionSelect name="pyarrow" version="0.5.0.pre" onUpdate={() => ({})} />
+          <VersionSelect
+            name="pyarrow"
+            version="0.5.0.pre"
+            onUpdate={() => ({})}
+          />
         </Provider>
       )
     );
