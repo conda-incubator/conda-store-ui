@@ -104,6 +104,7 @@
     "jest-transform-stub": "^2.0.0",
     "less": "^4.1.2",
     "less-loader": "^10.2.0",
+    "match-sorter": "^6.3.1",
     "mini-css-extract-plugin": "^2.6.0",
     "postcss": "^8.4.12",
     "postcss-loader": "^6.2.1",

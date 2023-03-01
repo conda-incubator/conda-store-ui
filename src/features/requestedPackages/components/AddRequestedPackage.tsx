@@ -5,6 +5,7 @@ import TextField from "@mui/material/TextField";
 import { StyledIconButton } from "../../../styles";
 import { useLazyGetPackageSuggestionsQuery } from "../requestedPackagesApiSlice";
 import { debounce } from "lodash";
+import { matchSorter } from "match-sorter";
 import { CircularProgress } from "@mui/material";
 import {
   ActionTypes,
@@ -48,7 +49,7 @@ export const AddRequestedPackage = ({
       }
     });
 
-    return result;
+    return matchSorter(result, state.name);
   }, [state.data]);
 
   const handleSubmit = (value: string | null) => {
