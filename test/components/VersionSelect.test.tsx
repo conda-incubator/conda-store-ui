@@ -34,11 +34,17 @@ describe("<VersionSelect />", () => {
       mockTheme(
         <Provider store={store}>
           <VersionSelect name="numpy" version="1.0" onUpdate={() => ({})} />
+          <VersionSelect
+            name="pyarrow"
+            version="0.5.0.pre"
+            onUpdate={() => ({})}
+          />
         </Provider>
       )
     );
     await component.findAllByText("1.0");
     expect(component.container).toHaveTextContent("1.0");
+    expect(component.container).toHaveTextContent("0.5.0");
   });
 
   it("should change the value", async () => {
