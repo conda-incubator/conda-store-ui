@@ -71,3 +71,15 @@ REACT_APP_AUTH_TOKEN=
 REACT_APP_STYLE_TYPE=grayscale
 REACT_APP_SHOW_LOGIN_ICON=true
 ```
+
+# Releasing
+
+In order to create a new version of this package, follow these steps:
+
+* Bump the version number in `package.json`
+
+* Go to the releases tab, and create a new release. Note that the release version tag _must_ match the new version from package.json
+
+* Wait for actions to execute and the new package will be uploaded to `npm`
+
+Latest Release: https://libraries.io/npm/@conda-store%2Fconda-store-ui
