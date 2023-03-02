@@ -1,6 +1,11 @@
 # conda-store-ui
+Graphical User Interface for [conda store](https://github.com/Quansight/conda-store) 
 
-React-based UI for [conda store](https://github.com/Quansight/conda-store)
+![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/Quansight/conda-store-ui/build.yml?label=Build&logo=GitHub)
+![GitHub Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/Quansight/conda-store-ui/deploy.yml?event=push&label=Deploy&logo=GitHub)
+![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/Quansight/conda-store-ui/pages.yml?label=Docs&logo=GitHub)
+-------------------
+
 
 ## How to run
 
