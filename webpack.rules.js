@@ -29,19 +29,16 @@ const cssLoader = () => {return {
   },
 };}
 
-// const postCssLoader = () => {return {
-//   loader: "postcss-loader",
-//   ...(process.env.NODE_ENV === "production") && {options: {
-//     postcssOptions: {
-//       minimize: true,
-//       plugins: [
-//         cssnano({
-//           preset: "lite"
-//         }),
-//       ],
-//     },
-//   }},
-// };}
+const mdxRules = [ {
+        test: /\.mdx?$/,
+        use: [
+          {
+            loader: '@mdx-js/loader',
+            /** @type {import('@mdx-js/loader').Options} */
+            options: {}
+          }]
+	},
+        ];
 
 // load bitmap image rules
 const bitmapRules = [
@@ -158,6 +155,7 @@ module.exports = {
   stylingRules,
   svgUrlRules,
   tsRules,
+  mdxRules,
   getContext,
   getOptimization,
   getResolve,
