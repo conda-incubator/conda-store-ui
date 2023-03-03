@@ -4,6 +4,9 @@ Graphical User Interface for [conda store](https://github.com/Quansight/conda-st
 ![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/Quansight/conda-store-ui/build.yml?label=Build&logo=GitHub)
 ![GitHub Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/Quansight/conda-store-ui/deploy.yml?event=push&label=Deploy&logo=GitHub)
 ![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/Quansight/conda-store-ui/pages.yml?label=Docs&logo=GitHub)
+
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/Quansight/conda-store-ui?logo=Github)
+![npm (scoped)](https://img.shields.io/npm/v/@conda-store/conda-store-ui?label=release&logo=npm)
 -------------------
 
 
