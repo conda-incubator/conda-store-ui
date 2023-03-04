@@ -1,12 +1,15 @@
 const basicConfigs = require("../webpack.config.js");
 
 module.exports = {
-  stories: ["../src/**/*.stories.@(ts|tsx)"],
+
+  
+
+  stories: [
+  	    "../src/**/*.stories.mdx" ],
   addons: [
     "@storybook/addon-links",
     "@storybook/addon-essentials",
     "@storybook/addon-interactions",
-    // "@storybook/preset-create-react-app",
     "@storybook/addon-a11y",
   ],
   framework: "@storybook/react",
@@ -17,6 +20,11 @@ module.exports = {
   features: {
     interactionsDebugger: true,
   },
+   babel: (cfg) => ({
+    ...cfg,
+    babelrc: false,
+    configFile: false
+  }),
   webpackFinal: async (config) => {
     return {
       ...config,
