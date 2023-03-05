@@ -17,15 +17,6 @@ const cssLoader = () => {
 			import: true,
 			modules: {
 				localIdentName: "[local]", //"[path][name]__[local]--[hash:base64:5]",
-				// compileType: "module",
-				// mode: "local",
-				// auto: true,
-				// exportGlobals: true,
-				// localIdentContext: path.resolve(__dirname, "src"),
-				// localIdentHashPrefix: "my-custom-hash",
-				// namedExport: true,
-				// exportLocalsConvention: "camelCase",
-				// exportOnlyLocals: false,
 			},
 		},
 	};
@@ -42,7 +33,7 @@ const mdxRules = [{
 				babelOptions: options => ({ ...options, configFile: false }),
 				sourceLoaderOptions: null,
 				transcludeMarkdown: true,
-				/** remarkPlugins: [remarkGfm] */
+				remarkPlugins: [] 
 			}
 		}]
 },
