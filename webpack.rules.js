@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2020, Max Klein
- *
+ * Copyright (c) 2022,  Quansight
+ * 
  * This file is part of the tree-finder library, distributed under the terms of
  * the BSD 3 Clause license. The full license can be found in the LICENSE file.
  */
