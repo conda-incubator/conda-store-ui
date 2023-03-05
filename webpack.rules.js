@@ -16,7 +16,7 @@ const cssLoader = () => {
 			importLoaders: 1,
 			import: true,
 			modules: {
-				localIdentName: "[local]", //"[path][name]__[local]--[hash:base64:5]",
+				localIdentName: "[local]", 
 			},
 		},
 	};
