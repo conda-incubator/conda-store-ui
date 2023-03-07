@@ -1,12 +1,12 @@
-import { addParameters, addDecorator } from "@storybook/react"
+import { addDecorator } from "@storybook/react"
 import { themeDecorator } from "../src/theme"
-import { DocsPage, DocsContainer } from '@storybook/addon-docs';
 
-addParameters({
-  docs: {
-    container: DocsContainer,
-    page: DocsPage,
+export const parameters = {
+  options: {
+    storySort: {
+      order: ['Introduction'], 
+    },
   },
-});
+}
 
 addDecorator(themeDecorator);

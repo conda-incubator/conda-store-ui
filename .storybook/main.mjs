@@ -1,11 +1,12 @@
 const basicConfigs = require("../webpack.config.js");
-//import remarkGfm from 'remark-gfm'; 
+const remarkGfm = require('remark-gfm'); 
 
 module.exports = {
+
+  
+
   stories: [
-  	    "../src/**/*.stories.mdx",
-  	    "../src/**/*.stories.@(ts|tsx)"
-           ],
+  	    "../src/**/*.stories.mdx" ],
   addons: [
     "@storybook/addon-links",
     {
@@ -19,13 +20,13 @@ module.exports = {
 
      { 
        name: '@storybook/addon-docs', 
-   //    options: { 
-   //     mdxPluginOptions: {
-   //      mdxCompileOptions: { 
-   //        remarkPlugins: [remarkGfm], 
-   //      },
-   //     },
-   //    }, 
+       options: { 
+	mdxPluginOptions: {
+         mdxCompileOptions: { 
+           remarkPlugins: [remarkGfm], 
+         },
+        },
+       }, 
      }, 
   ],
   framework: "@storybook/react",
