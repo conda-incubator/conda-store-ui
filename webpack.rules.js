@@ -25,15 +25,18 @@ const cssLoader = () => {
 const mdxRules = [{
 	test: /\.mdx?$/,
 	use: [
+		{ loader: 'babel-loader',
+			options: {
+            	plugins: ['@babel/plugin-transform-react-jsx'],
+          },
+		},
 		{
 			loader: '@mdx-js/loader',
 			/** @type {import('@mdx-js/loader').Options} */
 			options: {
 				configureJSX: true,
-				babelOptions: options => ({ ...options, configFile: false }),
 				sourceLoaderOptions: null,
 				transcludeMarkdown: true,
-				remarkPlugins: [] 
 			}
 		}]
 },
