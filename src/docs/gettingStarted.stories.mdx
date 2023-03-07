@@ -1,0 +1,16 @@
+import { Story, Canvas, Meta, Description } from "@storybook/addon-docs";
+
+import Install from './markdown/INSTALL.md';
+import Config from './markdown/CONFIGURATION.md';
+import Run from './markdown/RUN.md';
+
+<Meta
+  title="Getting Started"
+  parameters = {{ viewMode: 'docs' }}
+/>
+
+export const Installation = () => <Install />
+export const Configuration = () => <Config />
+export const Running = () => <Run />
+
+
