@@ -1,5 +1,4 @@
 const basicConfigs = require("../webpack.config.js");
-//import remarkGfm from 'remark-gfm'; 
 
 module.exports = {
   stories: [

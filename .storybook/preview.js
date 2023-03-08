@@ -4,7 +4,7 @@ import { themeDecorator } from "../src/theme"
 export const parameters = {
   options: {
     storySort: {
-      order: ['Welcome', 'Getting Started'], 
+      order: ['Welcome', 'docs', ['Getting Started', 'Installation', 'Configuration', 'Extensions', ['JupyterLab',]], ], 
     },
   },
 }
