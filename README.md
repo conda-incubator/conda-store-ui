@@ -1,78 +1,56 @@
 # conda-store-ui
+Graphical User Interface for [conda-store](https://github.com/Quansight/conda-store) 
 
-React-based UI for [conda store](https://github.com/Quansight/conda-store)
+![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/Quansight/conda-store-ui/build.yml?label=Build&logo=GitHub)
+![GitHub Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/Quansight/conda-store-ui/deploy.yml?event=push&label=Deploy&logo=GitHub)
+![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/Quansight/conda-store-ui/pages.yml?label=Docs&logo=GitHub)
 
-## How to run
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/Quansight/conda-store-ui?logo=Github)
+![npm (scoped)](https://img.shields.io/npm/v/@conda-store/conda-store-ui?label=release&logo=npm)
+-------------------
 
-Checkout the project and start the `docker-compose` stack :
-```sh
+## Get Started
+
+To learn how to use conda-store-ui alongisde conda-store, please visit our [documentation](https://quansight.github.io/conda-store-ui/).
+
+## Related Work
+
+conda-store-ui is an addon to [conda-store](https://github.com/Quansight/conda-store). If you're looking for the JupyterLab Extension, you can find it at [conda-store-jupyterlab](https://github.com/Quansight/conda-store).
+
+## Developing
+
+For developing this application, we use Docker Compose for setting up the infrastructure, and conda as the package manager for node/yarn. Note
+that you can use any method you wish to use yarn/nodejs. 
+
+1) Clone this repo and from root, start docker compose:
+
+```bash
 git clone https://github.com/Quansight/conda-store-ui.git
 cd conda-store-ui
-docker-compose up --build -d
+docker-compose -f docker-compose-dev.yml up --build 
 ```
 
-- once running, open `http://localhost/` to access the UI.
-- by clicking on the login icon <img width="38" alt="conda-store-ui_login_icon" src="https://user-images.githubusercontent.com/756464/199689492-1c15ae14-32ce-4745-bddf-c339d0d62313.png" alt="conda-store UI login icon">, you'll be redirected to the authentication page where you can use the default credentials :  `admin/password`
+2) Then, install yarn/node.js.
 
+**Note** Skip this if you are planning to use a local install of yarn/nodejs
 
-## How to run locally - dev mode
-
-Checkout the project and start the `docker-compose-dev` stack :
-```sh
-git clone https://github.com/Quansight/conda-store-ui.git
-cd conda-store-ui
-docker-compose -f docker-compose-dev.yml up --build -d      
-```
-
-Then, run the UI :
-
-```
+```bash
 conda create --name conda-store-ui
 conda activate conda-store-ui
 conda install -c conda-forge yarn nodejs==16.14.2
+```
 
+3) Finally, start the application
+
+```bash
 yarn install
 yarn run build
-yarn run start --port 80
+yarn run start
 ```
 
-Once you see the message `webpack 5.73.0 compiled successfully in ... ms` appearing, you can use the UI at url [http://localhost](http://localhost)
+If you encounter issues, please take a look at Configuration (available in the documentation).
 
-
-
-## Run unit testing using Jest
-
-```
-yarn test     // find every test with the .test.[tsx|ts] extension
-yarn report   // show coverage collected after running the first command in the browser
-yarn report test/AddChannel.test.tsx     // run a single test instead of all
-```
-
-## ENV file setup
-
-In order to setup the environment variables correctly, you should create a .env file and inside copy the contents of the .env.example file.
-
-- `REACT_APP_API_URL` - base API url that will be used when creating RTK Query queries
-- `REACT_APP_AUTH_METHOD` - method of authentication.
-  - value `cookie` lets users authenticate with a login process. **This is the prefered option. conda-store API and conda-store UI must both be under the same domain.**
-  - value `token` lets you set up a token in conda-store, and use conda-store authenticated as the user who created the token.
-- `REACT_APP_LOGIN_PAGE_URL` - URL endpoint to authenticate. Check the example below.
-- `REACT_APP_AUTH_TOKEN` - authentication token required when the auth method is `token`
-- `REACT_APP_STYLE_TYPE` - set the style theme of the app; `grayscale` or `green-accent` are the valid options.
-- `REACT_APP_SHOW_LOGIN_ICON` - show or hide the login icon, which is located at the top
-
-
-Here is an example if you run conda-store locally :
-```
-REACT_APP_API_URL=http://localhost:5000/conda-store
-REACT_APP_AUTH_METHOD=cookie
-REACT_APP_LOGIN_PAGE_URL=http://localhost:5000/conda-store/login?next=
-REACT_APP_AUTH_TOKEN=
-REACT_APP_STYLE_TYPE=grayscale
-REACT_APP_SHOW_LOGIN_ICON=true
-```
-
-# Releasing
+## Releasing
 
 In order to create a new version of this package, follow these steps:
 
@@ -83,3 +61,7 @@ In order to create a new version of this package, follow these steps:
 * Wait for actions to execute and the new package will be uploaded to `npm`
 
 Latest Release: https://libraries.io/npm/@conda-store%2Fconda-store-ui
+
+## License
+
+conda-store-ui is developed under the [BSD-3 LICENSE](./LICENSE).
