@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Dependency, Environment } from "../../common/models";
-import { environmentClosed, environmentOpened, tabChanged } from "../tabs";
+import { Dependency /*Environment*/ } from "../../common/models";
+import { /*environmentClosed, environmentOpened,*/ tabChanged } from "../tabs";
 import { dependenciesApiSlice } from "./dependenciesApiSlice";
 
 export interface IChannelsState {
@@ -33,6 +33,7 @@ export const dependenciesSlice = createSlice({
     builder.addCase(tabChanged.type, state => {
       state.page = 1;
     });
+    /*
     builder.addCase(
       environmentOpened.type,
       (
@@ -52,6 +53,7 @@ export const dependenciesSlice = createSlice({
         }
       }
     );
+
     builder.addCase(
       environmentClosed.type,
       (
@@ -62,7 +64,9 @@ export const dependenciesSlice = createSlice({
           state.page = 1;
         }
       }
+      
     );
+    */
     builder.addMatcher(
       dependenciesApiSlice.endpoints.getBuildPackages.matchFulfilled,
       (state, { payload: { data, size, count, page } }) => {

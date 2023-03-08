@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020, Max Klein
+ * Copyright (c) 2022,  Quansight
  *
  * This file is part of the tree-finder library, distributed under the terms of
  * the BSD 3 Clause license. The full license can be found in the LICENSE file.
@@ -20,7 +20,8 @@ const {
   getContext,
   getOptimization,
   getResolve,
-  tsRules
+  tsRules,
+  mdxRules
 } = require("./webpack.rules");
 
 const isProd = process.env.NODE_ENV === "production";
@@ -41,22 +42,14 @@ const basicConfig = {
       ...dependencySrcMapRules,
       ...stylingRules,
       ...svgUrlRules,
-      ...tsRules
+      ...tsRules,
+      ...mdxRules
     ]
   },
 
   resolve: {
     ...getResolve(__dirname)
   },
-
-  // devServer: {
-  //   // contentBase: [path.join(__dirname, "examples"), path.join(__dirname, ".")],
-  //   // inline: false,
-  //   // publicPath: "/dist/",
-
-  //   // dev-server writes to disk instead of keeping the bundle in memory
-  //   writeToDisk: true,
-  // },
 
   plugins: [
     new HtmlWebpackPlugin({
