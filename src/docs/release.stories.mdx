@@ -1,0 +1,26 @@
+import { Meta, Description } from "@storybook/addon-docs";
+
+<Meta
+  title="docs/Releasing"
+  parameters = {{ 
+     previewTabs: { 
+      'storybook/docs/panel': { index: -1 },
+      'canvas': { disable: true } 
+     },
+    viewMode: 'docs' 
+  }}
+/>
+
+# Release a new version
+
+In order to create a new version of this package, follow these steps:
+
+* Merge PR's and all of the things you want to main, and checkout main
+
+* Bump the version number in package.json
+
+* Go to the releases tab, and create a new release. Note that the release version tag must match the new version from package.json
+
+* Wait for actions to execute and the new package will be uploaded to npm
+
+Latest Release: https://libraries.io/npm/@conda-store%2Fconda-store-ui
