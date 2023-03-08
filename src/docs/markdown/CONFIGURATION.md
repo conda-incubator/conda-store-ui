@@ -4,7 +4,8 @@ The configuration for conda-store-ui, including the connection details to conda-
 
 ## Using `.env`
 
-conda-store-ui looks for a `.env` file at runtime. 
+conda-store-ui looks for a `.env` file at runtime. Below, you'll find the options and the listed descriptions. You are welcome to copy
+this configuration, otherwise, you can copy and rename the `.env.example` file provided in the repository.
 
 Sample File:
 
@@ -16,9 +17,6 @@ REACT_APP_AUTH_TOKEN=
 REACT_APP_STYLE_TYPE=grayscale
 REACT_APP_SHOW_LOGIN_ICON=true
 ```
-
-If you're using the dockerfile provided by us for a local install, then this should work fine! Just paste the content
-into the root directory of where this is being run from.
 
 ## Options
 
