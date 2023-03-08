@@ -1,11 +1,17 @@
 import { Story, Canvas, Meta, Description } from "@storybook/addon-docs";
 
-import Config from './markdown/CONFIGURATION.md';
+import QuickEnvConfig from '!raw-loader!./markdown/CONFIGURATION.md';
 
 <Meta
-  title="docs/Configuration"
-  parameters = {{ viewMode: 'docs' }}
+  title="docs/Getting Started/Configuration"
+  parameters = {{ 
+     previewTabs: { 
+      'storybook/docs/panel': { index: -1 },
+      'canvas': { disable: true } 
+     },
+    viewMode: 'docs' 
+  }}
 />
 
-export const configuration = (args) => <Config /> 
+<Description markdown={QuickEnvConfig}></Description>
 

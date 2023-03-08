@@ -1,16 +1,24 @@
 import { Story, Canvas, Meta, Description } from "@storybook/addon-docs";
 
-import Install from './markdown/INSTALL.md';
-import Config from './markdown/CONFIGURATION.md';
-import Run from './markdown/RUN.md';
+import Install from '!raw-loader!./markdown/INSTALL.md';
+import QuickEnvConfig from '!raw-loader!./markdown/CONFIGURATION.md';
 
 <Meta
-  title="Getting Started"
-  parameters = {{ viewMode: 'docs' }}
+  title="docs/Getting Started"
+  parameters = {{ 
+     previewTabs: { 
+      'storybook/docs/panel': { index: -1 },
+      'canvas': { disable: true } 
+     },
+    viewMode: 'docs' 
+  }}
 />
 
-export const Installation = () => <Install />
-export const Configuration = () => <Config />
-export const Running = () => <Run />
+# Getting Started
 
+Hello, welcome to our getting started guide! This guide aims to be the current best way to get `conda-store-ui` up and running!
+
+<Story name="Installation">
+<Description markdown={Install}></Description>
+</Story>
 

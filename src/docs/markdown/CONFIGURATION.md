@@ -2,6 +2,24 @@
 
 The configuration for conda-store-ui, including the connection details to conda-store currently use `.env` files.
 
+## Using `.env`
+
+conda-store-ui looks for a `.env` file at runtime. 
+
+Sample File:
+
+```.env
+REACT_APP_API_URL=http://localhost:5000/conda-store
+REACT_APP_AUTH_METHOD=cookie
+REACT_APP_LOGIN_PAGE_URL=http://localhost:5000/conda-store/login?next=
+REACT_APP_AUTH_TOKEN=
+REACT_APP_STYLE_TYPE=grayscale
+REACT_APP_SHOW_LOGIN_ICON=true
+```
+
+If you're using the dockerfile provided by us for a local install, then this should work fine! Just paste the content
+into the root directory of where this is being run from.
+
 ## Options
 
 The possible options are stored in a key-value format.
@@ -66,17 +84,4 @@ Show the login icon in the top menubar.
 Hide the login icon in the top menubar.
 
 
-### Using `.env`
 
-conda-store-ui looks for a `.env` file at runtime. 
-
-Sample File:
-
-```.env
-REACT_APP_API_URL=http://localhost:5000/conda-store
-REACT_APP_AUTH_METHOD=cookie
-REACT_APP_LOGIN_PAGE_URL=http://localhost:5000/conda-store/login?next=
-REACT_APP_AUTH_TOKEN=
-REACT_APP_STYLE_TYPE=grayscale
-REACT_APP_SHOW_LOGIN_ICON=true
-```
