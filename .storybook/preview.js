@@ -4,7 +4,7 @@ import { themeDecorator } from "../src/theme"
 export const parameters = {
   options: {
     storySort: {
-      order: ['Introduction'], 
+      order: ['Welcome', 'Getting Started'], 
     },
   },
 }

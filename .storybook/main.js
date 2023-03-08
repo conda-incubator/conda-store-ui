@@ -4,6 +4,7 @@ const basicConfigs = require("../webpack.config.js");
 module.exports = {
   stories: [
   	    "../src/**/*.stories.mdx",
+	    "../src/docs/markdown/*.md",
   	    "../src/**/*.stories.@(ts|tsx)"
            ],
   addons: [
@@ -19,13 +20,10 @@ module.exports = {
 
      { 
        name: '@storybook/addon-docs', 
-   //    options: { 
-   //     mdxPluginOptions: {
-   //      mdxCompileOptions: { 
-   //        remarkPlugins: [remarkGfm], 
-   //      },
-   //     },
-   //    }, 
+       options: { 
+	    configureJSX: true,
+	    transcludeMarkdown: true,
+       }, 
      }, 
   ],
   framework: "@storybook/react",
