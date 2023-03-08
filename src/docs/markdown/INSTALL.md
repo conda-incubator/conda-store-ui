@@ -11,7 +11,6 @@ There are multiple ways to utilize `conda-store-ui`. Here, we'll be looking at t
 2) If you have an instance of conda-store you plan to connect to, skip this step. Otherwise, start it using docker.
 
 ```bash
-cd conda-store-ui
 git clone https://github.com/Quansight/conda-store-ui.git
 cd conda-store-ui
 docker-compose -f docker-compose-dev.yml up --build
