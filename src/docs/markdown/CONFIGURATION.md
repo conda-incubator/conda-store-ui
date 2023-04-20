@@ -1,11 +1,14 @@
 # Configuration
 
-The configuration for conda-store-ui, including the connection details to conda-store currently use `.env` files.
+The configuration for conda-store-ui, including the connection details to conda-store, can be done : 
+- either at compile time, using a `.env` file.
+- or at runtime, using `condaStoreConfig` variable
 
-## Using `.env`
 
-conda-store-ui looks for a `.env` file at runtime. Below, you'll find the options and the listed descriptions. You are welcome to copy
-this configuration, otherwise, you can copy and rename the `.env.example` file provided in the repository.
+## At compile time, using `.env`
+
+conda-store-ui looks for a `.env` file when packing the bundle. 
+Below, you'll find the options and the listed descriptions. You are welcome to copy this configuration, otherwise, you can copy and rename the `.env.example` file provided in the repository.
 
 Sample File:
 
@@ -17,6 +20,25 @@ REACT_APP_AUTH_TOKEN=
 REACT_APP_STYLE_TYPE=grayscale
 REACT_APP_SHOW_LOGIN_ICON=true
 ```
+
+## At runtime, using `condaStoreConfig`
+
+When using a webpacked version of `conda-store-ui`, you might want to pass it a configuration. 
+In your HTML file, add the following **before** loading the react app :  
+
+```html
+<script>
+    var condaStoreConfig = {
+        REACT_APP_AUTH_METHOD: "cookie",
+        REACT_APP_AUTH_TOKEN: "",
+        REACT_APP_STYLE_TYPE: "grayscale",
+        REACT_APP_SHOW_LOGIN_ICON: "true",
+        REACT_APP_API_URL: "http://localhost:5000/conda-store",
+        REACT_APP_LOGIN_PAGE_URL: "http://localhost:5000/conda-store/login?next=",
+    };
+</script>
+```
+
 
 ## Options
 
