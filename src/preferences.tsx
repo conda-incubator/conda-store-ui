@@ -9,7 +9,8 @@ export interface IPreferences {
   showLoginIcon: boolean;
 }
 
-const { condaStoreConfig = {} } = typeof window !== "undefined" && window as any;
+const { condaStoreConfig = {} } =
+  typeof window !== "undefined" && (window as any);
 
 export const prefDefault: Readonly<IPreferences> = {
   apiUrl:
