@@ -20,6 +20,9 @@ jest.mock(
             },
             {
               version: "0.5.0.pre" // Real-world example: pyarrow 0.5.0.pre
+            },
+            {
+              version: "2023.01.10" // Real-world example: ca-certificates 2023.01.10
             }
           ]
         }
