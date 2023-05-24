@@ -128,7 +128,10 @@ export const VersionSelect = ({
     const safeCompareVersions = (v1: string, v2: string) => {
       const safeV1 = (coerce(v1) || "").toString();
       const safeV2 = (coerce(v2) || "").toString();
-      return compareVersions(safeV1, safeV2);
+
+      // Be sure both versions are not empty before calling the compareVersions method,
+      // in order to avoid the 'Invalid argument not valid semver'
+      return safeV1 && safeV2 ? compareVersions(safeV1, safeV2) : 1;
     };
     sortedVersions = result.sort(safeCompareVersions);
 
