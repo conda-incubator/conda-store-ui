@@ -28,7 +28,7 @@ In your HTML file, add the following **before** loading the react app :
 
 ```html
 <script>
-    var condaStoreConfig = {
+    const condaStoreConfig = {
         REACT_APP_AUTH_METHOD: "cookie",
         REACT_APP_AUTH_TOKEN: "",
         REACT_APP_STYLE_TYPE: "grayscale",
