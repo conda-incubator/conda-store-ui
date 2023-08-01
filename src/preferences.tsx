@@ -9,18 +9,40 @@ export interface IPreferences {
   showLoginIcon: boolean;
 }
 
+const { condaStoreConfig = {} } =
+  typeof window !== "undefined" && (window as any);
+
 export const prefDefault: Readonly<IPreferences> = {
-  apiUrl: process.env.REACT_APP_API_URL ?? "http://localhost:5000/conda-store/",
+  apiUrl:
+    process.env.REACT_APP_API_URL ??
+    condaStoreConfig.REACT_APP_API_URL ??
+    "http://localhost:5000/conda-store/",
+
   authMethod:
     (process.env.REACT_APP_AUTH_METHOD as IPreferences["authMethod"]) ??
+    (condaStoreConfig.REACT_APP_AUTH_METHOD as IPreferences["authMethod"]) ??
     "cookie",
-  authToken: process.env.REACT_APP_AUTH_TOKEN ?? "",
+
+  authToken:
+    process.env.REACT_APP_AUTH_TOKEN ??
+    condaStoreConfig.REACT_APP_AUTH_TOKEN ??
+    "",
+
   loginUrl:
     process.env.REACT_APP_LOGIN_PAGE_URL ??
+    condaStoreConfig.REACT_APP_LOGIN_PAGE_URL ??
     "http://localhost:5000/conda-store/login?next=",
-  styleType: process.env.REACT_APP_STYLE_TYPE ?? "grayscale",
+
+  styleType:
+    process.env.REACT_APP_STYLE_TYPE ??
+    condaStoreConfig.REACT_APP_STYLE_TYPE ??
+    "grayscale",
+
   showLoginIcon: process.env.REACT_APP_SHOW_LOGIN_ICON
     ? JSON.parse(process.env.REACT_APP_SHOW_LOGIN_ICON)
+    : condaStoreConfig !== undefined &&
+      condaStoreConfig.REACT_APP_SHOW_LOGIN_ICON !== undefined
+    ? JSON.parse(condaStoreConfig.REACT_APP_SHOW_LOGIN_ICON)
     : true
 };
 
