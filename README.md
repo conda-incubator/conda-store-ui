@@ -1,5 +1,5 @@
 # conda-store-ui
-Graphical User Interface for [conda-store](https://github.com/conda-incubator/conda-store) 
+Graphical User Interface for [conda-store](https://github.com/conda-incubator/conda-store)
 
 ![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/conda-incubator/conda-store-ui/build.yml?label=Build&logo=GitHub)
 ![GitHub Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/conda-incubator/conda-store-ui/deploy.yml?event=push&label=Deploy&logo=GitHub)
@@ -15,19 +15,19 @@ To learn how to use conda-store-ui alongisde conda-store, please visit our [docu
 
 ## Related Work
 
-conda-store-ui is an addon to [conda-store](https://github.com/conda-incubator/conda-store). If you're looking for the JupyterLab Extension, you can find it at [conda-store-jupyterlab](https://github.com/Quansight/conda-store).
+conda-store-ui is an addon to [conda-store](https://github.com/conda-incubator/conda-store). If you're looking for the JupyterLab Extension, you can find it at [conda-store-jupyterlab](https://github.com/conda-incubator/conda-store).
 
 ## Developing
 
 For developing this application, we use Docker Compose for setting up the infrastructure, and conda as the package manager for node/yarn. Note
-that you can use any method you wish to use yarn/nodejs. 
+that you can use any method you wish to use yarn/nodejs.
 
 1) Clone this repo and from root, start docker compose:
 
 ```bash
 git clone https://github.com/conda-incubator/conda-store-ui.git
 cd conda-store-ui
-docker-compose -f docker-compose-dev.yml up --build 
+docker-compose -f docker-compose-dev.yml up --build
 ```
 
 2) Then, install yarn/node.js.

@@ -11,7 +11,7 @@ For a local deployment, we recommend that you use our provided docker compose fi
 ### 1) Clone the repository and `cd` into the root
 
 ```bash
-git clone https://github.com/Quansight/conda-store-ui.git
+git clone https://github.com/conda-incubator/conda-store-ui.git
 cd conda-store-ui
 ```
 
@@ -25,6 +25,6 @@ docker compose up --build
 
 Since this Dockerfile came bundled with conda-store, all that's left to worry about is authenticating to the server.
 
-### 4) Login by locating the login icon, and clicking on it. 
+### 4) Login by locating the login icon, and clicking on it.
 
 **Note** The default login combination is `username/password`
