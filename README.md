@@ -62,6 +62,10 @@ In order to create a new version of this package, follow these steps:
 
 Latest Release: https://libraries.io/npm/@conda-store%2Fconda-store-ui
 
+## Code of Conduct
+
+To guarantee a welcoming and friendly community, we require all community members to follow our [Code of Conduct](https://github.com/conda-incubator/governance/blob/main/CODE_OF_CONDUCT.md).
+
 ## License
 
 conda-store-ui is developed under the [BSD-3 LICENSE](./LICENSE).
