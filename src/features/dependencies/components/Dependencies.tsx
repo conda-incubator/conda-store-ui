@@ -82,12 +82,7 @@ export const Dependencies = ({
           {dependencies.length ? (
             <>
               {dependencies.map((dependency, index) => (
-                <Box
-                  key={dependency.id}
-                  sx={{
-                    marginBottom: index === listLength - 1 ? "0px" : "20px"
-                  }}
-                >
+                <Box key={dependency.id}>
                   <DependenciesItem
                     mode={mode}
                     dependency={dependency}
