@@ -81,7 +81,7 @@ export const Dependencies = ({
         >
           {dependencies.length ? (
             <>
-              {dependencies.map((dependency, index) => (
+              {dependencies.map(dependency => (
                 <Box key={dependency.id}>
                   <DependenciesItem
                     mode={mode}
