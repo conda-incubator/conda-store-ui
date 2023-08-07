@@ -11,7 +11,7 @@ Graphical User Interface for [conda-store](https://github.com/conda-incubator/co
 
 ## Get Started
 
-To learn how to use conda-store-ui alongisde conda-store, please visit our [documentation](https://quansight.github.io/conda-store-ui/).
+To learn how to use conda-store-ui alongisde conda-store, please visit our [documentation](https://conda-incubator.github.io/conda-store-ui/).
 
 ## Related Work
 
