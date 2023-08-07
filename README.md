@@ -1,5 +1,5 @@
 # conda-store-ui
-Graphical User Interface for [conda-store](https://github.com/conda-incubator/conda-store) 
+Graphical User Interface for [conda-store](https://github.com/conda-incubator/conda-store)
 
 ![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/conda-incubator/conda-store-ui/build.yml?label=Build&logo=GitHub)
 ![GitHub Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/conda-incubator/conda-store-ui/deploy.yml?event=push&label=Deploy&logo=GitHub)
@@ -11,23 +11,23 @@ Graphical User Interface for [conda-store](https://github.com/conda-incubator/co
 
 ## Get Started
 
-To learn how to use conda-store-ui alongisde conda-store, please visit our [documentation](https://quansight.github.io/conda-store-ui/).
+To learn how to use conda-store-ui alongisde conda-store, please visit our [documentation](https://conda-incubator.github.io/conda-store-ui/).
 
 ## Related Work
 
-conda-store-ui is an addon to [conda-store](https://github.com/conda-incubator/conda-store). If you're looking for the JupyterLab Extension, you can find it at [conda-store-jupyterlab](https://github.com/Quansight/conda-store).
+conda-store-ui is an addon to [conda-store](https://github.com/conda-incubator/conda-store). If you're looking for the JupyterLab Extension, you can find it at [conda-store-jupyterlab](https://github.com/conda-incubator/conda-store).
 
 ## Developing
 
-For developing this application, we use Docker Compose for setting up the infrastructure, and conda as the package manager for node/yarn. Note
-that you can use any method you wish to use yarn/nodejs. 
+We use Docker Compose to set up the infrastructure and conda as the package manager for node/yarn. Note
+that you can use any method you wish to use yarn/nodejs.
 
 1) Clone this repo and from root, start docker compose:
 
 ```bash
 git clone https://github.com/conda-incubator/conda-store-ui.git
 cd conda-store-ui
-docker-compose -f docker-compose-dev.yml up --build 
+docker-compose -f docker-compose-dev.yml up --build
 ```
 
 2) Then, install yarn/node.js.
@@ -61,6 +61,10 @@ In order to create a new version of this package, follow these steps:
 * Wait for actions to execute and the new package will be uploaded to `npm`
 
 Latest Release: https://libraries.io/npm/@conda-store%2Fconda-store-ui
+
+## Code of Conduct
+
+To guarantee a welcoming and friendly community, we require all community members to follow our [Code of Conduct](https://github.com/conda-incubator/governance/blob/main/CODE_OF_CONDUCT.md).
 
 ## License
 

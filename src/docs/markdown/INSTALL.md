@@ -1,17 +1,17 @@
-# Installation 
+# Installation
 
 There are multiple ways to utilize `conda-store-ui`. Here, we'll be looking at the supported methods of installation.
 
 ## Local Installation
 
-**Note** that for installing from source, you will stil need a running conda-store somewhere. The easiest way to do this locally is by running conda-store with docker-compose. 
+**Note** that for installing from source, you will stil need a running conda-store somewhere. The easiest way to do this locally is by running conda-store with docker-compose.
 
-1) Clone the [conda-store-ui](https://github.com/Quansight/conda-store-ui.git) repository.
+1) Clone the [conda-store-ui](https://github.com/conda-incubator/conda-store-ui.git) repository.
 
 2) If you have an instance of conda-store you plan to connect to, skip this step. Otherwise, start it using docker.
 
 ```bash
-git clone https://github.com/Quansight/conda-store-ui.git
+git clone https://github.com/conda-incubator/conda-store-ui.git
 cd conda-store-ui
 docker-compose -f docker-compose-dev.yml up --build
 ```
@@ -36,9 +36,9 @@ yarn run start
 
 ## Docker Installation
 
-We provide a oneshot docker-compose file for development purposes. This has been tested with the latest version of docker desktop and docker-compose, and it provides a fresh instance of conda-store.  
+We provide a oneshot docker-compose file for development purposes. This has been tested with the latest version of docker desktop and docker-compose, and it provides a fresh instance of conda-store.
 
-1) Clone the [conda-store-ui](https://github.com/Quansight/conda-store-ui.git) repository.
+1) Clone the [conda-store-ui](https://github.com/conda-incubator/conda-store-ui.git) repository.
 
 2) Start the docker-compose stack.
 
@@ -49,6 +49,6 @@ docker compose up --build
 
 3) Access conda-store-ui at [localhost](http://localhost/)
 
-4) Login by locating the login icon, and clicking on it. The default login combination is `username/password`. 
+4) Login by locating the login icon, and clicking on it. The default login combination is `username/password`.
 
 
