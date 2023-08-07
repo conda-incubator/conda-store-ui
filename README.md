@@ -19,7 +19,7 @@ conda-store-ui is an addon to [conda-store](https://github.com/conda-incubator/c
 
 ## Developing
 
-For developing this application, we use Docker Compose for setting up the infrastructure, and conda as the package manager for node/yarn. Note
+We use Docker Compose to set up the infrastructure and conda as the package manager for node/yarn. Note
 that you can use any method you wish to use yarn/nodejs.
 
 1) Clone this repo and from root, start docker compose:
