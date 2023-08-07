@@ -28,7 +28,10 @@ export const RequestedPackageList = ({
 
   return (
     <Accordion
-      sx={{ width: 420, boxShadow: "none" }}
+      sx={{
+        maxWidth: 420,
+        boxShadow: "none"
+      }}
       disableGutters
       defaultExpanded
     >
