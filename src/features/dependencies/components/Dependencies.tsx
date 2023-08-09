@@ -58,7 +58,7 @@ export const Dependencies = ({
       </StyledAccordionSummary>
       <StyledAccordionDetails
         id="infScroll"
-        sx={{ padding: "15px 21px", maxHeight: "100px" }}
+        sx={{ padding: "15px 21px", maxHeight: "300px" }}
         ref={scrollRef}
       >
         <InfiniteScroll
@@ -81,8 +81,13 @@ export const Dependencies = ({
         >
           {dependencies.length ? (
             <>
-              {dependencies.map(dependency => (
-                <Box key={dependency.id}>
+              {dependencies.map((dependency, index) => (
+                <Box
+                  key={dependency.id}
+                  sx={{
+                    marginBottom: index === listLength - 1 ? "0px" : "2px"
+                  }}
+                >
                   <DependenciesItem
                     mode={mode}
                     dependency={dependency}
