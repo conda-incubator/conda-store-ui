@@ -4,8 +4,7 @@ import Typography from "@mui/material/Typography";
 import { Dependency } from "../../../common/models";
 import Tooltip from "@mui/material/Tooltip";
 import { StyledIconButton } from "../../../styles";
-import { getIconForStyleType } from "../../../utils/helpers";
-import { SquareIconAlt, UploadIcon } from "../../../components";
+import { UploadIcon } from "../../../components";
 
 interface IDependenciesItemProps {
   /**
@@ -26,15 +25,9 @@ const BaseDependenciesItem = ({
   const { name, version } = dependency;
   const isEditMode = mode === "edit";
 
-  const icon = getIconForStyleType(
-    <></>,
-    <SquareIconAlt style={{ marginRight: "8px" }} />
-  );
-
   return (
     <Box sx={{ display: "flex", alignItems: "center" }}>
       <Box sx={{ display: "flex", alignItems: "center", width: "300px" }}>
-        {icon}
         <Typography sx={{ fontSize: "13px", color: "#333" }}>{name}</Typography>
       </Box>
       <Typography
