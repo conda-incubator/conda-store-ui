@@ -56,6 +56,7 @@ export const EnvMetadata = ({
                 currentBuildId={currentBuildId}
                 selectedBuildId={selectedBuildId}
                 builds={builds}
+                mode={mode}
               />
             </div>
           )}
