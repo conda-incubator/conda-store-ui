@@ -26,11 +26,15 @@ import { StyledButtonPrimary } from "../../../../styles";
 import { CondaSpecificationPip } from "../../../../common/models";
 interface ISpecificationEdit {
   descriptionUpdated: boolean;
+  defaultEnvIsChanged: boolean;
+  onDefaultEnvIsChanged: (defaultEnvIsChanged: boolean) => void;
   onUpdateEnvironment: (specification: any) => void;
   onShowDialogAlert: (showDialog: boolean) => void;
 }
 export const SpecificationEdit = ({
   descriptionUpdated,
+  defaultEnvIsChanged,
+  onDefaultEnvIsChanged,
   onUpdateEnvironment,
   onShowDialogAlert
 }: ISpecificationEdit) => {
@@ -64,7 +68,12 @@ export const SpecificationEdit = ({
 
   const onUpdateChannels = useCallback((channels: string[]) => {
     dispatch(updateChannels(channels));
+    onDefaultEnvIsChanged(false);
   }, []);
+
+  const onUpdateDefaultEnvironment = (isChanged: boolean) => {
+    onDefaultEnvIsChanged(isChanged);
+  };
 
   const onUpdateEditor = debounce(
     ({
@@ -90,6 +99,7 @@ export const SpecificationEdit = ({
 
       if (isDifferentChannels || isDifferentPackages) {
         setEnvIsUpdated(true);
+        onUpdateDefaultEnvironment(false);
       }
 
       setCode(code);
@@ -133,7 +143,9 @@ export const SpecificationEdit = ({
     const isDifferentPackages =
       JSON.stringify(requestedPackages) !== stringifiedInitialPackages;
 
-    if (isDifferentChannels || isDifferentPackages) {
+    if (defaultEnvIsChanged) {
+      setEnvIsUpdated(false);
+    } else if (isDifferentChannels || isDifferentPackages) {
       setEnvIsUpdated(true);
     }
   }, [channels, requestedPackages, descriptionUpdated]);
@@ -153,7 +165,10 @@ export const SpecificationEdit = ({
         ) : (
           <>
             <Box sx={{ marginBottom: "30px" }}>
-              <RequestedPackagesEdit packageList={requestedPackages} />
+              <RequestedPackagesEdit
+                packageList={requestedPackages}
+                onDefaultEnvIsChanged={onUpdateDefaultEnvironment}
+              />
             </Box>
             <Box sx={{ marginBottom: "30px" }}>
               <Dependencies

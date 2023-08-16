@@ -18,6 +18,7 @@ interface IEnvMetadataProps {
   mode: "create" | "read-only" | "edit";
   currentBuildId?: number | undefined;
   selectedBuildId?: number;
+  onDefaultEnvIsChanged?: (defaultEnvIsChanged: boolean) => void;
   onUpdateDescription: (description: string) => void;
   onUpdateBuildId: (buildId: number) => void;
 }
@@ -27,12 +28,20 @@ export const EnvMetadata = ({
   description = "",
   currentBuildId,
   selectedBuildId,
+  onDefaultEnvIsChanged,
   onUpdateDescription,
   onUpdateBuildId
 }: IEnvMetadataProps) => {
   const { builds, newCurrentBuild } = useAppSelector(
     state => state.enviroments
   );
+
+  const defaultEnvironmentChanged = (newCurrentBuild: number) => {
+    onUpdateBuildId(newCurrentBuild);
+    if (onDefaultEnvIsChanged) {
+      onDefaultEnvIsChanged(true);
+    }
+  };
 
   return (
     <BlockContainer title="Environment Metadata">
@@ -66,7 +75,7 @@ export const EnvMetadata = ({
           currentBuildId !== newCurrentBuild && (
             <StyledButtonPrimary
               variant="contained"
-              onClick={() => onUpdateBuildId(newCurrentBuild)}
+              onClick={() => defaultEnvironmentChanged(newCurrentBuild)}
               isalttype="true"
             >
               Update Environment Build

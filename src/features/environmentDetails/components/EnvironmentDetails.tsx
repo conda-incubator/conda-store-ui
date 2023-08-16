@@ -68,6 +68,7 @@ export const EnvironmentDetails = ({
   );
   const [artifactType, setArtifactType] = useState<string[]>([]);
   const [showDialog, setShowDialog] = useState(false);
+  const [defaultEnvIsChanged, setDefaultEnvIsChanged] = useState(false);
   const [error, setError] = useState({
     message: "",
     visible: false
@@ -99,6 +100,10 @@ export const EnvironmentDetails = ({
   const updateDescription = (description: string) => {
     setDescription(description);
     setDescriptionIsUpdated(true);
+  };
+
+  const updateDefaultEnvironment = (isChanged: boolean) => {
+    setDefaultEnvIsChanged(isChanged);
   };
 
   const loadArtifacts = async () => {
@@ -268,6 +273,7 @@ export const EnvironmentDetails = ({
           currentBuildId={selectedEnvironment?.current_build_id}
           selectedBuildId={currentBuildId}
           description={description}
+          onDefaultEnvIsChanged={updateDefaultEnvironment}
           onUpdateDescription={updateDescription}
           onUpdateBuildId={updateBuild}
         />
@@ -277,6 +283,8 @@ export const EnvironmentDetails = ({
         {mode === "edit" && (
           <SpecificationEdit
             descriptionUpdated={descriptionIsUpdated}
+            defaultEnvIsChanged={defaultEnvIsChanged}
+            onDefaultEnvIsChanged={updateDefaultEnvironment}
             onUpdateEnvironment={updateEnvironment}
             onShowDialogAlert={showDialog => setShowDialog(showDialog)}
           />

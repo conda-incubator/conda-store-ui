@@ -20,10 +20,12 @@ interface IRequestedPackagesTableRowProps {
    * @param requestedPackage requested package
    */
   requestedPackage: string;
+  onDefaultEnvIsChanged?: (isChanged: boolean) => void;
 }
 
 const BaseRequestedPackagesTableRow = ({
-  requestedPackage
+  requestedPackage,
+  onDefaultEnvIsChanged
 }: IRequestedPackagesTableRowProps) => {
   const dispatch = useAppDispatch();
   const { versionsWithoutConstraints, versionsWithConstraints } =
@@ -35,6 +37,12 @@ const BaseRequestedPackagesTableRow = ({
   if (constraint === "latest") {
     version = versionsWithoutConstraints[name];
   }
+
+  const onUpdateDefaultEnvironment = (isChanged: boolean) => {
+    if (onDefaultEnvIsChanged) {
+      onDefaultEnvIsChanged(isChanged);
+    }
+  };
 
   const updateVersion = (value: string) => {
     let pkgConstraint = constraint === "latest" ? ">=" : constraint;
@@ -48,6 +56,7 @@ const BaseRequestedPackagesTableRow = ({
     dispatch(
       packageUpdated({ currentPackage: requestedPackage, updatedPackage })
     );
+    onUpdateDefaultEnvironment(false);
   };
 
   const updateConstraint = (value: string) => {
@@ -56,9 +65,13 @@ const BaseRequestedPackagesTableRow = ({
     dispatch(
       packageUpdated({ currentPackage: requestedPackage, updatedPackage })
     );
+    onUpdateDefaultEnvironment(false);
   };
 
-  const handleRemove = () => dispatch(packageRemoved(requestedPackage));
+  const handleRemove = () => {
+    dispatch(packageRemoved(requestedPackage));
+    onUpdateDefaultEnvironment(false);
+  };
 
   return (
     <TableRow>
