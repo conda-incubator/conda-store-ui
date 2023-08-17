@@ -7,8 +7,8 @@ describe("artifactList", () => {
   it("should return the artifact list", () => {
     const list = artifactList(CURRENT_BUILD_ID, ARTIFACTS_TYPES);
     expect(list).toEqual([
-      { name: "Link to lockfile", route: "api/v1/build/1/lockfile/" },
-      { name: "Link to yml file", route: "api/v1/build/1/yaml/" }
+      { name: "Show lockfile", route: "api/v1/build/1/lockfile/" },
+      { name: "Show yml file", route: "api/v1/build/1/yaml/" }
     ]);
   });
 

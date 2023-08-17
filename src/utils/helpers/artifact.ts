@@ -7,23 +7,23 @@ const artifactList = (
   }
   const artifact_map = {
     LOCKFILE: {
-      name: "Link to lockfile",
+      name: "Show lockfile",
       route: `api/v1/build/${currentBuildId}/lockfile/`
     },
     YAML: {
-      name: "Link to yml file",
+      name: "Show yml file",
       route: `api/v1/build/${currentBuildId}/yaml/`
     },
     CONDA_PACK: {
-      name: "Link to archive",
+      name: "Download archive",
       route: `api/v1/build/${currentBuildId}/archive/`
     },
     LOGS: {
-      name: `Conda Env ${currentBuildId} log`,
+      name: `Show Conda environment ${currentBuildId} log`,
       route: `api/v1/build/${currentBuildId}/logs/`
     },
     DOCKER_MANIFEST: {
-      name: "Docker image",
+      name: "Show Docker image",
       route: `api/v1/build/${currentBuildId}/docker/`
     }
   };
