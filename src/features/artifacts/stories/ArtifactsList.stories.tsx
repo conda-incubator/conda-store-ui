@@ -12,12 +12,12 @@ const artifactList = [
     route: "/api/v1/build/1/yaml/"
   },
   {
-    name: "Download archive",
-    route: "/api/v1/build/1/archive/"
-  },
-  {
     name: "Show Conda environment 1 log",
     route: "/api/v1/build/1/logs"
+  },
+  {
+    name: "Download archive",
+    route: "/api/v1/build/1/archive/"
   }
 ];
 

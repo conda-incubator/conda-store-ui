@@ -14,10 +14,6 @@ const artifactList = (
       name: "Show yml file",
       route: `api/v1/build/${currentBuildId}/yaml/`
     },
-    CONDA_PACK: {
-      name: "Download archive",
-      route: `api/v1/build/${currentBuildId}/archive/`
-    },
     LOGS: {
       name: `Show Conda environment ${currentBuildId} log`,
       route: `api/v1/build/${currentBuildId}/logs/`
@@ -25,6 +21,10 @@ const artifactList = (
     DOCKER_MANIFEST: {
       name: "Show Docker image",
       route: `api/v1/build/${currentBuildId}/docker/`
+    },
+    CONDA_PACK: {
+      name: "Download archive",
+      route: `api/v1/build/${currentBuildId}/archive/`
     }
   };
 
