@@ -27,6 +27,7 @@ import { CondaSpecificationPip } from "../../../../common/models";
 interface ISpecificationEdit {
   descriptionUpdated: boolean;
   defaultEnvIsChanged: boolean;
+  onSpecificationIsChanged: (specificationIsChanged: boolean) => void;
   onDefaultEnvIsChanged: (defaultEnvIsChanged: boolean) => void;
   onUpdateEnvironment: (specification: any) => void;
   onShowDialogAlert: (showDialog: boolean) => void;
@@ -34,6 +35,7 @@ interface ISpecificationEdit {
 export const SpecificationEdit = ({
   descriptionUpdated,
   defaultEnvIsChanged,
+  onSpecificationIsChanged,
   onDefaultEnvIsChanged,
   onUpdateEnvironment,
   onShowDialogAlert
@@ -73,6 +75,7 @@ export const SpecificationEdit = ({
 
   const onUpdateDefaultEnvironment = (isChanged: boolean) => {
     onDefaultEnvIsChanged(isChanged);
+    onSpecificationIsChanged(!isChanged);
   };
 
   const onUpdateEditor = debounce(
@@ -100,6 +103,7 @@ export const SpecificationEdit = ({
       if (isDifferentChannels || isDifferentPackages) {
         setEnvIsUpdated(true);
         onUpdateDefaultEnvironment(false);
+        onSpecificationIsChanged(true);
       }
 
       setCode(code);
@@ -128,6 +132,7 @@ export const SpecificationEdit = ({
 
   const onCancelEdition = () => {
     setEnvIsUpdated(false);
+    onSpecificationIsChanged(false);
     dispatch(modeChanged(EnvironmentDetailsModes.READ));
     dispatch(updatePackages(initialPackages.current));
     dispatch(updateChannels(initialChannels.current));

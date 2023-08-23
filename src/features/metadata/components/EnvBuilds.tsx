@@ -29,7 +29,7 @@ export const EnvBuilds = ({
           paddingBottom: "5px"
         }}
       >
-        {mode === "edit" ? "Change Default Build:" : "Builds:"}
+        {mode === "edit" ? "Change active environment version:" : "Builds:"}
       </StyledMetadataItem>
       {currentBuild && (
         <>

@@ -18,6 +18,8 @@ interface IEnvMetadataProps {
   mode: "create" | "read-only" | "edit";
   currentBuildId?: number | undefined;
   selectedBuildId?: number;
+  defaultEnvIsChanged?: boolean;
+  specificationIsChanged?: boolean;
   onDefaultEnvIsChanged?: (defaultEnvIsChanged: boolean) => void;
   onUpdateDescription: (description: string) => void;
   onUpdateBuildId: (buildId: number) => void;
@@ -28,6 +30,7 @@ export const EnvMetadata = ({
   description = "",
   currentBuildId,
   selectedBuildId,
+  specificationIsChanged,
   onDefaultEnvIsChanged,
   onUpdateDescription,
   onUpdateBuildId
@@ -40,6 +43,14 @@ export const EnvMetadata = ({
     onUpdateBuildId(newCurrentBuild);
     if (onDefaultEnvIsChanged) {
       onDefaultEnvIsChanged(true);
+    }
+  };
+
+  const specificationDidChange = () => {
+    if (specificationIsChanged) {
+      return specificationIsChanged;
+    } else {
+      return false;
     }
   };
 
@@ -77,8 +88,9 @@ export const EnvMetadata = ({
               variant="contained"
               onClick={() => defaultEnvironmentChanged(newCurrentBuild)}
               isalttype="true"
+              disabled={specificationDidChange()}
             >
-              Update Environment Build
+              Change environment version
             </StyledButtonPrimary>
           )}
       </div>
