@@ -17,7 +17,7 @@ export interface IArtifactsProps {
 export const ArtifactList = ({ artifacts }: IArtifactsProps) => {
   const { typography } = useTheme();
 
-  // Groups all the artifacts that start with "Show" at the beginning
+  // Groups all the artifacts that start with "Show" at the beginning - this is to ensure consistency across display and naming
   const order = (artifact_list: Artifact[]) => {
     console.log(artifact_list);
     const ordered_list = [];
