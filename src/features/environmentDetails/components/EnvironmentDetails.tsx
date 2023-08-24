@@ -68,7 +68,7 @@ export const EnvironmentDetails = ({
   );
   const [artifactType, setArtifactType] = useState<string[]>([]);
   const [showDialog, setShowDialog] = useState(false);
-  const [defaultEnvIsChanged, setDefaultEnvIsChanged] = useState(false);
+  const [defaultEnvVersIsChanged, setDefaultEnvVersIsChanged] = useState(false);
   const [specificationIsChanged, setSpecificationIsChanged] = useState(false);
   const [error, setError] = useState({
     message: "",
@@ -107,8 +107,8 @@ export const EnvironmentDetails = ({
     setSpecificationIsChanged(isChanged);
   };
 
-  const updateDefaultEnvironment = (isChanged: boolean) => {
-    setDefaultEnvIsChanged(isChanged);
+  const updateDefaultEnvironmentVersion = (isChanged: boolean) => {
+    setDefaultEnvVersIsChanged(isChanged);
   };
 
   const loadArtifacts = async () => {
@@ -279,7 +279,7 @@ export const EnvironmentDetails = ({
           selectedBuildId={currentBuildId}
           description={description}
           specificationIsChanged={specificationIsChanged}
-          onDefaultEnvIsChanged={updateDefaultEnvironment}
+          onDefaultEnvIsChanged={updateDefaultEnvironmentVersion}
           onUpdateDescription={updateDescription}
           onUpdateBuildId={updateBuild}
         />
@@ -289,9 +289,9 @@ export const EnvironmentDetails = ({
         {mode === "edit" && (
           <SpecificationEdit
             descriptionUpdated={descriptionIsUpdated}
-            defaultEnvIsChanged={defaultEnvIsChanged}
+            defaultEnvVersIsChanged={defaultEnvVersIsChanged}
             onSpecificationIsChanged={updateSpecificationIsChanged}
-            onDefaultEnvIsChanged={updateDefaultEnvironment}
+            onDefaultEnvIsChanged={updateDefaultEnvironmentVersion}
             onUpdateEnvironment={updateEnvironment}
             onShowDialogAlert={showDialog => setShowDialog(showDialog)}
           />

@@ -26,15 +26,15 @@ import { StyledButtonPrimary } from "../../../../styles";
 import { CondaSpecificationPip } from "../../../../common/models";
 interface ISpecificationEdit {
   descriptionUpdated: boolean;
-  defaultEnvIsChanged: boolean;
+  defaultEnvVersIsChanged: boolean;
   onSpecificationIsChanged: (specificationIsChanged: boolean) => void;
-  onDefaultEnvIsChanged: (defaultEnvIsChanged: boolean) => void;
+  onDefaultEnvIsChanged: (defaultEnvVersIsChanged: boolean) => void;
   onUpdateEnvironment: (specification: any) => void;
   onShowDialogAlert: (showDialog: boolean) => void;
 }
 export const SpecificationEdit = ({
   descriptionUpdated,
-  defaultEnvIsChanged,
+  defaultEnvVersIsChanged,
   onSpecificationIsChanged,
   onDefaultEnvIsChanged,
   onUpdateEnvironment,
@@ -148,7 +148,7 @@ export const SpecificationEdit = ({
     const isDifferentPackages =
       JSON.stringify(requestedPackages) !== stringifiedInitialPackages;
 
-    if (defaultEnvIsChanged) {
+    if (defaultEnvVersIsChanged) {
       setEnvIsUpdated(false);
     } else if (isDifferentChannels || isDifferentPackages) {
       setEnvIsUpdated(true);

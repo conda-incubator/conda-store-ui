@@ -18,9 +18,9 @@ interface IEnvMetadataProps {
   mode: "create" | "read-only" | "edit";
   currentBuildId?: number | undefined;
   selectedBuildId?: number;
-  defaultEnvIsChanged?: boolean;
+  defaultEnvVersIsChanged?: boolean;
   specificationIsChanged?: boolean;
-  onDefaultEnvIsChanged?: (defaultEnvIsChanged: boolean) => void;
+  onDefaultEnvIsChanged?: (defaultEnvVersIsChanged: boolean) => void;
   onUpdateDescription: (description: string) => void;
   onUpdateBuildId: (buildId: number) => void;
 }
