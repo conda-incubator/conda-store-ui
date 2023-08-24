@@ -17,6 +17,25 @@ export interface IArtifactsProps {
 export const ArtifactList = ({ artifacts }: IArtifactsProps) => {
   const { typography } = useTheme();
 
+  // Groups all the artifacts that start with "Show" at the beginning - this is to ensure consistency across display and naming
+  const order = (artifact_list: Artifact[]) => {
+    console.log(artifact_list);
+    const ordered_list = [];
+    for (let i = 0; i < artifact_list.length; i++) {
+      const item = artifact_list[i];
+      if (item.name.includes("Show")) {
+        ordered_list.unshift(item);
+      } else {
+        ordered_list.push(item);
+      }
+    }
+    return ordered_list;
+  };
+
+  if (artifacts) {
+    artifacts = order(artifacts);
+  }
+
   return (
     <BlockContainer title="Logs and Artifacts">
       {artifacts.length ? (

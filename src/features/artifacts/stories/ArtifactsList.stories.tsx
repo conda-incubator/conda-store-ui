@@ -4,20 +4,20 @@ import { ArtifactList } from "../components";
 
 const artifactList = [
   {
-    name: "Link to lockfile",
+    name: "Show lockfile",
     route: "/api/v1/build/1/lockfile/"
   },
   {
-    name: "Link to yml file",
+    name: "Show yml file",
     route: "/api/v1/build/1/yaml/"
   },
   {
-    name: "Link to archive",
-    route: "/api/v1/build/1/archive/"
+    name: "Show Conda environment 1 log",
+    route: "/api/v1/build/1/logs"
   },
   {
-    name: "Conda Env 1 log",
-    route: "/api/v1/build/1/logs"
+    name: "Download archive",
+    route: "/api/v1/build/1/archive/"
   }
 ];
 

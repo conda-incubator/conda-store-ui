@@ -5,7 +5,7 @@ import { ArtifactItem } from "../../src/features/artifacts/components/ArtifactsI
 describe("<ArtifactItem />", () => {
   it("should render component", () => {
     const artifactItem = {
-      name: "Link to lockfile",
+      name: "Show lockfile",
       route: "/api/v1/build/{build_id}/lockfile/"
     };
     const component = render(<ArtifactItem artifact={artifactItem} />);

@@ -5,7 +5,7 @@ import { mockTheme } from "../testutils";
 
 const ARTIFACTS = [
   {
-    name: "Link to lockfile",
+    name: "Show lockfile",
     route: "/api/v1/build/1/lockfile/"
   }
 ];
@@ -17,8 +17,8 @@ describe("<ArtifactList />", () => {
     );
 
     expect(screen.getByText("Logs and Artifacts")).toBeInTheDocument();
-    expect(screen.getByText("Link to lockfile")).toBeVisible();
-    expect(screen.getByText("Link to lockfile")).toHaveAttribute(
+    expect(screen.getByText("Show lockfile")).toBeVisible();
+    expect(screen.getByText("Show lockfile")).toHaveAttribute(
       "href",
       "http://localhost:5000/api/v1/build/1/lockfile/"
     );
