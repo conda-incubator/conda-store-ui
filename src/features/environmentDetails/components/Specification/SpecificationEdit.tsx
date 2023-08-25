@@ -26,11 +26,17 @@ import { StyledButtonPrimary } from "../../../../styles";
 import { CondaSpecificationPip } from "../../../../common/models";
 interface ISpecificationEdit {
   descriptionUpdated: boolean;
+  defaultEnvVersIsChanged: boolean;
+  onSpecificationIsChanged: (specificationIsChanged: boolean) => void;
+  onDefaultEnvIsChanged: (defaultEnvVersIsChanged: boolean) => void;
   onUpdateEnvironment: (specification: any) => void;
   onShowDialogAlert: (showDialog: boolean) => void;
 }
 export const SpecificationEdit = ({
   descriptionUpdated,
+  defaultEnvVersIsChanged,
+  onSpecificationIsChanged,
+  onDefaultEnvIsChanged,
   onUpdateEnvironment,
   onShowDialogAlert
 }: ISpecificationEdit) => {
@@ -64,7 +70,13 @@ export const SpecificationEdit = ({
 
   const onUpdateChannels = useCallback((channels: string[]) => {
     dispatch(updateChannels(channels));
+    onDefaultEnvIsChanged(false);
   }, []);
+
+  const onUpdateDefaultEnvironment = (isChanged: boolean) => {
+    onDefaultEnvIsChanged(isChanged);
+    onSpecificationIsChanged(!isChanged);
+  };
 
   const onUpdateEditor = debounce(
     ({
@@ -90,6 +102,8 @@ export const SpecificationEdit = ({
 
       if (isDifferentChannels || isDifferentPackages) {
         setEnvIsUpdated(true);
+        onUpdateDefaultEnvironment(false);
+        onSpecificationIsChanged(true);
       }
 
       setCode(code);
@@ -118,6 +132,7 @@ export const SpecificationEdit = ({
 
   const onCancelEdition = () => {
     setEnvIsUpdated(false);
+    onSpecificationIsChanged(false);
     dispatch(modeChanged(EnvironmentDetailsModes.READ));
     dispatch(updatePackages(initialPackages.current));
     dispatch(updateChannels(initialChannels.current));
@@ -133,7 +148,9 @@ export const SpecificationEdit = ({
     const isDifferentPackages =
       JSON.stringify(requestedPackages) !== stringifiedInitialPackages;
 
-    if (isDifferentChannels || isDifferentPackages) {
+    if (defaultEnvVersIsChanged) {
+      setEnvIsUpdated(false);
+    } else if (isDifferentChannels || isDifferentPackages) {
       setEnvIsUpdated(true);
     }
   }, [channels, requestedPackages, descriptionUpdated]);
@@ -153,7 +170,10 @@ export const SpecificationEdit = ({
         ) : (
           <>
             <Box sx={{ marginBottom: "30px" }}>
-              <RequestedPackagesEdit packageList={requestedPackages} />
+              <RequestedPackagesEdit
+                packageList={requestedPackages}
+                onDefaultEnvIsChanged={onUpdateDefaultEnvironment}
+              />
             </Box>
             <Box sx={{ marginBottom: "30px" }}>
               <Dependencies

@@ -9,12 +9,14 @@ interface IData {
   currentBuildId: number;
   selectedBuildId: number;
   builds: IBuild[];
+  mode: "create" | "read-only" | "edit";
 }
 
 export const EnvBuilds = ({
   currentBuildId,
   selectedBuildId,
-  builds
+  builds,
+  mode
 }: IData) => {
   const envBuilds = builds.length ? buildMapper(builds, currentBuildId) : [];
   const currentBuild = envBuilds.find(build => build.id === selectedBuildId);
@@ -27,7 +29,7 @@ export const EnvBuilds = ({
           paddingBottom: "5px"
         }}
       >
-        Builds:
+        {mode === "edit" ? "Change active environment version:" : "Builds:"}
       </StyledMetadataItem>
       {currentBuild && (
         <>

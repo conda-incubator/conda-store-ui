@@ -18,6 +18,9 @@ interface IEnvMetadataProps {
   mode: "create" | "read-only" | "edit";
   currentBuildId?: number | undefined;
   selectedBuildId?: number;
+  defaultEnvVersIsChanged?: boolean;
+  specificationIsChanged?: boolean;
+  onDefaultEnvIsChanged?: (defaultEnvVersIsChanged: boolean) => void;
   onUpdateDescription: (description: string) => void;
   onUpdateBuildId: (buildId: number) => void;
 }
@@ -27,12 +30,29 @@ export const EnvMetadata = ({
   description = "",
   currentBuildId,
   selectedBuildId,
+  specificationIsChanged,
+  onDefaultEnvIsChanged,
   onUpdateDescription,
   onUpdateBuildId
 }: IEnvMetadataProps) => {
   const { builds, newCurrentBuild } = useAppSelector(
     state => state.enviroments
   );
+
+  const defaultEnvironmentChanged = (newCurrentBuild: number) => {
+    onUpdateBuildId(newCurrentBuild);
+    if (onDefaultEnvIsChanged) {
+      onDefaultEnvIsChanged(true);
+    }
+  };
+
+  const specificationDidChange = () => {
+    if (specificationIsChanged) {
+      return specificationIsChanged;
+    } else {
+      return false;
+    }
+  };
 
   return (
     <BlockContainer title="Environment Metadata">
@@ -56,6 +76,7 @@ export const EnvMetadata = ({
                 currentBuildId={currentBuildId}
                 selectedBuildId={selectedBuildId}
                 builds={builds}
+                mode={mode}
               />
             </div>
           )}
@@ -65,10 +86,11 @@ export const EnvMetadata = ({
           currentBuildId !== newCurrentBuild && (
             <StyledButtonPrimary
               variant="contained"
-              onClick={() => onUpdateBuildId(newCurrentBuild)}
+              onClick={() => defaultEnvironmentChanged(newCurrentBuild)}
               isalttype="true"
+              disabled={specificationDidChange()}
             >
-              Update Environment Build
+              Change environment version
             </StyledButtonPrimary>
           )}
       </div>

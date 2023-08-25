@@ -27,10 +27,12 @@ export interface IRequestedPackagesEditProps {
    * @param packageList list of packages that we get from the API
    */
   packageList: (string | CondaSpecificationPip)[];
+  onDefaultEnvIsChanged?: (isChanged: boolean) => void;
 }
 
 export const RequestedPackagesEdit = ({
-  packageList
+  packageList,
+  onDefaultEnvIsChanged
 }: IRequestedPackagesEditProps) => {
   const dispatch = useAppDispatch();
   const [isAdding, setIsAdding] = useState(false);
@@ -38,6 +40,15 @@ export const RequestedPackagesEdit = ({
 
   const handleSubmit = (packageName: string) => {
     dispatch(packageAdded(packageName));
+    if (onDefaultEnvIsChanged) {
+      onUpdateDefaultEnvironment(false);
+    }
+  };
+
+  const onUpdateDefaultEnvironment = (isChanged: boolean) => {
+    if (onDefaultEnvIsChanged) {
+      onDefaultEnvIsChanged(isChanged);
+    }
   };
 
   const filteredPackageList = useMemo(
@@ -104,6 +115,7 @@ export const RequestedPackagesEdit = ({
               <RequestedPackagesTableRow
                 key={requestedPackage}
                 requestedPackage={requestedPackage}
+                onDefaultEnvIsChanged={onUpdateDefaultEnvironment}
               />
             ))}
           </TableBody>
