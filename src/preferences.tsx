@@ -6,7 +6,8 @@ export interface IPreferences {
   authToken: string;
   loginUrl: string;
   styleType: string;
-  showLoginIcon: boolean;
+  showAuthButton: boolean;
+  logoutUrl: string;
 }
 
 const { condaStoreConfig = {} } =
@@ -38,12 +39,17 @@ export const prefDefault: Readonly<IPreferences> = {
     condaStoreConfig.REACT_APP_STYLE_TYPE ??
     "grayscale",
 
-  showLoginIcon: process.env.REACT_APP_SHOW_LOGIN_ICON
-    ? JSON.parse(process.env.REACT_APP_SHOW_LOGIN_ICON)
+  showAuthButton: process.env.REACT_APP_SHOW_AUTH_BUTTON
+    ? JSON.parse(process.env.REACT_APP_SHOW_AUTH_BUTTON)
     : condaStoreConfig !== undefined &&
-      condaStoreConfig.REACT_APP_SHOW_LOGIN_ICON !== undefined
-    ? JSON.parse(condaStoreConfig.REACT_APP_SHOW_LOGIN_ICON)
-    : true
+      condaStoreConfig.REACT_APP_SHOW_AUTH_BUTTON !== undefined
+    ? JSON.parse(condaStoreConfig.REACT_APP_SHOW_AUTH_BUTTON)
+    : true,
+
+  logoutUrl:
+    process.env.REACT_APP_LOGOUT_PAGE_URL ??
+    condaStoreConfig.REACT_APP_LOGOUT_PAGE_URL ??
+    "http://localhost:5000/conda-store/logout?next=/"
 };
 
 export class Preferences implements IPreferences {
@@ -71,8 +77,12 @@ export class Preferences implements IPreferences {
     return this._styleType;
   }
 
-  get showLoginIcon() {
-    return this._showLoginIcon;
+  get showAuthButton() {
+    return this._showAuthButton;
+  }
+
+  get logoutUrl() {
+    return this._logoutUrl;
   }
 
   set(pref: IPreferences) {
@@ -81,7 +91,8 @@ export class Preferences implements IPreferences {
     this._authToken = pref.authToken;
     this._loginUrl = pref.loginUrl;
     this._styleType = pref.styleType;
-    this._showLoginIcon = pref.showLoginIcon;
+    this._showAuthButton = pref.showAuthButton;
+    this._logoutUrl = pref.logoutUrl;
   }
 
   private _apiUrl: IPreferences["apiUrl"];
@@ -89,7 +100,8 @@ export class Preferences implements IPreferences {
   private _authToken: IPreferences["authToken"];
   private _loginUrl: IPreferences["loginUrl"];
   private _styleType: IPreferences["styleType"];
-  private _showLoginIcon: IPreferences["showLoginIcon"];
+  private _showAuthButton: IPreferences["showAuthButton"];
+  private _logoutUrl: IPreferences["logoutUrl"];
 }
 
 export const prefGlobal = new Preferences();

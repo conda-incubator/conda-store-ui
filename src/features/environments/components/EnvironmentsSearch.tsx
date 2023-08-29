@@ -2,12 +2,11 @@ import Typography from "@mui/material/Typography";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import Box from "@mui/material/Box";
 import InputAdornment from "@mui/material/InputAdornment";
-import Link from "@mui/material/Link";
 import React from "react";
 
 import { PrefContext } from "../../../preferences";
-import { LoginIcon, SearchIconAlt } from "../../../components";
-import { getIconForStyleType } from "../../../utils/helpers";
+import { SearchIconAlt } from "../../../components";
+import { AuthButton } from "../../auth";
 
 interface IEnvironmentsSearchProps {
   /**
@@ -18,27 +17,12 @@ interface IEnvironmentsSearchProps {
 
 export const EnvironmentsSearch = ({ onChange }: IEnvironmentsSearchProps) => {
   const prefs = React.useContext(PrefContext);
-  const showLoginIcon = prefs.showLoginIcon;
+  const showAuthButton = prefs.showAuthButton;
   const isCookieAuthMethod = prefs.authMethod === "cookie";
-  const authUrl = prefs.loginUrl;
-  const pageUrl = window.location.href;
-  const loginPageUrl = `${authUrl}${pageUrl}`;
-  let login;
+  let authButton;
 
-  const loginIcon = getIconForStyleType(
-    <LoginIcon color="#686868" />,
-    <LoginIcon color="#B9D9BD" />
-  );
-
-  if (showLoginIcon && isCookieAuthMethod) {
-    login = (
-      <Link
-        href={loginPageUrl}
-        sx={{ position: "absolute", top: 14, right: 18 }}
-      >
-        {loginIcon}
-      </Link>
-    );
+  if (showAuthButton && isCookieAuthMethod) {
+    authButton = <AuthButton></AuthButton>;
   }
 
   return (
@@ -52,16 +36,16 @@ export const EnvironmentsSearch = ({ onChange }: IEnvironmentsSearchProps) => {
         data-testid="env-search-title"
         sx={{
           marginBottom: "14px",
-          textAlign: "center",
+          textAlign: "left",
           color: " #333",
           fontWeight: 600,
           fontSize: "14px",
-          marginTop: "30px"
+          marginTop: "40px"
         }}
       >
         Package Manager
       </Typography>
-      {login}
+      {authButton}
       <OutlinedInput
         onChange={onChange}
         size="small"
