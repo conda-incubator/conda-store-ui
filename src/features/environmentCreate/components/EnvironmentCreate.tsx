@@ -59,7 +59,7 @@ export const EnvironmentCreate = ({ environmentNotification }: IEnvCreate) => {
       namespace,
       specification: `${stringify(
         code
-      )}\ndescription: ${description}\nname: ${name}\nprefix: null`
+      )}\ndescription: '${description}'\nname: ${name}\nprefix: null`
     };
 
     try {
