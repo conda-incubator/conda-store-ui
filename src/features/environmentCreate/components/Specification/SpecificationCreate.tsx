@@ -69,6 +69,13 @@ export const SpecificationCreate = ({ onCreateEnvironment }: any) => {
     setShow(value);
   };
 
+  const formatCode = (channels: string[], dependencies: string[]) => {
+    if (channels.length === 0 && dependencies.length === 0) {
+      return "channels:\n  -\ndependencies:\n  -";
+    }
+    return stringify({ channels, dependencies: dependencies });
+  };
+
   const handleSubmit = () => {
     const code = show
       ? editorContent
@@ -92,10 +99,7 @@ export const SpecificationCreate = ({ onCreateEnvironment }: any) => {
       <Box>
         {show ? (
           <CodeEditor
-            code={stringify({
-              channels,
-              dependencies: requestedPackages
-            })}
+            code={formatCode(channels, requestedPackages)}
             onChangeEditor={onUpdateEditor}
           />
         ) : (
