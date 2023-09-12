@@ -15,7 +15,7 @@ To learn how to use conda-store-ui alongisde conda-store, please visit our [docu
 
 ## Related Work
 
-conda-store-ui is an addon to [conda-store](https://github.com/conda-incubator/conda-store). If you're looking for the JupyterLab Extension, you can find it at [conda-store-jupyterlab](https://github.com/conda-incubator/conda-store).
+conda-store-ui is an addon to [conda-store](https://github.com/conda-incubator/conda-store). If you're looking for the JupyterLab Extension, you can find it at [jupyterlab-conda-store](https://github.com/conda-incubator/jupyterlab-conda-store).
 
 ## Developing
 
