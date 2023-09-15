@@ -1,4 +1,5 @@
 export * from "./App";
 export { IPreferences } from "./preferences";
 export { store } from "./store";
-export { theme, themeDecorator } from "./theme";
+export { grayscaleTheme, greenTheme, themeDecorator } from "./theme";
+export * from "./colors";

@@ -1,7 +1,9 @@
 import { createTheme, ThemeProvider } from "@mui/material";
 import React from "react";
 
-export const theme = createTheme({
+import { green, purple, gray } from "./colors";
+
+export const grayscaleTheme = createTheme({
   typography: {
     fontFamily: '"Inter", sans-serif'
   },
@@ -15,6 +17,30 @@ export const theme = createTheme({
   }
 });
 
+export const greenTheme = createTheme({
+  typography: {
+    fontFamily: '"Inter", sans-serif'
+  },
+  palette: {
+    primary: {
+      light: green[100],
+      main: green[400],
+      dark: green[600]
+    },
+    secondary: {
+      light: gray[100],
+      main: gray[400],
+      dark: gray[600]
+    },
+    warning: {
+      light: purple[100],
+      main: purple[400],
+      dark: purple[600]
+    },
+    mode: "light"
+  }
+});
+
 export const themeDecorator = (func: any) => (
-  <ThemeProvider theme={theme}>{func()}</ThemeProvider>
+  <ThemeProvider theme={greenTheme}>{func()}</ThemeProvider>
 );
