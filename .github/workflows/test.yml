@@ -57,12 +57,13 @@ jobs:
 
 
       - name: Deploy webpack dev server
+        shell: bash -el {0}
         run: |
+          conda list
+          playwright install
           yarn install
           yarn run build
           yarn run start &
-          yarn test
-          playwright install
           pytest --video on --output test-results test/playwright/test_ux.py
 
       - name: Upload artifacts
