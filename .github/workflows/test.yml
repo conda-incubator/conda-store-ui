@@ -41,7 +41,7 @@ jobs:
         with:
           mamba-version: "*"
           activate-environment: test-env
-          environment-file: environment-dev.yaml
+          environment-file: environment_dev.yaml
           auto-activate-base: false
 
       - name: Deploy conda-store-server docker container
@@ -56,14 +56,15 @@ jobs:
           yarn install
           yarn run build
           yarn run start
+          yarn test
 
       - name: Run Playwright tests
         run: |
           playwright install
-          pytest --video on test/playwright/test_ux.py
+          pytest --video on --output test-results test/playwright/test_ux.py
 
       - uses: actions/upload-artifact@v2
         if: ${{ always() }}
         with:
           name: playwright-tests
-          path: screenshots
+          path: test-results

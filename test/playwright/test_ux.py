@@ -39,7 +39,7 @@ def login_sequence(page, screenshot=False):
     page.locator("text=Log in").click()
 
     if screenshot:
-        page.screenshot(path="screenshots/conda-store-login_screen.png")
+        page.screenshot(path="test-results/conda-store-login_screen.png")
 
     # Fill in the Username field
     page.locator('[placeholder="Username"]').fill("username")
@@ -51,7 +51,7 @@ def login_sequence(page, screenshot=False):
         page.locator('button:has-text("Sign In")').click()
 
     if screenshot:
-        page.screenshot(path="screenshots/conda-store-authenticated.png")
+        page.screenshot(path="test-results/conda-store-authenticated.png")
 
 
 def create_new_environment(page, screenshot=False):
@@ -82,7 +82,7 @@ def create_new_environment(page, screenshot=False):
     # click the + to create a new env
     page.get_by_label("Create a new environment in the username namespace").click()
     if screenshot:
-        page.screenshot(path="screenshots/conda-store-new-env.png")
+        page.screenshot(path="test-results/conda-store-new-env.png")
     # fill in the env name
     page.get_by_placeholder("Environment name").fill(new_env_name)
     # fill in the description
@@ -154,7 +154,7 @@ def existing_environment_interactions(page, env_name, time_to_build_env=2*60*100
     page.get_by_role("button", name="Edit").click()
     page.get_by_label("Switch to YAML Editor").check()
     if screenshot:
-        page.screenshot(path="screenshots/conda-store-yaml-editor.png")
+        page.screenshot(path="test-results/conda-store-yaml-editor.png")
     page.get_by_text("- rich").click()
     # TODO: is "-pip: nothing" a bug?
     page.get_by_text("channels: - conda-forgedependencies: - rich - pip: - nothing - ipykernel").fill("channels:\n  - conda-forge\ndependencies:\n  - rich\n  - python\n  - pip:\n      - nothing\n  - ipykernel\n\n")
@@ -224,9 +224,9 @@ def test_integration(page: Page, test_config, screenshot):
     # Go to http://localhost:{server_port}
     page.goto(test_config['base_url'], wait_until="domcontentloaded")
 
-    page.screenshot(path="screenshots/conda-store-unauthenticated.png")
+    page.screenshot(path="test-results/conda-store-unauthenticated.png")
     if screenshot:
-        page.screenshot(path="screenshots/conda-store-unauthenticated.png")
+        page.screenshot(path="test-results/conda-store-unauthenticated.png")
 
     login_sequence(page, screenshot=screenshot)
 
