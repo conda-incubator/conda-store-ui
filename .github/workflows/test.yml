@@ -41,7 +41,7 @@ jobs:
         with:
           mamba-version: "*"
           activate-environment: test-env
-          environment-file: environment_dev.yaml
+          environment-file: environment_dev.yml
           auto-activate-base: false
 
       - name: Deploy conda-store-server docker container
@@ -56,6 +56,9 @@ jobs:
           yarn install
           yarn run build
           yarn run start
+
+      - name: Test webpack dev server
+        run: |
           yarn test
 
       - name: Run Playwright tests
