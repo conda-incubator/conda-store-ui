@@ -45,6 +45,10 @@ jobs:
           environment-file: environment_dev.yml
           auto-activate-base: false
 
+      - name: Create Environment variables file
+        run: |
+          envsubst < .env.example > .env
+
       - name: Install Dependencies
         run: |
           sudo apt install wait-for-it -y
@@ -65,7 +69,7 @@ jobs:
           yarn install
           yarn run build
           yarn run start &
-          pytest --video on --output test-results test/playwright/test_ux.py
+          pytest --video on --output test-results --screenshots true test/playwright/test_ux.py
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
