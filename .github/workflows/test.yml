@@ -1,0 +1,69 @@
+name: Tests
+
+env:
+  CONDA_STORE_URL: http://localhost:5000/conda-store
+  CONDA_STORE_AUTH: basic
+  CONDA_STORE_USERNAME: username
+  CONDA_STORE_PASSWORD: password
+  REACT_APP_API_URL: http://localhost:5000/conda-store/
+  REACT_APP_AUTH_METHOD: cookie
+  REACT_APP_LOGIN_PAGE_URL: http://localhost:5000/conda-store/login?next=
+  REACT_APP_AUTH_TOKEN: 
+  REACT_APP_STYLE_TYPE: green-accent
+  REACT_APP_CONTEXT: webapp
+  REACT_APP_SHOW_AUTH_BUTTON: true
+  REACT_APP_LOGOUT_PAGE_URL: http://localhost:5000/conda-store/logout?next=/ 
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  test-conda-store-ui:
+    name: 'unit-test conda-store-ui'
+    strategy:
+      matrix:
+        # cannot run on windows due to needing fake-chroot for conda-docker
+        # osx takes forever to get a scheduled job
+        os: [ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        shell: bash -el {0}
+    steps:
+      - name: 'Checkout Repository'
+        uses: actions/checkout@master
+
+      - name: Set up Python
+        uses: conda-incubator/setup-miniconda@v2
+        with:
+          mamba-version: "*"
+          activate-environment: test-env
+          environment-file: environment-dev.yaml
+          auto-activate-base: false
+
+      - name: Deploy conda-store-server docker container
+        run: |
+          docker-compose -f docker-compose-dev.yml up --build
+          docker ps
+
+          wait-for-it localhost:5000 # conda-store-server
+
+      - name: Deploy webpack dev server
+        run: |
+          yarn install
+          yarn run build
+          yarn run start
+
+      - name: Run Playwright tests
+        run: |
+          playwright install
+          pytest --video on test/playwright/test_ux.py
+
+      - uses: actions/upload-artifact@v2
+        if: ${{ always() }}
+        with:
+          name: playwright-tests
+          path: screenshots

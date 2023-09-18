@@ -149,3 +149,6 @@ coverage
 *.swp
 
 src/version.ts
+
+# playwright screenshots
+static
