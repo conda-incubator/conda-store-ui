@@ -44,6 +44,10 @@ jobs:
           environment-file: environment_dev.yml
           auto-activate-base: false
 
+      - name: Install Dependencies
+        run: |
+          sudo apt install wait-for-it -y
+
       - name: Deploy conda-store-server docker container
         run: |
           docker-compose -f docker-compose-dev.yml up -d --build
