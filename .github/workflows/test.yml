@@ -13,6 +13,7 @@ env:
   REACT_APP_CONTEXT: webapp
   REACT_APP_SHOW_AUTH_BUTTON: true
   REACT_APP_LOGOUT_PAGE_URL: http://localhost:5000/conda-store/logout?next=/ 
+  YARN_ENABLE_IMMUTABLE_INSTALLS: false
 
 on:
   pull_request:
