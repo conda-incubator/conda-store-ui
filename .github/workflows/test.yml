@@ -52,17 +52,6 @@ jobs:
           wait-for-it localhost:5000 # conda-store-server
 
 
-      # - name: Deployed UI tests
-      #   uses: ./
-      #   with:
-      #     build: yarn run build
-      #     start: yarn start
-      #     # wait-on: 'http://localhost:5001'
-      #   run: |
-      #     yarn test
-      #     playwright install
-      #     pytest --video on --output test-results test/playwright/test_ux.py
-
       - name: Deploy webpack dev server
         run: |
           yarn install
@@ -72,17 +61,8 @@ jobs:
           playwright install
           pytest --video on --output test-results test/playwright/test_ux.py
 
-      # - name: Test webpack dev server
-      #   run: |
-      #     yarn test
-
-      # - name: Run Playwright tests
-      #   run: |
-      #     playwright install
-      #     pytest --video on --output test-results test/playwright/test_ux.py
-
       - name: Upload artifacts
-      - uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v2
         if: ${{ always() }}
         with:
           name: playwright-tests
