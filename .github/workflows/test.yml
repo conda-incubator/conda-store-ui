@@ -46,25 +46,37 @@ jobs:
 
       - name: Deploy conda-store-server docker container
         run: |
-          docker-compose -f docker-compose-dev.yml up --build
+          docker-compose -f docker-compose-dev.yml up -d --build
           docker ps
 
           wait-for-it localhost:5000 # conda-store-server
 
-      - name: Deploy webpack dev server
-        run: |
-          yarn install
-          yarn run build
-          yarn run start
 
-      - name: Test webpack dev server
+      - name: Deployed UI tests
+        uses: ./
+        with:
+          build: yarn run build
+          start: yarn start
+          # wait-on: 'http://localhost:5001'
         run: |
           yarn test
-
-      - name: Run Playwright tests
-        run: |
           playwright install
           pytest --video on --output test-results test/playwright/test_ux.py
+
+      # - name: Deploy webpack dev server
+      #   run: |
+      #     yarn install
+      #     yarn run build
+      #     yarn run start
+
+      # - name: Test webpack dev server
+      #   run: |
+      #     yarn test
+
+      # - name: Run Playwright tests
+      #   run: |
+      #     playwright install
+      #     pytest --video on --output test-results test/playwright/test_ux.py
 
       - uses: actions/upload-artifact@v2
         if: ${{ always() }}
