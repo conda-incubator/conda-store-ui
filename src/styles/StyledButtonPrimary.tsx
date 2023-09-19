@@ -1,32 +1,35 @@
 import Button from "@mui/material/Button";
 import { styled } from "@mui/system";
-import React from "react";
-import { PrefContext } from "../preferences";
 
 export const StyledButtonPrimary = styled(Button, {
   shouldForwardProp: prop => prop !== "styleType"
-})<{ styleType?: string; isalttype?: string }>(
-  ({
-    theme: { palette },
-    styleType = React.useContext(PrefContext).styleType,
-    isalttype = "false"
-  }) => ({
-    padding: isalttype === "true" ? "3px 18px" : "3px 35px",
-    border: styleType === "grayscale" ? "none" : "1px solid #33A852",
-    fontSize: "13px",
-    color: "#fff",
-    textTransform: "none",
-    backgroundColor: styleType === "grayscale" ? "#5F6368" : "#33A852",
+})<{ styleType?: string; isalttype?: string }>(({ theme: { palette } }) => ({
+  padding: "4px 12px 4px 12px",
+  border: palette.primary.main,
+  fontSize: "14px",
+  color: palette.primary.contrastText,
+  textTransform: "none",
+  backgroundColor: palette.primary.main,
+  boxShadow: "none",
+  borderRadius: "4px",
+  gap: "6px",
+  ":hover": {
     boxShadow: "none",
-    borderRadius: isalttype === "true" ? "2px" : "5px",
-    ":hover": {
-      boxShadow: "none",
-      color: styleType === "grayscale" ? "#fff" : "#33A852",
-      backgroundColor: styleType === "grayscale" ? "#3C4043" : "#fff"
-    },
-    "&:disabled": {
-      backgroundColor: "#dddcdc",
-      border: "none"
-    }
-  })
+    color: palette.primary.contrastText,
+    backgroundColor: palette.primary.dark,
+    textDecoration: "underline"
+  },
+  "&:focus": {
+    outlineColor: palette.primary.main,
+    outlineStyle: "auto",
+    outlineOffset: "4px",
+    outlineWidth: "medium",
+    transition: "none"
+  },
+  "&:disabled": {
+    backgroundColor: palette.primary.light,
+    border: "none",
+    color: palette.primary.contrastText
+  }
+})
 );

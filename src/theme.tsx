@@ -9,10 +9,18 @@ export const grayscaleTheme = createTheme({
   },
   palette: {
     primary: {
-      main: "#C4C4C4"
+      main: "#C4C4C4",
+      contrastText: "#FFFFFF"
     },
     secondary: {
       main: "#7E7E7E"
+    }
+  },
+  components: {
+    MuiButtonBase: {
+      defaultProps: {
+        disableRipple: true
+      }
     }
   }
 });
@@ -25,7 +33,8 @@ export const greenTheme = createTheme({
     primary: {
       light: green[100],
       main: green[400],
-      dark: green[600]
+      dark: green[600],
+      contrastText: "#FFFFFF"
     },
     secondary: {
       light: gray[100],
@@ -38,6 +47,13 @@ export const greenTheme = createTheme({
       dark: purple[600]
     },
     mode: "light"
+  },
+  components: {
+    MuiButtonBase: {
+      defaultProps: {
+        disableRipple: true
+      }
+    }
   }
 });
 

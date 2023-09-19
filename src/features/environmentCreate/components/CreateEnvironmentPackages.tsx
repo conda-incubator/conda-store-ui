@@ -122,7 +122,6 @@ export const CreateEnvironmentPackages = ({
         <StyledButtonPrimary
           variant="contained"
           onClick={() => setIsAdding(true)}
-          isalttype="true"
         >
           + Add Package
         </StyledButtonPrimary>

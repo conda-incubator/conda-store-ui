@@ -138,7 +138,6 @@ const BaseChannelsEdit = ({
         <StyledButtonPrimary
           variant="contained"
           onClick={() => setIsAdding(true)}
-          isalttype="true"
         >
           + Add Channel
         </StyledButtonPrimary>

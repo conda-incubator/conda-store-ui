@@ -142,7 +142,6 @@ export const RequestedPackagesEdit = ({
       >
         <StyledButtonPrimary
           variant="contained"
-          isalttype="true"
           onClick={() => setIsAdding(true)}
         >
           + Add Package
