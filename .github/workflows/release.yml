@@ -1,45 +1,43 @@
-name: Deploy
-on:
-  workflow_dispatch:
-  push:
-    tags:
-      - 'v*'
+name: Release conda-store-ui
 
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    
 jobs:
 
   call-build:
     uses: conda-incubator/conda-store-ui/.github/workflows/build.yml@main
 
-  deploy-build:
+  make-release:
     runs-on: ubuntu-latest
+    # ensure that the artifacts are available from the build job
     needs: call-build
 
     steps:
-      - name: Checkout
-        uses: actions/Checkout@v3
+      - name: "Checkout repository 🛎"
+        uses: actions/checkout@v4
 
-      - name: Set release tag
+      - name: "Get release tag 🏷"
         run: echo "RELEASE_TAG=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
 
-      - name: Get dependencies for tsc
+      - name: "Install dependencies 📦"
         run: yarn
 
-      - name: Lint code
+      - name: "Lint code 🔎"
         run: yarn eslint:check
 
-      - name: Download generated dist
+      - name: "Download webpack bundle 📦"
         uses: actions/download-artifact@v3
         with:
           name: webpack-bundle
           path: dist/
 
-    # - name: Set package new-version
-    #   run: yarn version --new-version ${{ env.RELEASE_TAG }}
-
-      - name: Generate package tarball
+      - name: "Generate package tarball 📦"
         run: yarn pack --filename conda-store-ui.tgz
 
-      - name: Upload to npm
+      - name: "Upload to npm 📤"
         run: yarn publish --verbose --access public --tag ${{ env.RELEASE_TAG }} conda-store-ui.tgz
         env:
           NPM_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
