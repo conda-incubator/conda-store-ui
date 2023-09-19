@@ -1,7 +1,7 @@
 import { createTheme, ThemeProvider } from "@mui/material";
 import React from "react";
 
-import { green, purple, gray } from "./colors";
+import { green, purple, gray, white, red, orange, blue, black } from "./colors";
 
 export const grayscaleTheme = createTheme({
   typography: {
@@ -10,10 +10,11 @@ export const grayscaleTheme = createTheme({
   palette: {
     primary: {
       main: "#C4C4C4",
-      contrastText: "#FFFFFF"
+      contrastText: white
     },
     secondary: {
-      main: "#7E7E7E"
+      main: "#7E7E7E",
+      contrastText: white
     }
   },
   components: {
@@ -25,26 +26,38 @@ export const grayscaleTheme = createTheme({
   }
 });
 
-export const greenTheme = createTheme({
+const baseTheme = createTheme({
   typography: {
     fontFamily: '"Inter", sans-serif'
   },
   palette: {
     primary: {
-      light: green[100],
+      light: green[300],
       main: green[400],
-      dark: green[600],
-      contrastText: "#FFFFFF"
+      dark: green[700],
+      contrastText: white
     },
     secondary: {
-      light: gray[100],
+      light: gray[300],
       main: gray[400],
-      dark: gray[600]
+      dark: gray[700],
+      contrastText: white
     },
     warning: {
-      light: purple[100],
-      main: purple[400],
-      dark: purple[600]
+      main: orange,
+      contrastText: white
+    },
+    error: {
+      main: red,
+      contrastText: white
+    },
+    info: {
+      main: blue,
+      contrastText: white
+    },
+    success: {
+      main: green[500],
+      contrastText: white
     },
     mode: "light"
   },
@@ -54,6 +67,34 @@ export const greenTheme = createTheme({
         disableRipple: true
       }
     }
+  }
+});
+
+export const greenTheme = createTheme(baseTheme, {
+  palette: {
+    accent: baseTheme.palette.augmentColor({
+      color: {
+        light: purple[300],
+        main: purple[400],
+        dark: purple[700],
+        contrastText: white
+      },
+      name: "accent"
+    }),
+    white: baseTheme.palette.augmentColor({
+      color: {
+        main: white,
+        contrastText: black
+      },
+      name: "white"
+    }),
+    black: baseTheme.palette.augmentColor({
+      color: {
+        main: black,
+        contrastText: white
+      },
+      name: "black"
+    })
   }
 });
 
