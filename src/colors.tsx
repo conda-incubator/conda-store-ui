@@ -36,3 +36,13 @@ export const purple = {
   800: "#2F1957",
   900: "#231240"
 };
+
+export const red = "#D72D47";
+
+export const orange = "#F66A0A";
+
+export const blue = "#276BE9";
+
+export const white = "#FFFFFF";
+
+export const black = "#000000";
