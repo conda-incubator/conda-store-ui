@@ -39,6 +39,9 @@ jobs:
       - name: "Generate package tarball 📦"
         run: yarn pack --filename conda-store-ui.tgz
 
+      - name: "Get release tag 🏷"
+        run: echo "RELEASE_TAG=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+
       - name: "Upload to npm 📤"
         run: yarn publish --verbose --access public --tag ${{ env.RELEASE_TAG }} conda-store-ui.tgz
         env:
