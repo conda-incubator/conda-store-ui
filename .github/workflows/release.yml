@@ -6,19 +6,40 @@ on:
   workflow_dispatch:
 
 jobs:
+  call-build:
+    uses: conda-incubator/conda-store-ui/.github/workflows/build.yml@main
+
   build:
     runs-on: ubuntu-latest
+    needs: call-build
+
     steps:
       - name: "Checkout repository 🛎"
         uses: actions/checkout@v4
+
       # Setup .npmrc file to publish to npm
       - name: "Setup node 🔧"
         uses: actions/setup-node@v3
         with:
           node-version: "16.x"
           registry-url: "https://registry.npmjs.org"
-      - run: npm ci
-      - name: "Publish to npm 📦"
-        run: npm publish --access public
+
+      - name: "Install dependencies 📦"
+        run: yarn
+
+      - name: "Lint code 🔎"
+        run: yarn eslint:check
+
+      - name: "Download webpack bundle 📦"
+        uses: actions/download-artifact@v3
+        with:
+          name: webpack-bundle
+          path: dist/
+
+      - name: "Generate package tarball 📦"
+        run: yarn pack --filename conda-store-ui.tgz
+
+      - name: "Upload to npm 📤"
+        run: yarn publish --verbose --access public --tag ${{ env.RELEASE_TAG }} conda-store-ui.tgz
         env:
           NPM_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
