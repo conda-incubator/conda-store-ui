@@ -1,9 +1,15 @@
 # conda-store-ui
 
+<div align="center">
+  <img src="https://raw.githubusercontent.com/conda-incubator/conda-store/main/docs/_static/images/conda-store-logo-vertical-lockup.svg" alt="conda-store logo" width="30%">
+</div>
+
+---
+
 ![GitHub Workflow Status - Build](https://img.shields.io/github/actions/workflow/status/conda-incubator/conda-store-ui/build.yml?label=Build&logo=GitHub)
-![GitHub Workflow Status (with event) - Release](https://img.shields.io/github/actions/workflow/status/conda-incubator/conda-store-ui/release.yml?event=push&label=Deploy&logo=GitHub)
-![GitHub Workflow Status - Gh pages](https://img.shields.io/github/actions/workflow/status/conda-incubator/conda-store-ui/pages.yml?label=Docs&logo=GitHub)
-![GitHub release (latest by date)](https://img.shields.io/github/v/release/conda-incubator/conda-store-ui?logo=Github)
+![GitHub Workflow Status (with event) - Release](https://img.shields.io/github/actions/workflow/status/conda-incubator/conda-store-ui/release.yml?event=push&label=Release&logo=GitHub)
+![GitHub Workflow Status - GitHub pages](https://img.shields.io/github/actions/workflow/status/conda-incubator/conda-store-ui/pages.yml?label=Docs&logo=GitHub)
+![GitHub release (the latest by date)](https://img.shields.io/github/v/release/conda-incubator/conda-store-ui?logo=Github)
 ![npm release version](https://img.shields.io/npm/v/@conda-store/conda-store-ui?label=release&logo=npm)
 
 ---
@@ -15,7 +21,7 @@ If you're looking for the JupyterLab Extension, you can find it at [jupyterlab-c
 
 ## Get Started
 
-To learn how to use conda-store-ui alongside conda-store, please visit our [documentation](https://conda-incubator.github.io/conda-store-ui/).
+To learn how to use conda-store-ui alongside conda-store, please visit [the conda-store-ui documentation](https://conda-incubator.github.io/conda-store-ui/).
 
 ## Development
 
@@ -57,13 +63,15 @@ If you encounter issues, please take a look at Configuration (available in the d
 
 In order to create a new version of this package, follow these steps:
 
-* Bump the version number in `package.json`
+<!-- TODO: need to link to CalVer/release docs -->
+1. Bump the version number in `package.json` (we use CalVer: `YYYY-MM-releaseNumber` starting with `releaseNumber=1`)
+2. [Start a new GitHub release](https://github.com/conda-incubator/conda-store-ui/releases/new)
+    - Call the release the current version, e.g. `2023.9.1`
+    - In the **`Choose a Tag:`** dropdown, type in the release name (e.g., `2023.9.1`) and click "Create new tag"
+    - Add release notes in the field below[^github-activity]
+3. Confirm that the release completed successfully by checking the [GitHub Actions page](https://github.com/conda-incubator/conda-store-ui/actions). Once completed, a new release will be available at [npm - @conda-store/conda-store-ui](https://libraries.io/npm/@conda-store%2Fconda-store-ui)
 
-* Go to the releases tab, and create a new release. Note that the release version tag _must_ match the new version from package.json
-
-* Wait for actions to execute and the new package will be uploaded to `npm`
-
-Latest Release: https://libraries.io/npm/@conda-store%2Fconda-store-ui
+[^github-activity]: If you wish, use [`github-activity` to generate a changelog](https://github.com/choldgraf/github-activity), eg `github-activity conda-incubator/conda-store-ui --since 2023.9.1 --until 2023.10.1 --auth <GH personal access token>` .
 
 ## Code of Conduct
 
