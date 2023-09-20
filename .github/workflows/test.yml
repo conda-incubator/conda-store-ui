@@ -6,14 +6,14 @@ env:
   CONDA_STORE_AUTH: basic
   CONDA_STORE_USERNAME: username
   CONDA_STORE_PASSWORD: password
-  REACT_APP_API_URL: http://localhost:5000/conda-store/
+  REACT_APP_API_URL: http://localhost:8080/conda-store/
   REACT_APP_AUTH_METHOD: cookie
-  REACT_APP_LOGIN_PAGE_URL: http://localhost:5000/conda-store/login?next=
+  REACT_APP_LOGIN_PAGE_URL: http://localhost:8080/conda-store/login?next=
   REACT_APP_AUTH_TOKEN: 
   REACT_APP_STYLE_TYPE: green-accent
   REACT_APP_CONTEXT: webapp
   REACT_APP_SHOW_AUTH_BUTTON: true
-  REACT_APP_LOGOUT_PAGE_URL: http://localhost:5000/conda-store/logout?next=/ 
+  REACT_APP_LOGOUT_PAGE_URL: http://localhost:8080/conda-store/logout?next=/ 
   YARN_ENABLE_IMMUTABLE_INSTALLS: false
 
 on:
@@ -48,7 +48,7 @@ jobs:
 
       - name: Create Environment variables file
         run: |
-          envsubst < .env.example > .env
+          envsubst < .env.tpl > .env
 
       - name: Install Dependencies
         run: |
@@ -66,7 +66,7 @@ jobs:
         shell: bash -el {0}
         run: |
           conda list
-          playwright install
+          playwright install chromium
           yarn install
           yarn run build
           yarn run start &
