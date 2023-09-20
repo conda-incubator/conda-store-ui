@@ -1,31 +1,24 @@
 name: Release conda-store-ui
 
 on:
-  release:
-    types: [published]
-  workflow_dispatch:
-
+  # we want to make a release whenever a new tag is created
+  push:
+    tags:
+      - "*"
+    
 jobs:
+
   call-build:
     uses: conda-incubator/conda-store-ui/.github/workflows/build.yml@main
 
-  build:
+  make-release:
     runs-on: ubuntu-latest
+    # ensure that the artifacts are available from the build job
     needs: call-build
 
     steps:
       - name: "Checkout repository 🛎"
         uses: actions/checkout@v4
-
-      # Setup .npmrc file to publish to npm
-      - name: "Setup node 🔧"
-        uses: actions/setup-node@v3
-        with:
-          node-version: "16.x"
-          registry-url: "https://registry.npmjs.org"
-      
-      - name: "Get release tag 🏷"
-        run: echo "RELEASE_TAG=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
 
       - name: "Install dependencies 📦"
         run: yarn
@@ -42,12 +35,10 @@ jobs:
       - name: "Generate package tarball 📦"
         run: yarn pack --filename conda-store-ui.tgz
 
-      - name: "Upload to npm 📤"
-        run: yarn publish --verbose --access public --tag ${{ env.RELEASE_TAG }} conda-store-ui.tgz
-        env:
-          NPM_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-      
-      - name: "Set latest tag 🏷"
-        run: yarn tag add @conda-store/conda-store-ui@${{ env.RELEASE_TAG }} latest
+      - name: "Publish to npm 📤"
+        run: |
+          echo "Publishing with tag ${{ env.GITHUB_REF }}"
+          yarn publish --verbose --access public --tag ${{ env.GITHUB_REF }}conda-store-ui.tgz
+          yarn tag add @conda-store/conda-store-ui@${{ env.GITHUB_REF }} latest
         env:
           NPM_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
