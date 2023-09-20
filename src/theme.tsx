@@ -26,13 +26,13 @@ const baseTheme = createTheme({
   palette: {
     primary: {
       light: green[300],
-      main: green[400],
+      main: green[500],
       dark: green[700],
       contrastText: white
     },
     secondary: {
       light: gray[300],
-      main: gray[400],
+      main: gray[500],
       dark: gray[700],
       contrastText: white
     },
@@ -61,7 +61,7 @@ export const greenTheme = createTheme(baseTheme, {
     accent: baseTheme.palette.augmentColor({
       color: {
         light: purple[300],
-        main: purple[400],
+        main: purple[500],
         dark: purple[700],
         contrastText: white
       },
