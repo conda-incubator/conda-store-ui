@@ -6,6 +6,13 @@ import { green, purple, gray, white, red, orange, blue, black } from "./colors";
 const baseTheme = createTheme({
   typography: {
     fontFamily: '"Inter", sans-serif'
+  },
+  components: {
+    MuiButtonBase: {
+      defaultProps: {
+        disableRipple: true
+      }
+    }
   }
 });
 
@@ -18,13 +25,6 @@ export const grayscaleTheme = createTheme(baseTheme, {
     secondary: {
       main: "#7E7E7E",
       contrastText: white
-    }
-  },
-  components: {
-    MuiButtonBase: {
-      defaultProps: {
-        disableRipple: true
-      }
     }
   }
 });
