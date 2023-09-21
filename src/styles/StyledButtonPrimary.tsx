@@ -3,7 +3,7 @@ import { styled } from "@mui/system";
 
 export const StyledButtonPrimary = styled(Button, {
   shouldForwardProp: prop => prop !== "styleType"
-})<{ styleType?: string; isalttype?: string }>(({ theme: { palette } }) => ({
+})<{ styleType?: string }>(({ theme: { palette } }) => ({
   padding: "4px 12px 4px 12px",
   border: palette.primary.main,
   fontSize: "14px",
@@ -31,5 +31,4 @@ export const StyledButtonPrimary = styled(Button, {
     border: "none",
     color: palette.primary.contrastText
   }
-})
-);
+}));
