@@ -12,7 +12,7 @@ import {
   prefGlobal
 } from "./preferences";
 import { store } from "./store";
-import { greenTheme, grayscaleTheme } from "./theme";
+import { condaStoreTheme, grayscaleTheme } from "./theme";
 
 import "../style/index.css";
 
@@ -82,7 +82,7 @@ export class App<
           theme={
             this.state.pref.styleType === "grayscale"
               ? grayscaleTheme
-              : greenTheme
+              : condaStoreTheme
           }
         >
           <Provider store={store}>
