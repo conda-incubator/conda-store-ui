@@ -222,7 +222,7 @@ def existing_environment_interactions(page, env_name, time_to_build_env=2*60*100
 def test_integration(page: Page, test_config, screenshot):
 
     # Go to http://localhost:{server_port}
-    page.goto(test_config['base_url'], wait_until="domcontentloaded")
+    page.goto(test_config['base_url'], wait_until="domcontentloaded", timeout=4*60*1000)
 
     page.screenshot(path="test-results/conda-store-unauthenticated.png")
     if screenshot:
