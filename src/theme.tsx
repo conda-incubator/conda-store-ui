@@ -1,7 +1,19 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import { createTheme, ThemeProvider } from "@mui/material";
+import { PaletteColor, PaletteColorOptions } from "@mui/material/styles"
 import React from "react";
 
 import { green, purple, gray, white, red, orange, blue, black } from "./colors";
+
+declare module "@mui/material/styles" {
+  interface Palette {
+    accent: PaletteColor;
+  }
+
+  interface PaletteOptions {
+    accent?: PaletteColorOptions;
+  }
+}
 
 const baseTheme = createTheme({
   typography: {
@@ -97,20 +109,10 @@ export const condaStoreTheme = createTheme(baseTheme, {
       main: green[500],
       contrastText: white
     },
-    white: baseTheme.palette.augmentColor({
-      color: {
-        main: white,
-        contrastText: black
-      },
-      name: "white"
-    }),
-    black: baseTheme.palette.augmentColor({
-      color: {
-        main: black,
-        contrastText: white
-      },
-      name: "black"
-    })
+    common: {
+      black: black,
+      white: white
+    }
   }
 });
 
