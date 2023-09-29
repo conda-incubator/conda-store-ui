@@ -65,16 +65,7 @@ export const EnvironmentsSearch = ({ onChange }: IEnvironmentsSearchProps) => {
           "&::placeholder": {
             fontSize: "14px",
             fontWeight: 400
-          },
-          "&.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline": {
-            borderColor: palette.secondary.main,
-            transition: "none"
-          },
-          "&.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
-            {
-              borderColor: palette.accent.main,
-              transition: "none"
-            }
+          }
         }}
         inputProps={{
           style: {

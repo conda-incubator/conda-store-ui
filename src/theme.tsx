@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { createTheme, ThemeProvider } from "@mui/material";
-import { PaletteColor, PaletteColorOptions } from "@mui/material/styles"
+import { PaletteColorOptions } from "@mui/material/styles"
 import React from "react";
 
 import { green, purple, gray, white, red, orange, blue, black } from "./colors";
@@ -12,6 +12,32 @@ declare module "@mui/material/styles" {
 
   interface PaletteOptions {
     accent?: PaletteColorOptions;
+  }
+
+  interface PaletteColor {
+    50: string;
+    100: string;
+    200: string;
+    300: string;
+    400: string;
+    500: string;
+    600: string;
+    700: string;
+    800: string;
+    900: string;
+  }
+
+  interface SimplePaletteColorOptions {
+    50?: string;
+    100?: string;
+    200?: string;
+    300?: string;
+    400?: string;
+    500?: string;
+    600?: string;
+    700?: string;
+    800?: string;
+    900?: string;
   }
 }
 

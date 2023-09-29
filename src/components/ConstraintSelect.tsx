@@ -2,8 +2,6 @@ import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import React from "react";
 
-import useTheme from "@mui/material/styles/useTheme";
-
 interface IConstraintSelectProps {
   /**
    * @param constraint package version constraint
@@ -18,7 +16,6 @@ export const ConstraintSelect = ({
 }: IConstraintSelectProps) => {
   const constraints = ["=", ">", "<", ">=", "<="];
   const selectedConstraint = constraint === "==" ? "=" : constraint;
-  const { palette } = useTheme();
 
   return (
     <Select
@@ -31,16 +28,7 @@ export const ConstraintSelect = ({
       }}
       sx={{
         borderRadius: "0px",
-        width: "44px",
-        "&.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline": {
-          borderColor: palette.secondary.main,
-          transition: "none"
-        },
-        "&.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
-          {
-            borderColor: palette.accent.main,
-            transition: "none"
-          }
+        width: "44px"
       }}
       notched={false}
       inputProps={{

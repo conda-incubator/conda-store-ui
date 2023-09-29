@@ -1,6 +1,7 @@
 import React from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
+import useTheme from "@mui/material/styles/useTheme";
 import { StyledMetadataItem } from "../../../styles/StyledMetadataItem";
 import { EnvironmentDetailsModes } from "../../../features/environmentDetails";
 
@@ -18,6 +19,8 @@ export const Description = ({
   description,
   onChangeDescription
 }: IDescriptionProps) => {
+  const { palette } = useTheme();
+
   return (
     <Box>
       {mode === EnvironmentDetailsModes.READ && description && (
@@ -39,7 +42,7 @@ export const Description = ({
               value={description}
               placeholder="Enter here the description of your environment"
               sx={{
-                backgroundColor: "#F1F1F1",
+                backgroundColor: palette.grey[100],
                 width: "100%",
                 marginBottom: "10px"
               }}

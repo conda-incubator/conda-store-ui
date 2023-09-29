@@ -43,19 +43,6 @@ export const VersionSelect = ({
 
   const [triggerQuery] = useLazyGetPackageVersionSuggestionsQuery();
 
-  // const inputStyles = getStylesForStyleType(
-  //   {
-  //     padding: "7px 9px !important",
-  //     backgroundColor: "#ECECEC",
-  //     borderRadius: "0px"
-  //   },
-  //   {
-  //     padding: "7px 9px !important",
-  //     backgroundColor: "#fff",
-  //     borderRadius: "0px"
-  //   }
-  // );
-
   const iconStyles = getStylesForStyleType(
     {
       backgroundColor: "#ECECEC",
@@ -169,16 +156,7 @@ export const VersionSelect = ({
       sx={{
         borderRadius: "0px",
         width: "110px",
-        border: "none",
-        "&.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline": {
-          borderColor: palette.secondary.main,
-          transition: "none"
-        },
-        "&.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
-          {
-            borderColor: palette.accent.main,
-            transition: "none"
-          }
+        border: "none"
       }}
       inputProps={{
         sx: {
