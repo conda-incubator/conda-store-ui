@@ -2,7 +2,7 @@ name: Playwright Tests
 
 env:
   CONDA_STORE_SERVER_PORT: 8080
-  CONDA_STORE_BASE_URL: http://localhost:{{ $CONDA_STORE_SERVER_PORT }}
+  CONDA_STORE_BASE_URL: http://localhost:$CONDA_STORE_SERVER_PORT
   CONDA_STORE_AUTH: basic
   CONDA_STORE_USERNAME: username
   CONDA_STORE_PASSWORD: password
