@@ -72,6 +72,7 @@ jobs:
           yarn run start &
           pytest --video on --output test-results --screenshots true test/playwright/test_ux.py
 
+yarn run start & pytest --video on --output test-results --screenshots true test/playwright/test_ux.py
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
         if: ${{ always() }}

@@ -8,6 +8,7 @@ dependencies:
 - python=3.10
 - yarn
 - nodejs==16.14.2
+- pytest
 - pip:
   - playwright
   - pytest-playwright

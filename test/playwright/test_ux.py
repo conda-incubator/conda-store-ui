@@ -2,6 +2,8 @@
 inside and outside of pytest to make future development easier. 
 """
 import os
+import requests
+import time
 
 import pytest
 from playwright.sync_api import Page
@@ -13,7 +15,7 @@ CONDA_STORE_SERVER_PORT = os.environ.get(
     "CONDA_STORE_SERVER_PORT", f"8080"
 )
 CONDA_STORE_BASE_URL = os.environ.get(
-    "CONDA_STORE_BASE_URL", f"http://localhost:{CONDA_STORE_SERVER_PORT}/conda-store/"
+    "CONDA_STORE_BASE_URL", f"http://localhost:{CONDA_STORE_SERVER_PORT}"
 )
 CONDA_STORE_USERNAME = os.environ.get("CONDA_STORE_USERNAME", "username")
 CONDA_STORE_PASSWORD = os.environ.get("CONDA_STORE_PASSWORD", "password")
@@ -220,6 +222,21 @@ def existing_environment_interactions(page, env_name, time_to_build_env=2*60*100
 
 
 def test_integration(page: Page, test_config, screenshot):
+    """Basic integration test.
+
+    When this test runs in CI, we launch the webpack server as a detached 
+    service at the same time that this test is run. For this reason, we 
+    have a try/except here to allow the webpack server to finish deploying
+    before the test begins. 
+    """
+    # wait for server to spin up if necessary
+    server_running = False
+    while not server_running:
+        try: 
+            requests.head(test_config['base_url'], allow_redirects=True).status_code != 200
+            server_running = True
+        except requests.exceptions.ConnectionError:
+            time.sleep(2)
 
     # Go to http://localhost:{server_port}
     page.goto(test_config['base_url'], wait_until="domcontentloaded", timeout=4*60*1000)
@@ -231,15 +248,12 @@ def test_integration(page: Page, test_config, screenshot):
     login_sequence(page, screenshot=screenshot)
 
 
-
-
 if __name__ == "__main__":
     """Note that if you are testing locally on dev install, you will likely need
     to change the server port to 8081 since the old UI will be running on 8080.
     Also note that the local base_url is slightly different. 
     """
 
-    CONDA_STORE_SERVER_PORT = 8081
     config = {
         'base_url': f"http://localhost:{CONDA_STORE_SERVER_PORT}",
         'username': CONDA_STORE_USERNAME,
