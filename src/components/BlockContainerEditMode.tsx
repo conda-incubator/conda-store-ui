@@ -1,8 +1,9 @@
 import React from "react";
 import Box from "@mui/material/Box";
+import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import Switch from "@mui/material/Switch";
-import FormControlLabel from "@mui/material/FormControlLabel";
+import { CodeIcon } from "../components";
 
 interface IBlockContainerProps {
   title: string;
@@ -43,21 +44,47 @@ export const BlockContainerEditMode = ({
           >
             {title}
           </Typography>
-          <FormControlLabel
-            control={
+          <Grid
+            component="label"
+            container
+            spacing={1}
+            justifyContent={"center"}
+            sx={{ width: "auto" }}
+          >
+            <Grid item sx={{ alignSelf: "baseline" }}>
+              <Typography
+                data-testid="block-container-title"
+                sx={{
+                  fontSize: "14px",
+                  color: "#333",
+                  fontWeight: isEditMode ? "400" : "600"
+                }}
+              >
+                GUI
+              </Typography>
+            </Grid>
+            <Grid item sx={{ alignSelf: "baseline" }}>
               <Switch
                 checked={isEditMode}
                 onClick={e => onToggleEditMode(!isEditMode)}
+                icon={<CodeIcon />}
+                checkedIcon={<CodeIcon />}
+                sx={{ background: "green" }}
               />
-            }
-            label={
-              <Typography sx={{ fontSize: "13px", color: "#333" }}>
-                {isEditMode
-                  ? "Switch to Standard View"
-                  : "Switch to YAML Editor"}
+            </Grid>
+            <Grid item sx={{ alignSelf: "baseline" }}>
+              <Typography
+                data-testid="block-container-title"
+                sx={{
+                  fontSize: "14px",
+                  color: "#333",
+                  fontWeight: isEditMode ? "600" : "400"
+                }}
+              >
+                YAML
               </Typography>
-            }
-          />
+            </Grid>
+          </Grid>
         </Box>
       </Box>
       <Box

@@ -17,7 +17,8 @@ export const StyledButtonPrimary = styled(Button, {
     boxShadow: "none",
     color: palette.primary.contrastText,
     backgroundColor: palette.primary.dark,
-    textDecoration: "underline"
+    textDecoration: "underline",
+    textUnderlineOffset: "0.3em"
   },
   "&:focus": {
     outlineColor: palette.primary.main,
@@ -27,8 +28,8 @@ export const StyledButtonPrimary = styled(Button, {
     transition: "none"
   },
   "&:disabled": {
-    backgroundColor: palette.primary.light,
+    backgroundColor: palette.secondary[100],
     border: "none",
-    color: palette.primary.contrastText
+    color: palette.secondary.light
   }
 }));
