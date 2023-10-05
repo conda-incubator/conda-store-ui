@@ -31,10 +31,18 @@ def test_config():
     }
 
 
-def login_sequence(page, screenshot=False):
+def _login_sequence(page, screenshot=False):
     """Conda-store ui login sequence. From the default UI interface, click log
     in and go through the log in UI on the following page. The UI will be 
     returned back to the default UI. 
+
+    Parameters
+    ----------
+    page: playwright.Page
+        page object for the current test being run
+    screenshot: bool
+        [Optional] Flag to trigger screenshot collection, set to True to  
+        grab screenshots
     """
     # Log in sequence
     # Click Login
@@ -56,7 +64,7 @@ def login_sequence(page, screenshot=False):
         page.screenshot(path="test-results/conda-store-authenticated.png")
 
 
-def create_new_environment(page, screenshot=False):
+def _create_new_environment(page, screenshot=False):
     """Workflow to create a new environment in the UI. The env will be 
     in the "username" workspace and will have a semi-random number to
     ensure that the env is indeed new since if the environment already
@@ -65,7 +73,7 @@ def create_new_environment(page, screenshot=False):
 
     Note: this environment takes about a minute to create
     WARNING: Changes to this method will require reflective changes on 
-    `existing_environment_interactions` since it uses this env. 
+    `_existing_environment_interactions` since it uses this env. 
     
     Parameters
     ----------
@@ -120,7 +128,7 @@ def create_new_environment(page, screenshot=False):
     return new_env_name
 
 
-def close_environment_tabs(page):
+def _close_environment_tabs(page):
     """Close any open tabs in the UI. This will continue closing tabs 
     until no tabs remain open.
 
@@ -134,18 +142,22 @@ def close_environment_tabs(page):
         close_tab.first.click()
 
 
-def existing_environment_interactions(page, env_name, time_to_build_env=2*60*1000, screenshot=False):
+def _existing_environment_interactions(page, env_name, time_to_build_env=3*60*1000, screenshot=False):
     """test interactions with existing environments. 
     During this test, the test will be rebuilt twice. 
 
     Note: This test assumes the environment being tested is the one from 
-    `create_new_environment`. Changes to that method will require changes
+    `_create_new_environment`. Changes to that method will require changes
     here as well (expected existing packages, etc). 
 
     Parameters
     ----------
     page: playwright.Page
         page object for the current test being run
+    env_name: str
+        Name of existing environment to interact with - must already exist!
+    time_to_build_env: float
+        [Optional] Time to wait for an updated environment to rebuild in ms 
     screenshot: bool
         [Optional] Flag to trigger screenshot collection, set to True to  
         grab screenshots
@@ -158,7 +170,6 @@ def existing_environment_interactions(page, env_name, time_to_build_env=2*60*100
     if screenshot:
         page.screenshot(path="test-results/conda-store-yaml-editor.png")
     page.get_by_text("- rich").click()
-    # TODO: is "-pip: nothing" a bug?
     page.get_by_text("channels: - conda-forgedependencies: - rich - pip: - nothing - ipykernel").fill("channels:\n  - conda-forge\ndependencies:\n  - rich\n  - python\n  - pip:\n      - nothing\n  - ipykernel\n\n")
     page.get_by_role("button", name="Save").click()
     # wait until the status is `Completed`
@@ -228,15 +239,30 @@ def test_integration(page: Page, test_config, screenshot):
     service at the same time that this test is run. For this reason, we 
     have a try/except here to allow the webpack server to finish deploying
     before the test begins. 
+
+    Parameters
+    ----------
+    page: playwright.Page
+        page object for the current test being run
+    test_config: 
+        Fixture containing the configuration env vars
+    screenshot: bool
+        Fixture flag to trigger screenshot collection, set to True to  
+        grab screenshots 
     """
     # wait for server to spin up if necessary
     server_running = False
-    while not server_running:
+    retry_wait_time = 2  # seconds
+    max_wait_time = 4 * 60  # 4 minutes
+    elapsed_wait_time = 0
+    # loop until server is running or max_wait_time is reached
+    while not server_running and elapsed_wait_time < max_wait_time:
         try: 
             requests.head(test_config['base_url'], allow_redirects=True).status_code != 200
             server_running = True
         except requests.exceptions.ConnectionError:
-            time.sleep(2)
+            elapsed_wait_time += retry_wait_time
+            time.sleep(retry_wait_time)
 
     # Go to http://localhost:{server_port}
     page.goto(test_config['base_url'], wait_until="domcontentloaded", timeout=4*60*1000)
@@ -245,13 +271,22 @@ def test_integration(page: Page, test_config, screenshot):
     if screenshot:
         page.screenshot(path="test-results/conda-store-unauthenticated.png")
 
-    login_sequence(page, screenshot=screenshot)
+    # Log in to conda-store
+    _login_sequence(page, screenshot=screenshot)
+
+    # create a new environment
+    env_name = _create_new_environment(page, screenshot=screenshot)
+
+    # close any open tabs on the conda-store ui
+    _close_environment_tabs(page)
+
+    # interact with an existing environment
+    _existing_environment_interactions(page, env_name, screenshot=screenshot)
 
 
 if __name__ == "__main__":
-    """Note that if you are testing locally on dev install, you will likely need
-    to change the server port to 8081 since the old UI will be running on 8080.
-    Also note that the local base_url is slightly different. 
+    """This sequence runs through the basic UI test outside of pytest to allow
+    for more control during development. It is not intended to be used in CI.
     """
 
     config = {
@@ -275,16 +310,16 @@ if __name__ == "__main__":
     page.goto(config['base_url'], wait_until="domcontentloaded")
     
     # Log in to conda-store
-    login_sequence(page)
+    _login_sequence(page)
 
     # create a new environment
-    env_name = create_new_environment(page, screenshot=screenshot)
+    env_name = _create_new_environment(page, screenshot=screenshot)
 
     # close any open tabs on the conda-store ui
-    close_environment_tabs(page)
+    _close_environment_tabs(page)
 
     # interact with an existing environment
-    existing_environment_interactions(page, env_name, screenshot=screenshot)
+    _existing_environment_interactions(page, env_name, screenshot=screenshot)
 
     browser.close()
     playwright.stop()
