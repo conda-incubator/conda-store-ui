@@ -1,7 +1,11 @@
 {
   "name": "@conda-store/conda-store-ui",
-  "version": "0.1.5",
+  "version": "2023.9.3",
   "description": "UI elements for building a frontend for conda-store",
+  "homepage": "https://github.com/conda-incubator/conda-store-ui",
+  "bugs": {
+    "url": "https://github.com/conda-incubator/conda-store-ui/issues"
+  },
   "scripts": {
     "build": "tsc --build",
     "build:watch": "tsc --build --watch",
@@ -27,6 +31,10 @@
     "conda-store"
   ],
   "license": "BSD-3-Clause",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/conda-incubator/conda-store-ui"
+  },
   "files": [
     "dist/**/*",
     "lib/**/*",
