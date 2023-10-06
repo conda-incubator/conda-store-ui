@@ -40,8 +40,9 @@ jobs:
 
       - name: Set up Python
         uses: conda-incubator/setup-miniconda@v2
+        env: 
+          CONDA_SOLVER: libmamba
         with:
-          mamba-version: "*"
           activate-environment: test-env
           environment-file: environment_dev.yml
           auto-activate-base: false
