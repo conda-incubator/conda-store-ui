@@ -37,6 +37,7 @@ jobs:
       - name: "Publish to npm 📤"
         run: |
           echo "Publishing with tag ${{ env.GITHUB_REF_NAME }}"
-          yarn npm publish --access public
+          yarn publish --access public --verbose
+          yarn tag add @conda-store/conda-store-ui@${{ env.GITHUB_REF_NAME }} latest
         env:
           NPM_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
