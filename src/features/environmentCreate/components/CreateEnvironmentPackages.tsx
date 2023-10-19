@@ -111,7 +111,7 @@ export const CreateEnvironmentPackages = ({
       </StyledAccordionDetails>
       <AccordionDetails
         sx={{
-          border: `1px solid ${palette.primary.main}`,
+          border: `1px solid ${palette.secondary.light}`,
           borderTop: "0px",
           borderRadius: "0px 0px 5px 5px",
           padding: "15px 21px",

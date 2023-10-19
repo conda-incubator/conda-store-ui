@@ -132,7 +132,7 @@ export const RequestedPackagesEdit = ({
       </StyledAccordionDetails>
       <AccordionDetails
         sx={{
-          border: `1px solid ${palette.primary.main}`,
+          border: `1px solid ${palette.secondary.light}`,
           borderTop: "0px",
           borderRadius: "0px",
           padding: "15px 21px",

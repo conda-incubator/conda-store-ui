@@ -12,7 +12,7 @@ export const StyledAccordionDetails = styled(AccordionDetails, {
   }) => ({
     border:
       styleType === "grayscale"
-        ? `1px solid ${palette.primary.main}`
+        ? `1px solid ${palette.secondary.light}`
         : "1px solid #BCBFC4",
     borderTop: "none",
     borderRadius: styleType === "grayscale" ? "0px 0px 5px 5px" : "Opx",
