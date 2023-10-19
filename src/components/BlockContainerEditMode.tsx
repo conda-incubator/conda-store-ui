@@ -2,8 +2,8 @@ import React from "react";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
-import Switch from "@mui/material/Switch";
 import { CodeIcon } from "../components";
+import { StyledSwitch } from "../styles";
 
 interface IBlockContainerProps {
   title: string;
@@ -64,12 +64,11 @@ export const BlockContainerEditMode = ({
               </Typography>
             </Grid>
             <Grid item sx={{ alignSelf: "baseline" }}>
-              <Switch
+              <StyledSwitch
                 checked={isEditMode}
                 onClick={e => onToggleEditMode(!isEditMode)}
                 icon={<CodeIcon />}
                 checkedIcon={<CodeIcon />}
-                sx={{ background: "green" }}
               />
             </Grid>
             <Grid item sx={{ alignSelf: "baseline" }}>
