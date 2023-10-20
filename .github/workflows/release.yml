@@ -19,6 +19,13 @@ jobs:
       - name: "Checkout repository 🛎"
         uses: actions/checkout@v4
 
+      # Setup .npmrc file to publish to npm
+      - name: "Set up Node.js 🧶"
+        uses: actions/setup-node@v3
+        with:
+          node-version: "16.x"
+          registry-url: "https://registry.npmjs.org"
+
       - name: "Install dependencies 📦"
         run: yarn
 
