@@ -29,7 +29,7 @@
 6. If the dry run looks good, publish to npmjs:
 
    ```bash
-   npm publish --access public
+   npm publish --verbose --access public conda-store-ui.tgz
    ```
 
 7. Ensure that whatever code you published is checked into git, then tag and push the commit and tag
