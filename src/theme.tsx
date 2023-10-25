@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { createTheme, ThemeProvider } from "@mui/material";
-import { PaletteColorOptions } from "@mui/material/styles"
+import { PaletteColorOptions } from "@mui/material/styles";
 import React from "react";
 
 import { green, purple, gray, white, red, orange, blue, black } from "./colors";
