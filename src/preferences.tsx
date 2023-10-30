@@ -17,7 +17,7 @@ export const prefDefault: Readonly<IPreferences> = {
   apiUrl:
     process.env.REACT_APP_API_URL ??
     condaStoreConfig.REACT_APP_API_URL ??
-    "http://localhost:5000/conda-store/",
+    "http://localhost:8080/conda-store/",
 
   authMethod:
     (process.env.REACT_APP_AUTH_METHOD as IPreferences["authMethod"]) ??
@@ -32,7 +32,7 @@ export const prefDefault: Readonly<IPreferences> = {
   loginUrl:
     process.env.REACT_APP_LOGIN_PAGE_URL ??
     condaStoreConfig.REACT_APP_LOGIN_PAGE_URL ??
-    "http://localhost:5000/conda-store/login?next=",
+    "http://localhost:8080/conda-store/login?next=",
 
   styleType:
     process.env.REACT_APP_STYLE_TYPE ??
@@ -49,7 +49,7 @@ export const prefDefault: Readonly<IPreferences> = {
   logoutUrl:
     process.env.REACT_APP_LOGOUT_PAGE_URL ??
     condaStoreConfig.REACT_APP_LOGOUT_PAGE_URL ??
-    "http://localhost:5000/conda-store/logout?next=/"
+    "http://localhost:8080/conda-store/logout?next=/"
 };
 
 export class Preferences implements IPreferences {

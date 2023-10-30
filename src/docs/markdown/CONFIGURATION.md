@@ -13,13 +13,13 @@ Below, you'll find the options and the listed descriptions. You are welcome to c
 Sample File:
 
 ```.env
-REACT_APP_API_URL=http://localhost:5000/conda-store
+REACT_APP_API_URL=http://localhost:8080/conda-store
 REACT_APP_AUTH_METHOD=cookie
-REACT_APP_LOGIN_PAGE_URL=http://localhost:5000/conda-store/login?next=
+REACT_APP_LOGIN_PAGE_URL=http://localhost:8080/conda-store/login?next=
 REACT_APP_AUTH_TOKEN=
 REACT_APP_STYLE_TYPE=grayscale
 REACT_APP_SHOW_AUTH_BUTTON=true
-REACT_APP_LOGOUT_PAGE_URL=http://localhost:5000/conda-store/logout?next=/
+REACT_APP_LOGOUT_PAGE_URL=http://localhost:8080/conda-store/logout?next=/
 ```
 
 ## At runtime, using `condaStoreConfig`
@@ -34,9 +34,9 @@ In your HTML file, add the following **before** loading the react app :
         REACT_APP_AUTH_TOKEN: "",
         REACT_APP_STYLE_TYPE: "grayscale",
         REACT_APP_SHOW_AUTH_BUTTON: "true",
-        REACT_APP_API_URL: "http://localhost:5000/conda-store",
-        REACT_APP_LOGIN_PAGE_URL: "http://localhost:5000/conda-store/login?next=",
-        REACT_APP_LOGOUT_PAGE_URL: "http://localhost:5000/conda-store/logout?next=/",
+        REACT_APP_API_URL: "http://localhost:8080/conda-store",
+        REACT_APP_LOGIN_PAGE_URL: "http://localhost:8080/conda-store/login?next=",
+        REACT_APP_LOGOUT_PAGE_URL: "http://localhost:8080/conda-store/logout?next=/",
     };
 </script>
 ```

@@ -27,6 +27,9 @@ const {
 const isProd = process.env.NODE_ENV === "production";
 
 const basicConfig = {
+  devServer: {
+    port: 8000
+  },
   devtool: isProd ? false : "source-map",
   entry: ["src/index.tsx", "src/AppExample.tsx"],
   watch: false,
