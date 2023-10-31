@@ -2,6 +2,7 @@ import Typography from "@mui/material/Typography";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import Box from "@mui/material/Box";
 import InputAdornment from "@mui/material/InputAdornment";
+import useTheme from "@mui/material/styles/useTheme";
 import React from "react";
 
 import { PrefContext } from "../../../preferences";
@@ -17,6 +18,7 @@ interface IEnvironmentsSearchProps {
 
 export const EnvironmentsSearch = ({ onChange }: IEnvironmentsSearchProps) => {
   const prefs = React.useContext(PrefContext);
+  const { palette } = useTheme();
   const showAuthButton = prefs.showAuthButton;
   const isCookieAuthMethod = prefs.authMethod === "cookie";
   let authButton;
@@ -37,7 +39,7 @@ export const EnvironmentsSearch = ({ onChange }: IEnvironmentsSearchProps) => {
         sx={{
           marginBottom: "14px",
           textAlign: "left",
-          color: " #333",
+          color: palette.common.black,
           fontWeight: 600,
           fontSize: "14px",
           marginTop: "40px"
@@ -49,6 +51,7 @@ export const EnvironmentsSearch = ({ onChange }: IEnvironmentsSearchProps) => {
       <OutlinedInput
         onChange={onChange}
         size="small"
+        notched={false}
         endAdornment={
           <InputAdornment position="end">
             <SearchIconAlt style={{ marginRight: "5px" }} />

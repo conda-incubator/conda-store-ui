@@ -2,6 +2,7 @@ import React from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
+import useTheme from "@mui/material/styles/useTheme";
 import { StyledButtonPrimary } from "../../../styles";
 import { useAppDispatch, useAppSelector } from "../../../hooks";
 import {
@@ -26,6 +27,7 @@ export const EnvironmentDetailsHeader = ({
 }: IEnvironmentDetailsHeaderProps) => {
   const { mode } = useAppSelector(state => state.environmentDetails);
   const dispatch = useAppDispatch();
+  const { palette } = useTheme();
 
   return (
     <Box
@@ -39,7 +41,13 @@ export const EnvironmentDetailsHeader = ({
       {(mode === EnvironmentDetailsModes.READ ||
         mode === EnvironmentDetailsModes.EDIT) && (
         <>
-          <Typography sx={{ fontSize: "16px", color: "#333", fontWeight: 600 }}>
+          <Typography
+            sx={{
+              fontSize: "16px",
+              color: palette.common.black,
+              fontWeight: 600
+            }}
+          >
             {envName}
           </Typography>
           {mode === EnvironmentDetailsModes.READ && (
@@ -61,17 +69,17 @@ export const EnvironmentDetailsHeader = ({
             autoFocus
             placeholder="Environment name"
             sx={{
-              backgroundColor: "#EBECEE",
+              backgroundColor: palette.grey[100],
               minWidth: "450px",
               "&:hover fieldset": {
-                borderColor: "gray"
+                borderColor: palette.secondary.main
               }
             }}
             inputProps={{
               style: {
                 padding: "8px 15px",
                 fontSize: "15px",
-                color: "#333"
+                color: palette.common.black
               }
             }}
             onChange={e => onUpdateName(e.target.value)}

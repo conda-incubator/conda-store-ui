@@ -7,6 +7,7 @@ import { useLazyGetPackageSuggestionsQuery } from "../requestedPackagesApiSlice"
 import { debounce } from "lodash";
 import { matchSorter } from "match-sorter";
 import { CircularProgress } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
 import {
   ActionTypes,
   initialState,
@@ -31,6 +32,7 @@ export const AddRequestedPackage = ({
   isCreating
 }: IAddRequestedPackageProps) => {
   const size = 100;
+  const theme = useTheme();
   const [state, dispatch] = useReducer(requestedPackagesReducer, initialState);
 
   const [triggerQuery] = useLazyGetPackageSuggestionsQuery();
@@ -128,7 +130,7 @@ export const AddRequestedPackage = ({
         <Autocomplete
           freeSolo
           selectOnFocus
-          sx={{ width: "140px" }}
+          sx={{ width: "140px", color: theme.palette.secondary.main }}
           options={uniquePackageNamesList}
           onChange={(event, value) => handleSubmit(value)}
           ListboxProps={{
@@ -147,6 +149,7 @@ export const AddRequestedPackage = ({
               autoFocus
               {...params}
               size="small"
+              sx={{ borderColor: theme.palette.secondary.main }}
               InputProps={{
                 ...params.InputProps,
                 endAdornment: (

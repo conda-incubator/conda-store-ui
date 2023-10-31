@@ -142,20 +142,10 @@ export const condaStoreTheme = createTheme(baseTheme, {
       main: green[500],
       contrastText: white
     },
-    white: baseTheme.palette.augmentColor({
-      color: {
-        main: white,
-        contrastText: black
-      },
-      name: "white"
-    }),
-    black: baseTheme.palette.augmentColor({
-      color: {
-        main: black,
-        contrastText: white
-      },
-      name: "black"
-    })
+    common: {
+      black: black,
+      white: white
+    }
   }
 });
 
