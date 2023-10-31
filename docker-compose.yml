@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   conda-store-worker:
-    image: quansight/conda-store-server:sha-0760fa2
+    image: quansight/conda-store-server:latest
     volumes:
       - ./docker/assets/environments:/opt/environments:ro
       - ./docker/assets/conda_store_config.py:/opt/conda_store/conda_store_config.py:ro
@@ -18,7 +18,7 @@ services:
       ]
 
   conda-store-server:
-    image: quansight/conda-store-server:sha-0760fa2
+    image: quansight/conda-store-server:latest
     depends_on:
       postgres:
         condition: service_healthy
