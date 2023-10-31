@@ -215,7 +215,6 @@ export const SpecificationEdit = ({
           <StyledButtonPrimary
             sx={{ padding: "5px 48px" }}
             onClick={onCancelEdition}
-            isalttype="true"
           >
             Cancel
           </StyledButtonPrimary>
@@ -223,7 +222,6 @@ export const SpecificationEdit = ({
             sx={{ padding: "5px 48px" }}
             onClick={onEditEnvironment}
             disabled={!envIsUpdated}
-            isalttype="true"
           >
             Save
           </StyledButtonPrimary>

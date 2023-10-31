@@ -87,7 +87,6 @@ export const EnvMetadata = ({
             <StyledButtonPrimary
               variant="contained"
               onClick={() => defaultEnvironmentChanged(newCurrentBuild)}
-              isalttype="true"
               disabled={specificationDidChange()}
             >
               Change environment version

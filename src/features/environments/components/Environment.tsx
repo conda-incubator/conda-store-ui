@@ -3,7 +3,7 @@ import CircleIcon from "@mui/icons-material/Circle";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import { Environment as EnvironmentModel } from "../../../common/models";
 import { StyledIconButton } from "../../../styles";
-import { getStylesForStyleType } from "../../../utils/helpers";
+import { useTheme } from "@mui/material/styles";
 
 interface IEnvironmentProps {
   /**
@@ -22,35 +22,31 @@ export const Environment = ({
   selectedEnvironmentId
 }: IEnvironmentProps) => {
   const isSelected = selectedEnvironmentId === environment.id;
-
-  const circleIconStyles = getStylesForStyleType(
-    { width: "9px", height: "9px", color: isSelected ? "#333" : "#5f6367" },
-    { width: "9px", height: "9px", color: isSelected ? "#33A852" : "#B9D9BD" }
-  );
-
-  const buttonStyles = getStylesForStyleType(
-    {
-      textTransform: "none",
-      fontSize: "13px",
-      fontWeight: isSelected ? 600 : 400,
-      color: "#333"
-    },
-    {
-      textTransform: "none",
-      fontSize: "13px",
-      fontWeight: isSelected ? 600 : 400,
-      color: isSelected ? "#33A852" : "#333"
-    }
-  );
+  const theme = useTheme();
 
   return (
     <>
       <ListItemIcon
         sx={{ width: "5px", minWidth: "auto", marginRight: "12px" }}
       >
-        <CircleIcon sx={circleIconStyles} />
+        <CircleIcon
+          sx={{
+            width: "9px",
+            height: "9px",
+            color: isSelected
+              ? theme.palette.primary.light
+              : theme.palette.primary.main
+          }}
+        />
       </ListItemIcon>
-      <StyledIconButton sx={buttonStyles} onClick={onClick}>
+      <StyledIconButton
+        onClick={onClick}
+        sx={{
+          textTransform: "none",
+          fontSize: "13px",
+          fontWeight: isSelected ? 600 : 400
+        }}
+      >
         {environment.name}
       </StyledIconButton>
     </>

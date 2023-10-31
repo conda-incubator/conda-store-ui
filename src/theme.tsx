@@ -44,6 +44,13 @@ declare module "@mui/material/styles" {
 const baseTheme = createTheme({
   typography: {
     fontFamily: '"Inter", sans-serif'
+  },
+  components: {
+    MuiButtonBase: {
+      defaultProps: {
+        disableRipple: true
+      }
+    }
   }
 });
 

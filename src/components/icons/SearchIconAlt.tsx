@@ -1,6 +1,8 @@
 import * as React from "react";
+import { useTheme } from "@mui/material/styles";
 
 export const SearchIconAlt = (props: React.SVGProps<SVGSVGElement>) => {
+  const theme = useTheme();
   return (
     <svg
       width={18}
@@ -12,7 +14,7 @@ export const SearchIconAlt = (props: React.SVGProps<SVGSVGElement>) => {
     >
       <path
         d="M13.09 12.64L17.53 17M7.77 15A7.06 7.06 0 10.66 7.94 7.08 7.08 0 007.77 15v0z"
-        stroke="#BCBFC4"
+        stroke={theme.palette.primary.main}
         strokeMiterlimit={10}
       />
     </svg>

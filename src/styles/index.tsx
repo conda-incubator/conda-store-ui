@@ -11,3 +11,4 @@ export * from "./StyledTab";
 export * from "./StyledTabs";
 export * from "./StyledBox";
 export * from "./StyledMetadataItem";
+export * from "./StyledSwitchButton";
