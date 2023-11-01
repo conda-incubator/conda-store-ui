@@ -2,6 +2,7 @@ import React from "react";
 import { Provider } from "react-redux";
 import { fireEvent, render, RenderResult } from "@testing-library/react";
 import { EnvironmentsSearch } from "../../src/features/environments";
+import { mockTheme } from "../testutils";
 import { store } from "../../src/store";
 
 describe("<EnvironmentsSearch />", () => {
@@ -10,9 +11,11 @@ describe("<EnvironmentsSearch />", () => {
 
   beforeEach(() => {
     component = render(
-      <Provider store={store}>
-        <EnvironmentsSearch onChange={mockOnChange} />
-      </Provider>
+      mockTheme(
+        <Provider store={store}>
+          <EnvironmentsSearch onChange={mockOnChange} />
+        </Provider>
+      )
     );
   });
 
