@@ -1,13 +1,22 @@
 import React from "react";
+import { Provider } from "react-redux";
 import { fireEvent, render, RenderResult } from "@testing-library/react";
 import { EnvironmentsSearch } from "../../src/features/environments";
+import { mockTheme } from "../testutils";
+import { store } from "../../src/store";
 
 describe("<EnvironmentsSearch />", () => {
   const mockOnChange = jest.fn();
   let component: RenderResult;
 
   beforeEach(() => {
-    component = render(<EnvironmentsSearch onChange={mockOnChange} />);
+    component = render(
+      mockTheme(
+        <Provider store={store}>
+          <EnvironmentsSearch onChange={mockOnChange} />
+        </Provider>
+      )
+    );
   });
 
   it("should render", () => {
