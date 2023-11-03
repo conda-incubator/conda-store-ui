@@ -20,7 +20,7 @@ describe("<ArtifactList />", () => {
     expect(screen.getByText("Show lockfile")).toBeVisible();
     expect(screen.getByText("Show lockfile")).toHaveAttribute(
       "href",
-      "http://localhost:5000/api/v1/build/1/lockfile/"
+      "http://localhost:8080/api/v1/build/1/lockfile/"
     );
   });
 });
