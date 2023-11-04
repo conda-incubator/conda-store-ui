@@ -37,7 +37,7 @@ export const prefDefault: Readonly<IPreferences> = {
   styleType:
     process.env.REACT_APP_STYLE_TYPE ??
     condaStoreConfig.REACT_APP_STYLE_TYPE ??
-    "grayscale",
+    "green-accent",
 
   showAuthButton: process.env.REACT_APP_SHOW_AUTH_BUTTON
     ? JSON.parse(process.env.REACT_APP_SHOW_AUTH_BUTTON)
