@@ -7,6 +7,7 @@ import Box from "@mui/material/Box";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
+import useTheme from "@mui/material/styles/useTheme";
 import { Environment } from "./Environment";
 import { INamespaceEnvironments } from "../../../common/interfaces";
 import {
@@ -35,6 +36,7 @@ export const EnvironmentDropdown = ({
   const { selectedEnvironment } = useAppSelector(state => state.tabs);
   const [isExpanded, setIsExpanded] = useState(false);
   const dispatch = useAppDispatch();
+  const { palette } = useTheme();
 
   const onCreateNewEnvironmentTab = (
     event: React.SyntheticEvent,
@@ -85,7 +87,7 @@ export const EnvironmentDropdown = ({
             sx={{
               fontWeight: 600,
               fontSize: "14px",
-              color: " #333"
+              color: palette.common.black
             }}
           >
             {namespace}

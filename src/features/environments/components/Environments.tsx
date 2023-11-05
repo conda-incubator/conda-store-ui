@@ -1,5 +1,9 @@
 import React, { memo, useEffect, useReducer } from "react";
 import Box from "@mui/material/Box";
+import ImportContactsOutlinedIcon from "@mui/icons-material/ImportContactsOutlined";
+import Typography from "@mui/material/Typography";
+import Link from "@mui/material/Link";
+import useTheme from "@mui/material/styles/useTheme";
 import { EnvironmentsList } from "./EnvironmentsList";
 import { debounce } from "lodash";
 import { EnvironmentsSearch } from "./EnvironmentsSearch";
@@ -14,7 +18,6 @@ import {
   initialState as NInitialState,
   namespacesReducer
 } from "../../../features/namespaces/reducer";
-import { CondaLogo } from "../../../components";
 import {
   isNamespaceListed,
   checkMyPrimaryNamespace,
@@ -32,6 +35,8 @@ const BaseEnvironments = ({
   onUpdateRefreshEnvironments
 }: IBaseEnvironments) => {
   const size = 100;
+  const { palette } = useTheme();
+  const version: string = process.env.REACT_APP_VERSION as string;
   const [state, dispatch] = useReducer(environmentsReducer, initialState);
   const [stateN, dispatchN] = useReducer(namespacesReducer, NInitialState);
 
@@ -153,18 +158,21 @@ const BaseEnvironments = ({
     <Box
       sx={{
         width: "100%",
-        position: "relative",
-        borderRight: "1px solid #E0E0E0"
+        borderRight: `1px solid ${palette.secondary.light}`,
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between"
       }}
     >
-      <Box>
+      <Box sx={{ borderBottom: `1px solid ${palette.secondary.light}` }}>
         <EnvironmentsSearch onChange={e => handleChange(e.target.value)} />
       </Box>
       <Box
         sx={{
-          position: "relative",
           zIndex: "1",
-          paddingTop: "15px"
+          paddingTop: "15px",
+          flex: 4,
+          overflowY: "auto"
         }}
       >
         {state.data && (
@@ -178,15 +186,56 @@ const BaseEnvironments = ({
         )}
       </Box>
       <Box
+        bgcolor={palette.common.white}
         sx={{
-          position: "absolute",
-          width: "100%",
-          textAlign: "center",
-          bottom: "20px",
-          zIndex: "0"
+          bottom: 5,
+          padding: "3px 12px",
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          backgroundColor: palette.common.white
         }}
       >
-        <CondaLogo />
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            "&:hover": {
+              borderBottom: "1px solid"
+            },
+            "&:focus": {
+              borderBottom: `1px solid ${palette.primary.main}`,
+              backgroundColor: palette.primary[50],
+              color: palette.primary[600]
+            }
+          }}
+        >
+          <ImportContactsOutlinedIcon></ImportContactsOutlinedIcon>
+          <Link
+            href={"https://conda.store/en/latest/"}
+            color="secondary"
+            underline="none"
+            sx={{
+              color: palette.secondary.main,
+              fontWeight: 400,
+              fontSize: "14px",
+              marginLeft: "5px"
+            }}
+            target="_blank"
+          >
+            Read the docs!
+          </Link>
+        </Box>
+        <Typography
+          sx={{
+            color: palette.secondary.main,
+            fontWeight: 400,
+            fontSize: "14px",
+            marginRight: "5px"
+          }}
+        >
+          Version: {version}
+        </Typography>
       </Box>
     </Box>
   );

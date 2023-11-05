@@ -2,10 +2,11 @@ import Box from "@mui/material/Box";
 import CircularProgress from "@mui/material/CircularProgress";
 import Typography from "@mui/material/Typography";
 import React, { useEffect, useMemo, useRef } from "react";
+import GroupsOutlinedIcon from "@mui/icons-material/GroupsOutlined";
+import useTheme from "@mui/material/styles/useTheme";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { INamespaceEnvironments } from "../../../common/interfaces";
 import { Environment, Namespace } from "../../../common/models";
-import { GroupIconAlt } from "../../../components";
 import { StyledScrollContainer } from "../../../styles";
 import {
   getMyPrimaryNamespace,
@@ -37,6 +38,7 @@ export const EnvironmentsList = ({
   search
 }: IEnvironmentsListProps) => {
   const scrollRef = useRef<HTMLDivElement | null>(null);
+  const { palette } = useTheme();
 
   const { primaryNamespace, sharedNamespaces } = useMemo(() => {
     // Group existing environments by namespace...
@@ -56,11 +58,7 @@ export const EnvironmentsList = ({
   }, [search]);
 
   return (
-    <StyledScrollContainer
-      sx={{ height: "calc(100vh - 130px)" }}
-      id="environmentsScroll"
-      ref={scrollRef}
-    >
+    <StyledScrollContainer id="environmentsScroll" ref={scrollRef}>
       <InfiniteScroll
         scrollableTarget="environmentsScroll"
         style={{ overflow: "hidden", paddingBottom: "25px" }}
@@ -80,7 +78,13 @@ export const EnvironmentsList = ({
         }
       >
         {primaryNamespace && (
-          <Box sx={{ minHeight: "50px", margin: "-5px 0 5px 0px" }}>
+          <Box
+            sx={{
+              minHeight: "50px",
+              margin: "-5px 0 5px 0px",
+              borderBottom: `1px solid ${palette.secondary.light}`
+            }}
+          >
             <EnvironmentDropdown data={primaryNamespace} />
           </Box>
         )}
@@ -88,21 +92,21 @@ export const EnvironmentsList = ({
           sx={{
             display: "flex",
             alignItems: "center",
-            margin: "0 0 5px 12px"
+            margin: "0 0 5px 12px",
+            paddingTop: "20px"
           }}
         >
+          <GroupsOutlinedIcon style={{ marginRight: "10px", width: "27" }} />
           <Typography
             sx={{
-              textTransform: "uppercase",
               fontWeight: 600,
               marginRight: "10px",
-              fontSize: "13px",
-              color: " #333"
+              fontSize: "15px",
+              color: palette.grey[700]
             }}
           >
-            Shared environments
+            Shared Environments
           </Typography>
-          <GroupIconAlt style={{ marginLeft: "10px", scale: ".8" }} />
         </Box>
         {sharedNamespaces &&
           sharedNamespaces.map((namespace: INamespaceEnvironments) => (

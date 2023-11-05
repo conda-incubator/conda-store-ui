@@ -6,7 +6,7 @@ import useTheme from "@mui/material/styles/useTheme";
 import React from "react";
 
 import { PrefContext } from "../../../preferences";
-import { SearchIconAlt } from "../../../components";
+import { SearchIconAlt, CondaLogo } from "../../../components";
 import { AuthButton } from "../../auth";
 
 interface IEnvironmentsSearchProps {
@@ -34,6 +34,17 @@ export const EnvironmentsSearch = ({ onChange }: IEnvironmentsSearchProps) => {
         position: "relative"
       }}
     >
+      <Box
+        sx={{
+          position: "absolute",
+          top: 14,
+          height: 35,
+          width: "auto"
+        }}
+      >
+        <CondaLogo transform="0.5"></CondaLogo>
+      </Box>
+      {authButton}
       <Typography
         data-testid="env-search-title"
         sx={{
@@ -42,12 +53,11 @@ export const EnvironmentsSearch = ({ onChange }: IEnvironmentsSearchProps) => {
           color: palette.common.black,
           fontWeight: 600,
           fontSize: "14px",
-          marginTop: "40px"
+          marginTop: "55px"
         }}
       >
         Package Manager
       </Typography>
-      {authButton}
       <OutlinedInput
         onChange={onChange}
         size="small"

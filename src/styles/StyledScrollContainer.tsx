@@ -14,7 +14,7 @@ export const StyledScrollContainer = styled(Box, {
     backgroundColor: "transparent"
   },
   "&::-webkit-scrollbar-thumb": {
-    backgroundColor: "#DADCE0",
+    backgroundColor: palette.secondary.light,
     borderRadius: "5px",
     border: "none"
   }
