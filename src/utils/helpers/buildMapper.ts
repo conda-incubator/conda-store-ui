@@ -41,7 +41,7 @@ const dateToTimezone = (date: string) => {
 };
 
 export const buildMapper = (data: Build[], currentBuildId: number) => {
-  return data.map(({ id, status, ended_on, scheduled_on }: Build) => {
+  return data.map(({ id, status, status_info, ended_on, scheduled_on }: Build) => {
     let duration = 0;
     if (ended_on && scheduled_on) {
       const startTime = new Date(scheduled_on);
@@ -53,7 +53,8 @@ export const buildMapper = (data: Build[], currentBuildId: number) => {
       return {
         id,
         name: `${dateToTimezone(ended_on ?? scheduled_on)} - Active`,
-        status: isCompleted(status, duration)
+        status: isCompleted(status, duration),
+        status_info,
       };
     }
 
@@ -61,7 +62,8 @@ export const buildMapper = (data: Build[], currentBuildId: number) => {
       return {
         id,
         name: `${dateToTimezone(scheduled_on)} - Building`,
-        status: "Building"
+        status: "Building",
+        status_info,
       };
     }
 
@@ -69,7 +71,8 @@ export const buildMapper = (data: Build[], currentBuildId: number) => {
       return {
         id,
         name: `${dateToTimezone(scheduled_on)} - Queued`,
-        status: "Building"
+        status: "Building",
+        status_info,
       };
     }
 
@@ -78,7 +81,8 @@ export const buildMapper = (data: Build[], currentBuildId: number) => {
       name: `${dateToTimezone(ended_on ?? scheduled_on)} - ${
         STATUS_OPTIONS[status]
       }`,
-      status: isCompleted(status, duration)
+      status: isCompleted(status, duration),
+      status_info,
     };
   });
 };
