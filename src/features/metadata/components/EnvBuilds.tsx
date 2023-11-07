@@ -45,7 +45,9 @@ export const EnvBuilds = ({
             Status: {""}
             <Typography component="span" sx={{ fontSize: "13px" }}>
               {currentBuild.status_info ? (
-                <>{currentBuild.status} ({currentBuild.status_info})</>
+                <>
+                  {currentBuild.status} ({currentBuild.status_info})
+                </>
               ) : (
                 <>{currentBuild.status}</>
               )}
