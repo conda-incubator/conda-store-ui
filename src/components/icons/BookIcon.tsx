@@ -47,6 +47,6 @@ export const BookIcon = (props: React.SVGProps<SVGSVGElement>) => {
         stroke={theme.palette.secondary.main}
         strokeLinecap="round"
       />
-</svg>
+    </svg>
   );
 };
