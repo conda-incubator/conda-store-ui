@@ -6,3 +6,4 @@ export * from "./DeleteIconAlt";
 export * from "./UploadIcon";
 export * from "./ChannelIcon";
 export * from "./CodeIcon";
+export * from "./BookIcon";

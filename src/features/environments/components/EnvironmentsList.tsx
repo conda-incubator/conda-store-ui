@@ -2,7 +2,6 @@ import Box from "@mui/material/Box";
 import CircularProgress from "@mui/material/CircularProgress";
 import Typography from "@mui/material/Typography";
 import React, { useEffect, useMemo, useRef } from "react";
-import GroupsOutlinedIcon from "@mui/icons-material/GroupsOutlined";
 import useTheme from "@mui/material/styles/useTheme";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { INamespaceEnvironments } from "../../../common/interfaces";
@@ -13,6 +12,7 @@ import {
   getSharedNamespaces,
   namespaceMapper
 } from "../../../utils/helpers/namespaces";
+import { GroupIconAlt } from "../../../components";
 import { EnvironmentDropdown } from "./EnvironmentDropdown";
 
 interface IEnvironmentsListProps {
@@ -81,8 +81,7 @@ export const EnvironmentsList = ({
           <Box
             sx={{
               minHeight: "50px",
-              margin: "-5px 0 5px 0px",
-              borderBottom: `1px solid ${palette.secondary.light}`
+              margin: "-5px 0 5px 0px"
             }}
           >
             <EnvironmentDropdown data={primaryNamespace} />
@@ -96,7 +95,7 @@ export const EnvironmentsList = ({
             paddingTop: "20px"
           }}
         >
-          <GroupsOutlinedIcon style={{ marginRight: "10px", width: "27" }} />
+          <GroupIconAlt style={{ marginRight: "10px", width: "27" }} />
           <Typography
             sx={{
               fontWeight: 600,

@@ -1,6 +1,5 @@
 import React, { memo, useEffect, useReducer } from "react";
 import Box from "@mui/material/Box";
-import ImportContactsOutlinedIcon from "@mui/icons-material/ImportContactsOutlined";
 import Typography from "@mui/material/Typography";
 import Link from "@mui/material/Link";
 import useTheme from "@mui/material/styles/useTheme";
@@ -24,6 +23,7 @@ import {
   namespacesPermissionsMapper
 } from "../../../utils/helpers/namespaces";
 import { Namespace } from "../../../common/models";
+import { BookIcon } from "../../../components";
 
 export interface IBaseEnvironments {
   refreshEnvironments: boolean;
@@ -210,7 +210,7 @@ const BaseEnvironments = ({
             }
           }}
         >
-          <ImportContactsOutlinedIcon></ImportContactsOutlinedIcon>
+          <BookIcon></BookIcon>
           <Link
             href={"https://conda.store/en/latest/"}
             color="secondary"
@@ -223,7 +223,15 @@ const BaseEnvironments = ({
             }}
             target="_blank"
           >
-            Read the docs!
+            <Typography
+              sx={{
+                color: palette.secondary.main,
+                fontWeight: 400,
+                fontSize: "14px"
+              }}
+            >
+              Read the docs!
+            </Typography>
           </Link>
         </Box>
         <Typography
