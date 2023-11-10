@@ -3,7 +3,7 @@
   "version": "0.1.5",
   "description": "UI elements for building a frontend for conda-store",
   "scripts": {
-    "build": "tsc --build",
+    "build": "REACT_APP_VERSION=$npm_package_version tsc --build",
     "build:watch": "tsc --build --watch",
     "clean": "rimraf coverage lib storybook-static types .env  *.tsbuildinfo",
     "clean:slate": "yarn run clean && rimraf node_modules",
@@ -11,7 +11,7 @@
     "eslint:check": "eslint . --ext .ts,.tsx",
     "prepare": "yarnpkg run build && husky install",
     "prepublishOnly": "yarnpkg run clean && yarnpkg run webpack:prod",
-    "start": "webpack server --history-api-fallback",
+    "start": "REACT_APP_VERSION=$npm_package_version webpack server --history-api-fallback",
     "start:chromium": "webpack serve --open 'chromium'",
     "start:prod": "NODE_ENV=production webpack serve",
     "storybook": "start-storybook -p 6006",
@@ -19,9 +19,9 @@
     "test": "jest --coverage",
     "report": "open ./coverage/lcov-report/index.html",
     "watch": "npm-run-all -p *:watch",
-    "webpack": "webpack --color",
-    "webpack:prod": "NODE_ENV=production webpack --color",
-    "webpack:watch": "webpack --color --watch"
+    "webpack": "REACT_APP_VERSION=$npm_package_version webpack --color",
+    "webpack:prod": "REACT_APP_VERSION=$npm_package_version NODE_ENV=production webpack --color",
+    "webpack:watch": "REACT_APP_VERSION=$npm_package_version webpack --color --watch"
   },
   "keywords": [
     "conda-store"

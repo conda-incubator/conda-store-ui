@@ -14,7 +14,7 @@ export const ArrowIcon = (props: React.SVGProps<SVGSVGElement>) => {
     >
       <path
         d="M0 12.82l6.29-6.41L0 0v12.82z"
-        fill={theme.palette.primary.main}
+        fill={theme.palette.secondary.dark}
       />
     </svg>
   );

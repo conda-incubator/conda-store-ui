@@ -1,8 +1,8 @@
 import React from "react";
 import CircleIcon from "@mui/icons-material/Circle";
 import ListItemIcon from "@mui/material/ListItemIcon";
+import Button from "@mui/material/Button";
 import { Environment as EnvironmentModel } from "../../../common/models";
-import { StyledIconButton } from "../../../styles";
 import { useTheme } from "@mui/material/styles";
 
 interface IEnvironmentProps {
@@ -27,28 +27,46 @@ export const Environment = ({
   return (
     <>
       <ListItemIcon
-        sx={{ width: "5px", minWidth: "auto", marginRight: "12px" }}
+        sx={{
+          width: "5px",
+          minWidth: "auto",
+          marginRight: "12px"
+        }}
       >
         <CircleIcon
           sx={{
-            width: "9px",
-            height: "9px",
+            width: "5px",
+            height: "5px",
             color: isSelected
-              ? theme.palette.primary.light
-              : theme.palette.primary.main
+              ? theme.palette.primary.main
+              : theme.palette.common.black
           }}
         />
       </ListItemIcon>
-      <StyledIconButton
+      <Button
         onClick={onClick}
         sx={{
+          color: isSelected
+            ? theme.palette.primary.main
+            : theme.palette.common.black,
+          backgroundColor: isSelected ? theme.palette.primary[50] : "none",
+          borderRadius: "0px",
+          padding: "0px",
+          minWidth: "auto",
           textTransform: "none",
           fontSize: "13px",
-          fontWeight: isSelected ? 600 : 400
+          fontWeight: isSelected ? 600 : 400,
+          textDecoration: isSelected ? "underline" : "none",
+          textUnderlineOffset: "0.3em",
+          ":hover": {
+            boxShadow: "none",
+            textDecoration: "underline",
+            textUnderlineOffset: "0.3em"
+          }
         }}
       >
         {environment.name}
-      </StyledIconButton>
+      </Button>
     </>
   );
 };
