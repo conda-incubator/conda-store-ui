@@ -44,15 +44,17 @@ To get started:
    docker-compose -f docker-compose-dev.yml up --build
    ```
 
-2. Install yarn and NodeJS:
+2. Install yarn and NodeJS with conda:
 
-   > **Note**
+   > [!NOTE]
    > Skip this if you are planning to use a local installation of yarn and NodeJS
 
    ```bash
-   conda create --name conda-store-ui
-   conda activate conda-store-ui
-   conda install -c conda-forge yarn nodejs==16.14.2
+   conda env create -f environment_dev.yml
+
+   # activate the newly created environment
+   conda activate cs-ui-dev-env
+
    ```
 
 3. Finally, start the conda-store-ui application:
@@ -65,8 +67,11 @@ To get started:
    yarn run start
    ```
 
-When compiling the application for development you will need to set several environment variables.
-Refer to the [Configuration documentation](https://conda-incubator.github.io/conda-store-ui/?path=/docs/docs-configuration--page) for more information.
+   once completed, you should be able to access the application at [http://localhost:8000/](http://localhost:8000/)
+
+> [!IMPORTANT]
+> When compiling the application for development you will need to set several environment variables.
+> Refer to the [Configuration documentation](https://conda-incubator.github.io/conda-store-ui/?path=/docs/docs-configuration--page) for more information.
 
 ### Making a release
 

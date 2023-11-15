@@ -1,7 +1,7 @@
 # Environment for developing the conda-store-ui and for running
 # playwright tests
 
-name: dev-env
+name: cs-ui-dev-env
 channels:
   - conda-forge
 dependencies:

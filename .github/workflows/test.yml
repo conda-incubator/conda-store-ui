@@ -43,7 +43,7 @@ jobs:
         env:
           CONDA_SOLVER: libmamba
         with:
-          activate-environment: dev-env
+          activate-environment: cs-ui-dev-env
           environment-file: environment_dev.yml
           auto-activate-base: false
 
