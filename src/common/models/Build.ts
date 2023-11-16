@@ -14,6 +14,7 @@ export type Build = {
   };
   packages: BuildPackage[];
   status: string;
+  status_info: string | null;
   size: number;
   scheduled_on: string;
   started_on: string;

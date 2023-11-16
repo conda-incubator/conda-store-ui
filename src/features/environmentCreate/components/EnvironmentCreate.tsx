@@ -95,9 +95,9 @@ export const EnvironmentCreate = ({ environmentNotification }: IEnvCreate) => {
           description: createLabel(name, "create")
         }
       });
-    } catch ({ data }) {
+    } catch (e) {
       setError({
-        message: data.message,
+        message: e?.data?.message ?? createLabel(undefined, "error"),
         visible: true
       });
     }
