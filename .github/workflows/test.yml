@@ -9,11 +9,11 @@ env:
   REACT_APP_API_URL: http://localhost:8080/conda-store/
   REACT_APP_AUTH_METHOD: cookie
   REACT_APP_LOGIN_PAGE_URL: http://localhost:8080/conda-store/login?next=
-  REACT_APP_AUTH_TOKEN: 
+  REACT_APP_AUTH_TOKEN:
   REACT_APP_STYLE_TYPE: green-accent
   REACT_APP_CONTEXT: webapp
   REACT_APP_SHOW_AUTH_BUTTON: true
-  REACT_APP_LOGOUT_PAGE_URL: http://localhost:8080/conda-store/logout?next=/ 
+  REACT_APP_LOGOUT_PAGE_URL: http://localhost:8080/conda-store/logout?next=/
   YARN_ENABLE_IMMUTABLE_INSTALLS: false
 
 on:
@@ -24,7 +24,7 @@ on:
 
 jobs:
   test-conda-store-ui:
-    name: 'unit-test conda-store-ui'
+    name: "unit-test conda-store-ui"
     strategy:
       matrix:
         # cannot run on windows due to needing fake-chroot for conda-docker
@@ -35,31 +35,30 @@ jobs:
       run:
         shell: bash -el {0}
     steps:
-      - name: 'Checkout Repository'
-        uses: actions/checkout@master
+      - name: "Checkout repository 🛎"
+        uses: actions/checkout@v4
 
-      - name: Set up Python
+      - name: "Set up Python"
         uses: conda-incubator/setup-miniconda@v2
-        env: 
+        env:
           CONDA_SOLVER: libmamba
         with:
-          activate-environment: test-env
+          activate-environment: cs-ui-dev-env
           environment-file: environment_dev.yml
           auto-activate-base: false
 
-      - name: Install Dependencies
+      - name: "Install Dependencies"
         run: |
           sudo apt install wait-for-it -y
 
-      - name: Deploy conda-store-server docker container
+      - name: "Deploy conda-store-server docker container"
         run: |
           docker-compose -f docker-compose-dev.yml up -d --build
           docker ps
 
           wait-for-it localhost:8080 # conda-store-server
 
-
-      - name: Deploy webpack dev server
+      - name: "Deploy webpack dev server"
         shell: bash -el {0}
         run: |
           conda list
@@ -69,8 +68,8 @@ jobs:
           yarn run start &
           pytest --video on --output test-results --screenshots true test/playwright/test_ux.py
 
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v2
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v3
         if: ${{ always() }}
         with:
           name: playwright-tests

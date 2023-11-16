@@ -1,14 +1,15 @@
-# Environment for developing the conda-store-ui and for running 
+# Environment for developing the conda-store-ui and for running
 # playwright tests
 
-name: test-env
+name: cs-ui-dev-env
 channels:
-- conda-forge
+  - conda-forge
 dependencies:
-- python=3.10
-- yarn
-- nodejs==16.14.2
-- pytest
-- pip:
-  - playwright
-  - pytest-playwright
+  - python=3.10
+  - yarn
+  - nodejs>=18.0
+  - pytest
+  - pip
+  - pip:
+      - playwright
+      - pytest-playwright

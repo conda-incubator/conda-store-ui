@@ -6,11 +6,11 @@
 
 ---
 
-| Information | Links |
-| :---------- | :-----|
-|   Project   | [![License](https://img.shields.io/badge/License-BSD%203--Clause-gray.svg?&colorB=298642&style=flat.svg)](https://opensource.org/licenses/BSD-3-Clause) [![conda-store documentation](https://img.shields.io/badge/conda--store-documentation%20📖-gray.svg?&colorB=298642&style=flat.svg)][conda-store-docs] [![conda-store-ui documentation](https://img.shields.io/badge/conda--store--UI-documentation%20📖-gray.svg?&colorB=298642&style=flat.svg)][conda-store-ui-docs] |
-| Wofklows |  ![GitHub Workflow Status - Build](https://img.shields.io/github/actions/workflow/status/conda-incubator/conda-store-ui/build.yml?label=Build&logo=GitHub) ![GitHub Workflow Status (with event) - Release](https://img.shields.io/github/actions/workflow/status/conda-incubator/conda-store-ui/release.yml?event=push&label=Release&logo=GitHub) ![GitHub Workflow Status - GitHub pages](https://img.shields.io/github/actions/workflow/status/conda-incubator/conda-store-ui/pages.yml?label=Docs&logo=GitHub) |
-| Releases | ![GitHub release (the latest by date)](https://img.shields.io/github/v/release/conda-incubator/conda-store-ui?logo=Github) ![npm release version](https://img.shields.io/npm/v/@conda-store/conda-store-ui?label=release&logo=npm) |
+| Information | Links                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| :---------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Project     | [![License](https://img.shields.io/badge/License-BSD%203--Clause-gray.svg?&colorB=298642&style=flat.svg)](https://opensource.org/licenses/BSD-3-Clause) [![conda-store documentation](https://img.shields.io/badge/conda--store-documentation%20📖-gray.svg?&colorB=298642&style=flat.svg)][conda-store-docs] [![conda-store-ui documentation](https://img.shields.io/badge/conda--store--UI-documentation%20📖-gray.svg?&colorB=298642&style=flat.svg)][conda-store-ui-docs]                                     |
+| Wofklows    | ![GitHub Workflow Status - Build](https://img.shields.io/github/actions/workflow/status/conda-incubator/conda-store-ui/build.yml?label=Build&logo=GitHub) ![GitHub Workflow Status (with event) - Release](https://img.shields.io/github/actions/workflow/status/conda-incubator/conda-store-ui/release.yml?event=push&label=Release&logo=GitHub) ![GitHub Workflow Status - GitHub pages](https://img.shields.io/github/actions/workflow/status/conda-incubator/conda-store-ui/pages.yml?label=Docs&logo=GitHub) |
+| Releases    | ![GitHub release (the latest by date)](https://img.shields.io/github/v/release/conda-incubator/conda-store-ui?logo=Github) ![npm release version](https://img.shields.io/npm/v/@conda-store/conda-store-ui?label=release&logo=npm)                                                                                                                                                                                                                                                                                |
 
 ---
 
@@ -44,15 +44,17 @@ To get started:
    docker-compose -f docker-compose-dev.yml up --build
    ```
 
-2. Install yarn and NodeJS:
+2. Install yarn and NodeJS with conda:
 
-   > **Note**
+   > [!NOTE]
    > Skip this if you are planning to use a local installation of yarn and NodeJS
 
    ```bash
-   conda create --name conda-store-ui
-   conda activate conda-store-ui
-   conda install -c conda-forge yarn nodejs==16.14.2
+   conda env create -f environment_dev.yml
+
+   # activate the newly created environment
+   conda activate cs-ui-dev-env
+
    ```
 
 3. Finally, start the conda-store-ui application:
@@ -65,18 +67,23 @@ To get started:
    yarn run start
    ```
 
-When compiling the application for development you will need to set a number of environment variables. Refer to the [Configuration documentation](https://conda-incubator.github.io/conda-store-ui/?path=/docs/docs-configuration--page) for more information.
+   once completed, you should be able to access the application at [http://localhost:8000/](http://localhost:8000/)
+
+> [!IMPORTANT]
+> When compiling the application for development you will need to set several environment variables.
+> Refer to the [Configuration documentation](https://conda-incubator.github.io/conda-store-ui/?path=/docs/docs-configuration--page) for more information.
 
 ### Making a release
 
 To create a new version of this package, follow these steps:
 
 <!-- TODO: need to link to CalVer/release docs -->
+
 1. Bump the version number in `package.json` (we use CalVer: `YYYY.MM.releaseNumber` starting with `releaseNumber=1`)
 2. [Start a new GitHub release](https://github.com/conda-incubator/conda-store-ui/releases/new)
-    - Call the release the current version, e.g. `2023.9.1`
-    - In the **`Choose a Tag:`** dropdown, type in the release name (e.g., `2023.9.1`) and click "Create new tag"
-    - Add the release notes in the text field [^github-activity]
+   - Call the release the current version, e.g. `2023.9.1`
+   - In the **`Choose a Tag:`** dropdown, type in the release name (e.g., `2023.9.1`) and click "Create new tag"
+   - Add the release notes in the text field [^github-activity]
 3. Confirm that the release completed successfully by checking the [GitHub Actions page](https://github.com/conda-incubator/conda-store-ui/actions). Once completed, a new release will be available at [npm - @conda-store/conda-store-ui](https://libraries.io/npm/@conda-store%2Fconda-store-ui)
 
 [^github-activity]: If you wish, use [`github-activity` to generate a Changelog](https://github.com/choldgraf/github-activity), e.g. `github-activity conda-incubator/conda-store-ui --since 2023.9.1 --until 2023.10.1 --auth <GH personal access token>`
