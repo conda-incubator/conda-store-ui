@@ -38,39 +38,40 @@ jobs:
       - name: "Checkout repository 🛎"
         uses: actions/checkout@v4
 
-      - name: "Set up Python"
+      - name: "Set up Python 🐍"
         uses: conda-incubator/setup-miniconda@v2
         env:
           CONDA_SOLVER: libmamba
         with:
-          activate-environment: cs-ui-dev-env
           environment-file: environment_dev.yml
-          auto-activate-base: false
+          miniforge-variant: Mambaforge
+          miniforge-version: latest
+          use-mamba: true
+          use-only-tar-bz2: true
 
-      - name: "Install Dependencies"
-        run: |
-          sudo apt install wait-for-it -y
-
-      - name: "Deploy conda-store-server docker container"
+      - name: "Deploy conda-store-server Docker container 🐋"
         run: |
           docker-compose -f docker-compose-dev.yml up -d --build
           docker ps
 
           wait-for-it localhost:8080 # conda-store-server
 
-      - name: "Deploy webpack dev server"
+      - name: "Install app dependencies 📦"
         shell: bash -el {0}
         run: |
           conda list
           playwright install chromium
           yarn install
           yarn run build
+
+      - name: "Start app and run tests 🧪"
+        run: |
           yarn run start &
           pytest --video on --output test-results --screenshots true test/playwright/test_ux.py
 
-      - name: "Upload artifacts"
+      - name: "Upload artifacts 📤"
         uses: actions/upload-artifact@v3
-        if: ${{ always() }}
+        if: always()
         with:
           name: playwright-tests
           path: test-results
