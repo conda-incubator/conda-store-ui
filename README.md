@@ -25,53 +25,40 @@ To learn how to use conda-store-ui alongside conda-store, please visit [the cond
 
 ## Development
 
-### Setting up the development environment
+To get started with conda-store-ui development, there are a couple of options. This guide will help you to set up your local development environment.
 
-We use [Docker Compose](https://docs.docker.com/compose/) to set up the infrastructure and recommend using `conda` as the package manager for NodeJS and yarn.
+### Prerequsites
+Before setting up conda-store ui, you must prepare your environment. 
 
-You will need to have the following installed:
+We use [Docker Compose](https://docs.docker.com/compose/) to set up the infrastructure before starting ensure that you have docker-compose installed. If you need to install docker-compose, please see their [installlation documentation](https://docs.docker.com/compose/install/)
 
-- [Docker compose](https://docs.docker.com/compose/install/)
-- conda or mamba
+1. Clone the [conda-store-ui](https://github.com/conda-incubator/conda-store-ui.git) repository.
+2. Copy `.env.example` to `.env`. All default settings should work, but if you want to test against a different version of conda-store-server, you can specify if in the `.env` file by setting the `CONDA_STORE_SERVER_VERSION` variable to the desired version. Refer to the [Configuration documentation](https://conda-incubator.github.io/conda-store-ui/?path=/docs/docs-configuration--page) for more information on the `.env` file.
 
-To get started:
+### Local Development with conda-store-ui running in Docker
+Running conda-store-ui in Docker is the simplest way to setup your local development environment.
 
-1. Clone this repo and from the root of the directory, start Docker compose:
+1. Simply run `docker-compose up` to start the entire development stack.
+2. Open you local browser and go to [http://localhost:8000](http://localhost:8000) so see conda-store-ui.
+3. You can then login using the default username of `username` and default password of `password`.
 
-   ```bash
-   git clone https://github.com/conda-incubator/conda-store-ui.git
-   cd conda-store-ui
-   docker-compose -f docker-compose-dev.yml up --build
-   ```
+Hot reloading is enabled, so when you make changes to source files, your browser will reload and reflect the changes.
 
-2. Install yarn and NodeJS with conda:
+### Local Development without running conda-store-ui in Docker
+This setup still uses Docker for supporting services but runs conda-store-ui locally.
+#### Setup your environment
+This project uses [Conda](https://conda.io) for package management. To set up Conda, please see their [installation documentation](https://docs.conda.io/projects/conda/en/latest/user-guide/install/index.html).
+1. Change to the project root ` cd conda-store-ui`
+2. From the project root create the conda environment `conda env create -f environment_dev.yml`
+3. Activate the development environment `conda activate cs-ui-dev-env`
+4. Install yarn dependencies `yarn install`
+#### run the application
+1. run `yarn start` and wait for the application to finish starting up
+2. Open you local browser and go to [http://localhost:8000](http://localhost:8000) so see conda-store-ui.
+3. You can then login using the default username of `username` and default password of `password`.
 
-   > [!NOTE]
-   > Skip this if you are planning to use a local installation of yarn and NodeJS
+Hot reloading is enabled, so when you make changes to source files, your browser will reload and reflect the changes.
 
-   ```bash
-   conda env create -f environment_dev.yml
-
-   # activate the newly created environment
-   conda activate cs-ui-dev-env
-
-   ```
-
-3. Finally, start the conda-store-ui application:
-
-   ```bash
-   # install the dependencies
-   yarn install
-   # build and start the application
-   yarn run build
-   yarn run start
-   ```
-
-   once completed, you should be able to access the application at [http://localhost:8000/](http://localhost:8000/)
-
-> [!IMPORTANT]
-> When compiling the application for development you will need to set several environment variables.
-> Refer to the [Configuration documentation](https://conda-incubator.github.io/conda-store-ui/?path=/docs/docs-configuration--page) for more information.
 
 ### Making a release
 

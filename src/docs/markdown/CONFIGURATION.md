@@ -1,11 +1,13 @@
 # Configuration
 
+## Application configuration
+
 The configuration for conda-store-ui, including the connection details to conda-store, can be done :
 - either at compile time, using a `.env` file.
 - or at runtime, using `condaStoreConfig` variable
 
 
-## At compile time, using `.env`
+### At compile time, using `.env`
 
 conda-store-ui looks for a `.env` file when packing the bundle.
 Below, you'll find the options and the listed descriptions. You are welcome to copy this configuration, otherwise, you can copy and rename the `.env.example` file provided in the repository.
@@ -22,7 +24,7 @@ REACT_APP_SHOW_AUTH_BUTTON=true
 REACT_APP_LOGOUT_PAGE_URL=http://localhost:8080/conda-store/logout?next=/
 ```
 
-## At runtime, using `condaStoreConfig`
+### At runtime, using `condaStoreConfig`
 
 When using a webpacked version of `conda-store-ui`, you might want to pass it a configuration.
 In your HTML file, add the following **before** loading the react app :
@@ -42,7 +44,7 @@ In your HTML file, add the following **before** loading the react app :
 ```
 
 
-## Options
+### Options
 
 The possible options are stored in a key-value format.
 
@@ -111,5 +113,8 @@ Show the login icon in the top menubar.
 
 Hide the login icon in the top menubar.
 
+## Docker-compose configuration
+By default, docker-compose uses the latest release of conda-store-server, but there could be cases where a devloper wishes to test against a different versions, such as a release candidate.
 
+Adding the `CONDA_STORE_SERVER_VERSION` variable to the `.env` file will allow overriding this default and setting whichever version of conda-store-server is desired.
 
