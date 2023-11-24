@@ -2,8 +2,6 @@ version: "3.8"
 
 services:
   conda-store-worker:
-    profiles:
-      - local-dev
     image: quansight/conda-store-server:${CONDA_STORE_SERVER_VERSION:-2023.10.1}
     volumes:
       - ./docker/assets/environments:/opt/environments:ro
@@ -21,8 +19,6 @@ services:
 
   conda-store-server:
     image: quansight/conda-store-server:${CONDA_STORE_SERVER_VERSION:-2023.10.1}
-    profiles:
-      - local-dev
     depends_on:
       postgres:
         condition: service_healthy
@@ -48,8 +44,6 @@ services:
 
   minio:
     image: minio/minio:RELEASE.2020-11-10T21-02-24Z
-    profiles:
-      - local-dev
     ports:
       - "9000:9000"
     healthcheck:
@@ -65,8 +59,6 @@ services:
 
   postgres:
     image: postgres:13
-    profiles:
-      - local-dev
     user: postgres
     ports:
       - 5432:5432
@@ -81,8 +73,6 @@ services:
 
   redis:
     image: bitnami/redis
-    profiles:
-      - local-dev
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
       interval: 10s
@@ -93,7 +83,9 @@ services:
 
   conda-store-ui:
     build: .
-    command: "yarn run start --port 8000 --history-api-fallback"
+    command: "yarn run start:ui --port 8000 --history-api-fallback"
+    profiles:
+      - local-dev
     ports:
       - "8000:8000"
     depends_on:
@@ -104,7 +96,7 @@ services:
       - .:/usr/src/app
     healthcheck:
       test:
-        ["CMD", "curl", "--fail", "http://localhost"]
+        ["CMD", "curl", "--fail", "http://localhost:8000"]
       interval: 20s
       timeout: 10s
       retries: 8

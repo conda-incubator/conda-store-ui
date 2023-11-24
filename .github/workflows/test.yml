@@ -51,13 +51,13 @@ jobs:
         run: |
           sudo apt install wait-for-it -y
           playwright install chromium
-          yarn install
-          yarn build
+          yarn install --frozen-lockfile
+          yarn run build
 
       - name: "Deploy webpack dev server"
         shell: bash -el {0}
         run: |
-          yarn start & pytest --video on --output test-results --screenshots true test/playwright/test_ux.py
+          yarn run start & pytest --video on --output test-results --screenshots true test/playwright/test_ux.py
 
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v3
