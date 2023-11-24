@@ -50,6 +50,9 @@ jobs:
       - name: "Install Dependencies"
         run: |
           sudo apt install wait-for-it -y
+          playwright install chromium
+          yarn install
+          yarn build
 
       # - name: "Deploy conda-store-server docker container"
       #   run: |
@@ -61,10 +64,6 @@ jobs:
       - name: "Deploy webpack dev server"
         shell: bash -el {0}
         run: |
-          conda list
-          playwright install chromium
-          yarn install
-          yarn build
           yarn start
           wait-for-it localhost:8080 # conda-store-server
           pytest --video on --output test-results --screenshots true test/playwright/test_ux.py
