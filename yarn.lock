@@ -1803,6 +1803,7 @@ __metadata:
     "@types/lodash": "npm:^4.14.182"
     "@types/react": "npm:^18.0.0"
     "@types/react-beautiful-dnd": "npm:^13.1.2"
+    "@types/react-codemirror": "npm:^1"
     "@types/react-dom": "npm:^18.0.0"
     "@types/react-redux": "npm:^7.1.24"
     "@types/react-test-renderer": "npm:^18.0.0"
@@ -1840,6 +1841,7 @@ __metadata:
     raw-loader: "npm:^4.0.2"
     react: "npm:^18.0.0"
     react-beautiful-dnd: "npm:^13.1.0"
+    react-codemirror: "npm:^1.0.0"
     react-dom: "npm:^18.0.0"
     react-infinite-scroll-component: "npm:^6.1.0"
     react-redux: "npm:^8.0.2"
@@ -4680,6 +4682,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/codemirror@npm:*":
+  version: 5.60.15
+  resolution: "@types/codemirror@npm:5.60.15"
+  dependencies:
+    "@types/tern": "npm:*"
+  checksum: 4d32ee8d335650956fc59b26f29909de0656ce9c68f7527caf2aa68e6a6a2e8be6ec7a6b80c02bfab7ac6b17040d6c2d83d394b9d00fdbf4b5588691f2efbba6
+  languageName: node
+  linkType: hard
+
 "@types/connect-history-api-fallback@npm:^1.3.5":
   version: 1.3.5
   resolution: "@types/connect-history-api-fallback@npm:1.3.5"
@@ -5062,6 +5073,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/react-codemirror@npm:^1":
+  version: 1.0.11
+  resolution: "@types/react-codemirror@npm:1.0.11"
+  dependencies:
+    "@types/codemirror": "npm:*"
+    "@types/react": "npm:*"
+  checksum: b211e698fa5a3a70af9d50e77f9498316a1d302d8faebdd578a89523cf2a48c84d3980f1af9dc595174f735ab4ae769f35e1cf9b4464c63b00b7a67815602c4c
+  languageName: node
+  linkType: hard
+
 "@types/react-dom@npm:^18.0.0":
   version: 18.0.11
   resolution: "@types/react-dom@npm:18.0.11"
@@ -5197,6 +5218,15 @@ __metadata:
   version: 1.0.8
   resolution: "@types/tapable@npm:1.0.8"
   checksum: 01f77d47bac8aaeee7ed298e8e74eb012a28f920106c3c359e1f2730512cd810f2c6165cd2cd769422ae1064e2bf1072778b27fb5ec1973e18c35e2cc1ed5c8d
+  languageName: node
+  linkType: hard
+
+"@types/tern@npm:*":
+  version: 0.23.9
+  resolution: "@types/tern@npm:0.23.9"
+  dependencies:
+    "@types/estree": "npm:*"
+  checksum: 1d30ccfbb84362fe7a7edeea3ba5268f5a7a0965d504147c6b701092f0ea3f0833799ee753e2059a535ca06590f91dd2416e4bd94a6e8ad51eea127a0607c617
   languageName: node
   linkType: hard
 
@@ -7548,6 +7578,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"classnames@npm:^2.2.5":
+  version: 2.3.2
+  resolution: "classnames@npm:2.3.2"
+  checksum: cd50ead57b4f97436aaa9f9885c6926323efc7c2bea8e3d4eb10e4e972aa6a1cfca1c7a0e06f8a199ca7498d4339e30bb6002e589e61c9f21248cbf3e8b0b18d
+  languageName: node
+  linkType: hard
+
 "clean-css@npm:^4.2.3":
   version: 4.2.4
   resolution: "clean-css@npm:4.2.4"
@@ -7651,6 +7688,13 @@ __metadata:
   version: 4.6.0
   resolution: "co@npm:4.6.0"
   checksum: c0e85ea0ca8bf0a50cbdca82efc5af0301240ca88ebe3644a6ffb8ffe911f34d40f8fbcf8f1d52c5ddd66706abd4d3bfcd64259f1e8e2371d4f47573b0dc8c28
+  languageName: node
+  linkType: hard
+
+"codemirror@npm:^5.18.2":
+  version: 5.65.16
+  resolution: "codemirror@npm:5.65.16"
+  checksum: 72ab3aae5ee0511b33348761da43585a0368f2845016f1fe177e1aa9bf3d7beee7f98550ffd82908726bf731df2376dc371e383bf4c0c91a66e3f18d0b7c4f3b
   languageName: node
   linkType: hard
 
@@ -8098,6 +8142,16 @@ __metadata:
     safe-buffer: "npm:^5.0.1"
     sha.js: "npm:^2.4.8"
   checksum: 24332bab51011652a9a0a6d160eed1e8caa091b802335324ae056b0dcb5acbc9fcf173cf10d128eba8548c3ce98dfa4eadaa01bd02f44a34414baee26b651835
+  languageName: node
+  linkType: hard
+
+"create-react-class@npm:^15.5.1":
+  version: 15.7.0
+  resolution: "create-react-class@npm:15.7.0"
+  dependencies:
+    loose-envify: "npm:^1.3.1"
+    object-assign: "npm:^4.1.1"
+  checksum: bce4b46e6d85b424cb50ca8089266c7664fcecfd81abaafb829680fae2e2e60dc6999cac88f5a16a38473ed284859f2328935a42fc5cd1b7cc48888fdd8363c9
   languageName: node
   linkType: hard
 
@@ -13242,6 +13296,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"lodash.isequal@npm:^4.5.0":
+  version: 4.5.0
+  resolution: "lodash.isequal@npm:4.5.0"
+  checksum: dfdb2356db19631a4b445d5f37868a095e2402292d59539a987f134a8778c62a2810c2452d11ae9e6dcac71fc9de40a6fedcb20e2952a15b431ad8b29e50e28f
+  languageName: node
+  linkType: hard
+
 "lodash.memoize@npm:^4.1.2":
   version: 4.1.2
   resolution: "lodash.memoize@npm:4.1.2"
@@ -13277,7 +13338,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"loose-envify@npm:^1.0.0, loose-envify@npm:^1.1.0, loose-envify@npm:^1.4.0":
+"loose-envify@npm:^1.0.0, loose-envify@npm:^1.1.0, loose-envify@npm:^1.3.1, loose-envify@npm:^1.4.0":
   version: 1.4.0
   resolution: "loose-envify@npm:1.4.0"
   dependencies:
@@ -16379,7 +16440,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prop-types@npm:^15.0.0, prop-types@npm:^15.6.2, prop-types@npm:^15.7.2, prop-types@npm:^15.8.1":
+"prop-types@npm:^15.0.0, prop-types@npm:^15.5.4, prop-types@npm:^15.6.2, prop-types@npm:^15.7.2, prop-types@npm:^15.8.1":
   version: 15.8.1
   resolution: "prop-types@npm:15.8.1"
   dependencies:
@@ -16621,6 +16682,23 @@ __metadata:
     react: ^16.8.5 || ^17.0.0 || ^18.0.0
     react-dom: ^16.8.5 || ^17.0.0 || ^18.0.0
   checksum: 5bc04f6dcfededc6e5c90e696cda07816a018eada52f7438ded839f03786e3f319aa8a0bc7b14b86fb26a12c0e5ba53e8c5a4bf3832a8f827dd70f1410675525
+  languageName: node
+  linkType: hard
+
+"react-codemirror@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "react-codemirror@npm:1.0.0"
+  dependencies:
+    classnames: "npm:^2.2.5"
+    codemirror: "npm:^5.18.2"
+    create-react-class: "npm:^15.5.1"
+    lodash.debounce: "npm:^4.0.8"
+    lodash.isequal: "npm:^4.5.0"
+    prop-types: "npm:^15.5.4"
+  peerDependencies:
+    react: ">=15.5 <16"
+    react-dom: ">=15.5 <16"
+  checksum: 8b981dcea6009addaa69320063a925caa9394cbb48412bf5438a40d88de7afd5ddf04ca8f9127daa3bd7608c2baa6ce650dbe154b67970c1622f06ccecef13a3
   languageName: node
   linkType: hard
 
