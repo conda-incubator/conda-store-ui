@@ -1843,6 +1843,7 @@ __metadata:
     react-dom: "npm:^18.0.0"
     react-infinite-scroll-component: "npm:^6.1.0"
     react-redux: "npm:^8.0.2"
+    react-router: "npm:^6.20.0"
     react-router-dom: "npm:^6.3.0"
     react-test-renderer: "npm:^18.2.0"
     redux: "npm:^4.2.0"
@@ -3157,6 +3158,13 @@ __metadata:
     react-redux:
       optional: true
   checksum: caaed8fda2daec0a0e780a3730366e7cb5e1f5965252fe8487536d84059368c0df51c050cb779f0c8baecbf3bfc536c1dbdda50defe07bb271619805a6b1c501
+  languageName: node
+  linkType: hard
+
+"@remix-run/router@npm:1.13.0":
+  version: 1.13.0
+  resolution: "@remix-run/router@npm:1.13.0"
+  checksum: 99ca0354b14172fe3b552bb6583dbfa9c55d93eb107ac981cdf6cb406798062f65966444e12be3d7effbaac919e3488ae61cbc7f4db688caf01b2a0ae0e56943
   languageName: node
   linkType: hard
 
@@ -16804,6 +16812,17 @@ __metadata:
   peerDependencies:
     react: ">=16.8"
   checksum: fc413951a5ce0abb0a343d6e49664d4d211f57a1494f12bf5ee46839cdb88d08770bcb734e648afb52ad428e2d6c137841479fb73b4cbaf1bcbc664b622b5ba4
+  languageName: node
+  linkType: hard
+
+"react-router@npm:^6.20.0":
+  version: 6.20.0
+  resolution: "react-router@npm:6.20.0"
+  dependencies:
+    "@remix-run/router": "npm:1.13.0"
+  peerDependencies:
+    react: ">=16.8"
+  checksum: 34bced7be5112aa239830dc7160498d844fc251827c3ae35bd5e0461a388b1d84fd458e8eb33bb8364468b32bfcff8b741aa3b0de247387b6cc92416ce4b18d2
   languageName: node
   linkType: hard
 
