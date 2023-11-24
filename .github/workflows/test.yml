@@ -51,7 +51,7 @@ jobs:
         run: |
           sudo apt install wait-for-it -y
           playwright install chromium
-          yarn install --frozen-lockfile
+          yarn install --immutable
           yarn run build
 
       - name: "Deploy webpack dev server"
