@@ -1760,6 +1760,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@codemirror/view@npm:^6.22.0":
+  version: 6.22.0
+  resolution: "@codemirror/view@npm:6.22.0"
+  dependencies:
+    "@codemirror/state": "npm:^6.1.4"
+    style-mod: "npm:^4.1.0"
+    w3c-keyname: "npm:^2.2.4"
+  checksum: b6fd2247dc3f1b6a3ae55f7dbe2162fe32d391b78be9b1a9cf9eace8ff7dca8642892f526981850033671a0b1f7da8e815bc6f4af2f9770a2655fadda421b124
+  languageName: node
+  linkType: hard
+
 "@colors/colors@npm:1.5.0":
   version: 1.5.0
   resolution: "@colors/colors@npm:1.5.0"
@@ -1778,6 +1789,7 @@ __metadata:
     "@babel/preset-typescript": "npm:^7.18.6"
     "@codemirror/language": "npm:^6.2.1"
     "@codemirror/legacy-modes": "npm:^6.1.0"
+    "@codemirror/view": "npm:^6.22.0"
     "@emotion/react": "npm:^11.9.0"
     "@emotion/styled": "npm:^11.8.1"
     "@lezer/highlight": "npm:^1.1.2"
@@ -18650,6 +18662,13 @@ __metadata:
   version: 4.0.0
   resolution: "style-mod@npm:4.0.0"
   checksum: 9720b81d4023174ee7680c844b84aacf1026d96ab1d9fc42d09acaf9c82358860fbd9322308154c9449c86a612d94408a6978e1a3847b2cd38c7157443c9b437
+  languageName: node
+  linkType: hard
+
+"style-mod@npm:^4.1.0":
+  version: 4.1.0
+  resolution: "style-mod@npm:4.1.0"
+  checksum: 1dce7b0f3d1a91c9e6c37200627b5a9ffa943916bb5879dfaa800c3929fcc11b9bfcc2a6097f49ec3462b254b7afcbcf63caeae6895f53c80122523dc9e5ddb7
   languageName: node
   linkType: hard
 

@@ -49,6 +49,7 @@
   "dependencies": {
     "@codemirror/language": "^6.2.1",
     "@codemirror/legacy-modes": "^6.1.0",
+    "@codemirror/view": "^6.22.0",
     "@emotion/react": "^11.9.0",
     "@emotion/styled": "^11.8.1",
     "@lezer/highlight": "^1.1.2",
