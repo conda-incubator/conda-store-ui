@@ -54,19 +54,10 @@ jobs:
           yarn install
           yarn build
 
-      # - name: "Deploy conda-store-server docker container"
-      #   run: |
-      #     docker-compose --profile local-dev up -d --build
-      #     docker ps
-
-      #     wait-for-it localhost:8080 # conda-store-server
-
       - name: "Deploy webpack dev server"
         shell: bash -el {0}
         run: |
-          yarn start
-          wait-for-it localhost:8080 # conda-store-server
-          pytest --video on --output test-results --screenshots true test/playwright/test_ux.py
+          yarn start & pytest --video on --output test-results --screenshots true test/playwright/test_ux.py
 
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v3
