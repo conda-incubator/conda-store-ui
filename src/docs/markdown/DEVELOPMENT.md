@@ -20,8 +20,11 @@ Running conda-store-ui in Docker is the simplest way to setup your local develop
 **Note:** Hot reloading is enabled, so when you make changes to source files, your browser will reload and reflect the changes.
 
 ## Local Development without running conda-store-ui in Docker
+
 This setup still uses Docker for supporting services but runs conda-store-ui locally.
-### Setup your environment
+
+### Set up your environment
+
 This project uses [Conda](https://conda.io) for package management. To set up Conda, please see their [installation documentation](https://docs.conda.io/projects/conda/en/latest/user-guide/install/index.html).
 1. Change to the project root ` cd conda-store-ui`
 2. From the project root create the conda environment `conda env create -f environment_dev.yml`
