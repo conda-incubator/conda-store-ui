@@ -12,7 +12,7 @@ import {
   prefGlobal
 } from "./preferences";
 import { store } from "./store";
-import { theme } from "./theme";
+import { condaStoreTheme, grayscaleTheme } from "./theme";
 
 import "../style/index.css";
 
@@ -78,7 +78,13 @@ export class App<
   render(): React.ReactNode {
     return (
       <PrefContext.Provider value={this.state.pref}>
-        <ThemeProvider theme={theme}>
+        <ThemeProvider
+          theme={
+            this.state.pref.styleType === "grayscale"
+              ? grayscaleTheme
+              : condaStoreTheme
+          }
+        >
           <Provider store={store}>
             <AppRouter />
           </Provider>

@@ -1,7 +1,6 @@
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import React from "react";
-import { getStylesForStyleType } from "../utils/helpers";
 
 interface IConstraintSelectProps {
   /**
@@ -18,19 +17,6 @@ export const ConstraintSelect = ({
   const constraints = ["=", ">", "<", ">=", "<="];
   const selectedConstraint = constraint === "==" ? "=" : constraint;
 
-  const inputStyles = getStylesForStyleType(
-    {
-      padding: "7px 9px !important",
-      backgroundColor: "#ECECEC",
-      borderRadius: "0px"
-    },
-    {
-      padding: "7px 9px !important",
-      backgroundColor: "#fff",
-      borderRadius: "0px"
-    }
-  );
-
   return (
     <Select
       defaultValue={selectedConstraint}
@@ -44,8 +30,16 @@ export const ConstraintSelect = ({
         borderRadius: "0px",
         width: "44px"
       }}
+      notched={false}
       inputProps={{
-        sx: inputStyles,
+        sx: {
+          padding: "7px 9px !important",
+          borderRadius: "0px",
+          "&::placeholder": {
+            fontSize: "14px",
+            fontWeight: 400
+          }
+        },
         "data-testid": "ConstraintSelectTest"
       }}
     >

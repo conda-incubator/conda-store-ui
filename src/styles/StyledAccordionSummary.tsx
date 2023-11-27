@@ -15,7 +15,7 @@ export const StyledAccordionSummary = styled(AccordionSummary, {
     height: 40,
     border:
       styleType === "grayscale"
-        ? `1px solid ${palette.primary.main}`
+        ? `1px solid ${palette.secondary.light}`
         : "1px solid #BCBFC4",
     borderRadius: styleType === "grayscale" ? "5px" : "0px",
     "&.Mui-expanded": {

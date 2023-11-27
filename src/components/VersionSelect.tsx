@@ -43,19 +43,6 @@ export const VersionSelect = ({
 
   const [triggerQuery] = useLazyGetPackageVersionSuggestionsQuery();
 
-  const inputStyles = getStylesForStyleType(
-    {
-      padding: "7px 9px !important",
-      backgroundColor: "#ECECEC",
-      borderRadius: "0px"
-    },
-    {
-      padding: "7px 9px !important",
-      backgroundColor: "#fff",
-      borderRadius: "0px"
-    }
-  );
-
   const iconStyles = getStylesForStyleType(
     {
       backgroundColor: "#ECECEC",
@@ -165,13 +152,18 @@ export const VersionSelect = ({
         </IconButton>
       )}
       MenuProps={{ PaperProps: { sx: { maxHeight: 200 } } }}
+      notched={false}
       sx={{
         borderRadius: "0px",
         width: "110px",
         border: "none"
       }}
       inputProps={{
-        sx: inputStyles,
+        sx: {
+          padding: "7px 9px !important",
+          backgroundColor: palette.common.white,
+          borderRadius: "0px"
+        },
         "data-testid": "VersionSelectTest"
       }}
     >

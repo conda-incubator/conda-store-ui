@@ -125,11 +125,7 @@ export const SpecificationCreate = ({ onCreateEnvironment }: any) => {
             marginBottom: "10px"
           }}
         >
-          <StyledButtonPrimary
-            sx={buttonStyles}
-            onClick={handleSubmit}
-            isalttype="true"
-          >
+          <StyledButtonPrimary sx={buttonStyles} onClick={handleSubmit}>
             Create
           </StyledButtonPrimary>
         </Box>

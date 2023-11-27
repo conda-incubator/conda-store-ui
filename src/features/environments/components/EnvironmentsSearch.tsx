@@ -2,10 +2,11 @@ import Typography from "@mui/material/Typography";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import Box from "@mui/material/Box";
 import InputAdornment from "@mui/material/InputAdornment";
+import useTheme from "@mui/material/styles/useTheme";
 import React from "react";
 
 import { PrefContext } from "../../../preferences";
-import { SearchIconAlt } from "../../../components";
+import { SearchIconAlt, CondaLogo } from "../../../components";
 import { AuthButton } from "../../auth";
 
 interface IEnvironmentsSearchProps {
@@ -17,6 +18,7 @@ interface IEnvironmentsSearchProps {
 
 export const EnvironmentsSearch = ({ onChange }: IEnvironmentsSearchProps) => {
   const prefs = React.useContext(PrefContext);
+  const { palette } = useTheme();
   const showAuthButton = prefs.showAuthButton;
   const isCookieAuthMethod = prefs.authMethod === "cookie";
   let authButton;
@@ -32,23 +34,34 @@ export const EnvironmentsSearch = ({ onChange }: IEnvironmentsSearchProps) => {
         position: "relative"
       }}
     >
+      <Box
+        sx={{
+          position: "absolute",
+          top: 14,
+          height: 35,
+          width: "auto"
+        }}
+      >
+        <CondaLogo transform="0.5"></CondaLogo>
+      </Box>
+      {authButton}
       <Typography
         data-testid="env-search-title"
         sx={{
           marginBottom: "14px",
           textAlign: "left",
-          color: " #333",
+          color: palette.common.black,
           fontWeight: 600,
           fontSize: "14px",
-          marginTop: "40px"
+          marginTop: "55px"
         }}
       >
         Package Manager
       </Typography>
-      {authButton}
       <OutlinedInput
         onChange={onChange}
         size="small"
+        notched={false}
         endAdornment={
           <InputAdornment position="end">
             <SearchIconAlt style={{ marginRight: "5px" }} />
