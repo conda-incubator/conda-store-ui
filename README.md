@@ -37,7 +37,7 @@ We use [Docker Compose](https://docs.docker.com/compose/) to set up the infrastr
 2. Copy `.env.example` to `.env`. All default settings should work, but if you want to test against a different version of conda-store-server, you can specify if in the `.env` file by setting the `CONDA_STORE_SERVER_VERSION` variable to the desired version. Refer to the [Configuration documentation](https://conda-incubator.github.io/conda-store-ui/?path=/docs/docs-configuration--page) for more information on the `.env` file.
 
 ### Local Development with conda-store-ui running in Docker
-Running conda-store-ui in Docker is the simplest way to setup your local development environment.
+Running conda-store-ui in Docker is the most straightforward way to set up your local development environment.
 
 1. Simply run `yarn run start:docker` to start the entire development stack.
 2. Open you local browser and go to [http://localhost:8000](http://localhost:8000) so see conda-store-ui.
