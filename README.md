@@ -25,7 +25,8 @@ To learn how to use conda-store-ui alongside conda-store, please visit [the cond
 
 ## Development
 
-To get started with conda-store-ui development, there are a couple of options. This guide will help you to set up your local development environment.
+To get started with conda-store-ui development, there are a couple of options, depending on the type of changes you are working on.
+This guide will help you to set up your local development environment.
 
 ### Prerequsites
 Before setting up conda-store ui, you must prepare your environment. 
