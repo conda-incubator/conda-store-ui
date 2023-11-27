@@ -166,7 +166,8 @@ def _existing_environment_interactions(page, env_name, time_to_build_env=3*60*10
     # edit existing environment throught the YAML editor
     page.get_by_role("button", name=env_name).click()
     page.get_by_role("button", name="Edit").click()
-    page.get_by_label("Switch to YAML Editor").check()
+    # Increase timeout to allow for the editor to load
+    page.get_by_label("Switch to YAML Editor").check(timeout=40000)
     if screenshot:
         page.screenshot(path="test-results/conda-store-yaml-editor.png")
     page.get_by_text("- rich").click()
@@ -228,7 +229,6 @@ def _existing_environment_interactions(page, env_name, time_to_build_env=3*60*10
     page.get_by_text("Delete environment").click()
     page.get_by_role("button", name="Delete").click()
 
-    time.sleep(5)  # wait for it to render, flaky otherwise
     assert not page.get_by_role("button", name=env_name).is_visible()
 
 
