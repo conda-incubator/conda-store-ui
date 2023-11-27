@@ -30,8 +30,10 @@ This project uses [Conda](https://conda.io) for package management. To set up Co
 2. From the project root create the conda environment `conda env create -f environment_dev.yml`
 3. Activate the development environment `conda activate cs-ui-dev-env`
 4. Install yarn dependencies `yarn install`
-### run the application
-1. run `yarn run start` and wait for the application to finish starting up
+
+### Run the application
+
+1. Run `yarn run start` and wait for the application to finish starting up
 2. Open you local browser and go to [http://localhost:8000](http://localhost:8000) so see conda-store-ui.
 3. You can then login using the default username of `username` and default password of `password`.
 
