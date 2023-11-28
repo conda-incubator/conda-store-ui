@@ -3,6 +3,7 @@ import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import React, { memo, useState } from "react";
 import { ChannelIcon, DeleteIconAlt } from "../../../components";
+import useTheme from "@mui/material/styles/useTheme";
 
 import { StyledIconButton } from "../../../styles";
 import {
@@ -28,6 +29,7 @@ const BaseChannelsEditItem = ({
 }: IChannelsEditItemProps) => {
   const [name, setName] = useState(channelName);
   const [isEditing, setIsEditing] = useState(false);
+  const { palette } = useTheme();
 
   const dragIcon = getIconForStyleType(
     <ChannelIcon color="#C4C7CC" />,
@@ -77,7 +79,7 @@ const BaseChannelsEditItem = ({
             onClick={() => setIsEditing(true)}
             sx={{ "&:hover": { cursor: "pointer" } }}
           >
-            <Typography sx={{ fontSize: "13px", color: "#333" }}>
+            <Typography sx={{ fontSize: "13px", color: palette.common.black }}>
               {channelName}
             </Typography>
           </Box>

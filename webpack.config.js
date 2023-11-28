@@ -8,6 +8,7 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const path = require("path");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const Dotenv = require("dotenv-webpack");
+const webpack = require("webpack");
 
 // const TsconfigPathsPlugin = require("tsconfig-paths-webpack-plugin");
 // To improve build times for large projects enable fork-ts-checker-webpack-plugin
@@ -59,7 +60,8 @@ const basicConfig = {
       title: "conda-store"
     }),
     new MiniCssExtractPlugin(),
-    new Dotenv()
+    new Dotenv(),
+    new webpack.EnvironmentPlugin(['REACT_APP_VERSION'])
   ],
 
   mode: isProd ? "production" : "development",

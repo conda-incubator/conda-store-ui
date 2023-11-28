@@ -2,12 +2,12 @@ import React, { useState } from "react";
 import Accordion from "@mui/material/Accordion";
 import AddIcon from "@mui/icons-material/Add";
 import Tooltip from "@mui/material/Tooltip";
-import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
+import useTheme from "@mui/material/styles/useTheme";
 import { Environment } from "./Environment";
 import { INamespaceEnvironments } from "../../../common/interfaces";
 import {
@@ -20,12 +20,7 @@ import {
   toggleNewEnvironmentView
 } from "../../../features/tabs";
 import { useAppDispatch, useAppSelector } from "../../../hooks";
-import { StyledAccordionSummary } from "../../../styles";
-import { getStylesForStyleType } from "../../../utils/helpers";
-import {
-  environmentAddIconGrayscaleStyles,
-  environmentAddIconGreenAccentStyles
-} from "../styles";
+import { StyledAccordionSummary, StyledIconButton } from "../../../styles";
 import { ArrowIcon } from "../../../components";
 
 interface IEnvironmentDropdownProps {
@@ -41,11 +36,7 @@ export const EnvironmentDropdown = ({
   const { selectedEnvironment } = useAppSelector(state => state.tabs);
   const [isExpanded, setIsExpanded] = useState(false);
   const dispatch = useAppDispatch();
-
-  const addIconStyles = getStylesForStyleType(
-    environmentAddIconGrayscaleStyles,
-    environmentAddIconGreenAccentStyles
-  );
+  const { palette } = useTheme();
 
   const onCreateNewEnvironmentTab = (
     event: React.SyntheticEvent,
@@ -79,7 +70,7 @@ export const EnvironmentDropdown = ({
         sx={{
           flexDirection: "row-reverse",
           border: "none",
-          paddingRight: 0
+          paddingRight: "1px"
         }}
         expandIcon={<ArrowIcon />}
       >
@@ -96,7 +87,7 @@ export const EnvironmentDropdown = ({
             sx={{
               fontWeight: 600,
               fontSize: "14px",
-              color: " #333"
+              color: palette.common.black
             }}
           >
             {namespace}
@@ -108,14 +99,12 @@ export const EnvironmentDropdown = ({
                 : `You do not have permission to create an environment in the ${namespace} namespace`
             }
           >
-            <IconButton onClick={e => onCreateNewEnvironmentTab(e, namespace)}>
-              <AddIcon
-                sx={{
-                  ...addIconStyles,
-                  ...(!canCreate && { color: "#e5e5e5" })
-                }}
-              />
-            </IconButton>
+            <StyledIconButton
+              onClick={e => onCreateNewEnvironmentTab(e, namespace)}
+              disabled={!canCreate}
+            >
+              <AddIcon />
+            </StyledIconButton>
           </Tooltip>
         </Box>
       </StyledAccordionSummary>

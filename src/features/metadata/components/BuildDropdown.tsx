@@ -6,7 +6,6 @@ import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import IconButton from "@mui/material/IconButton";
 import { useAppDispatch } from "../../../hooks";
 import { currentBuildIdChanged } from "..";
-import { getStylesForStyleType } from "../../../utils/helpers";
 
 interface IBuildProps {
   /**
@@ -27,29 +26,6 @@ export const Build = ({ builds, selectedBuildId }: IBuildProps) => {
   const { palette } = useTheme();
   const [open, setOpen] = useState(false);
 
-  const selectStyles = getStylesForStyleType(
-    {
-      borderRadius: "0px",
-      marginBottom: "10px"
-    },
-    {
-      borderRadius: "0px",
-      marginBottom: "10px",
-      backgroundColor: open ? "#A8DAB5" : "initial"
-    }
-  );
-
-  const paperProps = getStylesForStyleType(
-    {},
-    {
-      backgroundColor: "#A8DAB5",
-      padding: "0px",
-      boxShadow: "none",
-      borderRadius: "0px",
-      border: "1px solid #BCBFC4"
-    }
-  ) as React.CSSProperties;
-
   const handleChange = (e: SelectChangeEvent<any>) => {
     const newCurrentBuild = builds.find(
       build => build.id === Number(e.target.value)
@@ -65,10 +41,20 @@ export const Build = ({ builds, selectedBuildId }: IBuildProps) => {
       open={open}
       onClose={() => setOpen(false)}
       onOpen={() => setOpen(true)}
-      sx={selectStyles}
+      sx={{
+        borderRadius: "0px",
+        marginBottom: "10px",
+        backgroundColor: open ? palette.primary[50] : "initial"
+      }}
       MenuProps={{
         PaperProps: {
-          style: paperProps
+          style: {
+            backgroundColor: palette.primary[50],
+            padding: "0px",
+            boxShadow: "none",
+            borderRadius: "0px",
+            border: `1px solid  ${palette.secondary.light}`
+          }
         },
         MenuListProps: {
           style: {
@@ -96,7 +82,7 @@ export const Build = ({ builds, selectedBuildId }: IBuildProps) => {
         sx: {
           padding: "7px 9px !important",
           fontSize: "13px",
-          background: "#FFF"
+          background: palette.common.white
         }
       }}
     >

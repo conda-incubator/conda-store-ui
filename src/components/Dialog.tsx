@@ -45,14 +45,7 @@ export const AlertDialog = ({
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-        <StyledButtonPrimary
-          sx={{
-            backgroundColor: "#b1b3b5"
-          }}
-          onClick={closeAction}
-        >
-          Cancel
-        </StyledButtonPrimary>
+        <StyledButtonPrimary onClick={closeAction}>Cancel</StyledButtonPrimary>
         <StyledButtonPrimary onClick={() => confirmAction()}>
           Delete
         </StyledButtonPrimary>
