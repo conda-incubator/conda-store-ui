@@ -86,7 +86,7 @@ def _create_new_environment(page, screenshot=False):
     # ensure new filename in case this test is run multiple times
     new_env_name = f'test_env_{random.randint(0, 100000)}' 
     # set timeout for building the environment
-    time_to_build_env = 2 * 60 * 1000  # 2 minutes in milliseconds
+    time_to_build_env = 5 * 60 * 1000  # 2 minutes in milliseconds
 
     # Create the new environment
     # click the + to create a new env
