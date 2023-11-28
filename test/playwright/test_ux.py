@@ -166,70 +166,70 @@ def _existing_environment_interactions(page, env_name, time_to_build_env=3*60*10
     # edit existing environment throught the YAML editor
     page.get_by_role("button", name=env_name).click()
     page.get_by_role("button", name="Edit").click()
-    # page.get_by_label("Switch to YAML Editor").check()
-    # if screenshot:
-    #     page.screenshot(path="test-results/conda-store-yaml-editor.png")
-    # page.get_by_text("- rich").click()
-    # page.get_by_text("channels: - conda-forgedependencies: - rich - pip: - nothing - ipykernel").fill("channels:\n  - conda-forge\ndependencies:\n  - rich\n  - python\n  - pip:\n      - nothing\n  - ipykernel\n\n")
-    # page.get_by_role("button", name="Save").click()
-    # # wait until the status is `Completed`
-    # completed = page.get_by_text("Completed", exact=False)
-    # completed.wait_for(state='attached', timeout=time_to_build_env)
+    page.get_by_label("YAML").check()
+    if screenshot:
+        page.screenshot(path="test-results/conda-store-yaml-editor.png")
+    page.get_by_text("- rich").click()
+    page.get_by_text("channels: - conda-forgedependencies: - rich - pip: - nothing - ipykernel").fill("channels:\n  - conda-forge\ndependencies:\n  - rich\n  - python\n  - pip:\n      - nothing\n  - ipykernel\n\n")
+    page.get_by_role("button", name="Save").click()
+    # wait until the status is `Completed`
+    completed = page.get_by_text("Completed", exact=False)
+    completed.wait_for(state='attached', timeout=time_to_build_env)
 
-    # # ensure the namespace is expanded
-    # if not page.get_by_role("button", name=env_name).is_visible():
-    #     # click to expand the `username` name space (but not click the +)
-    #     page.get_by_role("button", name="username Create a new environment in the username namespace").click()
+    # ensure the namespace is expanded
+    if not page.get_by_role("button", name=env_name).is_visible():
+        # click to expand the `username` name space (but not click the +)
+        page.get_by_role("button", name="username Create a new environment in the username namespace").click()
 
-    # # edit existing environment
-    # page.get_by_role("button", name=env_name).click()
-    # page.get_by_role("button", name="Edit").click()
-    # # page.get_by_placeholder("Enter here the description of your environment").click()
-    # # change the description
-    # page.get_by_placeholder("Enter here the description of your environment").fill("new description")
-    # # change the vesion spec of an existing package
-    # page.get_by_role("row", name="ipykernel", exact=False).get_by_role("button").first.click()
-    # page.get_by_role("option", name=">=").click()
-    # # Note: purposefully not testing version constraint since there is inconsistent behavior here
+    # edit existing environment
+    page.get_by_role("button", name=env_name).click()
+    page.get_by_role("button", name="Edit").click()
+    # page.get_by_placeholder("Enter here the description of your environment").click()
+    # change the description
+    page.get_by_placeholder("Enter here the description of your environment").fill("new description")
+    # change the vesion spec of an existing package
+    page.get_by_role("row", name="ipykernel", exact=False).get_by_role("button").first.click()
+    page.get_by_role("option", name=">=").click()
+    # Note: purposefully not testing version constraint since there is inconsistent behavior here
 
-    # # add a new package
-    # page.get_by_role("button", name="+ Add Package").click()
-    # page.get_by_label("Enter package").fill("click")
-    # page.get_by_role("option", name="click", exact=True).click()
-    # # Note: purposefully not testing version constraint since there is inconsistent behavior here
+    # add a new package
+    page.get_by_role("button", name="+ Add Package").click()
+    page.get_by_label("Enter package").fill("click")
+    page.get_by_role("option", name="click", exact=True).click()
+    # Note: purposefully not testing version constraint since there is inconsistent behavior here
     
-    # # delete a package
-    # page.get_by_role("row", name="rich", exact=False).get_by_test_id("RemovePackageTest").click()
+    # delete a package
+    page.get_by_role("row", name="rich", exact=False).get_by_test_id("RemovePackageTest").click()
 
-    # # promote a package installed as dependency to specified package
-    # page.locator("#infScroll > .infinite-scroll-component__outerdiv > .infinite-scroll-component > div > div > .MuiButtonBase-root").first.click()
+    # promote a package installed as dependency to specified package
+    page.locator("#infScroll > .infinite-scroll-component__outerdiv > .infinite-scroll-component > div > div > .MuiButtonBase-root").first.click()
     
-    # # delete conda-forge channel
-    # page.get_by_test_id("DeleteIcon").click()
-    # # add conda-forge channel
-    # page.get_by_role("button", name="+ Add Channel").click()
-    # page.get_by_label("Enter channel").fill("conda-forge")
-    # page.get_by_label("Enter channel").press("Enter")
-    # # click save to start the new env build
-    # page.get_by_role("button", name="Save").click()
+    # delete conda-forge channel
+    page.get_by_test_id("DeleteIcon").click()
+    # add conda-forge channel
+    page.get_by_role("button", name="+ Add Channel").click()
+    page.get_by_label("Enter channel").fill("conda-forge")
+    page.get_by_label("Enter channel").press("Enter")
+    # click save to start the new env build
+    page.get_by_role("button", name="Save").click()
 
-    # # wait until the status is `Completed`
-    # completed = page.get_by_text("Completed", exact=False)
-    # completed.wait_for(state='attached', timeout=time_to_build_env)
+    # wait until the status is `Completed`
+    completed = page.get_by_text("Completed", exact=False)
+    completed.wait_for(state='attached', timeout=time_to_build_env)
 
 
-    # # Edit -> Cancel editing
-    # page.get_by_role("button", name=env_name).click()
-    # page.get_by_role("button", name="Edit").click()
-    # page.get_by_role("button", name="Cancel").click()
+    # Edit -> Cancel editing
+    page.get_by_role("button", name=env_name).click()
+    page.get_by_role("button", name="Edit").click()
+    page.get_by_role("button", name="Cancel").click()
 
-    # # Edit -> Delete environment
-    # page.get_by_role("button", name="Edit").click()
-    # page.get_by_text("Delete environment").click()
-    # page.get_by_role("button", name="Delete").click()
+    # Edit -> Delete environment
+    page.get_by_role("button", name="Edit").click()
+    page.get_by_text("Delete environment").click()
+    page.get_by_role("button", name="Delete").click()
 
-    # time.sleep(5)  # wait for it to render, flaky otherwise
-    # assert not page.get_by_role("button", name=env_name).is_visible()
+    time.sleep(5)  # wait for it to render, flaky otherwise
+    assert not page.get_by_role("button", name=env_name).is_visible()
 
 
 
