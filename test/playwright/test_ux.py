@@ -166,7 +166,7 @@ def _existing_environment_interactions(page, env_name, time_to_build_env=3*60*10
     # edit existing environment throught the YAML editor
     page.get_by_role("button", name=env_name).click()
     page.get_by_role("button", name="Edit").click()
-    page.get_by_label("Switch to YAML Editor").check()
+    page.get_by_label("Specification").check()
     if screenshot:
         page.screenshot(path="test-results/conda-store-yaml-editor.png")
     page.get_by_text("- rich").click()
@@ -254,7 +254,7 @@ def test_integration(page: Page, test_config, screenshot):
     # wait for server to spin up if necessary
     server_running = False
     retry_wait_time = 2  # seconds
-    max_wait_time = 8 * 60  # 4 minutes
+    max_wait_time = 4 * 60  # 4 minutes
     elapsed_wait_time = 0
     # loop until server is running or max_wait_time is reached
     while not server_running and elapsed_wait_time < max_wait_time:
