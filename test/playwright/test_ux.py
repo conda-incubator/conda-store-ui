@@ -228,7 +228,6 @@ def _existing_environment_interactions(page, env_name, time_to_build_env=3*60*10
     page.get_by_text("Delete environment").click()
     page.get_by_role("button", name="Delete").click()
 
-    time.sleep(5)  # wait for it to render, flaky otherwise
     assert not page.get_by_role("button", name=env_name).is_visible()
 
 
