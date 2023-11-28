@@ -86,7 +86,7 @@ def _create_new_environment(page, screenshot=False):
     # ensure new filename in case this test is run multiple times
     new_env_name = f'test_env_{random.randint(0, 100000)}' 
     # set timeout for building the environment
-    time_to_build_env = 5 * 60 * 1000  # 2 minutes in milliseconds
+    time_to_build_env = 2 * 60 * 1000  # 2 minutes in milliseconds
 
     # Create the new environment
     # click the + to create a new env
@@ -254,7 +254,7 @@ def test_integration(page: Page, test_config, screenshot):
     # wait for server to spin up if necessary
     server_running = False
     retry_wait_time = 2  # seconds
-    max_wait_time = 4 * 60  # 4 minutes
+    max_wait_time = 8 * 60  # 4 minutes
     elapsed_wait_time = 0
     # loop until server is running or max_wait_time is reached
     while not server_running and elapsed_wait_time < max_wait_time:
