@@ -119,11 +119,11 @@ def _create_new_environment(page, screenshot=False):
     # click on the Active environment on the dropdown menu item (which is currently building)
     page.get_by_role("option", name=" - Active", exact=False).click()
     # ensure that the environment is building
-    assert page.get_by_text("Building").is_visible()
+    expect(page.get_by_text("Building")).to_be_visible()
     # wait until the status is `Completed`
     completed = page.get_by_text("Completed", exact=False)
     completed.wait_for(state='attached', timeout=time_to_build_env)
-    assert completed.is_visible()
+    expect(completed).to_be_visible()
 
     return new_env_name
 
@@ -177,7 +177,7 @@ def _existing_environment_interactions(page, env_name, time_to_build_env=3*60*10
     completed.wait_for(state='attached', timeout=time_to_build_env)
 
     # ensure the namespace is expanded
-    if not page.get_by_role("button", name=env_name).is_visible():
+    if not expect(page.get_by_role("button", name=env_name)).to_be_visible()
         # click to expand the `username` name space (but not click the +)
         page.get_by_role("button", name="username Create a new environment in the username namespace").click()
 
@@ -217,7 +217,6 @@ def _existing_environment_interactions(page, env_name, time_to_build_env=3*60*10
     completed = page.get_by_text("Completed", exact=False)
     completed.wait_for(state='attached', timeout=time_to_build_env)
 
-
     # Edit -> Cancel editing
     page.get_by_role("button", name=env_name).click()
     page.get_by_role("button", name="Edit").click()
@@ -228,8 +227,7 @@ def _existing_environment_interactions(page, env_name, time_to_build_env=3*60*10
     page.get_by_text("Delete environment").click()
     page.get_by_role("button", name="Delete").click()
 
-    assert not page.get_by_role("button", name=env_name).is_visible()
-
+    expect(page.get_by_role("button", name=env_name)).not_to_be_visible()
 
 
 def test_integration(page: Page, test_config, screenshot):
