@@ -177,7 +177,7 @@ def _existing_environment_interactions(page, env_name, time_to_build_env=3*60*10
     completed.wait_for(state='attached', timeout=time_to_build_env)
 
     # ensure the namespace is expanded
-    if not expect(page.get_by_role("button", name=env_name)).to_be_visible()
+    if not expect(page.get_by_role("button", name=env_name)).to_be_visible():
         # click to expand the `username` name space (but not click the +)
         page.get_by_role("button", name="username Create a new environment in the username namespace").click()
 
