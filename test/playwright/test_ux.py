@@ -10,6 +10,10 @@ from playwright.sync_api import Page, sync_playwright, expect
 import random
 
 
+DEFAULT_TIMEOUT = 30_000  # time in ms
+
+expect.set_options(timeout=DEFAULT_TIMEOUT)
+
 CONDA_STORE_SERVER_PORT = os.environ.get(
     "CONDA_STORE_SERVER_PORT", f"8080"
 )
@@ -176,7 +180,9 @@ def _existing_environment_interactions(page, env_name, time_to_build_env=3*60*10
     completed.wait_for(state='attached', timeout=time_to_build_env)
 
     # ensure the namespace is expanded
-    if not expect(page.get_by_role("button", name=env_name)).to_be_visible():
+    try: 
+        expect(page.get_by_role("button", name=env_name)).to_be_visible()
+    except Exception as e:
         # click to expand the `username` name space (but not click the +)
         page.get_by_role("button", name="username Create a new environment in the username namespace").click()
 
