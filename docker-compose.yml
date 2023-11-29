@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   conda-store-worker:
-    image: quansight/conda-store-server:latest
+    image: quansight/conda-store-server:${CONDA_STORE_SERVER_VERSION:-2023.10.1}
     volumes:
       - ./docker/assets/environments:/opt/environments:ro
       - ./docker/assets/conda_store_config.py:/opt/conda_store/conda_store_config.py:ro
@@ -18,7 +18,7 @@ services:
       ]
 
   conda-store-server:
-    image: quansight/conda-store-server:latest
+    image: quansight/conda-store-server:${CONDA_STORE_SERVER_VERSION:-2023.10.1}
     depends_on:
       postgres:
         condition: service_healthy
@@ -83,9 +83,11 @@ services:
 
   conda-store-ui:
     build: .
-    command: "yarn run start --port 80 --history-api-fallback"
+    command: "yarn run start:ui --port 8000 --history-api-fallback"
+    profiles:
+      - local-dev
     ports:
-      - "80:80"
+      - "8000:8000"
     depends_on:
       conda-store-server:
         condition: service_healthy
@@ -94,7 +96,7 @@ services:
       - .:/usr/src/app
     healthcheck:
       test:
-        ["CMD", "curl", "--fail", "http://localhost"]
+        ["CMD", "curl", "--fail", "http://localhost:8000"]
       interval: 20s
       timeout: 10s
       retries: 8

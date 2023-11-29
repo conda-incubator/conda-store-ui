@@ -50,23 +50,14 @@ jobs:
       - name: "Install Dependencies"
         run: |
           sudo apt install wait-for-it -y
+          playwright install chromium
+          yarn install --immutable
+          yarn run build
 
-      - name: "Deploy conda-store-server docker container"
-        run: |
-          docker-compose -f docker-compose-dev.yml up -d --build
-          docker ps
-
-          wait-for-it localhost:8080 # conda-store-server
-
-      - name: "Deploy webpack dev server"
+      - name: "Start web server and run tests"
         shell: bash -el {0}
         run: |
-          conda list
-          playwright install chromium
-          yarn install
-          yarn run build
-          yarn run start &
-          pytest --video on --output test-results --screenshots true test/playwright/test_ux.py
+          yarn run start & pytest --video on --output test-results --screenshots true test/playwright/test_ux.py
 
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v3

@@ -166,7 +166,7 @@ def _existing_environment_interactions(page, env_name, time_to_build_env=3*60*10
     # edit existing environment throught the YAML editor
     page.get_by_role("button", name=env_name).click()
     page.get_by_role("button", name="Edit").click()
-    page.get_by_label("Switch to YAML Editor").check()
+    page.get_by_label("YAML").check()
     if screenshot:
         page.screenshot(path="test-results/conda-store-yaml-editor.png")
     page.get_by_text("- rich").click()
