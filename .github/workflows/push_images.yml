@@ -58,7 +58,7 @@ jobs:
             # Required, if the repo is private a Personal Access Token with `repo` scope is needed or GitHub token in a job where the permissions `action` scope set to `read`
             github_token: ${{ secrets.GITHUB_TOKEN }}
             # workflow file name from which to get the artifact
-            workflow: on_pr.yml
+            workflow: test.yml
             # PR from which to get the artifact
             pr: ${{ env.PR_NUMBER }}
             # how to exit the action if no artifact is found
