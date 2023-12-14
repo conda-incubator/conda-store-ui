@@ -73,7 +73,7 @@ jobs:
       - name: "Copy images to other repo"
         run: |
             cd conda-store-repo
-            cp ../playwright-tests/* .
+            cp ../playwright-tests/*.png docusaurus-docs/conda-store-ui/images/.
             
             git config user.name ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
             git config user.email 'noreply@github.com'
