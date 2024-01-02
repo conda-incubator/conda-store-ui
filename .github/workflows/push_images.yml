@@ -34,7 +34,7 @@ jobs:
     defaults:
       run:
         shell: bash -el {0}
-    if: ${{ github.event.issue.pull_request && (contains(github.event.comment.body, 'please update screenshots') || github.event_name == 'workflow_dispatch' || github.event.label.name == 'update_screenshots' ) }}
+    if: ${{ github.event.issue.pull_request && github.event.label.name == 'update_screenshots' || github.event_name == 'workflow_dispatch' }}
     steps:
       - name: "Checkout the conda-store repository 🛎"
         uses: actions/checkout@v4
