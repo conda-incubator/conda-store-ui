@@ -17,6 +17,8 @@
 name: Push screenshots to conda-store docs
 
 on:
+  pull_request:
+    types: [labeled]
   issue_comment:
     types: [created, edited]
   workflow_dispatch:
@@ -32,7 +34,7 @@ jobs:
     defaults:
       run:
         shell: bash -el {0}
-    if: ${{ github.event.issue.pull_request && contains(github.event.comment.body, 'please update screenshots') || github.event_name == 'workflow_dispatch' }}
+    if: ${{ github.event.issue.pull_request && (contains(github.event.comment.body, 'please update screenshots') || github.event_name == 'workflow_dispatch' || github.event.label.name == 'update_screenshots' ) }}
     steps:
       - name: "Checkout the conda-store repository 🛎"
         uses: actions/checkout@v4
