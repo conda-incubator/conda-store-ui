@@ -17,8 +17,8 @@
 name: Push screenshots to conda-store docs
 
 on:
-  pull_request:
-    types: [labeled]
+  issue_comment:
+    types: [created, edited]
   workflow_dispatch:
     inputs:
       pr_number:
@@ -32,7 +32,7 @@ jobs:
     defaults:
       run:
         shell: bash -el {0}
-    if: ${{ github.event.label.name == 'update_screenshots' && github.event_name == 'pull_request' ||  github.event_name == 'workflow_dispatch' }}
+    if: ${{ github.event.issue.pull_request && contains(github.event.comment.body, 'please update screenshots') || github.event_name == 'workflow_dispatch' }}
     steps:
       - name: "Checkout the conda-store repository 🛎"
         uses: actions/checkout@v4
@@ -82,7 +82,7 @@ jobs:
       - name: "Create PR on conda-store with updated screenshots"
         uses: peter-evans/create-pull-request@v5
         with:
-          token: ${{ secrets.PAT }}
+          token: ${{ secrets.conda-store-ui-ghaction }}
           path: conda-store-repo
           commit-message: Update screenshots
           committer: GitHub <noreply@github.com>
