@@ -1,6 +1,6 @@
 {
   "name": "@conda-store/conda-store-ui",
-  "version": "2023.10.2",
+  "version": "2024.1.1-rc1",
   "description": "UI elements for building a frontend for conda-store",
   "homepage": "https://github.com/conda-incubator/conda-store-ui",
   "bugs": {
