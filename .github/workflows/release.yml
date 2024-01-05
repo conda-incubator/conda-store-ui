@@ -44,6 +44,7 @@ jobs:
       - name: "Publish to npm 📤"
         run: |
           echo "Publishing with tag ${{ env.GITHUB_REF_NAME }}"
+          echo //registry.npmjs.org/:_authToken=$NPM__AUTH_TOKEN > .npmrc
           npm publish --verbose --access public conda-store-ui.tgz
         env:
           NPM_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
