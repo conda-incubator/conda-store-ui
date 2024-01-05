@@ -4,9 +4,9 @@ Hello, welcome to our getting started guide! This guide will help you to get `co
 
 ## Local Deployment
 
-For a local deployment, we recommend that you use our provided docker compose file. The docker compose file contains _both_ conda-store-ui and conda-store-server, so it is perfect for a playground!
+For local deployment, we recommend that you use our provided docker-compose file. The docker-compose file contains _both_ conda-store-ui and conda-store-server, so it is perfect for a playground!
 
-------------------------
+---
 
 ### 1) Clone the repository and `cd` into the root
 
