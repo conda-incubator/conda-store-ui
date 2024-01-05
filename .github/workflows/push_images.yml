@@ -9,6 +9,7 @@
 # 2. Trigger by workflow dispatch.
 #    Specify the PR number with the artifacts you'd like to use.
 #    Again, the test.yml workflow must be complete.
+# 3. By commenting on the PR `please update screenshots`.
 #
 # If a PR has already been opened on the conda-store repo from this
 # action, a rerun of this action will attempt to update the PR, not
@@ -34,7 +35,7 @@ jobs:
     defaults:
       run:
         shell: bash -el {0}
-    if: ${{ github.event.label.name == 'update_screenshots' && github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch' }}
+    if: ${{ github.event.label.name == 'update_screenshots' && github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch' || (github.event.issue.pull_request && contains(github.event.comment.body, 'please update screenshots')) }}
     steps:
       - name: "Checkout the conda-store repository 🛎"
         uses: actions/checkout@v4
@@ -101,9 +102,9 @@ jobs:
             [1]: https://github.com/peter-evans/create-pull-request
 
       - name: Comment back on the PR
-        if: ${{ steps.create-pull-request.outputs.pull-request-number }}
+        if: ${{ steps.create-pull-request.outputs.pull-request-number }} && github.event_name == 'pull_request'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh api repos/${{ github.repository }}/issues/${{ github.event.issue.number }}/comments --raw-field 'body=A PR to conda-store has been opened with updated screenshots - ${{ steps.create-pull-request.outputs.pull-request-url }}'
+          gh api repos/${{ github.repository }}/issues/${{ env.PR_NUMBER }}/comments --raw-field 'body=A PR to conda-store has been opened with updated screenshots - ${{ steps.create-pull-request.outputs.pull-request-url }}'
 
