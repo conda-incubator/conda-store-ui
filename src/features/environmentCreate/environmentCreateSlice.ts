@@ -5,13 +5,15 @@ export interface IEnvironmentCreateState {
   description: string;
   requestedPackages: string[];
   channels: string[];
+  variables: Record<string, string>;
 }
 
 const initialState: IEnvironmentCreateState = {
   name: "",
   description: "",
+  requestedPackages: [],
   channels: [],
-  requestedPackages: []
+  variables: {}
 };
 
 export const environmentCreateSlice = createSlice({
@@ -47,16 +49,22 @@ export const environmentCreateSlice = createSlice({
     },
     editorCodeUpdated: (
       state,
-      action: PayloadAction<{ dependencies: string[]; channels: string[] }>
+      action: PayloadAction<{
+        dependencies: string[];
+        channels: string[];
+        variables: Record<string, string>;
+      }>
     ) => {
       state.requestedPackages = action.payload.dependencies;
       state.channels = action.payload.channels;
+      state.variables = action.payload.variables;
     },
     environmentCreateStateCleared: state => {
       state.name = "";
       state.description = "";
       state.channels = [];
       state.requestedPackages = [];
+      state.variables = {};
     }
   }
 });

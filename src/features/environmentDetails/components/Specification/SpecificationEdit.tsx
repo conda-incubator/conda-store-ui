@@ -44,6 +44,7 @@ export const SpecificationEdit = ({
   const { requestedPackages } = useAppSelector(
     state => state.requestedPackages
   );
+  const { variables } = useAppSelector(state => state.variables);
   const { dependencies, size, count, page } = useAppSelector(
     state => state.dependencies
   );
@@ -54,11 +55,13 @@ export const SpecificationEdit = ({
   const [code, setCode] = useState<{
     dependencies: (string | CondaSpecificationPip)[];
     channels: string[];
-  }>({ dependencies: requestedPackages, channels });
+    variables: Record<string, string>;
+  }>({ dependencies: requestedPackages, variables, channels });
   const [envIsUpdated, setEnvIsUpdated] = useState(false);
 
   const initialChannels = useRef(cloneDeep(channels));
   const initialPackages = useRef(cloneDeep(requestedPackages));
+  const initialVariables = useRef(cloneDeep(variables));
 
   const stringifiedInitialChannels = useMemo(() => {
     return JSON.stringify(initialChannels.current);
@@ -67,6 +70,10 @@ export const SpecificationEdit = ({
   const stringifiedInitialPackages = useMemo(() => {
     return JSON.stringify(initialPackages.current);
   }, [initialPackages.current]);
+
+  const stringifiedInitialVariables = useMemo(() => {
+    return JSON.stringify(initialVariables.current);
+  }, [initialVariables.current]);
 
   const onUpdateChannels = useCallback((channels: string[]) => {
     dispatch(updateChannels(channels));
@@ -81,16 +88,20 @@ export const SpecificationEdit = ({
   const onUpdateEditor = debounce(
     ({
       channels,
-      dependencies
+      dependencies,
+      variables
     }: {
       channels: string[];
       dependencies: string[];
+      variables: Record<string, string>;
     }) => {
-      const code = { dependencies, channels };
+      const code = { dependencies, channels, variables };
       const isDifferentChannels =
         JSON.stringify(code.channels) !== stringifiedInitialChannels;
       const isDifferentPackages =
         JSON.stringify(code.dependencies) !== stringifiedInitialPackages;
+      const isDifferentVariables =
+        JSON.stringify(code.variables) !== stringifiedInitialVariables;
 
       if (!channels || channels.length === 0) {
         code.channels = [];
@@ -100,7 +111,11 @@ export const SpecificationEdit = ({
         code.dependencies = [];
       }
 
-      if (isDifferentChannels || isDifferentPackages) {
+      if (!variables || Object.keys(variables).length === 0) {
+        code.variables = {};
+      }
+
+      if (isDifferentChannels || isDifferentPackages || isDifferentVariables) {
         setEnvIsUpdated(true);
         onUpdateDefaultEnvironment(false);
         onSpecificationIsChanged(true);
@@ -116,7 +131,7 @@ export const SpecificationEdit = ({
       dispatch(updatePackages(code.dependencies));
       dispatch(updateChannels(code.channels));
     } else {
-      setCode({ dependencies: requestedPackages, channels });
+      setCode({ dependencies: requestedPackages, variables, channels });
     }
 
     setShow(value);
@@ -125,7 +140,7 @@ export const SpecificationEdit = ({
   const onEditEnvironment = () => {
     const envContent = show
       ? code
-      : { dependencies: requestedPackages, channels };
+      : { dependencies: requestedPackages, variables, channels };
 
     onUpdateEnvironment(envContent);
   };
@@ -147,13 +162,19 @@ export const SpecificationEdit = ({
       JSON.stringify(channels) !== stringifiedInitialChannels;
     const isDifferentPackages =
       JSON.stringify(requestedPackages) !== stringifiedInitialPackages;
+    const isDifferentVariables =
+      JSON.stringify(variables) !== stringifiedInitialVariables;
 
     if (defaultEnvVersIsChanged) {
       setEnvIsUpdated(false);
-    } else if (isDifferentChannels || isDifferentPackages) {
+    } else if (
+      isDifferentChannels ||
+      isDifferentPackages ||
+      isDifferentVariables
+    ) {
       setEnvIsUpdated(true);
     }
-  }, [channels, requestedPackages, descriptionUpdated]);
+  }, [channels, requestedPackages, variables, descriptionUpdated]);
 
   return (
     <BlockContainerEditMode
@@ -164,7 +185,11 @@ export const SpecificationEdit = ({
       <Box>
         {show ? (
           <CodeEditor
-            code={stringify({ channels, dependencies: requestedPackages })}
+            code={stringify({
+              channels,
+              dependencies: requestedPackages,
+              variables
+            })}
             onChangeEditor={onUpdateEditor}
           />
         ) : (

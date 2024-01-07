@@ -16,14 +16,15 @@ import { getStylesForStyleType } from "../../../../utils/helpers";
 
 export const SpecificationCreate = ({ onCreateEnvironment }: any) => {
   const dispatch = useAppDispatch();
-  const { channels, requestedPackages } = useAppSelector(
+  const { channels, requestedPackages, variables } = useAppSelector(
     state => state.environmentCreate
   );
   const [show, setShow] = useState(false);
   const [editorContent, setEditorContent] = useState<{
     channels: string[];
     dependencies: string[];
-  }>({ channels: [], dependencies: [] });
+    variables: Record<string, string>;
+  }>({ channels: [], dependencies: [], variables: {} });
 
   const buttonStyles = getStylesForStyleType(
     { padding: "5px 60px" },
@@ -36,12 +37,14 @@ export const SpecificationCreate = ({ onCreateEnvironment }: any) => {
 
   const onUpdateEditor = ({
     channels,
-    dependencies
+    dependencies,
+    variables
   }: {
     channels: string[];
     dependencies: string[];
+    variables: Record<string, string>;
   }) => {
-    const code = { channels, dependencies };
+    const code = { channels, dependencies, variables };
 
     if (!channels || channels.length === 0) {
       code.channels = [];
@@ -49,6 +52,10 @@ export const SpecificationCreate = ({ onCreateEnvironment }: any) => {
 
     if (!dependencies || dependencies.length === 0) {
       code.dependencies = [];
+    }
+
+    if (!variables || Object.keys(variables).length === 0) {
+      code.variables = {};
     }
 
     setEditorContent(code);
@@ -59,21 +66,27 @@ export const SpecificationCreate = ({ onCreateEnvironment }: any) => {
       dispatch(
         editorCodeUpdated({
           channels: editorContent.channels,
-          dependencies: editorContent.dependencies
+          dependencies: editorContent.dependencies,
+          variables: editorContent.variables
         })
       );
     } else {
-      setEditorContent({ dependencies: requestedPackages, channels });
+      setEditorContent({
+        dependencies: requestedPackages,
+        variables,
+        channels
+      });
     }
 
     setShow(value);
   };
 
-  const formatCode = (channels: string[], dependencies: string[]) => {
-    if (channels.length === 0 && dependencies.length === 0) {
-      return "channels:\n  -\ndependencies:\n  -";
-    }
-    return stringify({ channels, dependencies: dependencies });
+  const formatCode = (
+    channels: string[],
+    dependencies: string[],
+    variables: Record<string, string>
+  ) => {
+    return stringify({ channels, dependencies, variables });
   };
 
   const handleSubmit = () => {
@@ -99,7 +112,7 @@ export const SpecificationCreate = ({ onCreateEnvironment }: any) => {
       <Box>
         {show ? (
           <CodeEditor
-            code={formatCode(channels, requestedPackages)}
+            code={formatCode(channels, requestedPackages, variables)}
             onChangeEditor={onUpdateEditor}
           />
         ) : (
