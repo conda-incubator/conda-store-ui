@@ -16,7 +16,7 @@ export const selectCondaSpecification = (
     dependencies: requestedPackages,
     name,
     prefix,
-    variables: variables
+    variables
   };
 
   return condaSpecification;
