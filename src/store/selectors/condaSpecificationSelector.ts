@@ -7,7 +7,7 @@ export const selectCondaSpecification = (
   const {
     channels: { channels },
     requestedPackages: { requestedPackages },
-    environmentCreate: { variables },
+    variables: { variables },
     environmentDetails: { name, prefix }
   } = state;
 
