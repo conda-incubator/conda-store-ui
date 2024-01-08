@@ -65,9 +65,6 @@ def _login_sequence(page, screenshot=False):
     with page.expect_navigation():
         page.locator('button:has-text("Sign In")').click()
 
-    # if screenshot:
-    #     page.screenshot(path="test-results/conda-store-authenticated.png")
-
 
 def _create_new_environment(page, screenshot=False):
     """Workflow to create a new environment in the UI. The env will be 
@@ -98,7 +95,6 @@ def _create_new_environment(page, screenshot=False):
     page.get_by_label("Create a new environment in the username namespace").click()
     if screenshot:
         page.screenshot(path="test-results/create-new-env.png", clip={'x': 0, 'y': 145, 'width': 275, 'height': 50})
-        # page.screenshot(path="test-results/conda-store-new-env.png", full_page=True)
     # fill in the env name
     page.get_by_placeholder("Environment name").fill(new_env_name)
     # fill in the description
@@ -136,11 +132,11 @@ def _create_new_environment(page, screenshot=False):
     # press enter to submit the channel to the list
     page.get_by_label("Enter channel").press("Enter")
     # switch to yaml editor
-    page.get_by_label("YAML").check()
+    page.get_by_label("YAML").click()
     if screenshot:
         page.screenshot(path="test-results/yaml-editor.png")
     # switch back
-    page.get_by_label("Standard").check()
+    page.get_by_label("Standard", exact=False).click()
     
     if screenshot:
         page.screenshot(path="test-results/create-button.png")
