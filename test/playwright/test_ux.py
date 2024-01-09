@@ -111,15 +111,16 @@ def _create_new_environment(page, screenshot=False):
     page.get_by_role("option", name="rich", exact=True).click()
 
     # add version spec
-    page.get_by_role("row", name="rich ​ ​").get_by_role("button").first.click()
+    page.get_by_role("row", name="rich").get_by_role("button").first.click()
     
     if screenshot:
         page.screenshot(path="test-results/package-version-constraint.png")
     page.get_by_role("option", name=">", exact=True).click()
-    page.get_by_role("cell", name="> ​").get_by_role("button").nth(1).click()
+    # page.get_by_role("cell", name="> ​").get_by_role("button").nth(1).click()
+    page.get_by_role("cell", name=">").get_by_role("button").nth(1).click()
     if screenshot:
         page.screenshot(path="test-results/package-version-number.png")
-    page.get_by_role("option", name="12.6.0").click()
+    page.get_by_role("option", name="12.6.0", exact=False).click()
 
     # open up the channels accordian card
     page.get_by_role("button", name="Channels").click()
