@@ -66,6 +66,8 @@ jobs:
             pr: ${{ env.PR_NUMBER }}
             # how to exit the action if no artifact is found
             if_no_artifact_found: fail
+            # artifact name
+            name: 'screenshots'
 
       - name: "ls"
         run: |

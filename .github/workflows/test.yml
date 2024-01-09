@@ -59,9 +59,16 @@ jobs:
         run: |
           yarn run start & pytest --video on --output test-results --screenshots true test/playwright/test_ux.py
 
-      - name: "Upload artifacts"
+      - name: "Upload screenshot artifacts"
         uses: actions/upload-artifact@v3
         if: ${{ always() }}
         with:
-          name: playwright-tests
+          name: screenshots
           path: test-results
+
+      - name: "Upload video artifact"
+        uses: actions/upload-artifact@v3
+        if: ${{ always() }}
+        with:
+          name: video
+          path: video

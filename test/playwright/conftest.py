@@ -15,5 +15,5 @@ def screenshot(pytestconfig):
 def browser_context_args(browser_context_args):
     return {
         **browser_context_args,
-        "record_video_dir": "test-results/videos/",
+        "record_video_dir": "video",
     }
