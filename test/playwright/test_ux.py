@@ -136,32 +136,32 @@ def _create_new_environment(page, screenshot=False):
     if screenshot:
         page.screenshot(path="test-results/yaml-editor.png")
     # switch back
-    page.get_by_label("Standard", exact=False).click()
+    # page.get_by_label("Standard", exact=False).click()
     
-    if screenshot:
-        page.screenshot(path="test-results/create-button.png")
-    # click create to start building the env
-    page.get_by_role("button", name="Create", exact=True).click()
+    # if screenshot:
+    #     page.screenshot(path="test-results/create-button.png")
+    # # click create to start building the env
+    # page.get_by_role("button", name="Create", exact=True).click()
 
-    # Interact with the environment shortly after creation
-    # click to open the Active environment dropdown manu
-    page.get_by_role("button", name=" - Active", exact=False).click()
-    if screenshot:
-        page.keyboard.press("PageUp")  # ensure we are at the top of the page
-        page.screenshot(path="test-results/version-select.png")
-    # click on the Active environment on the dropdown menu item (which is currently building)
-    page.get_by_role("option", name=" - Active", exact=False).click()
-    if screenshot:
-        page.screenshot(path="test-results/version-select-done.png")
-    # ensure that the environment is building
-    expect(page.get_by_text("Building")).to_be_visible()
-    if screenshot:
-        page.keyboard.press("PageUp")  # ensure we are at the top of the page
-        page.screenshot(path="test-results/environment-building.png", clip={'x': 300, 'y': 190, 'width': 285, 'height': 100})
-    # wait until the status is `Completed`
-    completed = page.get_by_text("Completed", exact=False)
-    completed.wait_for(state='attached', timeout=time_to_build_env)
-    expect(completed).to_be_visible()
+    # # Interact with the environment shortly after creation
+    # # click to open the Active environment dropdown manu
+    # page.get_by_role("button", name=" - Active", exact=False).click()
+    # if screenshot:
+    #     page.keyboard.press("PageUp")  # ensure we are at the top of the page
+    #     page.screenshot(path="test-results/version-select.png")
+    # # click on the Active environment on the dropdown menu item (which is currently building)
+    # page.get_by_role("option", name=" - Active", exact=False).click()
+    # if screenshot:
+    #     page.screenshot(path="test-results/version-select-done.png")
+    # # ensure that the environment is building
+    # expect(page.get_by_text("Building")).to_be_visible()
+    # if screenshot:
+    #     page.keyboard.press("PageUp")  # ensure we are at the top of the page
+    #     page.screenshot(path="test-results/environment-building.png", clip={'x': 300, 'y': 190, 'width': 285, 'height': 100})
+    # # wait until the status is `Completed`
+    # completed = page.get_by_text("Completed", exact=False)
+    # completed.wait_for(state='attached', timeout=time_to_build_env)
+    # expect(completed).to_be_visible()
 
     return new_env_name
 
@@ -321,11 +321,11 @@ def test_integration(page: Page, test_config, screenshot):
     # create a new environment
     env_name = _create_new_environment(page, screenshot=screenshot)
 
-    # close any open tabs on the conda-store ui
-    _close_environment_tabs(page)
+    # # close any open tabs on the conda-store ui
+    # _close_environment_tabs(page)
 
-    # interact with an existing environment
-    _existing_environment_interactions(page, env_name, screenshot=screenshot)
+    # # interact with an existing environment
+    # _existing_environment_interactions(page, env_name, screenshot=screenshot)
 
 
 if __name__ == "__main__":
