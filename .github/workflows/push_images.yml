@@ -68,6 +68,8 @@ jobs:
             if_no_artifact_found: fail
             # artifact name
             name: 'screenshots'
+            # directory in which to put the contents of the artifact
+            path: 'screenshots'
 
       - name: "ls"
         run: |
@@ -78,7 +80,7 @@ jobs:
       - name: "Copy images to other repo"
         run: |
             cd conda-store-repo
-            cp ../playwright-tests/*.png docusaurus-docs/conda-store-ui/images/.
+            cp ../screenshots/*.png docusaurus-docs/conda-store-ui/images/.
             git config user.name ${{ github.actor }}
             git config user.email '${{ github.actor }}@users.noreply.github.com'
             git add -A
