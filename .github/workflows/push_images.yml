@@ -93,8 +93,6 @@ jobs:
           token: ${{ secrets.CONDA_STORE_SYNC }}
           path: conda-store-repo
           commit-message: Update screenshots
-          committer: GitHub <noreply@github.com>
-          author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
           branch: update_screenshots
           delete-branch: true
           title: '[AUTO] Update screenshots'
