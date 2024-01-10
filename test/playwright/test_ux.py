@@ -120,7 +120,7 @@ def _create_new_environment(page, screenshot=False):
     page.get_by_role("cell", name=">").get_by_role("button").nth(1).click()
     if screenshot:
         page.screenshot(path="test-results/package-version-number.png")
-    page.get_by_role("option", name="12.6.0", exact=False).click()
+    page.get_by_role("option", name="12.5.1", exact=False).click()
 
     # open up the channels accordian card
     page.get_by_role("button", name="Channels").click()
@@ -216,7 +216,7 @@ def _existing_environment_interactions(page, env_name, time_to_build_env=4*60*10
     if screenshot:
         page.screenshot(path="test-results/pip-section.png")
     page.get_by_text("- rich").click() # bring focus to the section
-    page.get_by_text("channels: - conda-forgedependencies: - rich>12.6.0 - pip: - nothing - ipykernel").fill("channels:\n  - conda-forge\ndependencies:\n  - rich>12.6.0\n  - python\n  - pip:\n      - ragna\n  - ipykernel\n\n")
+    page.get_by_text("channels: - conda-forgedependencies: - rich>12.5.1 - pip: - nothing - ipykernel").fill("channels:\n  - conda-forge\ndependencies:\n  - rich>12.5.1\n  - python\n  - pip:\n      - ragna\n  - ipykernel\n\n")
     page.get_by_role("button", name="Save").click()
     # wait until the status is `Completed`
     completed = page.get_by_text("Completed", exact=False)
@@ -322,11 +322,11 @@ def test_integration(page: Page, test_config, screenshot):
     # create a new environment
     env_name = _create_new_environment(page, screenshot=screenshot)
 
-    # # close any open tabs on the conda-store ui
-    # _close_environment_tabs(page)
+    # close any open tabs on the conda-store ui
+    _close_environment_tabs(page)
 
-    # # interact with an existing environment
-    # _existing_environment_interactions(page, env_name, screenshot=screenshot)
+    # interact with an existing environment
+    _existing_environment_interactions(page, env_name, screenshot=screenshot)
 
 
 if __name__ == "__main__":
