@@ -6,10 +6,10 @@ export const environmentsApiSlice = apiSlice.injectEndpoints({
   endpoints: builder => ({
     fetchEnvironments: builder.query<
       IApiResponse<Environment[]>,
-      { page: number; size: number; search: string }
+      { search: string }
     >({
       query: dto =>
-        `/api/v1/environment/?page=${dto.page}&size=${dto.size}&search=${dto.search}`
+        `/api/v1/environment/?search=${dto.search}`
     })
   })
 });
