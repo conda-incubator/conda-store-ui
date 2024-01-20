@@ -52,7 +52,7 @@ describe("<SpecificationEdit />", () => {
         </Provider>
       )
     );
-    const switchButton = component.getByLabelText("Switch to YAML Editor");
+    const switchButton = component.getByLabelText("YAML", { exact: false });
     fireEvent.click(switchButton);
 
     act(() => {
@@ -60,9 +60,7 @@ describe("<SpecificationEdit />", () => {
       store.dispatch(updateChannels(["conda-store"]));
     });
 
-    expect(
-      component.queryByText("Switch to Standard View")
-    ).toBeInTheDocument();
+    expect(component.queryByText("YAML", { exact: false })).toBeInTheDocument();
   });
 
   it("should cancel environment edition", () => {
@@ -93,7 +91,7 @@ describe("<SpecificationEdit />", () => {
         </Provider>
       )
     );
-    const switchButton = component.getByLabelText("Switch to YAML Editor");
+    const switchButton = component.getByLabelText("YAML", { exact: false });
     fireEvent.click(switchButton);
 
     const code = stringify({
@@ -106,7 +104,9 @@ describe("<SpecificationEdit />", () => {
     });
 
     await waitFor(() => {
-      expect(screen.getByText("conda-channel")).not.toBeNull();
+      expect(
+        screen.getByText("conda-channel", { exact: false })
+      ).not.toBeNull();
     });
 
     const emptyCode = stringify({

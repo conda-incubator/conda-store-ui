@@ -178,6 +178,7 @@ export const AddRequestedPackage = ({
         <StyledIconButton
           onClick={() => onCancel(false)}
           data-testid="cancelIcon"
+          theme={theme}
         >
           <DeleteIconAlt />
         </StyledIconButton>
