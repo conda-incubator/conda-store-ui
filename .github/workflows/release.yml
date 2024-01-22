@@ -25,6 +25,7 @@ jobs:
         with:
           node-version: 18
           registry-url: 'https://registry.npmjs.org'
+          scope: "@conda-store-ui"
 
       - name: "Install dependencies 📦"
         run: yarn
