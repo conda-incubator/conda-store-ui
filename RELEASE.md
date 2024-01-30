@@ -29,6 +29,10 @@
 6. If the dry run looks good, publish to npmjs:
 
    ```bash
+   # you will more than likely need to login first
+   # npm login --registry https://registry.npmjs.org --scope @conda-store-ui
+
+   # publish release to npmjs
    npm publish --verbose --access public conda-store-ui.tgz
    ```
 
