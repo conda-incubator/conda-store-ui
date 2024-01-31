@@ -44,7 +44,9 @@ export const SpecificationEdit = ({
   const { requestedPackages } = useAppSelector(
     state => state.requestedPackages
   );
-  const { variables } = useAppSelector(state => state.variables);
+  const { environmentVariables } = useAppSelector(
+    state => state.environmentVariables
+  );
   const { dependencies, size, count, page } = useAppSelector(
     state => state.dependencies
   );
@@ -55,13 +57,13 @@ export const SpecificationEdit = ({
   const [code, setCode] = useState<{
     dependencies: (string | CondaSpecificationPip)[];
     channels: string[];
-    variables: Record<string, string>;
-  }>({ dependencies: requestedPackages, variables, channels });
+    environmentVariables: Record<string, string>;
+  }>({ dependencies: requestedPackages, environmentVariables, channels });
   const [envIsUpdated, setEnvIsUpdated] = useState(false);
 
   const initialChannels = useRef(cloneDeep(channels));
   const initialPackages = useRef(cloneDeep(requestedPackages));
-  const initialVariables = useRef(cloneDeep(variables));
+  const initialEnvironmentVariables = useRef(cloneDeep(environmentVariables));
 
   const stringifiedInitialChannels = useMemo(() => {
     return JSON.stringify(initialChannels.current);
@@ -71,9 +73,9 @@ export const SpecificationEdit = ({
     return JSON.stringify(initialPackages.current);
   }, [initialPackages.current]);
 
-  const stringifiedInitialVariables = useMemo(() => {
-    return JSON.stringify(initialVariables.current);
-  }, [initialVariables.current]);
+  const stringifiedInitialEnvironmentVariables = useMemo(() => {
+    return JSON.stringify(initialEnvironmentVariables.current);
+  }, [initialEnvironmentVariables.current]);
 
   const onUpdateChannels = useCallback((channels: string[]) => {
     dispatch(updateChannels(channels));
@@ -89,19 +91,20 @@ export const SpecificationEdit = ({
     ({
       channels,
       dependencies,
-      variables
+      environmentVariables
     }: {
       channels: string[];
       dependencies: string[];
-      variables: Record<string, string>;
+      environmentVariables: Record<string, string>;
     }) => {
-      const code = { dependencies, channels, variables };
+      const code = { dependencies, channels, environmentVariables };
       const isDifferentChannels =
         JSON.stringify(code.channels) !== stringifiedInitialChannels;
       const isDifferentPackages =
         JSON.stringify(code.dependencies) !== stringifiedInitialPackages;
-      const isDifferentVariables =
-        JSON.stringify(code.variables) !== stringifiedInitialVariables;
+      const isDifferentEnvironmentVariables =
+        JSON.stringify(code.environmentVariables) !==
+        stringifiedInitialEnvironmentVariables;
 
       if (!channels || channels.length === 0) {
         code.channels = [];
@@ -111,11 +114,18 @@ export const SpecificationEdit = ({
         code.dependencies = [];
       }
 
-      if (!variables || Object.keys(variables).length === 0) {
-        code.variables = {};
+      if (
+        !environmentVariables ||
+        Object.keys(environmentVariables).length === 0
+      ) {
+        code.environmentVariables = {};
       }
 
-      if (isDifferentChannels || isDifferentPackages || isDifferentVariables) {
+      if (
+        isDifferentChannels ||
+        isDifferentPackages ||
+        isDifferentEnvironmentVariables
+      ) {
         setEnvIsUpdated(true);
         onUpdateDefaultEnvironment(false);
         onSpecificationIsChanged(true);
@@ -131,7 +141,11 @@ export const SpecificationEdit = ({
       dispatch(updatePackages(code.dependencies));
       dispatch(updateChannels(code.channels));
     } else {
-      setCode({ dependencies: requestedPackages, variables, channels });
+      setCode({
+        dependencies: requestedPackages,
+        environmentVariables,
+        channels
+      });
     }
 
     setShow(value);
@@ -140,7 +154,7 @@ export const SpecificationEdit = ({
   const onEditEnvironment = () => {
     const envContent = show
       ? code
-      : { dependencies: requestedPackages, variables, channels };
+      : { dependencies: requestedPackages, environmentVariables, channels };
 
     onUpdateEnvironment(envContent);
   };
@@ -162,19 +176,20 @@ export const SpecificationEdit = ({
       JSON.stringify(channels) !== stringifiedInitialChannels;
     const isDifferentPackages =
       JSON.stringify(requestedPackages) !== stringifiedInitialPackages;
-    const isDifferentVariables =
-      JSON.stringify(variables) !== stringifiedInitialVariables;
+    const isDifferentEnvironmentVariables =
+      JSON.stringify(environmentVariables) !==
+      stringifiedInitialEnvironmentVariables;
 
     if (defaultEnvVersIsChanged) {
       setEnvIsUpdated(false);
     } else if (
       isDifferentChannels ||
       isDifferentPackages ||
-      isDifferentVariables
+      isDifferentEnvironmentVariables
     ) {
       setEnvIsUpdated(true);
     }
-  }, [channels, requestedPackages, variables, descriptionUpdated]);
+  }, [channels, requestedPackages, environmentVariables, descriptionUpdated]);
 
   return (
     <BlockContainerEditMode
@@ -188,7 +203,7 @@ export const SpecificationEdit = ({
             code={stringify({
               channels,
               dependencies: requestedPackages,
-              variables
+              environmentVariables
             })}
             onChangeEditor={onUpdateEditor}
           />

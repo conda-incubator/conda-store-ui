@@ -5,7 +5,7 @@ export interface IEnvironmentCreateState {
   description: string;
   requestedPackages: string[];
   channels: string[];
-  variables: Record<string, string>;
+  environmentVariables: Record<string, string>;
 }
 
 const initialState: IEnvironmentCreateState = {
@@ -13,7 +13,7 @@ const initialState: IEnvironmentCreateState = {
   description: "",
   requestedPackages: [],
   channels: [],
-  variables: {}
+  environmentVariables: {}
 };
 
 export const environmentCreateSlice = createSlice({
@@ -52,19 +52,19 @@ export const environmentCreateSlice = createSlice({
       action: PayloadAction<{
         dependencies: string[];
         channels: string[];
-        variables: Record<string, string>;
+        environmentVariables: Record<string, string>;
       }>
     ) => {
       state.requestedPackages = action.payload.dependencies;
       state.channels = action.payload.channels;
-      state.variables = action.payload.variables;
+      state.environmentVariables = action.payload.environmentVariables;
     },
     environmentCreateStateCleared: state => {
       state.name = "";
       state.description = "";
       state.channels = [];
       state.requestedPackages = [];
-      state.variables = {};
+      state.environmentVariables = {};
     }
   }
 });
