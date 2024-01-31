@@ -52,8 +52,7 @@ export const EnvironmentDetailsHeader = ({
           </Typography>
           {mode === EnvironmentDetailsModes.READ && (
             <StyledButtonPrimary
-              // TODO: Add this prop when the toggle button (YAML view) feature is added to the read-only view. #213
-              // disabled={!showEditButton}
+              disabled={!showEditButton}
               onClick={() =>
                 dispatch(modeChanged(EnvironmentDetailsModes.EDIT))
               }
