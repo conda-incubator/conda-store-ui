@@ -149,8 +149,6 @@ export const condaStoreTheme = createTheme(baseTheme, {
   }
 });
 
-export const theme = condaStoreTheme;
-
 export const themeDecorator = (func: any) => (
   <ThemeProvider theme={condaStoreTheme}>{func()}</ThemeProvider>
 );
