@@ -57,7 +57,7 @@ describe("<EnvironmentsList />", () => {
       )
     );
 
-    expect(component.container).toHaveTextContent("Shared environments");
+    expect(component.container).toHaveTextContent("Shared Environments");
     expect(component.container).toHaveTextContent("default");
   });
 });

@@ -1,7 +1,7 @@
 import { ThemeProvider } from "@mui/material";
 import React from "react";
 import { CondaSpecification } from "../src/common/models";
-import { theme } from "../src/theme";
+import { condaStoreTheme } from "../src/theme";
 
 export const NAMESPACES = [
   {
@@ -90,5 +90,5 @@ export const BUILD = {
 };
 
 export const mockTheme = (children: any) => {
-  return <ThemeProvider theme={theme}>{children}</ThemeProvider>;
+  return <ThemeProvider theme={condaStoreTheme}>{children}</ThemeProvider>;
 };

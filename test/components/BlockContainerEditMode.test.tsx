@@ -16,7 +16,7 @@ describe("<BlockContainerEditMode />", () => {
         </BlockContainerEditMode>
       )
     );
-    expect(container).toHaveTextContent("Switch to YAML Editor");
+    expect(container).toHaveTextContent("YAML");
   });
 
   it("should call onToggleEditMode when the user switches the view", () => {
@@ -32,7 +32,9 @@ describe("<BlockContainerEditMode />", () => {
         </BlockContainerEditMode>
       )
     );
-    const switchButton = component.getByLabelText("Switch to Standard View");
+    const switchButton = component.getByLabelText("YAML", {
+      exact: false
+    });
     fireEvent.click(switchButton);
     expect(onToggleEditorView).toHaveBeenCalled();
   });

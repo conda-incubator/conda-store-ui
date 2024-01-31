@@ -30,7 +30,7 @@ describe("<SpecificationCreate />", () => {
   });
 
   it("should switch the view to the yaml editor", () => {
-    const switchButton = component.getByLabelText("Switch to YAML Editor");
+    const switchButton = component.getByLabelText("YAML", { exact: false });
     fireEvent.click(switchButton);
 
     const vatSelectInput = component.container.querySelector(
@@ -45,7 +45,7 @@ describe("<SpecificationCreate />", () => {
 
     expect(mockOnCreateEnvironment).toHaveBeenCalled();
 
-    const switchButton = component.getByLabelText("Switch to YAML Editor");
+    const switchButton = component.getByLabelText("YAML", { exact: false });
     fireEvent.click(switchButton);
 
     fireEvent.click(createButton);
@@ -56,7 +56,7 @@ describe("<SpecificationCreate />", () => {
   });
 
   it("should update channels and dependencies", async () => {
-    const switchButton = component.getByLabelText("Switch to YAML Editor");
+    const switchButton = component.getByLabelText("YAML", { exact: false });
     fireEvent.click(switchButton);
 
     const code = stringify({
@@ -69,7 +69,9 @@ describe("<SpecificationCreate />", () => {
     });
 
     await waitFor(() => {
-      expect(screen.getByText("conda-channel")).not.toBeNull();
+      expect(
+        screen.getByText("conda-channel", { exact: false })
+      ).not.toBeNull();
     });
 
     const emptyCode = stringify({
