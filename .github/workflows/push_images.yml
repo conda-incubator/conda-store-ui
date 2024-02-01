@@ -71,11 +71,6 @@ jobs:
             # directory in which to put the contents of the artifact
             path: 'screenshots'
 
-      - name: "ls"
-        run: |
-            ls
-            pwd
-            ls conda-store-repo
             
       - name: "Copy images to conda-store repo"
         run: |
