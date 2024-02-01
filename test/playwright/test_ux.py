@@ -173,6 +173,7 @@ def _existing_environment_interactions(page, env_name, time_to_build_env=3*60*10
     if screenshot:
         page.screenshot(path="test-results/conda-store-yaml-editor.png")
     page.get_by_text("- rich").click()
+    expect(page.get_by_text("- rich")).to_be_editable()
     page.get_by_text("channels: - conda-forgedependencies: - rich - pip: - nothing - ipykernel").fill("channels:\n  - conda-forge\ndependencies:\n  - rich\n  - python\n  - pip:\n      - nothing\n  - ipykernel\n\n")
     page.get_by_role("button", name="Save").click()
     # wait until the status is `Completed`
