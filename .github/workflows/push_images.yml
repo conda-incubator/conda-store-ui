@@ -1,5 +1,5 @@
 # This workflow collects screenshots which have stored as artifacts in test.yml 
-# and opens a PR on conda-store to update the docs.
+# and opens a PR on the conda-incubator/conda-store repo to update the docs.
 #
 # There are two ways to trigger this workflow:
 # 1. Trigger by adding the `update_screenshots` label. 
@@ -50,7 +50,7 @@ jobs:
           else
             PR_NUMBER=${{github.event.pull_request.number}}
           fi
-          echo "PR_NUMBER=$PR_NUMBER" >> $GITHUB_ENV
+            echo "PR_NUMBER=$PR_NUMBER" >> $GITHUB_ENV
           
       - name: Download artifact images - will fail if artifact doesn't exist yet
         id: download-artifact
@@ -77,7 +77,7 @@ jobs:
             pwd
             ls conda-store-repo
             
-      - name: "Copy images to other repo"
+      - name: "Copy images to conda-store repo"
         run: |
             cd conda-store-repo
             cp ../screenshots/*.png docusaurus-docs/conda-store-ui/images/.
@@ -95,7 +95,7 @@ jobs:
           commit-message: Update screenshots
           branch: update_screenshots
           delete-branch: true
-          title: '[AUTO] Update screenshots'
+          title: '[AUTO] - Update  docs screenshots'
           body: |
             Update screenshots
             - Updated with the latest images from playwright generated in PR ${{ env.PR_NUMBER }}
