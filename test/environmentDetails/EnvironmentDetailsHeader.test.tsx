@@ -74,7 +74,7 @@ describe("<EnvironmentDetailsHeader />", () => {
     const newEnvName = "My new environment name";
     fireEvent.change(input, { target: { value: newEnvName } });
     expect(mockOnUpdateName).toHaveBeenCalledWith(newEnvName);
-    expect(component.getByText("Namespace")).not.toBeInTheDocument();
+    expect(component.queryByText("Namespace")).not.toBeInTheDocument();
   });
 
   it("should render component in create mode with namespace", () => {

@@ -99,8 +99,7 @@ export const EnvironmentDetailsHeader = ({
             inputProps={{
               style: {
                 color: palette.common.black
-              },
-              "data-testid": "environment-name-input"
+              }
             }}
             size="small"
             onChange={e => onUpdateName(e.target.value)}
