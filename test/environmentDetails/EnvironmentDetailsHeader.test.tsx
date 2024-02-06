@@ -53,7 +53,7 @@ describe("<EnvironmentDetailsHeader />", () => {
     });
   });
 
-  it("should render component in create mode", () => {
+  it("should render component in create mode without namespace", () => {
     const mockOnUpdateName = jest.fn();
     const component = render(
       mockTheme(
@@ -70,9 +70,30 @@ describe("<EnvironmentDetailsHeader />", () => {
       store.dispatch(modeChanged(EnvironmentDetailsModes.CREATE));
     });
 
-    const input = component.getByPlaceholderText("Environment name");
+    const input = component.getByLabelText("Environment name");
     const newEnvName = "My new environment name";
     fireEvent.change(input, { target: { value: newEnvName } });
     expect(mockOnUpdateName).toHaveBeenCalledWith(newEnvName);
+    expect(component.getByText("Namespace")).not.toBeInTheDocument();
+  });
+
+  it("should render component in create mode with namespace", () => {
+    const mockOnUpdateName = jest.fn();
+    const component = render(
+      mockTheme(
+        <Provider store={store}>
+          <EnvironmentDetailsHeader
+            envName={undefined}
+            namespace="test-namespace"
+            onUpdateName={mockOnUpdateName}
+            showEditButton={true}
+          />
+        </Provider>
+      )
+    );
+    act(() => {
+      store.dispatch(modeChanged(EnvironmentDetailsModes.CREATE));
+    });
+    expect(component.getByLabelText("Namespace")).toBeInTheDocument();
   });
 });
