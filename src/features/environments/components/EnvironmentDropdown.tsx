@@ -102,8 +102,12 @@ export const EnvironmentDropdown = ({
             <StyledIconButton
               onClick={e => onCreateNewEnvironmentTab(e, namespace)}
               disabled={!canCreate}
+              style={{
+                textTransform: "none",
+                paddingRight: "0.4rem"
+              }}
             >
-              <AddIcon />
+              <AddIcon /> New
             </StyledIconButton>
           </Tooltip>
         </Box>
