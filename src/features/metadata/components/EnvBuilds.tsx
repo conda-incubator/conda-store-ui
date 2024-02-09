@@ -11,7 +11,7 @@ import { PrefContext } from "../../../preferences";
 import artifactList from "../../../utils/helpers/artifact";
 import { Artifact } from "../../../common/models";
 
-interface IData {
+export interface IData {
   currentBuildId: number;
   selectedBuildId: number;
   builds: IBuild[];
