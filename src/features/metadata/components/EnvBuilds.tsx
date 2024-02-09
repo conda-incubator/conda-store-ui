@@ -31,12 +31,33 @@ export const EnvBuilds = ({
       </StyledMetadataItem>
       {selectedBuild ? (
         <>
-          <BuildDropdown
-            builds={builds}
-            currentBuildId={currentBuildId}
-            selectedBuildId={selectedBuildId}
-          />
-          <EnvBuildStatus build={selectedBuild} />
+          <Build builds={envBuilds} selectedBuildId={selectedBuildId} />
+          <StyledMetadataItem
+            sx={{
+              marginTop: "0",
+              fontSize: "13px",
+              fontWeight: 500,
+              paddingBottom: "0"
+            }}
+            data-testid="build-status"
+          >
+            Status: {""}
+            <Typography component="span" sx={{ fontSize: "13px" }}>
+              {currentBuild.status}
+              {currentBuild.status_info && ` (${currentBuild.status_info})`}
+              {((currentBuild.status === "Building" ||
+                currentBuild.status === "Queued") && (
+                <CircularProgress
+                  size={10}
+                  sx={{
+                    marginLeft: "8px"
+                  }}
+                />
+              )) ||
+                // If the selected build is a failed build, render the link to the build log.
+                (showLogLink && [". ", logLink])}
+            </Typography>
+          </StyledMetadataItem>
         </>
       ) : (
         <CircularProgress
