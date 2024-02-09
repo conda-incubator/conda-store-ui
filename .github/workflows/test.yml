@@ -54,7 +54,11 @@ jobs:
           yarn install --immutable
           yarn run build
 
-      - name: "Start web server and run tests"
+      - name: "Run Jest tests"
+        run: |
+          yarn test
+
+      - name: "Start web server and run Playwright tests"
         shell: bash -el {0}
         run: |
           yarn run start & pytest --video on --output test-results --screenshots true test/playwright/test_ux.py
