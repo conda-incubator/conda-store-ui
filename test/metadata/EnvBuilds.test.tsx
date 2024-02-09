@@ -39,12 +39,7 @@ describe("<EnvBuilds />", () => {
     const failedBuild = { ...BUILD, status: "FAILED" };
     const { getByTestId, getByRole } = render(
       <Provider store={store}>
-        <EnvBuilds
-          currentBuildId={1}
-          selectedBuildId={1}
-          builds={[failedBuild]}
-          mode="read-only"
-        />
+        <EnvBuilds selectedBuildId={1} builds={[failedBuild]} />
       </Provider>
     );
     expect(getByRole("link", { name: "Log" })).toBeInTheDocument();
@@ -56,12 +51,7 @@ describe("<EnvBuilds />", () => {
   it("should not render log link for normal build", () => {
     const { getByTestId, queryByRole } = render(
       <Provider store={store}>
-        <EnvBuilds
-          currentBuildId={1}
-          selectedBuildId={1}
-          builds={[BUILD]}
-          mode="read-only"
-        />
+        <EnvBuilds selectedBuildId={1} builds={[BUILD]} />
       </Provider>
     );
     expect(queryByRole("link", { name: "Log" })).not.toBeInTheDocument();
