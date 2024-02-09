@@ -24,4 +24,29 @@ describe("<EnvBuilds />", () => {
     const progressBar = component.getByRole("progressbar");
     expect(progressBar).toBeInTheDocument();
   });
+
+  it("should render link to log if selected build failed", () => {
+    const failedBuild = { ...BUILD, status: "FAILED" };
+    const { getByTestId, getByRole } = render(
+      <Provider store={store}>
+        <EnvBuilds selectedBuildId={1} builds={[failedBuild]} />
+      </Provider>
+    );
+    expect(getByRole("link", { name: "Log" })).toBeInTheDocument();
+    expect(getByTestId("build-status")).toHaveTextContent(
+      /^Status: Failed\. Log$/
+    );
+  });
+
+  it("should not render log link for normal build", () => {
+    const { getByTestId, queryByRole } = render(
+      <Provider store={store}>
+        <EnvBuilds selectedBuildId={1} builds={[BUILD]} />
+      </Provider>
+    );
+    expect(queryByRole("link", { name: "Log" })).not.toBeInTheDocument();
+    expect(getByTestId("build-status")).toHaveTextContent(
+      /^Status: Completed$/
+    );
+  });
 });
