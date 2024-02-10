@@ -23,7 +23,8 @@ describe("<EnvironmentsList />", () => {
               {
                 id: 2,
                 name: "python-flask-env",
-                isPrimary: true
+                isPrimary: true,
+                canCreate: true
               }
             ]}
             hasMore={false}
@@ -46,7 +47,8 @@ describe("<EnvironmentsList />", () => {
             namespacesList={[
               {
                 name: "default",
-                id: 1
+                id: 1,
+                canCreate: true
               }
             ]}
             hasMore={false}
