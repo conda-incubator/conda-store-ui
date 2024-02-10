@@ -100,8 +100,10 @@ export const EnvironmentDropdown = ({
             }
           >
             <StyledIconButton
-              onClick={e => onCreateNewEnvironmentTab(e, namespace)}
-              disabled={!canCreate}
+              onClick={e =>
+                canCreate && onCreateNewEnvironmentTab(e, namespace)
+              }
+              aria-disabled={!canCreate}
             >
               <AddIcon />
             </StyledIconButton>
