@@ -203,7 +203,7 @@ export const SpecificationEdit = ({
             code={stringify({
               channels,
               dependencies: requestedPackages,
-              environmentVariables
+              variables: environmentVariables
             })}
             onChangeEditor={onUpdateEditor}
           />
