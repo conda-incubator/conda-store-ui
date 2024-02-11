@@ -59,9 +59,20 @@ describe("<SpecificationCreate />", () => {
     const switchButton = component.getByLabelText("YAML", { exact: false });
     fireEvent.click(switchButton);
 
+    await waitFor(() => {
+      expect(
+        screen.getByText((content, element) => {
+          return (
+            element?.textContent === "channels:  -dependencies:  -variables: {}"
+          );
+        })
+      );
+    });
+
     const code = stringify({
       channels: ["conda-channel"],
-      dependencies: ["python"]
+      dependencies: ["python"],
+      variables: { CONDA_OVERRIDE_CUDA: "1.2.3" }
     });
     const input = await screen.findByRole<HTMLInputElement>("textbox");
     fireEvent.change(input, {
@@ -70,8 +81,13 @@ describe("<SpecificationCreate />", () => {
 
     await waitFor(() => {
       expect(
-        screen.getByText("conda-channel", { exact: false })
-      ).not.toBeNull();
+        screen.getByText((content, element) => {
+          return (
+            element?.textContent ===
+            "channels:  - conda-channeldependencies:  - pythonvariables:  CONDA_OVERRIDE_CUDA: 1.2.3"
+          );
+        })
+      );
     });
 
     const emptyCode = stringify({
@@ -84,7 +100,11 @@ describe("<SpecificationCreate />", () => {
     });
 
     await waitFor(() => {
-      expect(screen.getByText("dependencies")).not.toBeNull();
+      expect(
+        screen.getByText((content, element) => {
+          return element?.textContent === "channels: []dependencies: []";
+        })
+      );
     });
   });
 });
