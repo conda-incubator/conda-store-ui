@@ -55,6 +55,17 @@ describe("<SpecificationEdit />", () => {
     const switchButton = component.getByLabelText("YAML", { exact: false });
     fireEvent.click(switchButton);
 
+    await waitFor(() => {
+      expect(
+        screen.getByText((content, element) => {
+          return (
+            element?.textContent ===
+            "channels: []dependencies:  - python>5.0  - numpyvariables: {}"
+          );
+        })
+      );
+    });
+
     act(() => {
       store.dispatch(updatePackages(["numpy"]));
       store.dispatch(updateChannels(["conda-store"]));

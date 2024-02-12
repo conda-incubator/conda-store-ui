@@ -1,6 +1,7 @@
 import React from "react";
 import { Provider } from "react-redux";
 import {
+  act,
   fireEvent,
   render,
   RenderResult,
@@ -8,6 +9,7 @@ import {
   waitFor
 } from "@testing-library/react";
 import { SpecificationCreate } from "../../src/features/environmentCreate";
+import { requestedPackagesChanged } from "../../src/features/environmentCreate";
 import { mockTheme } from "../testutils";
 import { store } from "../../src/store";
 import { stringify } from "yaml";
@@ -33,6 +35,27 @@ describe("<SpecificationCreate />", () => {
     const switchButton = component.getByLabelText("YAML", { exact: false });
     fireEvent.click(switchButton);
 
+    expect(
+      screen.getByText((content, element) => {
+        return (
+          element?.textContent === "channels:  -dependencies:  -variables: {}"
+        );
+      })
+    );
+
+    act(() => {
+      store.dispatch(requestedPackagesChanged(["python>5.0", "numpy"]));
+    });
+
+    expect(
+      screen.getByText((content, element) => {
+        return (
+          element?.textContent ===
+          "channels: []dependencies:  - python>5.0  - numpyvariables: {}"
+        );
+      })
+    );
+
     const vatSelectInput = component.container.querySelector(
       ".cm-editor"
     ) as HTMLInputElement;
@@ -47,6 +70,14 @@ describe("<SpecificationCreate />", () => {
 
     const switchButton = component.getByLabelText("YAML", { exact: false });
     fireEvent.click(switchButton);
+
+    expect(
+      screen.getByText((content, element) => {
+        return (
+          element?.textContent === "channels:  -dependencies:  -variables: {}"
+        );
+      })
+    );
 
     fireEvent.click(createButton);
     expect(mockOnCreateEnvironment).toHaveBeenCalledWith({
