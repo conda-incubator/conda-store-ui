@@ -25,7 +25,7 @@ export const environmentVariablesSlice = createSlice({
           payload: {
             data: {
               specification: {
-                spec: { environmentVariables }
+                spec: { variables: environmentVariables }
               }
             }
           }
