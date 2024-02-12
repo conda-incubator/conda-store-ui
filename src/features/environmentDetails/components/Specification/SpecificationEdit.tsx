@@ -95,13 +95,13 @@ export const SpecificationEdit = ({
     ({
       channels,
       dependencies,
-      environmentVariables
+      variables
     }: {
       channels: string[];
       dependencies: string[];
-      environmentVariables: Record<string, string>;
+      variables: Record<string, string>;
     }) => {
-      const code = { dependencies, channels, variables: environmentVariables };
+      const code = { dependencies, channels, variables };
       const isDifferentChannels =
         JSON.stringify(code.channels) !== stringifiedInitialChannels;
       const isDifferentPackages =
@@ -118,10 +118,7 @@ export const SpecificationEdit = ({
         code.dependencies = [];
       }
 
-      if (
-        !environmentVariables ||
-        Object.keys(environmentVariables).length === 0
-      ) {
+      if (!variables || Object.keys(variables).length === 0) {
         code.variables = {};
       }
 
