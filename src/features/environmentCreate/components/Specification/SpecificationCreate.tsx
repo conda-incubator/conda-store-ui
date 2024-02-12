@@ -87,16 +87,16 @@ export const SpecificationCreate = ({ onCreateEnvironment }: any) => {
   const formatCode = (
     channels: string[],
     dependencies: string[],
-    environmentVariables: Record<string, string>
+    variables: Record<string, string>
   ) => {
     if (
       channels.length === 0 &&
       dependencies.length === 0 &&
-      Object.keys(environmentVariables).length === 0
+      Object.keys(variables).length === 0
     ) {
       return "channels:\n  -\ndependencies:\n  -\nvariables: {}";
     }
-    return stringify({ channels, dependencies, environmentVariables });
+    return stringify({ channels, dependencies, variables });
   };
 
   const handleSubmit = () => {
