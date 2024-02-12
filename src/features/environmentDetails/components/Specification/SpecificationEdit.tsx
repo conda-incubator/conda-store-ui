@@ -57,8 +57,12 @@ export const SpecificationEdit = ({
   const [code, setCode] = useState<{
     dependencies: (string | CondaSpecificationPip)[];
     channels: string[];
-    environmentVariables: Record<string, string>;
-  }>({ dependencies: requestedPackages, environmentVariables, channels });
+    variables: Record<string, string>;
+  }>({
+    dependencies: requestedPackages,
+    variables: environmentVariables,
+    channels
+  });
   const [envIsUpdated, setEnvIsUpdated] = useState(false);
 
   const initialChannels = useRef(cloneDeep(channels));
@@ -97,13 +101,13 @@ export const SpecificationEdit = ({
       dependencies: string[];
       environmentVariables: Record<string, string>;
     }) => {
-      const code = { dependencies, channels, environmentVariables };
+      const code = { dependencies, channels, variables: environmentVariables };
       const isDifferentChannels =
         JSON.stringify(code.channels) !== stringifiedInitialChannels;
       const isDifferentPackages =
         JSON.stringify(code.dependencies) !== stringifiedInitialPackages;
       const isDifferentEnvironmentVariables =
-        JSON.stringify(code.environmentVariables) !==
+        JSON.stringify(code.variables) !==
         stringifiedInitialEnvironmentVariables;
 
       if (!channels || channels.length === 0) {
@@ -118,7 +122,7 @@ export const SpecificationEdit = ({
         !environmentVariables ||
         Object.keys(environmentVariables).length === 0
       ) {
-        code.environmentVariables = {};
+        code.variables = {};
       }
 
       if (
@@ -143,7 +147,7 @@ export const SpecificationEdit = ({
     } else {
       setCode({
         dependencies: requestedPackages,
-        environmentVariables,
+        variables: environmentVariables,
         channels
       });
     }
@@ -154,7 +158,11 @@ export const SpecificationEdit = ({
   const onEditEnvironment = () => {
     const envContent = show
       ? code
-      : { dependencies: requestedPackages, environmentVariables, channels };
+      : {
+          dependencies: requestedPackages,
+          variables: environmentVariables,
+          channels
+        };
 
     onUpdateEnvironment(envContent);
   };
