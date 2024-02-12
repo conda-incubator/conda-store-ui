@@ -68,7 +68,18 @@ describe("<SpecificationEdit />", () => {
 
     act(() => {
       store.dispatch(updatePackages(["numpy"]));
-      store.dispatch(updateChannels(["conda-store"]));
+      store.dispatch(updateChannels(["conda-store1"]));
+    });
+
+    await waitFor(() => {
+      expect(
+        screen.getByText((content, element) => {
+          return (
+            element?.textContent ===
+            "channels:  - conda-store1dependencies:  - numpyvariables: {}"
+          );
+        })
+      );
     });
 
     expect(component.queryByText("YAML", { exact: false })).toBeInTheDocument();
@@ -110,14 +121,14 @@ describe("<SpecificationEdit />", () => {
         screen.getByText((content, element) => {
           return (
             element?.textContent ===
-            "channels:  - conda-storedependencies:  - numpyvariables: {}"
+            "channels:  - conda-store1dependencies:  - numpyvariables: {}"
           );
         })
       );
     });
 
     const code = stringify({
-      channels: ["conda-channel"],
+      channels: ["conda-store2"],
       dependencies: ["python"],
       variables: { CONDA_OVERRIDE_CUDA: "1.2.3" }
     });
@@ -131,7 +142,7 @@ describe("<SpecificationEdit />", () => {
         screen.getByText((content, element) => {
           return (
             element?.textContent ===
-            "channels:  - conda-channeldependencies:  - pythonvariables:  CONDA_OVERRIDE_CUDA: 1.2.3"
+            "channels:  - conda-store2dependencies:  - pythonvariables:  CONDA_OVERRIDE_CUDA: 1.2.3"
           );
         })
       );
