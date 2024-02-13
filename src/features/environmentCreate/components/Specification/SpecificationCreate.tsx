@@ -23,8 +23,8 @@ export const SpecificationCreate = ({ onCreateEnvironment }: any) => {
   const [editorContent, setEditorContent] = useState<{
     channels: string[];
     dependencies: string[];
-    environmentVariables: Record<string, string>;
-  }>({ channels: [], dependencies: [], environmentVariables: {} });
+    variables: Record<string, string>;
+  }>({ channels: [], dependencies: [], variables: {} });
 
   const buttonStyles = getStylesForStyleType(
     { padding: "5px 60px" },
@@ -38,13 +38,13 @@ export const SpecificationCreate = ({ onCreateEnvironment }: any) => {
   const onUpdateEditor = ({
     channels,
     dependencies,
-    environmentVariables
+    variables
   }: {
     channels: string[];
     dependencies: string[];
-    environmentVariables: Record<string, string>;
+    variables: Record<string, string>;
   }) => {
-    const code = { channels, dependencies, environmentVariables };
+    const code = { channels, dependencies, variables };
 
     if (!channels || channels.length === 0) {
       code.channels = [];
@@ -54,11 +54,8 @@ export const SpecificationCreate = ({ onCreateEnvironment }: any) => {
       code.dependencies = [];
     }
 
-    if (
-      !environmentVariables ||
-      Object.keys(environmentVariables).length === 0
-    ) {
-      code.environmentVariables = {};
+    if (!variables || Object.keys(variables).length === 0) {
+      code.variables = {};
     }
 
     setEditorContent(code);
@@ -70,13 +67,13 @@ export const SpecificationCreate = ({ onCreateEnvironment }: any) => {
         editorCodeUpdated({
           channels: editorContent.channels,
           dependencies: editorContent.dependencies,
-          environmentVariables: editorContent.environmentVariables
+          variables: editorContent.variables
         })
       );
     } else {
       setEditorContent({
         dependencies: requestedPackages,
-        environmentVariables,
+        variables: environmentVariables,
         channels
       });
     }
@@ -102,7 +99,11 @@ export const SpecificationCreate = ({ onCreateEnvironment }: any) => {
   const handleSubmit = () => {
     const code = show
       ? editorContent
-      : { dependencies: requestedPackages, channels };
+      : {
+          dependencies: requestedPackages,
+          variables: environmentVariables,
+          channels
+        };
 
     onCreateEnvironment(code);
   };

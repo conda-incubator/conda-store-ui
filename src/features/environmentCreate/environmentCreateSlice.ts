@@ -52,12 +52,12 @@ export const environmentCreateSlice = createSlice({
       action: PayloadAction<{
         dependencies: string[];
         channels: string[];
-        environmentVariables: Record<string, string>;
+        variables: Record<string, string>;
       }>
     ) => {
       state.requestedPackages = action.payload.dependencies;
       state.channels = action.payload.channels;
-      state.environmentVariables = action.payload.environmentVariables;
+      state.environmentVariables = action.payload.variables;
     },
     environmentCreateStateCleared: state => {
       state.name = "";
