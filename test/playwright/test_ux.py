@@ -118,7 +118,7 @@ def _create_new_environment(page, screenshot=False):
     
     # Interact with the environment shortly after creation
     # click to open the Active environment dropdown manu
-    page.get_by_text(" - Active", exact=False).click()
+    page.get_by_role("combobox", name=" - Active", exact=False).click()
     # click on the Active environment on the dropdown menu item (which is currently building)
     page.get_by_role("option", name=" - Active", exact=False).click()
     # ensure that the environment is building
