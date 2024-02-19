@@ -152,6 +152,7 @@ src/version.ts
 
 # playwright screenshots
 static
+test-results/*
 
 # yarn
 
