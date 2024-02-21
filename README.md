@@ -83,6 +83,57 @@ To create a new version of this package, follow these steps:
 
 [^github-activity]: If you wish, use [`github-activity` to generate a Changelog](https://github.com/choldgraf/github-activity), e.g. `github-activity conda-incubator/conda-store-ui --since 2023.9.1 --until 2023.10.1 --auth <GH personal access token>`
 
+### Running Tests
+
+This repo contains two types of tests: 
+
+- JavaScript unit tests which can be run with `yarn test`
+- Playwright tests
+
+Steps to run Playwright tests:
+
+1. Create Conda environment
+   ```sh
+   conda env create -f environment.yml
+   ```
+2. Activate Conda environment
+   ```sh
+   conda activate conda-store-ui
+   ```
+3. Install Playwright-usable browser
+   ```sh
+   playwright install chromium
+   ```
+4. Copy environment variables
+   ```sh
+   cp .env.example .env
+   ```
+5. Install JavaScript dependencies
+   ```sh
+   yarn install --immutable
+   ```
+6. Build app
+   ```sh
+   yarn build
+   ```
+7. Start server
+   ```sh
+   yarn start
+   ```
+
+Wait for server to start (you'll know it's ready when it says "webpack 5.xx.x compiled successfully"). 
+
+Next, open a **new terminal window or tab**. Then perform the following steps:
+
+1. In the new tab you just opened, activate the Conda environment
+   ```sh
+   conda activate conda-store-ui
+   ```
+2. Run tests
+   ```sh
+   pytest
+   ```
+
 ## Code of Conduct 🤝
 
 To guarantee a welcoming and friendly community, we require all community members to follow our [Code of Conduct](https://github.com/conda-incubator/governance/blob/main/CODE_OF_CONDUCT.md).
