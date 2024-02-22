@@ -55,16 +55,18 @@ describe("<SpecificationEdit />", () => {
     const switchButton = component.getByLabelText("YAML", { exact: false });
     fireEvent.click(switchButton);
 
-    var channels = component.getByText("channels", { exact: true }).closest("div");
-    expect(channels?.textContent).toBe("channels: []");
+    await waitFor(() => {
+      var channels = component.getByText("channels", { exact: true }).closest("div");
+      expect(channels?.textContent).toBe("channels: []");
 
-    var dependencies = component.getByText("dependencies", { exact: true }).closest("div");
-    expect(dependencies?.textContent).toBe("dependencies:");
-    expect(dependencies?.nextElementSibling?.textContent).toBe("  - python>5.0");
-    expect(dependencies?.nextElementSibling?.nextElementSibling?.textContent).toBe("  - numpy");
+      var dependencies = component.getByText("dependencies", { exact: true }).closest("div");
+      expect(dependencies?.textContent).toBe("dependencies:");
+      expect(dependencies?.nextElementSibling?.textContent).toBe("  - python>5.0");
+      expect(dependencies?.nextElementSibling?.nextElementSibling?.textContent).toBe("  - numpy");
 
-    var variables = component.getByText("variables", { exact: true }).closest("div");
-    expect(variables?.textContent).toBe("variables: {}");
+      var variables = component.getByText("variables", { exact: true }).closest("div");
+      expect(variables?.textContent).toBe("variables: {}");
+    });
 
     act(() => {
       store.dispatch(updatePackages(["numpy"]));
