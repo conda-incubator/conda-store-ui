@@ -35,26 +35,29 @@ describe("<SpecificationCreate />", () => {
     const switchButton = component.getByLabelText("YAML", { exact: false });
     fireEvent.click(switchButton);
 
-    expect(
-      screen.getByText((content, element) => {
-        return (
-          element?.textContent === "channels:  -dependencies:  -variables: {}"
-        );
-      })
-    );
+    var channels = component.getByText("channels", { exact: true }).closest("div");
+    expect(channels?.textContent).toBe("channels:");
+
+    var dependencies = component.getByText("dependencies", { exact: true }).closest("div");
+    expect(dependencies?.textContent).toBe("dependencies:");
+
+    var variables = component.getByText("variables", { exact: true }).closest("div");
+    expect(variables?.textContent).toBe("variables: {}");
 
     act(() => {
       store.dispatch(requestedPackagesChanged(["python>5.0", "numpy"]));
     });
 
-    expect(
-      screen.getByText((content, element) => {
-        return (
-          element?.textContent ===
-          "channels: []dependencies:  - python>5.0  - numpyvariables: {}"
-        );
-      })
-    );
+    var channels = component.getByText("channels", { exact: true }).closest("div");
+    expect(channels?.textContent).toBe("channels: []");
+
+    var dependencies = component.getByText("dependencies", { exact: true }).closest("div");
+    expect(dependencies?.textContent).toBe("dependencies:");
+    expect(dependencies?.nextElementSibling?.textContent).toBe("  - python>5.0");
+    expect(dependencies?.nextElementSibling?.nextElementSibling?.textContent).toBe("  - numpy");
+
+    var variables = component.getByText("variables", { exact: true }).closest("div");
+    expect(variables?.textContent).toBe("variables: {}");
 
     const vatSelectInput = component.container.querySelector(
       ".cm-editor"
@@ -71,13 +74,14 @@ describe("<SpecificationCreate />", () => {
     const switchButton = component.getByLabelText("YAML", { exact: false });
     fireEvent.click(switchButton);
 
-    expect(
-      screen.getByText((content, element) => {
-        return (
-          element?.textContent === "channels:  -dependencies:  -variables: {}"
-        );
-      })
-    );
+    var channels = component.getByText("channels", { exact: true }).closest("div");
+    expect(channels?.textContent).toBe("channels:");
+
+    var dependencies = component.getByText("dependencies", { exact: true }).closest("div");
+    expect(dependencies?.textContent).toBe("dependencies:");
+
+    var variables = component.getByText("variables", { exact: true }).closest("div");
+    expect(variables?.textContent).toBe("variables: {}");
 
     fireEvent.click(createButton);
     expect(mockOnCreateEnvironment).toHaveBeenCalledWith({
@@ -91,15 +95,14 @@ describe("<SpecificationCreate />", () => {
     const switchButton = component.getByLabelText("YAML", { exact: false });
     fireEvent.click(switchButton);
 
-    await waitFor(() => {
-      expect(
-        screen.getByText((content, element) => {
-          return (
-            element?.textContent === "channels:  -dependencies:  -variables: {}"
-          );
-        })
-      );
-    });
+    var channels = component.getByText("channels", { exact: true }).closest("div");
+    expect(channels?.textContent).toBe("channels:");
+
+    var dependencies = component.getByText("dependencies", { exact: true }).closest("div");
+    expect(dependencies?.textContent).toBe("dependencies:");
+
+    var variables = component.getByText("variables", { exact: true }).closest("div");
+    expect(variables?.textContent).toBe("variables: {}");
 
     const code = stringify({
       channels: ["conda-channel"],
@@ -112,14 +115,17 @@ describe("<SpecificationCreate />", () => {
     });
 
     await waitFor(() => {
-      expect(
-        screen.getByText((content, element) => {
-          return (
-            element?.textContent ===
-            "channels:  - conda-channeldependencies:  - pythonvariables:  CONDA_OVERRIDE_CUDA: 1.2.3"
-          );
-        })
-      );
+      var channels = component.getByText("channels", { exact: true }).closest("div");
+      expect(channels?.textContent).toBe("channels:");
+      expect(channels?.nextElementSibling?.textContent).toBe("  - conda-channel");
+
+      var dependencies = component.getByText("dependencies", { exact: true }).closest("div");
+      expect(dependencies?.textContent).toBe("dependencies:");
+      expect(dependencies?.nextElementSibling?.textContent).toBe("  - python");
+
+      var variables = component.getByText("variables", { exact: true }).closest("div");
+      expect(variables?.textContent).toBe("variables:");
+      expect(variables?.nextElementSibling?.textContent).toBe("  CONDA_OVERRIDE_CUDA: 1.2.3");
     });
 
     const emptyCode = stringify({
@@ -132,11 +138,15 @@ describe("<SpecificationCreate />", () => {
     });
 
     await waitFor(() => {
-      expect(
-        screen.getByText((content, element) => {
-          return element?.textContent === "channels: []dependencies: []";
-        })
-      );
+      var channels = component.getByText("channels", { exact: true }).closest("div");
+      expect(channels?.textContent).toBe("channels: []");
+
+      var dependencies = component.getByText("dependencies", { exact: true }).closest("div");
+      expect(dependencies?.textContent).toBe("dependencies: []");
+
+      // Use queryBy to avoid throwing an error with getBy
+      var variables = component.queryByText("variables", { exact: true });
+      expect(variables).not.toBeInTheDocument();
     });
   });
 });
