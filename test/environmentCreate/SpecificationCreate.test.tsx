@@ -35,6 +35,16 @@ describe("<SpecificationCreate />", () => {
     const switchButton = component.getByLabelText("YAML", { exact: false });
     fireEvent.click(switchButton);
 
+    const vatSelectInput = component.container.querySelector(
+      ".cm-editor"
+    ) as HTMLInputElement;
+    expect(vatSelectInput).toBeInTheDocument();
+  });
+
+  it("should update the yaml editor when new packages are requested", () => {
+    const switchButton = component.getByLabelText("YAML", { exact: false });
+    fireEvent.click(switchButton);
+
     var channels = component.getByText("channels", { exact: true }).closest("div");
     expect(channels?.textContent).toBe("channels:");
 
@@ -58,11 +68,6 @@ describe("<SpecificationCreate />", () => {
 
     var variables = component.getByText("variables", { exact: true }).closest("div");
     expect(variables?.textContent).toBe("variables: {}");
-
-    const vatSelectInput = component.container.querySelector(
-      ".cm-editor"
-    ) as HTMLInputElement;
-    expect(vatSelectInput).toBeInTheDocument();
   });
 
   it("should call handleSubmit in order to create a new env", () => {
