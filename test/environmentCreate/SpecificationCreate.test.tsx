@@ -47,9 +47,11 @@ describe("<SpecificationCreate />", () => {
 
     var channels = component.getByText("channels", { exact: true }).closest("div");
     expect(channels?.textContent).toBe("channels:");
+    expect(channels?.nextElementSibling?.textContent).toBe("  -");
 
     var dependencies = component.getByText("dependencies", { exact: true }).closest("div");
     expect(dependencies?.textContent).toBe("dependencies:");
+    expect(dependencies?.nextElementSibling?.textContent).toBe("  -");
 
     var variables = component.getByText("variables", { exact: true }).closest("div");
     expect(variables?.textContent).toBe("variables: {}");
@@ -81,9 +83,11 @@ describe("<SpecificationCreate />", () => {
 
     var channels = component.getByText("channels", { exact: true }).closest("div");
     expect(channels?.textContent).toBe("channels:");
+    expect(channels?.nextElementSibling?.textContent).toBe("  -");
 
     var dependencies = component.getByText("dependencies", { exact: true }).closest("div");
     expect(dependencies?.textContent).toBe("dependencies:");
+    expect(dependencies?.nextElementSibling?.textContent).toBe("  -");
 
     var variables = component.getByText("variables", { exact: true }).closest("div");
     expect(variables?.textContent).toBe("variables: {}");
@@ -102,9 +106,11 @@ describe("<SpecificationCreate />", () => {
 
     var channels = component.getByText("channels", { exact: true }).closest("div");
     expect(channels?.textContent).toBe("channels:");
+    expect(channels?.nextElementSibling?.textContent).toBe("  -");
 
     var dependencies = component.getByText("dependencies", { exact: true }).closest("div");
     expect(dependencies?.textContent).toBe("dependencies:");
+    expect(dependencies?.nextElementSibling?.textContent).toBe("  -");
 
     var variables = component.getByText("variables", { exact: true }).closest("div");
     expect(variables?.textContent).toBe("variables: {}");
