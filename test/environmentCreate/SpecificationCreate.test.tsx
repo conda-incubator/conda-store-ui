@@ -45,31 +45,51 @@ describe("<SpecificationCreate />", () => {
     const switchButton = component.getByLabelText("YAML", { exact: false });
     fireEvent.click(switchButton);
 
-    var channels = component.getByText("channels", { exact: true }).closest("div");
-    expect(channels?.textContent).toBe("channels:");
-    expect(channels?.nextElementSibling?.textContent).toBe("  -");
+    {
+      const channels = component
+        .getByText("channels", { exact: true })
+        .closest("div");
+      expect(channels?.textContent).toBe("channels:");
+      expect(channels?.nextElementSibling?.textContent).toBe("  -");
 
-    var dependencies = component.getByText("dependencies", { exact: true }).closest("div");
-    expect(dependencies?.textContent).toBe("dependencies:");
-    expect(dependencies?.nextElementSibling?.textContent).toBe("  -");
+      const dependencies = component
+        .getByText("dependencies", { exact: true })
+        .closest("div");
+      expect(dependencies?.textContent).toBe("dependencies:");
+      expect(dependencies?.nextElementSibling?.textContent).toBe("  -");
 
-    var variables = component.getByText("variables", { exact: true }).closest("div");
-    expect(variables?.textContent).toBe("variables: {}");
+      const variables = component
+        .getByText("variables", { exact: true })
+        .closest("div");
+      expect(variables?.textContent).toBe("variables: {}");
+    }
 
     act(() => {
       store.dispatch(requestedPackagesChanged(["python>5.0", "numpy"]));
     });
 
-    var channels = component.getByText("channels", { exact: true }).closest("div");
-    expect(channels?.textContent).toBe("channels: []");
+    {
+      const channels = component
+        .getByText("channels", { exact: true })
+        .closest("div");
+      expect(channels?.textContent).toBe("channels: []");
 
-    var dependencies = component.getByText("dependencies", { exact: true }).closest("div");
-    expect(dependencies?.textContent).toBe("dependencies:");
-    expect(dependencies?.nextElementSibling?.textContent).toBe("  - python>5.0");
-    expect(dependencies?.nextElementSibling?.nextElementSibling?.textContent).toBe("  - numpy");
+      const dependencies = component
+        .getByText("dependencies", { exact: true })
+        .closest("div");
+      expect(dependencies?.textContent).toBe("dependencies:");
+      expect(dependencies?.nextElementSibling?.textContent).toBe(
+        "  - python>5.0"
+      );
+      expect(
+        dependencies?.nextElementSibling?.nextElementSibling?.textContent
+      ).toBe("  - numpy");
 
-    var variables = component.getByText("variables", { exact: true }).closest("div");
-    expect(variables?.textContent).toBe("variables: {}");
+      const variables = component
+        .getByText("variables", { exact: true })
+        .closest("div");
+      expect(variables?.textContent).toBe("variables: {}");
+    }
   });
 
   it("should call handleSubmit in order to create a new env", () => {
@@ -81,15 +101,21 @@ describe("<SpecificationCreate />", () => {
     const switchButton = component.getByLabelText("YAML", { exact: false });
     fireEvent.click(switchButton);
 
-    var channels = component.getByText("channels", { exact: true }).closest("div");
+    const channels = component
+      .getByText("channels", { exact: true })
+      .closest("div");
     expect(channels?.textContent).toBe("channels:");
     expect(channels?.nextElementSibling?.textContent).toBe("  -");
 
-    var dependencies = component.getByText("dependencies", { exact: true }).closest("div");
+    const dependencies = component
+      .getByText("dependencies", { exact: true })
+      .closest("div");
     expect(dependencies?.textContent).toBe("dependencies:");
     expect(dependencies?.nextElementSibling?.textContent).toBe("  -");
 
-    var variables = component.getByText("variables", { exact: true }).closest("div");
+    const variables = component
+      .getByText("variables", { exact: true })
+      .closest("div");
     expect(variables?.textContent).toBe("variables: {}");
 
     fireEvent.click(createButton);
@@ -104,15 +130,21 @@ describe("<SpecificationCreate />", () => {
     const switchButton = component.getByLabelText("YAML", { exact: false });
     fireEvent.click(switchButton);
 
-    var channels = component.getByText("channels", { exact: true }).closest("div");
+    const channels = component
+      .getByText("channels", { exact: true })
+      .closest("div");
     expect(channels?.textContent).toBe("channels:");
     expect(channels?.nextElementSibling?.textContent).toBe("  -");
 
-    var dependencies = component.getByText("dependencies", { exact: true }).closest("div");
+    const dependencies = component
+      .getByText("dependencies", { exact: true })
+      .closest("div");
     expect(dependencies?.textContent).toBe("dependencies:");
     expect(dependencies?.nextElementSibling?.textContent).toBe("  -");
 
-    var variables = component.getByText("variables", { exact: true }).closest("div");
+    const variables = component
+      .getByText("variables", { exact: true })
+      .closest("div");
     expect(variables?.textContent).toBe("variables: {}");
 
     const code = stringify({
@@ -126,17 +158,27 @@ describe("<SpecificationCreate />", () => {
     });
 
     await waitFor(() => {
-      var channels = component.getByText("channels", { exact: true }).closest("div");
+      const channels = component
+        .getByText("channels", { exact: true })
+        .closest("div");
       expect(channels?.textContent).toBe("channels:");
-      expect(channels?.nextElementSibling?.textContent).toBe("  - conda-channel");
+      expect(channels?.nextElementSibling?.textContent).toBe(
+        "  - conda-channel"
+      );
 
-      var dependencies = component.getByText("dependencies", { exact: true }).closest("div");
+      const dependencies = component
+        .getByText("dependencies", { exact: true })
+        .closest("div");
       expect(dependencies?.textContent).toBe("dependencies:");
       expect(dependencies?.nextElementSibling?.textContent).toBe("  - python");
 
-      var variables = component.getByText("variables", { exact: true }).closest("div");
+      const variables = component
+        .getByText("variables", { exact: true })
+        .closest("div");
       expect(variables?.textContent).toBe("variables:");
-      expect(variables?.nextElementSibling?.textContent).toBe("  CONDA_OVERRIDE_CUDA: 1.2.3");
+      expect(variables?.nextElementSibling?.textContent).toBe(
+        "  CONDA_OVERRIDE_CUDA: 1.2.3"
+      );
     });
 
     const emptyCode = stringify({
@@ -149,14 +191,18 @@ describe("<SpecificationCreate />", () => {
     });
 
     await waitFor(() => {
-      var channels = component.getByText("channels", { exact: true }).closest("div");
+      const channels = component
+        .getByText("channels", { exact: true })
+        .closest("div");
       expect(channels?.textContent).toBe("channels: []");
 
-      var dependencies = component.getByText("dependencies", { exact: true }).closest("div");
+      const dependencies = component
+        .getByText("dependencies", { exact: true })
+        .closest("div");
       expect(dependencies?.textContent).toBe("dependencies: []");
 
       // Use queryBy to avoid throwing an error with getBy
-      var variables = component.queryByText("variables", { exact: true });
+      const variables = component.queryByText("variables", { exact: true });
       expect(variables).not.toBeInTheDocument();
     });
   });
