@@ -9,6 +9,7 @@ import { CreateEnvironmentPackages } from "../CreateEnvironmentPackages";
 import { useAppDispatch, useAppSelector } from "../../../../hooks";
 import {
   channelsChanged,
+  environmentVariablesChanged,
   editorCodeUpdated,
   environmentCreateStateCleared
 } from "../../environmentCreateSlice";
@@ -35,6 +36,13 @@ export const SpecificationCreate = ({ onCreateEnvironment }: any) => {
     dispatch(channelsChanged(channels));
   }, []);
 
+  const onUpdateEnvironmentVariables = useCallback(
+    (environmentVariables: Record<string, string>) => {
+      dispatch(environmentVariablesChanged(environmentVariables));
+    },
+    []
+  );
+
   const onUpdateEditor = ({
     channels,
     dependencies,
@@ -46,11 +54,21 @@ export const SpecificationCreate = ({ onCreateEnvironment }: any) => {
   }) => {
     const code = { channels, dependencies, variables };
 
-    if (!channels || channels.length === 0) {
+    // Note: the [null] checks are due to empty lists in the pretty-printed case
+    // of formatCode
+    if (
+      !channels ||
+      channels.length === 0 ||
+      (channels.length === 1 && channels[0] === null)
+    ) {
       code.channels = [];
     }
 
-    if (!dependencies || dependencies.length === 0) {
+    if (
+      !dependencies ||
+      dependencies.length === 0 ||
+      (dependencies.length === 1 && dependencies[0] === null)
+    ) {
       code.dependencies = [];
     }
 
@@ -86,12 +104,9 @@ export const SpecificationCreate = ({ onCreateEnvironment }: any) => {
     dependencies: string[],
     variables: Record<string, string>
   ) => {
-    if (
-      channels.length === 0 &&
-      dependencies.length === 0 &&
-      Object.keys(variables).length === 0
-    ) {
-      return "channels:\n  -\ndependencies:\n  -\nvariables: {}";
+    if (channels.length === 0 && dependencies.length === 0) {
+      // Note: these empty pretty-printed lists translate to [null]
+      return "channels:\n  -\ndependencies:\n  -\n" + stringify({ variables });
     }
     return stringify({ channels, dependencies, variables });
   };
@@ -139,6 +154,7 @@ export const SpecificationCreate = ({ onCreateEnvironment }: any) => {
                 updateChannels={onUpdateChannels}
               />
             </Box>
+            <>{onUpdateEnvironmentVariables(environmentVariables)}</>
           </>
         )}
         <Box

@@ -29,6 +29,12 @@ export const environmentCreateSlice = createSlice({
     channelsChanged: (state, action: PayloadAction<string[]>) => {
       state.channels = action.payload;
     },
+    environmentVariablesChanged: (
+      state,
+      action: PayloadAction<Record<string, string>>
+    ) => {
+      state.environmentVariables = action.payload;
+    },
     requestedPackagesChanged: (state, action: PayloadAction<string[]>) => {
       state.requestedPackages = action.payload;
     },
@@ -73,6 +79,7 @@ export const {
   nameChanged,
   descriptionChanged,
   channelsChanged,
+  environmentVariablesChanged,
   requestedPackagesChanged,
   requestedPackageRemoved,
   requestedPackageUpdated,
