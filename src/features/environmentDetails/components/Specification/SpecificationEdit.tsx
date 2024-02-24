@@ -11,6 +11,7 @@ import { cloneDeep, debounce } from "lodash";
 import { stringify } from "yaml";
 import { BlockContainerEditMode } from "../../../../components";
 import { ChannelsEdit, updateChannels } from "../../../../features/channels";
+import { updateEnvironmentVariables } from "../../../../features/environmentVariables";
 import { Dependencies, pageChanged } from "../../../../features/dependencies";
 import {
   modeChanged,
@@ -86,6 +87,13 @@ export const SpecificationEdit = ({
     onDefaultEnvIsChanged(false);
   }, []);
 
+  const onUpdateEnvironmentVariables = useCallback(
+    (environmentVariables: Record<string, string>) => {
+      dispatch(updateEnvironmentVariables(environmentVariables));
+    },
+    []
+  );
+
   const onUpdateDefaultEnvironment = (isChanged: boolean) => {
     onDefaultEnvIsChanged(isChanged);
     onSpecificationIsChanged(!isChanged);
@@ -141,6 +149,7 @@ export const SpecificationEdit = ({
     if (show) {
       dispatch(updatePackages(code.dependencies));
       dispatch(updateChannels(code.channels));
+      dispatch(updateEnvironmentVariables(code.variables));
     } else {
       setCode({
         dependencies: requestedPackages,
@@ -170,6 +179,7 @@ export const SpecificationEdit = ({
     dispatch(modeChanged(EnvironmentDetailsModes.READ));
     dispatch(updatePackages(initialPackages.current));
     dispatch(updateChannels(initialChannels.current));
+    dispatch(updateEnvironmentVariables(initialEnvironmentVariables.current));
   };
 
   useEffect(() => {
@@ -234,6 +244,7 @@ export const SpecificationEdit = ({
                 updateChannels={onUpdateChannels}
               />
             </Box>
+            <>{onUpdateEnvironmentVariables(environmentVariables)}</>
           </>
         )}
         <Box
