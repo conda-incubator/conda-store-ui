@@ -9,7 +9,6 @@ import { CreateEnvironmentPackages } from "../CreateEnvironmentPackages";
 import { useAppDispatch, useAppSelector } from "../../../../hooks";
 import {
   channelsChanged,
-  environmentVariablesChanged,
   editorCodeUpdated,
   environmentCreateStateCleared
 } from "../../environmentCreateSlice";
@@ -35,13 +34,6 @@ export const SpecificationCreate = ({ onCreateEnvironment }: any) => {
   const onUpdateChannels = useCallback((channels: string[]) => {
     dispatch(channelsChanged(channels));
   }, []);
-
-  const onUpdateEnvironmentVariables = useCallback(
-    (environmentVariables: Record<string, string>) => {
-      dispatch(environmentVariablesChanged(environmentVariables));
-    },
-    []
-  );
 
   const onUpdateEditor = ({
     channels,
@@ -154,7 +146,6 @@ export const SpecificationCreate = ({ onCreateEnvironment }: any) => {
                 updateChannels={onUpdateChannels}
               />
             </Box>
-            <>{onUpdateEnvironmentVariables(environmentVariables)}</>
           </>
         )}
         <Box

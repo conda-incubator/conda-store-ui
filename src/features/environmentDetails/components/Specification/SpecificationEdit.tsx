@@ -87,13 +87,6 @@ export const SpecificationEdit = ({
     onDefaultEnvIsChanged(false);
   }, []);
 
-  const onUpdateEnvironmentVariables = useCallback(
-    (environmentVariables: Record<string, string>) => {
-      dispatch(updateEnvironmentVariables(environmentVariables));
-    },
-    []
-  );
-
   const onUpdateDefaultEnvironment = (isChanged: boolean) => {
     onDefaultEnvIsChanged(isChanged);
     onSpecificationIsChanged(!isChanged);
@@ -244,7 +237,6 @@ export const SpecificationEdit = ({
                 updateChannels={onUpdateChannels}
               />
             </Box>
-            <>{onUpdateEnvironmentVariables(environmentVariables)}</>
           </>
         )}
         <Box
