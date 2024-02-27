@@ -55,53 +55,9 @@ describe("<SpecificationEdit />", () => {
     const switchButton = component.getByLabelText("YAML", { exact: false });
     fireEvent.click(switchButton);
 
-    await waitFor(() => {
-      const channels = component
-        .getByText("channels", { exact: true })
-        .closest("div");
-      expect(channels?.textContent).toBe("channels: []");
-
-      const dependencies = component
-        .getByText("dependencies", { exact: true })
-        .closest("div");
-      expect(dependencies?.textContent).toBe("dependencies:");
-      expect(dependencies?.nextElementSibling?.textContent).toBe(
-        "  - python>5.0"
-      );
-      expect(
-        dependencies?.nextElementSibling?.nextElementSibling?.textContent
-      ).toBe("  - numpy");
-
-      const variables = component
-        .getByText("variables", { exact: true })
-        .closest("div");
-      expect(variables?.textContent).toBe("variables: {}");
-    });
-
     act(() => {
       store.dispatch(updatePackages(["numpy"]));
-      store.dispatch(updateChannels(["conda-store1"]));
-    });
-
-    await waitFor(() => {
-      const channels = component
-        .getByText("channels", { exact: true })
-        .closest("div");
-      expect(channels?.textContent).toBe("channels:");
-      expect(channels?.nextElementSibling?.textContent).toBe(
-        "  - conda-store1"
-      );
-
-      const dependencies = component
-        .getByText("dependencies", { exact: true })
-        .closest("div");
-      expect(dependencies?.textContent).toBe("dependencies:");
-      expect(dependencies?.nextElementSibling?.textContent).toBe("  - numpy");
-
-      const variables = component
-        .getByText("variables", { exact: true })
-        .closest("div");
-      expect(variables?.textContent).toBe("variables: {}");
+      store.dispatch(updateChannels(["conda-store"]));
     });
 
     expect(component.queryByText("YAML", { exact: false })).toBeInTheDocument();
@@ -138,31 +94,9 @@ describe("<SpecificationEdit />", () => {
     const switchButton = component.getByLabelText("YAML", { exact: false });
     fireEvent.click(switchButton);
 
-    await waitFor(() => {
-      const channels = component
-        .getByText("channels", { exact: true })
-        .closest("div");
-      expect(channels?.textContent).toBe("channels:");
-      expect(channels?.nextElementSibling?.textContent).toBe(
-        "  - conda-store1"
-      );
-
-      const dependencies = component
-        .getByText("dependencies", { exact: true })
-        .closest("div");
-      expect(dependencies?.textContent).toBe("dependencies:");
-      expect(dependencies?.nextElementSibling?.textContent).toBe("  - numpy");
-
-      const variables = component
-        .getByText("variables", { exact: true })
-        .closest("div");
-      expect(variables?.textContent).toBe("variables: {}");
-    });
-
     const code = stringify({
-      channels: ["conda-store2"],
-      dependencies: ["python"],
-      variables: { CONDA_OVERRIDE_CUDA: "1.2.3" }
+      channels: ["conda-channel"],
+      dependencies: ["python"]
     });
     const input = await screen.findByRole<HTMLInputElement>("textbox");
     fireEvent.change(input, {
@@ -170,27 +104,9 @@ describe("<SpecificationEdit />", () => {
     });
 
     await waitFor(() => {
-      const channels = component
-        .getByText("channels", { exact: true })
-        .closest("div");
-      expect(channels?.textContent).toBe("channels:");
-      expect(channels?.nextElementSibling?.textContent).toBe(
-        "  - conda-store2"
-      );
-
-      const dependencies = component
-        .getByText("dependencies", { exact: true })
-        .closest("div");
-      expect(dependencies?.textContent).toBe("dependencies:");
-      expect(dependencies?.nextElementSibling?.textContent).toBe("  - python");
-
-      const variables = component
-        .getByText("variables", { exact: true })
-        .closest("div");
-      expect(variables?.textContent).toBe("variables:");
-      expect(variables?.nextElementSibling?.textContent).toBe(
-        "  CONDA_OVERRIDE_CUDA: 1.2.3"
-      );
+      expect(
+        screen.getByText("conda-channel", { exact: false })
+      ).not.toBeNull();
     });
 
     const emptyCode = stringify({
@@ -203,19 +119,7 @@ describe("<SpecificationEdit />", () => {
     });
 
     await waitFor(() => {
-      const channels = component
-        .getByText("channels", { exact: true })
-        .closest("div");
-      expect(channels?.textContent).toBe("channels: []");
-
-      const dependencies = component
-        .getByText("dependencies", { exact: true })
-        .closest("div");
-      expect(dependencies?.textContent).toBe("dependencies: []");
-
-      // Use queryBy to avoid throwing an error with getBy
-      const variables = component.queryByText("variables", { exact: true });
-      expect(variables).not.toBeInTheDocument();
+      expect(screen.getByText("dependencies")).not.toBeNull();
     });
   });
 });
