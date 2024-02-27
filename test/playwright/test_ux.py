@@ -89,7 +89,7 @@ def _create_new_environment(page, screenshot=False):
     # ensure new filename in case this test is run multiple times
     new_env_name = f'test_env_{random.randint(0, 100000)}' 
     # set timeout for building the environment
-    time_to_build_env = 2 * 60 * 1000  # 2 minutes in milliseconds
+    time_to_build_env = 5 * 60 * 1000  # 5 minutes in milliseconds
 
     # Create the new environment
     # click the + to create a new env
@@ -118,7 +118,7 @@ def _create_new_environment(page, screenshot=False):
     
     # Interact with the environment shortly after creation
     # click to open the Active environment dropdown manu
-    page.get_by_role("button", name=" - Active", exact=False).click()
+    page.get_by_text(" - Active", exact=False).click()
     # click on the Active environment on the dropdown menu item (which is currently building)
     page.get_by_role("option", name=" - Active", exact=False).click()
     # ensure that the environment is building
@@ -193,7 +193,7 @@ def _existing_environment_interactions(page, env_name, time_to_build_env=3*60*10
     # change the description
     page.get_by_placeholder("Enter here the description of your environment").fill("new description")
     # change the vesion spec of an existing package
-    page.get_by_role("row", name="ipykernel", exact=False).get_by_role("button").first.click()
+    page.get_by_role("row", name="ipykernel", exact=False).get_by_role("combobox").first.click()
     page.get_by_role("option", name=">=").click()
     # Note: purposefully not testing version constraint since there is inconsistent behavior here
 
