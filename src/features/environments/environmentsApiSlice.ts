@@ -8,8 +8,7 @@ export const environmentsApiSlice = apiSlice.injectEndpoints({
       IApiResponse<Environment[]>,
       { search: string }
     >({
-      query: dto =>
-        `/api/v1/environment/?search=${dto.search}`
+      query: dto => `/api/v1/environment/?search=${dto.search}`
     })
   })
 });
