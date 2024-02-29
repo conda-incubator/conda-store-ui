@@ -12,6 +12,7 @@ export interface ICodeEditor {
   onChangeEditor: (code: {
     channels: string[];
     dependencies: string[];
+    variables: Record<string, string>;
   }) => void;
 }
 

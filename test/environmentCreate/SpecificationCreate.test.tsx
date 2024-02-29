@@ -51,7 +51,8 @@ describe("<SpecificationCreate />", () => {
     fireEvent.click(createButton);
     expect(mockOnCreateEnvironment).toHaveBeenCalledWith({
       channels: [],
-      dependencies: []
+      dependencies: [],
+      variables: {}
     });
   });
 
