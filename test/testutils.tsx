@@ -86,7 +86,8 @@ export const BUILD = {
   scheduled_on: "2022-11-08T14:28:05.655564",
   started_on: "2022-11-08T14:28:05.655564",
   ended_on: "2022-11-08T14:28:05.655564",
-  build_artifacts: []
+  build_artifacts: [],
+  status_info: null
 };
 
 export const mockTheme = (children: any) => {
