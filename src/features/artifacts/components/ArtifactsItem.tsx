@@ -6,7 +6,7 @@ import { useTheme } from "@mui/material/styles";
 
 import { Artifact } from "../../../common/models";
 import { PrefContext } from "../../../preferences";
-import { isPathAbsolute } from "../../../utils/helpers";
+import { artifactBaseUrl } from "../../../utils/helpers";
 
 interface IArtifactsProps {
   /**
@@ -17,9 +17,7 @@ interface IArtifactsProps {
 
 export const ArtifactItem = ({ artifact }: IArtifactsProps) => {
   const pref = React.useContext(PrefContext);
-  const url = isPathAbsolute(pref.apiUrl)
-    ? pref.apiUrl
-    : `${window.location.origin}${pref.apiUrl}`;
+  const url = artifactBaseUrl(pref.apiUrl, window.location.origin);
   const route = new URL(artifact.route, url).toString();
   const theme = useTheme();
 

@@ -100,12 +100,18 @@ export const EnvironmentDropdown = ({
             }
           >
             <StyledIconButton
-              onClick={e => onCreateNewEnvironmentTab(e, namespace)}
-              disabled={!canCreate}
               style={{
                 textTransform: "none",
                 paddingRight: "0.4rem"
               }}
+              onClick={e =>
+                canCreate && onCreateNewEnvironmentTab(e, namespace)
+              }
+              // Do not use the `disabled` attribute. Disable manually with
+              // JavaScript and the `aria-disabled` attribute, otherwise the
+              // tooltip won't work. More info:
+              // https://github.com/conda-incubator/conda-store-ui/pull/370/files#r1486492450
+              aria-disabled={!canCreate}
             >
               <AddIcon /> New
             </StyledIconButton>
