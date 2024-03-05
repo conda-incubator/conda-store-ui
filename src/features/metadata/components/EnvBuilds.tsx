@@ -55,7 +55,7 @@ export const EnvBuilds = ({
                 />
               )) ||
                 // If the selected build is a failed build, render the link to the build log.
-                (showLogLink && [". ", logLink])}
+                (showLogLink && <>. {logLink}</>)}
             </Typography>
           </StyledMetadataItem>
         </>
