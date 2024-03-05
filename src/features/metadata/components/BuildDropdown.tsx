@@ -21,7 +21,7 @@ interface IBuildProps {
   selectedBuildId: number;
 }
 
-export const Build = ({ builds, selectedBuildId }: IBuildProps) => {
+export const BuildDropdown = ({ builds, selectedBuildId }: IBuildProps) => {
   const dispatch = useAppDispatch();
   const { palette } = useTheme();
   const [open, setOpen] = useState(false);

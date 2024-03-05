@@ -3,7 +3,7 @@ import { Provider } from "react-redux";
 import { render, RenderResult, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { store } from "../../src/store";
-import { Build } from "../../src/features/metadata/components/BuildDropdown";
+import { BuildDropdown } from "../../src/features/metadata/components/BuildDropdown";
 import { mockTheme } from "../testutils";
 
 const builds = [
@@ -26,11 +26,7 @@ describe("<BuildDropdown />", () => {
     component = render(
       mockTheme(
         <Provider store={store}>
-          <Build
-            builds={builds}
-            selectedBuildId={0}
-            currentBuildStatus="Building"
-          />
+          <BuildDropdown builds={builds} selectedBuildId={0} />
         </Provider>
       )
     );
