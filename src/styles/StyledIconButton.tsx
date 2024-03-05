@@ -18,7 +18,7 @@ export const StyledIconButton = styled(Button)(({ theme }) => ({
     outlineWidth: "medium",
     transition: "none"
   },
-  "&:disabled": {
+  '&[aria-disabled="true"]': {
     backgroundColor: theme.palette.secondary[100],
     border: "none",
     color: theme.palette.secondary[300]

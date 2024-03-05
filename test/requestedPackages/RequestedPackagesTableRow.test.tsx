@@ -34,7 +34,11 @@ describe("<RequestedPackagesTableRow />", () => {
     return render(
       mockTheme(
         <Provider store={store}>
-          <RequestedPackagesTableRow requestedPackage={requestedPackage} />
+          <table>
+            <tbody>
+              <RequestedPackagesTableRow requestedPackage={requestedPackage} />
+            </tbody>
+          </table>
         </Provider>
       )
     );

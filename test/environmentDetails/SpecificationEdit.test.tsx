@@ -70,6 +70,7 @@ describe("<SpecificationEdit />", () => {
           <SpecificationEdit
             descriptionUpdated={false}
             onUpdateEnvironment={jest.fn()}
+            onSpecificationIsChanged={jest.fn()}
           />
         </Provider>
       )
