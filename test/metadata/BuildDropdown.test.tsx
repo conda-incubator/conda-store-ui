@@ -4,7 +4,6 @@ import { render, RenderResult, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { store } from "../../src/store";
 import { BuildDropdown } from "../../src/features/metadata/components/BuildDropdown";
-import { mockBuilds } from "../../src/features/metadata/mocks/mockBuilds";
 import { mockTheme } from "../testutils";
 import { buildDatetimeStatus } from "../../src/utils/helpers/buildMapper";
 
@@ -16,11 +15,7 @@ describe("<BuildDropdown />", () => {
     component = render(
       mockTheme(
         <Provider store={store}>
-          <BuildDropdown
-            builds={mockBuilds}
-            currentBuildId={1}
-            selectedBuildId={1}
-          />
+          <BuildDropdown builds={builds} selectedBuildId={0} />
         </Provider>
       )
     );

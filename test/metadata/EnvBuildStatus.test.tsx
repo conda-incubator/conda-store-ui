@@ -4,12 +4,18 @@ import { render } from "@testing-library/react";
 import { EnvBuildStatus } from "../../src/features/metadata/components";
 import { BUILD } from "../testutils";
 import { store } from "../../src/store";
+import { buildMapper } from "../../src/utils/helpers";
 
 describe("<EnvBuildStatus />", () => {
-  it("should render link to log for failed build", () => {
+  const [build, failedBuild] = buildMapper(
+    [{ ...BUILD }, { ...BUILD, status: "FAILED" }],
+    1
+  );
+
+  it("should render link to log if selected build failed", () => {
     const { getByTestId, getByRole } = render(
       <Provider store={store}>
-        <EnvBuildStatus build={{ ...BUILD, status: "FAILED" }} />
+        <EnvBuildStatus build={failedBuild} />
       </Provider>
     );
     expect(getByRole("link", { name: "Log" })).toBeInTheDocument();
@@ -18,10 +24,10 @@ describe("<EnvBuildStatus />", () => {
     );
   });
 
-  it("should not render link to log for normal build", () => {
+  it("should not render log link for normal build", () => {
     const { getByTestId, queryByRole } = render(
       <Provider store={store}>
-        <EnvBuildStatus build={{ ...BUILD }} />
+        <EnvBuildStatus build={build} />
       </Provider>
     );
     expect(queryByRole("link", { name: "Log" })).not.toBeInTheDocument();

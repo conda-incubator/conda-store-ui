@@ -3,6 +3,7 @@ import { CircularProgress } from "@mui/material";
 import { StyledMetadataItem } from "../../../styles/StyledMetadataItem";
 import { Build as IBuild } from "../../../common/models";
 import { BuildDropdown } from "../../../features/metadata/components";
+import { buildMapper } from "../../../utils/helpers/buildMapper";
 import { EnvBuildStatus } from "./EnvBuildStatus";
 
 export interface IData {
@@ -18,7 +19,8 @@ export const EnvBuilds = ({
   builds,
   mode
 }: IData) => {
-  const selectedBuild = builds.find(build => build.id === selectedBuildId);
+  const envBuilds = builds.length ? buildMapper(builds, currentBuildId) : [];
+  const selectedBuild = envBuilds.find(build => build.id === selectedBuildId);
   return (
     <>
       <StyledMetadataItem
@@ -31,33 +33,8 @@ export const EnvBuilds = ({
       </StyledMetadataItem>
       {selectedBuild ? (
         <>
-          <Build builds={envBuilds} selectedBuildId={selectedBuildId} />
-          <StyledMetadataItem
-            sx={{
-              marginTop: "0",
-              fontSize: "13px",
-              fontWeight: 500,
-              paddingBottom: "0"
-            }}
-            data-testid="build-status"
-          >
-            Status: {""}
-            <Typography component="span" sx={{ fontSize: "13px" }}>
-              {currentBuild.status}
-              {currentBuild.status_info && ` (${currentBuild.status_info})`}
-              {((currentBuild.status === "Building" ||
-                currentBuild.status === "Queued") && (
-                <CircularProgress
-                  size={10}
-                  sx={{
-                    marginLeft: "8px"
-                  }}
-                />
-              )) ||
-                // If the selected build is a failed build, render the link to the build log.
-                (showLogLink && <>. {logLink}</>)}
-            </Typography>
-          </StyledMetadataItem>
+          <BuildDropdown builds={envBuilds} selectedBuildId={selectedBuildId} />
+          <EnvBuildStatus build={selectedBuild} />
         </>
       ) : (
         <CircularProgress
