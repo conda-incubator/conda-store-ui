@@ -100,6 +100,10 @@ export const EnvironmentDropdown = ({
             }
           >
             <StyledIconButton
+              style={{
+                textTransform: "none",
+                paddingRight: "0.4rem"
+              }}
               onClick={e =>
                 canCreate && onCreateNewEnvironmentTab(e, namespace)
               }
@@ -109,7 +113,7 @@ export const EnvironmentDropdown = ({
               // https://github.com/conda-incubator/conda-store-ui/pull/370/files#r1486492450
               aria-disabled={!canCreate}
             >
-              <AddIcon />
+              <AddIcon /> New
             </StyledIconButton>
           </Tooltip>
         </Box>
