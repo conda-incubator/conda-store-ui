@@ -96,6 +96,7 @@
     "@storybook/manager-webpack5": "^6.5.16",
     "@storybook/mdx1-csf": "^0.0.4",
     "@storybook/node-logger": "^6.5.16",
+    "@storybook/preview-api": "^8.0.0",
     "@storybook/react": "^6.5.16",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.3.0",

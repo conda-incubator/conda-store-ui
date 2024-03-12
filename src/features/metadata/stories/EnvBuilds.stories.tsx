@@ -1,10 +1,13 @@
 import type { Story, ComponentMeta } from "@storybook/react";
+import { useArgs } from "@storybook/preview-api";
+
 import { Provider } from "react-redux";
-import React from "react";
+import React, { useEffect } from "react";
 
 import { store } from "../../../store";
-import { EnvBuilds } from "../components";
-import { mockBuilds } from "../mocks";
+import { EnvBuilds, IEnvBuildsProps } from "../components/EnvBuilds";
+import { mockBuilds } from "../mocks/mockBuilds";
+import { useAppSelector } from "../../../hooks";
 
 export default {
   component: EnvBuilds
@@ -23,5 +26,17 @@ export const Primary = {
         <Story />
       </Provider>
     )
-  ]
+  ],
+  render: function Render(args: IEnvBuildsProps) {
+    const [{ selectedBuildId }, updateArgs] = useArgs();
+    const nextSelectedBuildId = useAppSelector(
+      state => state.enviroments.newCurrentBuild
+    );
+
+    useEffect(() => {
+      updateArgs({ selectedBuildId: nextSelectedBuildId });
+    }, [nextSelectedBuildId]);
+
+    return <EnvBuilds {...args} selectedBuildId={selectedBuildId} />;
+  }
 };
