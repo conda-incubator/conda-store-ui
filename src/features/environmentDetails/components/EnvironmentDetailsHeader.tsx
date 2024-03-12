@@ -77,6 +77,7 @@ export const EnvironmentDetailsHeader = ({
                 size="small"
               />
               <div
+                aria-hidden
                 style={{
                   borderRight: `2px solid ${palette.secondary.main}`,
                   transform: "skew(-15deg)",
