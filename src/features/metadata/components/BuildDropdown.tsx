@@ -6,22 +6,25 @@ import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import IconButton from "@mui/material/IconButton";
 import { useAppDispatch } from "../../../hooks";
 import { currentBuildIdChanged } from "..";
+import { Build } from "../../../common/models";
+import { buildDatetimeStatus } from "../../../utils/helpers/buildMapper";
 
 interface IBuildProps {
   /**
    * @param builds list of builds
    * @param currentBuildId id of the current build
-   * @param onChangeStatus update the build status
+   * @param selectedBuildId id of the build selected from the dropdown
    */
-  builds: {
-    id: number;
-    name: string;
-    status: string;
-  }[];
+  builds: Build[];
+  currentBuildId: number;
   selectedBuildId: number;
 }
 
-export const BuildDropdown = ({ builds, selectedBuildId }: IBuildProps) => {
+export const BuildDropdown = ({
+  builds,
+  currentBuildId,
+  selectedBuildId
+}: IBuildProps) => {
   const dispatch = useAppDispatch();
   const { palette } = useTheme();
   const [open, setOpen] = useState(false);
@@ -92,7 +95,7 @@ export const BuildDropdown = ({ builds, selectedBuildId }: IBuildProps) => {
       {builds
         ? builds.map(build => (
             <MenuItem key={build.id} value={build.id}>
-              {build.name}
+              {buildDatetimeStatus(build, currentBuildId)}
             </MenuItem>
           ))
         : null}
