@@ -18,7 +18,7 @@ Release captain responsible - <@gh_username>
 
 ### 1. Pre-flight checks
 
-- [ ] Ensure there are no [open issues with a `block-release ⛔️` label](https://github.com/conda-incubator/conda-store/issues?q=is%3Aopen+label%3A%22block-release+%E2%9B%94%EF%B8%8F%22+sort%3Aupdated-desc)
+- [ ] Ensure there are no [open issues with a `block-release ⛔️` label](https://github.com/conda-incubator/conda-store-ui/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc+label%3A%22block-release+%E2%9B%94%EF%B8%8F%22)
 
 ### 2. Prepare the codebase for a new release
 
@@ -32,13 +32,13 @@ Release captain responsible - <@gh_username>
 
 ### 3. Make the release
 
-- [ ] [Start a new GitHub release](https://github.com/conda-incubator/conda-store/releases/new)
+- [ ] [Start a new GitHub release](https://github.com/conda-incubator/conda-store-ui/releases/new)
   - Call the release the current version, e.g. `2023.9.1`
   - In the **`Choose a Tag:`** dropdown, type in the release name (e.g., `2023.9.1`) and click "Create new tag"
   - In the **`Target:`** dropdown, pin it to the release commit you've recently pushed.
-  - Add release notes in the field below[^github-activity].
+  - Add release notes in the field below [^github-activity].
 - [ ] Confirm that the release completed
-  - [The `release` GitHub action job](https://github.com/conda-incubator/conda-store-ui/blob/main/.github/workflows/release.yaml) has completed successfully in the [actions tab](https://github.com/conda-incubator/conda-store-ui/actions).
+  - [The `release` GitHub action job](https://github.com/conda-incubator/conda-store-ui/blob/main/.github/workflows/release.yaml) has been completed successfully in the [actions tab](https://github.com/conda-incubator/conda-store-ui/actions).
 - [ ] Celebrate, you're done! 🎉
 
 [^github-activity]: If you wish, use [`github-activity` to generate a changelog](https://github.com/choldgraf/github-activity), e.g. `github-activity conda-incubator/conda-store --since 2023.9.1 --until 2023.10.1`.
