@@ -3,7 +3,6 @@ import { CircularProgress } from "@mui/material";
 import { StyledMetadataItem } from "../../../styles/StyledMetadataItem";
 import { Build as IBuild } from "../../../common/models";
 import { BuildDropdown } from "../../../features/metadata/components";
-import { buildMapper } from "../../../utils/helpers/buildMapper";
 import { EnvBuildStatus } from "./EnvBuildStatus";
 
 export interface IData {
@@ -19,8 +18,7 @@ export const EnvBuilds = ({
   builds,
   mode
 }: IData) => {
-  const envBuilds = builds.length ? buildMapper(builds, currentBuildId) : [];
-  const selectedBuild = envBuilds.find(build => build.id === selectedBuildId);
+  const selectedBuild = builds.find(build => build.id === selectedBuildId);
   return (
     <>
       <StyledMetadataItem
@@ -33,7 +31,11 @@ export const EnvBuilds = ({
       </StyledMetadataItem>
       {selectedBuild ? (
         <>
-          <BuildDropdown builds={envBuilds} selectedBuildId={selectedBuildId} />
+          <BuildDropdown
+            builds={builds}
+            currentBuildId={currentBuildId}
+            selectedBuildId={selectedBuildId}
+          />
           <EnvBuildStatus build={selectedBuild} />
         </>
       ) : (

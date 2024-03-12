@@ -1,7 +1,7 @@
 import { format, utcToZonedTime } from "date-fns-tz";
 import { Build } from "../../common/models";
 
-const STATUS_OPTIONS: { [key: Build["status"]]: string } = {
+const STATUS_OPTIONS: { [key: string]: string } = {
   COMPLETED: "Available",
   QUEUED: "Queued",
   FAILED: "Failed",
@@ -9,6 +9,16 @@ const STATUS_OPTIONS: { [key: Build["status"]]: string } = {
 };
 
 const TIMEZONE = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+const isCompleted = (status: string, duration: number) => {
+  if (status === "COMPLETED") {
+    if (duration > 0) {
+      return `Completed in ${duration} min`;
+    }
+    return "Completed";
+  }
+  return STATUS_OPTIONS[status];
+};
 
 const dateToTimezone = (date: string) => {
   if (!date) {
@@ -43,7 +53,11 @@ export const buildStatus = ({
   scheduled_on
 }: Build): string => {
   switch (status) {
-    case "COMPLETED":
+    case "BUILDING":
+    case "QUEUED":
+      return "Building";
+    default: {
+      let duration = 0;
       if (ended_on && scheduled_on) {
         const startTime = new Date(scheduled_on);
         const endTime = new Date(ended_on);
@@ -53,8 +67,7 @@ export const buildStatus = ({
           return `Completed in ${duration} min`;
         }
       }
-      return "Completed";
-    default:
-      return STATUS_OPTIONS[status];
+      return isCompleted(status, duration);
+    }
   }
 };

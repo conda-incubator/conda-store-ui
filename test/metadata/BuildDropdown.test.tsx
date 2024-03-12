@@ -4,6 +4,7 @@ import { render, RenderResult, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { store } from "../../src/store";
 import { BuildDropdown } from "../../src/features/metadata/components/BuildDropdown";
+import { mockBuilds } from "../../src/features/metadata/mocks/mockBuilds";
 import { mockTheme } from "../testutils";
 import { buildDatetimeStatus } from "../../src/utils/helpers/buildMapper";
 
@@ -15,7 +16,11 @@ describe("<BuildDropdown />", () => {
     component = render(
       mockTheme(
         <Provider store={store}>
-          <BuildDropdown builds={builds} selectedBuildId={0} />
+          <BuildDropdown
+            builds={mockBuilds}
+            currentBuildId={1}
+            selectedBuildId={1}
+          />
         </Provider>
       )
     );
@@ -28,19 +33,15 @@ describe("<BuildDropdown />", () => {
   });
 
   it("should display builds in the dropdown", async () => {
-    // This is what the dropdown should display for the build
-    const dropdownOptionName = buildDatetimeStatus(
-      mockBuilds[1],
-      currentBuildId
-    );
+    const buildOptionName = buildDatetimeStatus(mockBuilds[1], currentBuildId);
     const [dropdownButton] = screen.getAllByRole("button");
     userEvent.click(dropdownButton);
     const dropdownItem = await screen.findByRole("option", {
-      name: dropdownOptionName
+      name: buildOptionName
     });
     userEvent.click(dropdownItem);
 
-    const buildName = await screen.findByText(dropdownOptionName);
+    const buildName = await screen.findByText(buildOptionName);
     expect(buildName).toBeInTheDocument();
   });
 });
