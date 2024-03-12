@@ -5,3 +5,4 @@ export * from "./BlockContainerEditMode";
 export * from "./Popup";
 export * from "./icons";
 export * from "./Dialog";
+export * from "./CustomizedTextField";

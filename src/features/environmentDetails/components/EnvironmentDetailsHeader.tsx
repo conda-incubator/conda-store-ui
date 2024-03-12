@@ -1,8 +1,8 @@
-import React from "react";
+import React, { ChangeEvent } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import TextField from "@mui/material/TextField";
 import useTheme from "@mui/material/styles/useTheme";
+import { CustomizedTextField } from "../../../components";
 import { StyledButtonPrimary } from "../../../styles";
 import { useAppDispatch, useAppSelector } from "../../../hooks";
 import {
@@ -70,39 +70,37 @@ export const EnvironmentDetailsHeader = ({
         <>
           {namespace && (
             <>
-              <TextField
+              <CustomizedTextField
                 label="Namespace"
                 value={namespace}
                 disabled
                 size="small"
               />
               <div
+                aria-hidden
                 style={{
                   borderRight: `2px solid ${palette.secondary.main}`,
                   transform: "skew(-15deg)",
-                  margin: "0 1rem",
-                  height: "1.6rem"
+                  margin: "0 1.2rem 0.25rem",
+                  height: "1.8rem",
+                  alignSelf: "flex-end"
                 }}
               />
             </>
           )}
-          <TextField
+          <CustomizedTextField
             autoFocus
             label="Environment name"
-            sx={{
-              backgroundColor: palette.grey[100],
-              minWidth: "450px",
-              "&:hover fieldset": {
-                borderColor: palette.secondary.main
-              }
-            }}
-            inputProps={{
-              style: {
-                color: palette.common.black
-              }
-            }}
             size="small"
-            onChange={e => onUpdateName(e.target.value)}
+            onChange={(e: ChangeEvent) =>
+              onUpdateName((e.target as HTMLInputElement).value)
+            }
+            inputProps={{
+              sx: {
+                width: "35ch",
+                minWidth: "auto"
+              }
+            }}
           />
           {/* <StyledButtonPrimary>Archive</StyledButtonPrimary> */}
         </>

@@ -1,9 +1,9 @@
 import React from "react";
 import Box from "@mui/material/Box";
-import TextField from "@mui/material/TextField";
 import useTheme from "@mui/material/styles/useTheme";
 import { StyledMetadataItem } from "../../../styles/StyledMetadataItem";
 import { EnvironmentDetailsModes } from "../../../features/environmentDetails";
+import { CustomizedTextField } from "../../../components";
 
 interface IDescriptionProps {
   /**
@@ -22,39 +22,29 @@ export const Description = ({
   const { palette } = useTheme();
 
   return (
-    <Box>
+    <Box width="100%">
       {mode === EnvironmentDetailsModes.READ && description && (
         <StyledMetadataItem>{description}</StyledMetadataItem>
       )}
 
       {mode !== EnvironmentDetailsModes.READ && (
-        <>
-          <StyledMetadataItem
-            sx={{
-              fontWeight: 500
-            }}
-          >
-            Description:
-          </StyledMetadataItem>
-          <Box>
-            <TextField
-              multiline
-              value={description}
-              placeholder="Enter here the description of your environment"
-              sx={{
-                backgroundColor: palette.grey[100],
-                width: "100%",
-                marginBottom: "10px"
-              }}
-              inputProps={{
-                style: {
-                  fontSize: "13px"
-                }
-              }}
-              onChange={e => onChangeDescription(e.target.value)}
-            />
-          </Box>
-        </>
+        <CustomizedTextField
+          multiline
+          label="Description"
+          value={description}
+          placeholder="Enter here the description of your environment"
+          fullWidth
+          sx={{
+            backgroundColor: palette.grey[100],
+            marginBottom: "10px"
+          }}
+          inputProps={{
+            style: {
+              fontSize: "13px"
+            }
+          }}
+          onChange={e => onChangeDescription(e.target.value)}
+        />
       )}
     </Box>
   );
