@@ -1,12 +1,11 @@
-import { addDecorator } from "@storybook/react"
-import { themeDecorator } from "../src/theme"
+import { themeDecorator } from "../src/theme";
 
 export const parameters = {
   options: {
     storySort: {
-      order: ['Welcome'],
-    },
-  },
-}
+      order: ["Welcome"]
+    }
+  }
+};
 
-addDecorator(themeDecorator);
+export const decorators = [themeDecorator];

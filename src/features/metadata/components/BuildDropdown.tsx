@@ -35,6 +35,7 @@ export const BuildDropdown = ({
     );
 
     if (newCurrentBuild) {
+      console.log("dispatche currentBuildIdChanged", newCurrentBuild.id);
       dispatch(currentBuildIdChanged(newCurrentBuild.id));
     }
   };

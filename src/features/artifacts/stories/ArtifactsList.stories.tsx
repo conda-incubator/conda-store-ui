@@ -1,4 +1,4 @@
-import { ComponentStory, ComponentMeta } from "@storybook/react";
+import { Meta } from "@storybook/react";
 import React from "react";
 import { ArtifactList } from "../components";
 
@@ -23,8 +23,6 @@ const artifactList = [
 
 export default {
   component: ArtifactList
-} as ComponentMeta<typeof ArtifactList>;
+} as Meta<typeof ArtifactList>;
 
-export const Primary: ComponentStory<typeof ArtifactList> = () => (
-  <ArtifactList artifacts={artifactList} />
-);
+export const Primary = () => <ArtifactList artifacts={artifactList} />;
