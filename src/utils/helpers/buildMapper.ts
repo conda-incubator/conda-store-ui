@@ -10,7 +10,19 @@ const STATUS_OPTIONS: { [key: string]: string } = {
 
 const TIMEZONE = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
-const isCompleted = (status: string, duration: number) => {
+const isCompleted = ({
+  status,
+  ended_on,
+  scheduled_on
+}: Pick<Build, "status" | "ended_on" | "scheduled_on">) => {
+  let duration = 0;
+  if (ended_on && scheduled_on) {
+    const startTime = new Date(scheduled_on);
+    const endTime = new Date(ended_on);
+    duration = (endTime.valueOf() - startTime.valueOf()) / 60000;
+    duration = Math.round(duration);
+  }
+
   if (status === "COMPLETED") {
     if (duration > 0) {
       return `Completed in ${duration} min`;
@@ -57,14 +69,7 @@ export const buildStatus = ({
     case "QUEUED":
       return "Building";
     default: {
-      let duration = 0;
-      if (ended_on && scheduled_on) {
-        const startTime = new Date(scheduled_on);
-        const endTime = new Date(ended_on);
-        duration = (endTime.valueOf() - startTime.valueOf()) / 60000;
-        duration = Math.round(duration);
-      }
-      return isCompleted(status, duration);
+      return isCompleted({ status, ended_on, scheduled_on });
     }
   }
 };
