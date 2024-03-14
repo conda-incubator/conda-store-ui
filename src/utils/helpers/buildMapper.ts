@@ -1,7 +1,7 @@
 import { format, utcToZonedTime } from "date-fns-tz";
 import { Build } from "../../common/models";
 
-const STATUS_OPTIONS: { [key: string]: string } = {
+const STATUS_OPTIONS: { [key: Build["status"]]: string } = {
   COMPLETED: "Available",
   QUEUED: "Queued",
   FAILED: "Failed",
