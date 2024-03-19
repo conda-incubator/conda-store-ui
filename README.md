@@ -85,9 +85,9 @@ To create a new version of this package, follow these steps:
 
 ### Running Tests
 
-This repo contains two types of tests.
+This repo contains two types of tests: Jest and Playwright
 
-#### JavaScript unit tests
+#### Jest tests
 
 To run the Jest tests, run the following command:
 
@@ -97,8 +97,7 @@ yarn test
 
 #### Playwright tests
 
-You must first install all the dependencies and make sure the environment is set
-up correctly:
+Steps to install and set up:
 
 1. Create Conda environment
    ```sh
@@ -125,33 +124,31 @@ up correctly:
    yarn build
    ```
 
-Then to run the tests, you will need to run commands in two separate terminal
-windows or tabs.
+To run the tests, you will need to run commands in two separate terminal windows
+or tabs.
 
-In the first terminal tab, enter the following commands:
+Steps to run:
 
-```sh
-conda activate conda-store-ui
-yarn start
-```
+1. In the first terminal window/tab, enter the following:
+   ```sh
+   conda activate conda-store-ui
+   yarn start
+   ```
+2. Wait for server to start (you'll know it's ready when it says "webpack 5.xx.x
+compiled successfully"). Open a **new terminal window or tab** and enter the
+following:
+   ```sh
+   conda activate conda-store-ui
+   pytest
+   ```
 
-Wait for server to start (you'll know it's ready when it says "webpack 5.xx.x
-compiled successfully").
-
-Open a **new terminal window or tab**. Then run the following:
-
-```sh
-conda activate conda-store-ui
-pytest
-```
-
-If you need to debug the Playwright test, try replacing the last command with:
+If you need to debug, try replacing the last command with:
 
 ```sh
 PWDEBUG=1 pytest
 ```
 
-Note: PW stands for Playwright. PWDEBUG=1 puts [Playwright in debug
+Note: PW stands for Playwright. `PWDEBUG=1` puts [Playwright in debug
 mode](https://playwright.dev/python/docs/debug).
 
 ## Code of Conduct 🤝
