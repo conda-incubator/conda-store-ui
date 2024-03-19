@@ -85,10 +85,17 @@ To create a new version of this package, follow these steps:
 
 ### Running Tests
 
-This repo contains two types of tests: 
+This repo contains two types of tests.
 
-- JavaScript unit tests which can be run with `yarn test`
-- Playwright tests
+#### JavaScript unit tests
+
+To run the Jest tests, run the following command:
+
+```sh
+yarn test
+```
+
+#### Playwright tests
 
 Steps to run Playwright tests:
 
@@ -120,16 +127,12 @@ Steps to run Playwright tests:
    ```sh
    yarn start
    ```
-
-Wait for server to start (you'll know it's ready when it says "webpack 5.xx.x compiled successfully"). 
-
-Next, open a **new terminal window or tab**. Then perform the following steps:
-
-1. In the new tab you just opened, activate the Conda environment
+8. Wait for server to start (you'll know it's ready when it says "webpack 5.xx.x compiled successfully").
+9. Open a **new terminal window or tab**. Then run the following commands.
+10. In the **new tab** you just opened, activate the Conda environment
    ```sh
    conda activate conda-store-ui
-   ```
-2. Run tests
+11. Run tests
    ```sh
    pytest
    ```
