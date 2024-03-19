@@ -132,6 +132,7 @@ Steps to run Playwright tests:
 10. In the **new tab** you just opened, activate the Conda environment
    ```sh
    conda activate conda-store-ui
+   ```
 11. Run tests
    ```sh
    pytest
