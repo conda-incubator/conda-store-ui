@@ -97,7 +97,8 @@ yarn test
 
 #### Playwright tests
 
-Steps to run Playwright tests:
+You must first install all the dependencies and make sure the environment is set
+up correctly:
 
 1. Create Conda environment
    ```sh
@@ -123,20 +124,35 @@ Steps to run Playwright tests:
    ```sh
    yarn build
    ```
-7. Start server
-   ```sh
-   yarn start
-   ```
-8. Wait for server to start (you'll know it's ready when it says "webpack 5.xx.x compiled successfully").
-9. Open a **new terminal window or tab**. Then run the following commands.
-10. In the **new tab** you just opened, activate the Conda environment
-   ```sh
-   conda activate conda-store-ui
-   ```
-11. Run tests
-   ```sh
-   pytest
-   ```
+
+Then to run the tests, you will need to run commands in two separate terminal
+windows or tabs.
+
+In the first terminal tab, enter the following commands:
+
+```sh
+conda activate conda-store-ui
+yarn start
+```
+
+Wait for server to start (you'll know it's ready when it says "webpack 5.xx.x
+compiled successfully").
+
+Open a **new terminal window or tab**. Then run the following:
+
+```sh
+conda activate conda-store-ui
+pytest
+```
+
+If you need to debug the Playwright test, try replacing the last command with:
+
+```sh
+PWDEBUG=1 pytest
+```
+
+Note: PW stands for Playwright. PWDEBUG=1 puts [Playwright in debug
+mode](https://playwright.dev/python/docs/debug).
 
 ## Code of Conduct 🤝
 
