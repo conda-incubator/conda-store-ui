@@ -97,7 +97,7 @@ def _create_new_environment(page, screenshot=False):
     if screenshot:
         page.screenshot(path="test-results/conda-store-new-env.png")
     # fill in the env name
-    page.get_by_placeholder("Environment name").fill(new_env_name)
+    page.get_by_label("Environment name").fill(new_env_name)
     # fill in the description
     page.get_by_placeholder("Enter here the description of your environment").fill("description")
     # click the + to add a package

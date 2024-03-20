@@ -13,15 +13,18 @@ import {
 interface IEnvironmentDetailsHeaderProps {
   /**
    * @param envName name of the selected environment
+   * @param namespace namespace of the environment
    * @param onUpdateName change environment name
    */
   envName?: string;
+  namespace?: string;
   showEditButton: boolean | undefined;
   onUpdateName: (value: string) => void;
 }
 
 export const EnvironmentDetailsHeader = ({
   envName = "",
+  namespace,
   onUpdateName,
   showEditButton = true
 }: IEnvironmentDetailsHeaderProps) => {
@@ -34,7 +37,8 @@ export const EnvironmentDetailsHeader = ({
       sx={{
         display: "flex",
         alignItems: "center",
-        justifyContent: "space-between",
+        justifyContent:
+          mode === EnvironmentDetailsModes.CREATE ? "start" : "space-between",
         marginBottom: "15px"
       }}
     >
@@ -64,9 +68,28 @@ export const EnvironmentDetailsHeader = ({
       )}
       {mode === EnvironmentDetailsModes.CREATE && (
         <>
+          {namespace && (
+            <>
+              <TextField
+                label="Namespace"
+                value={namespace}
+                disabled
+                size="small"
+              />
+              <div
+                aria-hidden
+                style={{
+                  borderRight: `2px solid ${palette.secondary.main}`,
+                  transform: "skew(-15deg)",
+                  margin: "0 1rem",
+                  height: "1.6rem"
+                }}
+              />
+            </>
+          )}
           <TextField
             autoFocus
-            placeholder="Environment name"
+            label="Environment name"
             sx={{
               backgroundColor: palette.grey[100],
               minWidth: "450px",
@@ -76,11 +99,10 @@ export const EnvironmentDetailsHeader = ({
             }}
             inputProps={{
               style: {
-                padding: "8px 15px",
-                fontSize: "15px",
                 color: palette.common.black
               }
             }}
+            size="small"
             onChange={e => onUpdateName(e.target.value)}
           />
           {/* <StyledButtonPrimary>Archive</StyledButtonPrimary> */}
