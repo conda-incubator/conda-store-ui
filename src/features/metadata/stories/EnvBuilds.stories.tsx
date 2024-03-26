@@ -2,22 +2,21 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { useArgs } from "@storybook/preview-api";
 
 import { Provider } from "react-redux";
-import React, { useEffect } from "react";
+import React from "react";
 
 import { store } from "../../../store";
 import { EnvBuilds, IEnvBuildsProps } from "../components/EnvBuilds";
 import { mockBuilds } from "../mocks/mockBuilds";
-import { useAppSelector } from "../../../hooks";
 
 export default {
   component: EnvBuilds,
   decorators: [
-    (Story) => (
+    Story => (
       <Provider store={store}>
         <Story />
       </Provider>
     )
-  ],
+  ]
 } as Meta<typeof EnvBuilds>;
 
 type Story = StoryObj<typeof EnvBuilds>;
@@ -30,21 +29,16 @@ export const Primary: Story = {
     builds: mockBuilds
   },
   render: function Render(args: IEnvBuildsProps) {
-    const [{ selectedBuildId }, updateArgs] = useArgs();
-    const nextSelectedBuildId = useAppSelector(
-      state => state.enviroments.newCurrentBuild
-    );
+    const [{ selectedBuildId = args.selectedBuildId }, updateArgs] = useArgs();
 
-    useEffect(() => {
-      console.log('useEffect', nextSelectedBuildId)
-      if (nextSelectedBuildId) {
-        setTimeout(() => {
-          updateArgs({ selectedBuildId: nextSelectedBuildId });
-        });
-      }
-    }, [nextSelectedBuildId]);
+    const handleChangeToSelectedBuildId = () => {
+      const { id: nextSelectedBuildId = args.selectedBuildId } =
+        store.getState().enviroments.currentBuild;
+      updateArgs({ selectedBuildId: nextSelectedBuildId });
+    };
 
-    console.log(selectedBuildId);
+    store.subscribe(handleChangeToSelectedBuildId);
+
     return <EnvBuilds {...args} selectedBuildId={selectedBuildId} />;
   }
 };
