@@ -36,7 +36,7 @@ interface IEnvBuildStatusProps {
 }
 
 export const EnvBuildStatus = ({ build }: IEnvBuildStatusProps) => {
-  const logArtifact: Artifact | never = artifactList(build.id, ["LOGS"])[0];
+  const logArtifact: Artifact | void = artifactList(build.id, ["LOGS"])[0];
 
   return (
     <StyledMetadataItem
