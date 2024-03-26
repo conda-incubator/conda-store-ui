@@ -3,10 +3,9 @@ module.exports = {
         "^@/(.*)$": "<rootDir>/src/$1",
     },
     testEnvironment: "jsdom",
-    moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json", "mdx"],
+    moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json"],
     transform: {
         "\\.[jt]sx?$": "babel-jest",
-	// "^.+\\.mdx$": "@storybook/addon-docs/jest-transform-mdx",
         ".+\\.(css|styl|less|sass|scss|svg|png|jpg|ttf|woff|woff2)$":
             "jest-transform-stub"
     },
