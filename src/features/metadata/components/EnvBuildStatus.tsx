@@ -31,7 +31,7 @@ const LogLink = ({ logArtifact }: { logArtifact: Artifact }) => {
   );
 };
 
-export interface IEnvBuildStatusProps {
+interface IEnvBuildStatusProps {
   build: Build;
 }
 
