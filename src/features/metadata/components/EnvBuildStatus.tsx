@@ -31,12 +31,12 @@ const LogLink = ({ logArtifact }: { logArtifact: Artifact }) => {
   );
 };
 
-export interface IEnvBuildStatusProps {
+interface IEnvBuildStatusProps {
   build: Build;
 }
 
 export const EnvBuildStatus = ({ build }: IEnvBuildStatusProps) => {
-  const logArtifact: Artifact | never = artifactList(build.id, ["LOGS"])[0];
+  const logArtifact: Artifact | void = artifactList(build.id, ["LOGS"])[0];
 
   return (
     <StyledMetadataItem
