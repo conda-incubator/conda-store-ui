@@ -1,21 +1,5 @@
 name: Playwright Tests
 
-env:
-  CONDA_STORE_SERVER_PORT: 8000
-  CONDA_STORE_BASE_URL: http://localhost:8000
-  CONDA_STORE_AUTH: basic
-  CONDA_STORE_USERNAME: username
-  CONDA_STORE_PASSWORD: password
-  REACT_APP_API_URL: http://localhost:8080/conda-store/
-  REACT_APP_AUTH_METHOD: cookie
-  REACT_APP_LOGIN_PAGE_URL: http://localhost:8080/conda-store/login?next=
-  REACT_APP_AUTH_TOKEN:
-  REACT_APP_STYLE_TYPE: green-accent
-  REACT_APP_CONTEXT: webapp
-  REACT_APP_SHOW_AUTH_BUTTON: true
-  REACT_APP_LOGOUT_PAGE_URL: http://localhost:8080/conda-store/logout?next=/
-  YARN_ENABLE_IMMUTABLE_INSTALLS: false
-
 on:
   pull_request:
   push:
@@ -46,6 +30,10 @@ jobs:
           activate-environment: cs-ui-dev-env
           environment-file: environment_dev.yml
           auto-activate-base: false
+
+      - name: "Set up environment variables"
+        run: |
+          cp .env.example .env
 
       - name: "Install Dependencies"
         run: |
