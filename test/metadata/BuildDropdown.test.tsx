@@ -33,15 +33,19 @@ describe("<BuildDropdown />", () => {
   });
 
   it("should display builds in the dropdown", async () => {
-    const buildOptionName = buildDatetimeStatus(mockBuilds[1], currentBuildId);
+    // This is what the dropdown should display for the build
+    const dropdownOptionName = buildDatetimeStatus(
+      mockBuilds[1],
+      currentBuildId
+    );
     const [dropdownButton] = screen.getAllByRole("button");
     userEvent.click(dropdownButton);
     const dropdownItem = await screen.findByRole("option", {
-      name: buildOptionName
+      name: dropdownOptionName
     });
     userEvent.click(dropdownItem);
 
-    const buildName = await screen.findByText(buildOptionName);
+    const buildName = await screen.findByText(dropdownOptionName);
     expect(buildName).toBeInTheDocument();
   });
 });
