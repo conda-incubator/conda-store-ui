@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2022,  Quansight
- * 
+ *
  * This file is part of the tree-finder library, distributed under the terms of
  * the BSD 3 Clause license. The full license can be found in the LICENSE file.
  */
@@ -16,39 +16,11 @@ const cssLoader = () => {
 			importLoaders: 1,
 			import: true,
 			modules: {
-				localIdentName: "[local]", 
+				localIdentName: "[local]",
 			},
 		},
 	};
 }
-
-const mdxRules = [{
-	test: /\.mdx?$/,
-	use: [
-		{
-			loader: 'babel-loader',
-			options: {
-            			plugins: ['@babel/plugin-transform-react-jsx'],
-          		},
-		},
-		/**{
-		/**	loader: '@mdx-js/loader',
-		/**	options: {
-		/**		configureJSX: true,
-		/**		sourceLoaderOptions: null,
-		/**		transcludeMarkdown: true,
-		/**	}
-		},**/
-		{
-            		loader: '@storybook/mdx1-csf/loader',
-            		options: {
-			},
-          	},
-
-		
-	]
-},
-];
 
 // load bitmap image rules
 const bitmapRules = [
@@ -161,7 +133,7 @@ const getResolve = (dir) => {
 			"node_modules",
 			path.resolve(dir),
 		],
-		extensions: [".tsx", ".ts", ".jsx", ".js", ".less", ".css", ".md", ".mdx"],
+		extensions: [".tsx", ".ts", ".jsx", ".js", ".less", ".css"],
 	};
 }
 
@@ -171,7 +143,6 @@ module.exports = {
 	stylingRules,
 	svgUrlRules,
 	tsRules,
-	mdxRules,
 	getContext,
 	getOptimization,
 	getResolve,

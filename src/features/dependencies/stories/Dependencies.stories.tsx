@@ -1,4 +1,4 @@
-import { ComponentStory, ComponentMeta } from "@storybook/react";
+import { Meta } from "@storybook/react";
 import { Provider } from "react-redux";
 import React from "react";
 
@@ -8,7 +8,7 @@ import { store } from "../../../store";
 
 export default {
   component: Dependencies
-} as ComponentMeta<typeof Dependencies>;
+} as Meta<typeof Dependencies>;
 
 const Template = (args: IDependenciesProps) => (
   <Provider store={store}>
@@ -20,7 +20,7 @@ const Template = (args: IDependenciesProps) => (
   </Provider>
 );
 
-export const Primary: ComponentStory<typeof Dependencies> = Template.bind({});
+export const Primary = Template.bind({});
 
 Primary.args = {
   mode: "edit",

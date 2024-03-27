@@ -3,10 +3,9 @@ module.exports = {
         "^@/(.*)$": "<rootDir>/src/$1",
     },
     testEnvironment: "jsdom",
-    moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json", "mdx"],
+    moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json"],
     transform: {
         "\\.[jt]sx?$": "babel-jest",
-	"^.+\\.mdx$": "@storybook/addon-docs/jest-transform-mdx",
         ".+\\.(css|styl|less|sass|scss|svg|png|jpg|ttf|woff|woff2)$":
             "jest-transform-stub"
     },
@@ -19,7 +18,7 @@ module.exports = {
         "!<rootDir>/src/store/**",
         "!<rootDir>/src/features/**/*.ts",// ignore rtk query files
         "!<rootDir>/src/**/*.stories.{ts,tsx}", // ignore storybook files,
-	"!<rootDir>/src/**/*.stories.{ts,tsx}", 
+	"!<rootDir>/src/**/*.stories.{ts,tsx}",
     ],
     moduleDirectories: ["node_modules", __dirname],
     modulePathIgnorePatterns: ["<rootDir>/lib/"],

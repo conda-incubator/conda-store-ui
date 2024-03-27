@@ -5,7 +5,7 @@ import { Build as IBuild } from "../../../common/models";
 import { BuildDropdown } from "../../../features/metadata/components";
 import { EnvBuildStatus } from "./EnvBuildStatus";
 
-export interface IData {
+export interface IEnvBuildsProps {
   currentBuildId: number;
   selectedBuildId: number;
   builds: IBuild[];
@@ -17,7 +17,7 @@ export const EnvBuilds = ({
   selectedBuildId,
   builds,
   mode
-}: IData) => {
+}: IEnvBuildsProps) => {
   const selectedBuild = builds.find(build => build.id === selectedBuildId);
   return (
     <>
