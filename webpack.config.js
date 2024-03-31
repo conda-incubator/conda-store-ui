@@ -31,7 +31,7 @@ const basicConfig = {
     port: 8000
   },
   devtool: isProd ? false : "source-map",
-  entry: ["src/index.tsx", "src/AppExample.tsx"],
+  entry: ["src/index.tsx", "src/main.tsx"],
   watch: false,
   ...getContext(__dirname),
 

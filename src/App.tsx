@@ -1,8 +1,7 @@
 import { ThemeProvider } from "@mui/material";
 import React from "react";
 import { Provider } from "react-redux";
-import { BrowserRouter as Router } from "react-router-dom";
-import { Route, Routes } from "react-router";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import { PageLayout } from "./layouts";
 import {
@@ -16,17 +15,12 @@ import { condaStoreTheme, grayscaleTheme } from "./theme";
 
 import "../style/index.css";
 
-const AppRouter = () => {
-  // for now, trivial routing is sufficient
-  return (
-    <Router>
-      <Routes>
-        <Route path="*" element={<PageLayout />} />
-      </Routes>
-    </Router>
-  );
-};
-
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <PageLayout />
+  }
+]);
 export interface IAppProps {
   pref?: Partial<IPreferences>;
 }
@@ -86,7 +80,7 @@ export class App<
           }
         >
           <Provider store={store}>
-            <AppRouter />
+            <RouterProvider router={router} />
           </Provider>
         </ThemeProvider>
       </PrefContext.Provider>
