@@ -1,4 +1,4 @@
-import { ComponentStory, ComponentMeta } from "@storybook/react";
+import { Meta } from "@storybook/react";
 import { Provider } from "react-redux";
 import React from "react";
 
@@ -14,9 +14,9 @@ const packageList = [
 
 export default {
   component: RequestedPackagesEdit
-} as ComponentMeta<typeof RequestedPackagesEdit>;
+} as Meta<typeof RequestedPackagesEdit>;
 
-export const Primary: ComponentStory<typeof RequestedPackagesEdit> = () => (
+export const Primary = () => (
   <Provider store={store}>
     <RequestedPackagesEdit packageList={packageList} />
   </Provider>
