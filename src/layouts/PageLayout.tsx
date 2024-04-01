@@ -1,36 +1,24 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect, RefObject } from "react";
+import { Outlet, useOutletContext, useParams } from "react-router-dom";
 import Box from "@mui/material/Box";
 import { Typography } from "@mui/material";
 import { Popup } from "../components";
 import { Environments } from "../features/environments";
-import { EnvironmentCreate } from "../features/environmentCreate";
-import { EnvironmentDetails } from "../features/environmentDetails";
-import { PageTabs } from "../features/tabs";
 import { StyledScrollContainer } from "../styles";
-import { useAppSelector } from "../hooks";
-
-interface IUpdateEnvironment {
-  data: {
-    show: boolean;
-    description: string;
-  };
-}
+import { useAppDispatch, useAppSelector } from "../hooks";
+import { closeNotification } from "../features/notification/notificationSlice";
 
 export const PageLayout = () => {
-  const { selectedEnvironment, newEnvironment } = useAppSelector(
-    state => state.tabs
-  );
+  const dispatch = useAppDispatch();
   const [refreshEnvironments, setRefreshEnvironments] = useState(false);
-  const [notification, setNotification] = useState({
-    show: false,
-    description: ""
-  });
-  const scrollRef = useRef<HTMLDivElement | null>(null);
+  const notification = useAppSelector(state => state.notification);
+  const scrollRef = useRef<HTMLDivElement>(null);
 
-  const onUpdateOrCreateEnv = ({ data }: IUpdateEnvironment) => {
+  useEffect(() => {
     setRefreshEnvironments(true);
-    setNotification(data);
-  };
+  }, [notification]);
+
+  const { namespaceName } = useParams();
 
   return (
     <Box
@@ -55,29 +43,9 @@ export const PageLayout = () => {
           overflowY: "scroll"
         }}
       >
-        {(selectedEnvironment || newEnvironment.isActive) && (
-          <>
-            <PageTabs />
-
-            {selectedEnvironment && !newEnvironment.isActive && (
-              <Box>
-                <EnvironmentDetails
-                  environmentNotification={onUpdateOrCreateEnv}
-                  scrollRef={scrollRef}
-                />
-              </Box>
-            )}
-
-            {!selectedEnvironment && newEnvironment.isActive && (
-              <Box>
-                <EnvironmentCreate
-                  environmentNotification={onUpdateOrCreateEnv}
-                />
-              </Box>
-            )}
-          </>
-        )}
-        {!selectedEnvironment && !newEnvironment.isActive && (
+        {namespaceName ? (
+          <Outlet context={scrollRef} />
+        ) : (
           <Box
             sx={{
               display: "flex",
@@ -96,8 +64,13 @@ export const PageLayout = () => {
       <Popup
         isVisible={notification.show}
         description={notification.description}
-        onClose={setNotification}
+        onClose={() => dispatch(closeNotification())}
       />
     </Box>
   );
 };
+
+// TypeScript-friendly version of the useOutletContext() hook
+export function useScrollRef() {
+  return useOutletContext<RefObject<HTMLDivElement>>();
+}

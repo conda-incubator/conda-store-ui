@@ -119,20 +119,6 @@ def _create_new_environment(page, screenshot=False):
     return new_env_name
 
 
-def _close_environment_tabs(page):
-    """Close any open tabs in the UI. This will continue closing tabs
-    until no tabs remain open.
-
-    Paramaters
-    ----------
-    page: playwright.Page
-        page object for the current test being run
-    """
-    close_tab = page.get_by_test_id("closeTab")
-    while close_tab.count() > 0:
-        close_tab.first.click()
-
-
 def _existing_environment_interactions(
     page, env_name, time_to_build_env=3 * 60 * 1000, screenshot=False
 ):
@@ -156,9 +142,12 @@ def _existing_environment_interactions(
         grab screenshots
 
     """
+    env_link = page.get_by_role("link", name=env_name)
+    edit_button = page.get_by_role("button", name="Edit")
+
     # edit existing environment throught the YAML editor
-    page.get_by_role("button", name=env_name).click()
-    page.get_by_role("button", name="Edit").click()
+    env_link.click()
+    edit_button.click()
     page.get_by_label("YAML").check()
     if screenshot:
         page.screenshot(path="test-results/conda-store-yaml-editor.png")
@@ -169,13 +158,15 @@ def _existing_environment_interactions(
         "channels:\n  - conda-forge\ndependencies:\n  - rich\n  - python\n  - pip:\n      - nothing\n  - ipykernel\n\n"
     )
     page.get_by_role("button", name="Save").click()
+    edit_button.wait_for(state="attached")
+
     # wait until the status is `Completed`
     completed = page.get_by_text("Completed", exact=False)
     completed.wait_for(state="attached", timeout=time_to_build_env)
 
     # ensure the namespace is expanded
     try:
-        expect(page.get_by_role("button", name=env_name)).to_be_visible()
+        expect(env_link).to_be_visible()
     except Exception as e:
         # click to expand the `username` name space (but not click the +)
         page.get_by_role(
@@ -183,8 +174,8 @@ def _existing_environment_interactions(
         ).click()
 
     # edit existing environment
-    page.get_by_role("button", name=env_name).click()
-    page.get_by_role("button", name="Edit").click()
+    env_link.click()
+    edit_button.click()
     # page.get_by_placeholder("Enter here the description of your environment").click()
     # change the description
     page.get_by_placeholder("Enter here the description of your environment").fill(
@@ -221,22 +212,22 @@ def _existing_environment_interactions(
     page.get_by_label("Enter channel").press("Enter")
     # click save to start the new env build
     page.get_by_role("button", name="Save").click()
+    edit_button.wait_for(state="attached")
 
     # wait until the status is `Completed`
     completed = page.get_by_text("Completed", exact=False)
     completed.wait_for(state="attached", timeout=time_to_build_env)
 
     # Edit -> Cancel editing
-    page.get_by_role("button", name=env_name).click()
-    page.get_by_role("button", name="Edit").click()
+    edit_button.click()
     page.get_by_role("button", name="Cancel").click()
 
     # Edit -> Delete environment
-    page.get_by_role("button", name="Edit").click()
+    edit_button.click()
     page.get_by_text("Delete environment").click()
     page.get_by_role("button", name="Delete").click()
 
-    expect(page.get_by_role("button", name=env_name)).not_to_be_visible()
+    expect(env_link).not_to_be_visible()
 
 
 def test_integration(page: Page, test_config, screenshot):
@@ -288,9 +279,6 @@ def test_integration(page: Page, test_config, screenshot):
     # create a new environment
     env_name = _create_new_environment(page, screenshot=screenshot)
 
-    # close any open tabs on the conda-store ui
-    _close_environment_tabs(page)
-
     # interact with an existing environment
     _existing_environment_interactions(page, env_name, screenshot=screenshot)
 
@@ -322,9 +310,6 @@ if __name__ == "__main__":
 
     # create a new environment
     env_name = _create_new_environment(page, screenshot=screenshot)
-
-    # close any open tabs on the conda-store ui
-    _close_environment_tabs(page)
 
     # interact with an existing environment
     _existing_environment_interactions(page, env_name, screenshot=screenshot)

@@ -1,6 +1,7 @@
 import React from "react";
 import { Provider } from "react-redux";
 import { fireEvent, render, RenderResult } from "@testing-library/react";
+import { mockTheme } from "../testutils";
 import { AddRequestedPackage } from "../../src/features/requestedPackages/components/AddRequestedPackage";
 import { store } from "../../src/store";
 
@@ -11,13 +12,15 @@ describe("<AddRequestedPackage />", () => {
 
   beforeEach(() => {
     component = render(
-      <Provider store={store}>
-        <AddRequestedPackage
-          onCancel={mockOnCancel}
-          onSubmit={mockOnSubmit}
-          isCreating={true}
-        />
-      </Provider>
+      mockTheme(
+        <Provider store={store}>
+          <AddRequestedPackage
+            onCancel={mockOnCancel}
+            onSubmit={mockOnSubmit}
+            isCreating={true}
+          />
+        </Provider>
+      )
     );
   });
 

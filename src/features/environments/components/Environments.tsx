@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useReducer } from "react";
+import React, { memo, useEffect } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Link from "@mui/material/Link";
@@ -11,12 +11,8 @@ import {
   useLazyFetchNamespacesQuery,
   useLazyFetchPrimaryNamespaceQuery
 } from "../../../features/namespaces";
-import { ActionTypes, initialState, environmentsReducer } from "../reducer";
-import {
-  ActionTypes as NActionTypes,
-  initialState as NInitialState,
-  namespacesReducer
-} from "../../../features/namespaces/reducer";
+import { environmentsSlice } from "../reducer";
+import { dataFetched } from "../../../features/namespaces/reducer";
 import {
   isNamespaceListed,
   checkMyPrimaryNamespace,
@@ -24,6 +20,7 @@ import {
 } from "../../../utils/helpers/namespaces";
 import { Namespace } from "../../../common/models";
 import { BookIcon } from "../../../components";
+import { useAppDispatch, useAppSelector } from "../../../hooks";
 
 export interface IBaseEnvironments {
   refreshEnvironments: boolean;
@@ -37,8 +34,10 @@ const BaseEnvironments = ({
   const size = 100;
   const { palette } = useTheme();
   const version: string = process.env.REACT_APP_VERSION as string;
-  const [state, dispatch] = useReducer(environmentsReducer, initialState);
-  const [stateN, dispatchN] = useReducer(namespacesReducer, NInitialState);
+  const environmentsState = useAppSelector(state => state.environments);
+  const namespacesState = useAppSelector(state => state.namespaces);
+
+  const dispatch = useAppDispatch();
 
   const [triggerNamespacesQuery] = useLazyFetchNamespacesQuery();
   const [triggerPrimaryNamespace] = useLazyFetchPrimaryNamespaceQuery();
@@ -46,7 +45,7 @@ const BaseEnvironments = ({
 
   const getNamespaces = async () => {
     const { data: namespacesData } = await triggerNamespacesQuery({
-      page: stateN.page,
+      page: namespacesState.page,
       size
     });
 
@@ -55,15 +54,15 @@ const BaseEnvironments = ({
         namespacesData.data
       );
 
-      dispatchN({
-        type: NActionTypes.DATA_FETCHED,
-        payload: {
+      dispatch(
+        dataFetched({
           data: !isNamespaceListed(namespaces, primaryNamespace)
             ? [...namespaces, { ...primaryNamespace, isPrimary: true }]
             : checkMyPrimaryNamespace(namespaces, primaryNamespace),
           count: namespacesData.count
-        }
-      });
+        })
+      );
+
       await getEnvironments();
     }
   };
@@ -100,16 +99,18 @@ const BaseEnvironments = ({
 
   const getEnvironments = async () => {
     const { data: environmentsData } = await triggerQuery({
-      page: state.page,
+      page: environmentsState.page,
       size,
-      search: state.search
+      search: environmentsState.search
     });
 
     if (environmentsData) {
-      dispatch({
-        type: ActionTypes.DATA_FETCHED,
-        payload: { data: environmentsData.data, count: environmentsData.count }
-      });
+      dispatch(
+        environmentsSlice.actions.dataFetched({
+          data: environmentsData.data,
+          count: environmentsData.count
+        })
+      );
     }
   };
 
@@ -117,25 +118,30 @@ const BaseEnvironments = ({
     const { data } = await triggerQuery({ page: 1, size, search: value });
 
     if (data) {
-      dispatch({
-        type: ActionTypes.SEARCHED,
-        payload: { data: data.data, count: data.count, search: value }
-      });
+      dispatch(
+        environmentsSlice.actions.searched({
+          data: data.data,
+          count: data.count,
+          search: value
+        })
+      );
     }
   }, 500);
 
   const next = async () => {
     const { data } = await triggerQuery({
-      page: state.page + 1,
+      page: environmentsState.page + 1,
       size,
-      search: state.search
+      search: environmentsState.search
     });
 
     if (data) {
-      dispatch({
-        type: ActionTypes.NEXT_FETCHED,
-        payload: { data: data.data, count: data.count }
-      });
+      dispatch(
+        environmentsSlice.actions.nextFetched({
+          data: data.data,
+          count: data.count
+        })
+      );
     }
   };
 
@@ -175,13 +181,13 @@ const BaseEnvironments = ({
           overflowY: "auto"
         }}
       >
-        {state.data && (
+        {environmentsState.data && (
           <EnvironmentsList
             next={next}
-            hasMore={size * state.page < state.count}
-            environmentsList={state.data}
-            namespacesList={stateN.data}
-            search={state.search}
+            hasMore={size * environmentsState.page < environmentsState.count}
+            environmentsList={environmentsState.data}
+            namespacesList={namespacesState.data}
+            search={environmentsState.search}
           />
         )}
       </Box>

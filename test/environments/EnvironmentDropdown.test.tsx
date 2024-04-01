@@ -1,4 +1,5 @@
 import React from "react";
+import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import { fireEvent, render } from "@testing-library/react";
 import { ENVIRONMENT, mockTheme } from "../testutils";
@@ -17,21 +18,24 @@ const mountEnvironmentDropdownComponent = (props: any) => {
           }}
         />
       </Provider>
-    )
+    ),
+    { wrapper: BrowserRouter }
   );
 };
 describe("<EnvironmentDropdown />", () => {
-  it("should not open a new tab environment", () => {
+  it("should not open a new environment", () => {
     const component = mountEnvironmentDropdownComponent({
       canCreate: false,
       canUpdate: false
     });
     const namespaceButton = component.getByTestId("AddIcon");
+
+    expect(window.location.pathname).toBe("/");
     fireEvent.click(namespaceButton);
-    expect(store.getState().environmentDetails.mode).toBe("read-only");
+    expect(window.location.pathname).toBe("/");
   });
 
-  it("should open a new tab environment", () => {
+  it("should open a new environment", () => {
     const component = mountEnvironmentDropdownComponent({
       canCreate: true,
       canUpdate: true
@@ -40,8 +44,9 @@ describe("<EnvironmentDropdown />", () => {
     expect(component.container).toHaveTextContent("default");
 
     const namespaceButton = component.getByTestId("AddIcon");
+
     fireEvent.click(namespaceButton);
-    expect(store.getState().environmentDetails.mode).toBe("create");
+    expect(window.location.pathname).toBe("/default/new-environment");
   });
 
   it("should open selected environment", () => {
@@ -50,9 +55,8 @@ describe("<EnvironmentDropdown />", () => {
       canUpdate: true
     });
     const environmentButton = component.getByText(ENVIRONMENT.name);
+
     fireEvent.click(environmentButton);
-    expect(store.getState().tabs.selectedEnvironment?.name).toBe(
-      ENVIRONMENT.name
-    );
+    expect(window.location.pathname).toBe("/default/python-flask-env-2");
   });
 });

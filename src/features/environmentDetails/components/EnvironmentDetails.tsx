@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { skipToken } from "@reduxjs/toolkit/query/react";
+import { useNavigate, useParams } from "react-router-dom";
 import Box from "@mui/material/Box";
 import Alert from "@mui/material/Alert";
 import { stringify } from "yaml";
@@ -8,7 +10,9 @@ import { SpecificationEdit, SpecificationReadOnly } from "./Specification";
 import { useGetBuildQuery } from "../environmentDetailsApiSlice";
 import {
   updateEnvironmentBuildId,
-  environmentClosed
+  environmentClosed,
+  environmentOpened,
+  toggleNewEnvironmentView
 } from "../../../features/tabs";
 import {
   useGetBuildPackagesQuery,
@@ -34,13 +38,15 @@ import artifactList from "../../../utils/helpers/artifact";
 import createLabel from "../../../common/config/labels";
 import { AlertDialog } from "../../../components/Dialog";
 import { useAppDispatch, useAppSelector } from "../../../hooks";
-import { CondaSpecificationPip } from "../../../common/models";
+import {
+  CondaSpecificationPip,
+  Environment,
+  Namespace
+} from "../../../common/models";
 import { useInterval } from "../../../utils/helpers";
+import { showNotification } from "../../notification/notificationSlice";
+import { useScrollRef } from "../../../layouts/PageLayout";
 
-interface IEnvDetails {
-  scrollRef: any;
-  environmentNotification: (notification: any) => void;
-}
 interface IUpdateEnvironmentArgs {
   dependencies: (string | CondaSpecificationPip)[];
   channels: string[];
@@ -48,16 +54,51 @@ interface IUpdateEnvironmentArgs {
 
 const INTERVAL_REFRESHING = 5000;
 
-export const EnvironmentDetails = ({
-  scrollRef,
-  environmentNotification
-}: IEnvDetails) => {
+export const EnvironmentDetails = () => {
   const dispatch = useAppDispatch();
+
+  // Url routing params
+  // If user loads the app at /<namespace_name>/<environment_name>
+  // This will put the app in the correct state
+  const { namespaceName, environmentName } = useParams<{
+    namespaceName: string;
+    environmentName: string;
+  }>();
+  const namespaces: Namespace[] = useAppSelector(
+    state => state.namespaces.data
+  );
+  const namespace = namespaces.find(({ name }) => name === namespaceName);
+  const foundNamespace = Boolean(namespace);
+  const environments: Environment[] = useAppSelector(
+    state => state.environments.data
+  );
+  const environment = environments.find(
+    environment =>
+      environment.namespace.name === namespaceName &&
+      environment.name === environmentName
+  );
+  const foundEnvironment = Boolean(environment);
+  useEffect(() => {
+    if (namespace && environment) {
+      dispatch(
+        environmentOpened({
+          environment,
+          canUpdate: namespace.canUpdate
+        })
+      );
+      dispatch(modeChanged(EnvironmentDetailsModes.READ));
+      dispatch(toggleNewEnvironmentView(false));
+    }
+  }, [namespaceName, environmentName, foundNamespace, foundEnvironment]);
+
+  const navigate = useNavigate();
+
   const { mode } = useAppSelector(state => state.environmentDetails);
   const { page, dependencies } = useAppSelector(state => state.dependencies);
   const { selectedEnvironment } = useAppSelector(state => state.tabs);
   const { currentBuild } = useAppSelector(state => state.enviroments);
   const [name, setName] = useState(selectedEnvironment?.name || "");
+  const scrollRef = useScrollRef();
 
   const [descriptionIsUpdated, setDescriptionIsUpdated] = useState(false);
   const [description, setDescription] = useState(
@@ -81,7 +122,7 @@ export const EnvironmentDetails = ({
   const [updateBuildId] = useUpdateBuildIdMutation();
   const [deleteEnvironment] = useDeleteEnvironmentMutation();
 
-  useGetEnviromentBuildsQuery(selectedEnvironment, {
+  useGetEnviromentBuildsQuery(selectedEnvironment ?? skipToken, {
     pollingInterval: INTERVAL_REFRESHING
   });
 
@@ -112,7 +153,7 @@ export const EnvironmentDetails = ({
   };
 
   const loadArtifacts = async () => {
-    if (artifactType.includes("DOCKER_MANIFEST")) {
+    if (!currentBuildId || artifactType.includes("DOCKER_MANIFEST")) {
       return;
     }
 
@@ -122,7 +163,7 @@ export const EnvironmentDetails = ({
   };
 
   const loadDependencies = async () => {
-    if (dependencies.length) {
+    if (!currentBuildId || dependencies.length) {
       return;
     }
 
@@ -171,12 +212,7 @@ export const EnvironmentDetails = ({
       dispatch(modeChanged(EnvironmentDetailsModes.READ));
       setCurrentBuildId(data.build_id);
       dispatch(currentBuildIdChanged(data.build_id));
-      environmentNotification({
-        data: {
-          show: true,
-          description: createLabel(environment, "update")
-        }
-      });
+      dispatch(showNotification(createLabel(environment, "update")));
     } catch (e) {
       setError({
         message:
@@ -187,7 +223,7 @@ export const EnvironmentDetails = ({
         visible: true
       });
     }
-    scrollRef.current.scrollTo(0, 0);
+    scrollRef.current?.scrollTo(0, 0);
   };
 
   const updateBuild = async (buildId: number) => {
@@ -201,12 +237,9 @@ export const EnvironmentDetails = ({
         buildId
       }).unwrap();
       dispatch(updateEnvironmentBuildId(buildId));
-      environmentNotification({
-        data: {
-          show: true,
-          description: createLabel(selectedEnvironment.name, "updateBuild")
-        }
-      });
+      dispatch(
+        showNotification(createLabel(selectedEnvironment.name, "updateBuild"))
+      );
     } catch (e) {
       setError({
         message: createLabel(undefined, "error"),
@@ -232,19 +265,17 @@ export const EnvironmentDetails = ({
           selectedEnvironmentId: selectedEnvironment.id
         })
       );
-      environmentNotification({
-        data: {
-          show: true,
-          description: createLabel(selectedEnvironment.name, "delete")
-        }
-      });
+      dispatch(
+        showNotification(createLabel(selectedEnvironment.name, "delete"))
+      );
+      navigate("/");
     } catch (e) {
       setError({
         message: createLabel(undefined, "error"),
         visible: true
       });
     }
-    scrollRef.current.scrollTo(0, 0);
+    scrollRef.current?.scrollTo(0, 0);
     setShowDialog(false);
   };
 
@@ -255,10 +286,15 @@ export const EnvironmentDetails = ({
     })();
   }, INTERVAL_REFRESHING);
 
+  if (!selectedEnvironment) {
+    return null;
+  }
+
   return (
     <Box sx={{ padding: "15px 12px" }}>
       <EnvironmentDetailsHeader
         envName={name}
+        namespace={namespace?.name}
         onUpdateName={setName}
         showEditButton={selectedEnvironment?.canUpdate}
       />

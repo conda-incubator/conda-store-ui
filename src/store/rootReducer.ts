@@ -7,6 +7,9 @@ import { environmentVariablesSlice } from "../features/environmentVariables";
 import { tabsSlice } from "../features/tabs";
 import { enviromentsSlice } from "../features/metadata";
 import { environmentCreateSlice } from "../features/environmentCreate/environmentCreateSlice";
+import { namespacesSlice } from "../features/namespaces/reducer";
+import { environmentsSlice } from "../features/environments/reducer";
+import { notificationSlice } from "../features/notification/notificationSlice";
 
 export const rootReducer = {
   [apiSlice.reducerPath]: apiSlice.reducer,
@@ -17,5 +20,8 @@ export const rootReducer = {
   enviroments: enviromentsSlice.reducer,
   environmentDetails: environmentDetailsSlice.reducer,
   dependencies: dependenciesSlice.reducer,
-  environmentCreate: environmentCreateSlice.reducer
+  environmentCreate: environmentCreateSlice.reducer,
+  namespaces: namespacesSlice.reducer,
+  environments: environmentsSlice.reducer,
+  notification: notificationSlice.reducer
 };

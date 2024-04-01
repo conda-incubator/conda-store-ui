@@ -1,26 +1,21 @@
 import { ThemeProvider } from "@mui/material";
 import React from "react";
 import { Provider } from "react-redux";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { RouterProvider } from "react-router-dom";
 
-import { PageLayout } from "./layouts";
 import {
   IPreferences,
   PrefContext,
   prefDefault,
   prefGlobal
 } from "./preferences";
+import { router } from "./routes";
 import { store } from "./store";
 import { condaStoreTheme, grayscaleTheme } from "./theme";
 
 import "../style/index.css";
 
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <PageLayout />
-  }
-]);
+
 export interface IAppProps {
   pref?: Partial<IPreferences>;
 }

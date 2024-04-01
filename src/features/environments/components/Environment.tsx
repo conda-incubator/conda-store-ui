@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import CircleIcon from "@mui/icons-material/Circle";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import Button from "@mui/material/Button";
@@ -12,13 +13,11 @@ interface IEnvironmentProps {
    * @param selectedEnvironmentId id of the currently selected environment
    */
   environment: EnvironmentModel;
-  onClick: () => void;
   selectedEnvironmentId: number | undefined;
 }
 
 export const Environment = ({
   environment,
-  onClick,
   selectedEnvironmentId
 }: IEnvironmentProps) => {
   const isSelected = selectedEnvironmentId === environment.id;
@@ -44,7 +43,8 @@ export const Environment = ({
         />
       </ListItemIcon>
       <Button
-        onClick={onClick}
+        component={Link}
+        to={`/${environment.namespace.name}/${environment.name}`}
         sx={{
           color: isSelected
             ? theme.palette.primary.main

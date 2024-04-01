@@ -143,12 +143,16 @@ export const namespacesPermissionsMapper = (
     return {
       id: namespace.id,
       name: namespace.name,
-      canCreate: allPermissions
-        ? true
-        : namespacePermissions.includes(PERMISSIONS.namespaceCreate),
-      canUpdate: allPermissions
-        ? true
-        : namespacePermissions.includes(PERMISSIONS.environmentUpdate)
+      canCreate: Boolean(
+        allPermissions
+          ? true
+          : namespacePermissions.includes(PERMISSIONS.namespaceCreate)
+      ),
+      canUpdate: Boolean(
+        allPermissions
+          ? true
+          : namespacePermissions.includes(PERMISSIONS.environmentUpdate)
+      )
     };
   });
 };

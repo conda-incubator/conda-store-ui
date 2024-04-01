@@ -1,4 +1,5 @@
 import React from "react";
+import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import {
   render,
@@ -17,18 +18,16 @@ import { mockTheme } from "../testutils";
 
 describe("<EnvironmentCreate />", () => {
   window.HTMLElement.prototype.scrollTo = jest.fn();
-  const mockEnvironmentNotification = jest.fn();
   let component: RenderResult;
 
   beforeEach(() => {
     component = render(
       mockTheme(
         <Provider store={store}>
-          <EnvironmentCreate
-            environmentNotification={mockEnvironmentNotification}
-          />
+          <EnvironmentCreate />
         </Provider>
-      )
+      ),
+      { wrapper: BrowserRouter }
     );
   });
 

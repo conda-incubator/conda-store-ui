@@ -1,4 +1,5 @@
 import React from "react";
+import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import {
   act,
@@ -32,7 +33,8 @@ describe("<SpecificationEdit />", () => {
             onUpdateEnvironment={jest.fn()}
           />
         </Provider>
-      )
+      ),
+      { wrapper: BrowserRouter }
     );
 
     act(() => {
@@ -50,7 +52,8 @@ describe("<SpecificationEdit />", () => {
             onUpdateEnvironment={jest.fn()}
           />
         </Provider>
-      )
+      ),
+      { wrapper: BrowserRouter }
     );
     const switchButton = component.getByLabelText("YAML", { exact: false });
     fireEvent.click(switchButton);
@@ -73,7 +76,8 @@ describe("<SpecificationEdit />", () => {
             onSpecificationIsChanged={jest.fn()}
           />
         </Provider>
-      )
+      ),
+      { wrapper: BrowserRouter }
     );
     const cancelButton = component.getByText("Cancel");
     fireEvent.click(cancelButton);
@@ -90,7 +94,8 @@ describe("<SpecificationEdit />", () => {
             onUpdateEnvironment={jest.fn()}
           />
         </Provider>
-      )
+      ),
+      { wrapper: BrowserRouter }
     );
     const switchButton = component.getByLabelText("YAML", { exact: false });
     fireEvent.click(switchButton);
