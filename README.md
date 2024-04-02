@@ -101,11 +101,11 @@ Steps to install and set up:
 
 1. Create Conda environment
    ```sh
-   conda env create -f environment.yml
+   conda env create -f environment_dev.yml
    ```
 2. Activate Conda environment
    ```sh
-   conda activate conda-store-ui
+   conda activate cs-ui-dev-env
    ```
 3. Install Playwright-usable browser
    ```sh
@@ -131,14 +131,14 @@ Steps to run:
 
 1. In the first terminal window/tab, enter the following:
    ```sh
-   conda activate conda-store-ui
+   conda activate cs-ui-dev-env
    yarn start
    ```
 2. Wait for server to start (you'll know it's ready when it says "webpack 5.xx.x
 compiled successfully"). Open a **new terminal window or tab** and enter the
 following:
    ```sh
-   conda activate conda-store-ui
+   conda activate cs-ui-dev-env
    pytest
    ```
 
