@@ -106,6 +106,7 @@ export const EnvironmentCreate = ({ environmentNotification }: IEnvCreate) => {
   return (
     <Box sx={{ padding: "14px 12px" }}>
       <EnvironmentDetailsHeader
+        namespace={newEnvironment.namespace}
         onUpdateName={handleChangeName}
         showEditButton={true}
       />

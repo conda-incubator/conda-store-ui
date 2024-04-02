@@ -1,4 +1,4 @@
-import { ComponentStory, ComponentMeta } from "@storybook/react";
+import { Meta } from "@storybook/react";
 import React from "react";
 import { RequestedPackageList } from "../components";
 
@@ -11,8 +11,6 @@ const packageList = [
 
 export default {
   component: RequestedPackageList
-} as ComponentMeta<typeof RequestedPackageList>;
+} as Meta<typeof RequestedPackageList>;
 
-export const Primary: ComponentStory<typeof RequestedPackageList> = () => (
-  <RequestedPackageList packageList={packageList} />
-);
+export const Primary = () => <RequestedPackageList packageList={packageList} />;

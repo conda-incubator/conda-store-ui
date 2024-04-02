@@ -21,8 +21,7 @@ const {
   getContext,
   getOptimization,
   getResolve,
-  tsRules,
-  mdxRules
+  tsRules
 } = require("./webpack.rules");
 
 const isProd = process.env.NODE_ENV === "production";
@@ -47,7 +46,6 @@ const basicConfig = {
       ...stylingRules,
       ...svgUrlRules,
       ...tsRules,
-      ...mdxRules
     ]
   },
 
