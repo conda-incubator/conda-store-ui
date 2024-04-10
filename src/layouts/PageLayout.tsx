@@ -14,6 +14,9 @@ export const PageLayout = () => {
   const notification = useAppSelector(state => state.notification);
   const scrollRef = useRef<HTMLDivElement>(null);
 
+  // TODO remove this coupling between notifications and environment refreshes.
+  // This use of state to refetch the environment is an anti-pattern. We should
+  // leverage RTK's cache invalidation features instead.
   useEffect(() => {
     setRefreshEnvironments(true);
   }, [notification]);

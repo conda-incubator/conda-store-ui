@@ -15,7 +15,6 @@ import { condaStoreTheme, grayscaleTheme } from "./theme";
 
 import "../style/index.css";
 
-
 export interface IAppProps {
   pref?: Partial<IPreferences>;
 }
