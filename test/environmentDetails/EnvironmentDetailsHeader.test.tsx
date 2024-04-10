@@ -30,9 +30,10 @@ describe("<EnvironmentDetailsHeader />", () => {
     });
     expect(component.container).toHaveTextContent("Environment name");
 
-    // const editButton = component.getByText("Edit");
-    // fireEvent.click(editButton);
-    // expect(store.getState().environmentDetails.mode).toEqual("edit");
+    const editButton = component.getByRole("button", { name: "Edit" });
+    expect(editButton).toBeInTheDocument();
+    fireEvent.click(editButton);
+    expect(editButton).not.toBeInTheDocument();
   });
 
   it("should render component in edit mode", async () => {
