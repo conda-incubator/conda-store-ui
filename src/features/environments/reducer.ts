@@ -1,7 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Environment } from "../../common/models";
 
-
 export interface IEnvironmentsState {
   page: number;
   data: Environment[];

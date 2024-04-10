@@ -103,7 +103,7 @@ export const EnvironmentCreate = () => {
           canUpdate: true
         })
       );
-      # After new environment has been created, navigate to the new environment's web page
+      // After new environment has been created, navigate to the new environment's web page
       navigate(`/${namespace}/${name}`);
       dispatch(currentBuildIdChanged(data.build_id));
       dispatch(showNotification(createLabel(name, "create")));
