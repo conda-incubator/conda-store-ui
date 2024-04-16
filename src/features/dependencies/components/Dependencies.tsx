@@ -1,6 +1,12 @@
 import React, { useEffect, useRef } from "react";
 import Accordion from "@mui/material/Accordion";
 import Box from "@mui/material/Box";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
 import CircularProgress from "@mui/material/CircularProgress";
 import InfiniteScroll from "react-infinite-scroll-component";
 import {
@@ -52,13 +58,13 @@ export const Dependencies = ({
       defaultExpanded
     >
       <StyledAccordionSummary expandIcon={<ArrowIcon />}>
-        <StyledAccordionTitle>
-          Packages Installed as Dependencies
+        <StyledAccordionTitle sx={{ color: "primary.main" }}>
+          Packages Installed
         </StyledAccordionTitle>
       </StyledAccordionSummary>
       <StyledAccordionDetails
         id="infScroll"
-        sx={{ padding: "15px 21px", maxHeight: "300px" }}
+        sx={{ padding: 0, maxHeight: "300px" }}
         ref={scrollRef}
       >
         <InfiniteScroll
@@ -80,22 +86,38 @@ export const Dependencies = ({
           style={{ overflow: "hidden" }}
         >
           {dependencies.length ? (
-            <>
-              {dependencies.map((dependency, index) => (
-                <Box
-                  key={dependency.id}
-                  sx={{
-                    marginBottom: index === listLength - 1 ? "0px" : "2px"
-                  }}
-                >
-                  <DependenciesItem
-                    mode={mode}
-                    dependency={dependency}
-                    handleClick={() => dispatch(dependencyPromoted(dependency))}
-                  />
-                </Box>
-              ))}
-            </>
+            <TableContainer>
+              <Table sx={{ width: "420px", tableLayout: "fixed" }}>
+                <TableHead>
+                  <TableRow>
+                    <TableCell sx={{ fontSize: "13px" }}>Package</TableCell>
+                    <TableCell sx={{ fontSize: "13px", textAlign: "right" }}>
+                      Installed Version
+                    </TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {dependencies.map((dependency, index) => (
+                    <TableRow
+                      key={dependency.id}
+                      sx={{
+                        backgroundColor:
+                          index % 2 ? "secondary[50]" : "transparent"
+                      }}
+                    >
+                      <DependenciesItem
+                        mode={mode}
+                        dependency={dependency}
+                        handleClick={() =>
+                          dispatch(dependencyPromoted(dependency))
+                        }
+                        isLast={index === dependencies.length - 1}
+                      />
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
           ) : (
             <CircularProgress size={20} />
           )}

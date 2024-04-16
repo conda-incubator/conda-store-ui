@@ -49,7 +49,9 @@ export const CreateEnvironmentPackages = ({
       disableGutters
     >
       <StyledAccordionSummary expandIcon={<ArrowIcon />}>
-        <StyledAccordionTitle>Requested Packages</StyledAccordionTitle>
+        <StyledAccordionTitle sx={{ color: "primary.main" }}>
+          Requested Packages
+        </StyledAccordionTitle>
       </StyledAccordionSummary>
       <StyledAccordionDetails
         sx={{

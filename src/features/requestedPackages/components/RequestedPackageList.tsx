@@ -1,5 +1,10 @@
 import Accordion from "@mui/material/Accordion";
-import Box from "@mui/material/Box";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
 import React, { useMemo } from "react";
 import { RequestedPackage } from ".";
 import { CondaSpecificationPip } from "../../../common/models";
@@ -36,21 +41,42 @@ export const RequestedPackageList = ({
       defaultExpanded
     >
       <StyledAccordionSummary expandIcon={<ArrowIcon />}>
-        <StyledAccordionTitle>Requested Packages</StyledAccordionTitle>
+        <StyledAccordionTitle sx={{ color: "primary.main" }}>
+          Requested Packages
+        </StyledAccordionTitle>
       </StyledAccordionSummary>
       <StyledAccordionDetails
         sx={{
-          padding: "11px 21px"
+          padding: 0
         }}
       >
-        {filteredPackageList.map((item, index) => (
-          <Box
-            key={`${item}`}
-            sx={{ marginBottom: index === listLength - 1 ? "0px" : "15px" }}
-          >
-            <RequestedPackage requestedPackage={`${item}`} />
-          </Box>
-        ))}
+        <TableContainer>
+          <Table sx={{ width: "420px", tableLayout: "fixed" }}>
+            <TableHead>
+              <TableRow>
+                <TableCell sx={{ fontSize: "13px" }}>Package</TableCell>
+                <TableCell sx={{ fontSize: "13px", textAlign: "right" }}>
+                  Version Requested
+                </TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {filteredPackageList.map((item, index) => (
+                <TableRow
+                  key={String(item)}
+                  sx={{
+                    backgroundColor: index % 2 ? "secondary[50]" : "transparent"
+                  }}
+                >
+                  <RequestedPackage
+                    requestedPackage={String(item)}
+                    isLast={index === listLength - 1}
+                  />
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
       </StyledAccordionDetails>
     </Accordion>
   );

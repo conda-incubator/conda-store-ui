@@ -17,12 +17,6 @@ export const StyledAccordionDetails = styled(AccordionDetails, {
     borderTop: "none",
     borderRadius: styleType === "grayscale" ? "0px 0px 5px 5px" : "Opx",
     overflowY: "scroll",
-    "&::-webkit-scrollbar": {
-      width: "10px"
-    },
-    "&::-webkit-scrollbar-track": {
-      backgroundColor: "transparent"
-    },
     "&::-webkit-scrollbar-thumb": {
       backgroundColor: styleType === "grayscale" ? "#EBECEE" : "#DADCE0",
       borderRadius: "5px",

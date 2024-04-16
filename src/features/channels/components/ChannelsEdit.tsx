@@ -77,7 +77,9 @@ const BaseChannelsEdit = ({
       disableGutters
     >
       <StyledAccordionSummary expandIcon={<ArrowIcon />}>
-        <StyledAccordionTitle>Channels</StyledAccordionTitle>
+        <StyledAccordionTitle sx={{ color: "primary.main" }}>
+          Channels
+        </StyledAccordionTitle>
       </StyledAccordionSummary>
       <DragDropContext onDragEnd={onDragEnd}>
         <Droppable droppableId="channels-edit-list">
