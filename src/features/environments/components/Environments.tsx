@@ -212,7 +212,7 @@ const BaseEnvironments = ({
         >
           <BookIcon></BookIcon>
           <Link
-            href={"https://conda.store/en/latest/"}
+            href={"https://conda.store"}
             color="secondary"
             underline="none"
             sx={{
