@@ -113,7 +113,7 @@ export const Dependencies = ({
                       key={dependency.id}
                       sx={{
                         backgroundColor:
-                          index % 2 ? "secondary[50]" : "transparent"
+                          index % 2 ? "secondary.50" : "transparent"
                       }}
                     >
                       <DependenciesItem

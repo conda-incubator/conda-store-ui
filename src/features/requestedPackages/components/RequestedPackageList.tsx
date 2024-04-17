@@ -45,11 +45,7 @@ export const RequestedPackageList = ({
           Requested Packages
         </StyledAccordionTitle>
       </StyledAccordionSummary>
-      <StyledAccordionDetails
-        sx={{
-          padding: 0
-        }}
-      >
+      <StyledAccordionDetails sx={{ padding: 0 }}>
         <TableContainer>
           <Table sx={{ width: "420px", tableLayout: "fixed" }}>
             <TableHead>
@@ -65,7 +61,7 @@ export const RequestedPackageList = ({
                 <TableRow
                   key={String(item)}
                   sx={{
-                    backgroundColor: index % 2 ? "secondary[50]" : "transparent"
+                    backgroundColor: index % 2 ? "secondary.50" : "transparent"
                   }}
                 >
                   <RequestedPackage
