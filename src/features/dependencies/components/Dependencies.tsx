@@ -8,6 +8,8 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import CircularProgress from "@mui/material/CircularProgress";
+import Tooltip from "@mui/material/Tooltip";
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import InfiniteScroll from "react-infinite-scroll-component";
 import {
   StyledAccordionDetails,
@@ -59,7 +61,16 @@ export const Dependencies = ({
     >
       <StyledAccordionSummary expandIcon={<ArrowIcon />}>
         <StyledAccordionTitle sx={{ color: "primary.main" }}>
-          Packages Installed
+          Packages Installed{" "}
+          <Tooltip title="Includes requested packages and their dependencies">
+            <InfoOutlinedIcon
+              sx={{
+                fontSize: "20px",
+                verticalAlign: "top",
+                color: "secondary.main"
+              }}
+            />
+          </Tooltip>
         </StyledAccordionTitle>
       </StyledAccordionSummary>
       <StyledAccordionDetails
