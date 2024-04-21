@@ -100,8 +100,6 @@ const BaseEnvironments = ({
 
   const getEnvironments = async () => {
     const { data: environmentsData } = await triggerQuery({
-      page: state.page,
-      size,
       search: state.search
     });
 
@@ -114,7 +112,7 @@ const BaseEnvironments = ({
   };
 
   const handleChange = debounce(async (value: string) => {
-    const { data } = await triggerQuery({ page: 1, size, search: value });
+    const { data } = await triggerQuery({ search: value });
 
     if (data) {
       dispatch({
@@ -126,8 +124,6 @@ const BaseEnvironments = ({
 
   const next = async () => {
     const { data } = await triggerQuery({
-      page: state.page + 1,
-      size,
       search: state.search
     });
 
