@@ -16,7 +16,7 @@ import {
   StyledAccordionDetails,
   StyledAccordionSummary,
   StyledAccordionTitle,
-  StyledButtonPrimary,
+  StyledButtonSecondary,
   StyledEditPackagesTableCell
 } from "../../../styles";
 import { AddRequestedPackage } from "../../requestedPackages";
@@ -118,15 +118,15 @@ export const CreateEnvironmentPackages = ({
           borderRadius: "0px 0px 5px 5px",
           padding: "15px 21px",
           display: "flex",
-          justifyContent: "center"
+          justifyContent: "flex-start"
         }}
       >
-        <StyledButtonPrimary
+        <StyledButtonSecondary
           variant="contained"
           onClick={() => setIsAdding(true)}
         >
           + Add Package
-        </StyledButtonPrimary>
+        </StyledButtonSecondary>
       </AccordionDetails>
     </Accordion>
   );

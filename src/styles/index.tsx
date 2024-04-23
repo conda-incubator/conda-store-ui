@@ -3,6 +3,7 @@ export * from "./StyledAccordionDetails";
 export * from "./StyledAccordionTitle";
 export * from "./StyledEditPackagesTableCell";
 export * from "./StyledButtonPrimary";
+export * from "./StyledButtonSecondary";
 export * from "./StyledRequestedPackagesTableCell";
 export * from "./StyledIconButton";
 export * from "./StyledAccordionExpandIcon";

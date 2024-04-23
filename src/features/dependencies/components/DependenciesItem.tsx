@@ -44,21 +44,25 @@ const BaseDependenciesItem = ({
         <Typography
           sx={{
             color: "#333",
-            width: isEditMode ? "140px" : "auto",
-            marginLeft: isEditMode ? "20px" : "0px",
             fontSize: "13px"
           }}
         >
           {version}
           {isEditMode && (
-            <Tooltip
-              title="Promote as requested package"
-              placement="right-start"
-            >
-              <StyledIconButton onClick={handleClick} data-testid="PromoteIcon">
-                <UploadIcon />
-              </StyledIconButton>
-            </Tooltip>
+            <>
+              &nbsp;
+              <Tooltip
+                title="Promote as requested package"
+                placement="right-start"
+              >
+                <StyledIconButton
+                  onClick={handleClick}
+                  data-testid="PromoteIcon"
+                >
+                  <UploadIcon />
+                </StyledIconButton>
+              </Tooltip>
+            </>
           )}
         </Typography>
       </TableCell>

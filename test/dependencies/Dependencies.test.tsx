@@ -23,7 +23,7 @@ describe("<Dependencies />", () => {
       )
     );
 
-    expect(container).toHaveTextContent("Packages Installed");
+    expect(container).toHaveTextContent("Installed Packages");
   });
 
   it("should render component in edit mode", async () => {

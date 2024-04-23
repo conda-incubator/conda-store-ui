@@ -15,7 +15,7 @@ import {
   StyledAccordionDetails,
   StyledAccordionSummary,
   StyledAccordionTitle,
-  StyledButtonPrimary
+  StyledButtonSecondary
 } from "../../../styles";
 import { reorderArray } from "../../../utils/helpers";
 import { ArrowIcon } from "../../../components";
@@ -27,11 +27,13 @@ export interface IChannelsEditProps {
    */
   channelsList: string[];
   updateChannels: (channels: string[]) => void;
+  maxWidth?: number;
 }
 
 const BaseChannelsEdit = ({
   channelsList,
-  updateChannels
+  updateChannels,
+  maxWidth = 420
 }: IChannelsEditProps) => {
   const listLength = channelsList.length;
   const { palette } = useTheme();
@@ -73,7 +75,7 @@ const BaseChannelsEdit = ({
   return (
     <Accordion
       defaultExpanded={expandedRef.current}
-      sx={{ maxWidth: 420, boxShadow: "none" }}
+      sx={{ maxWidth, boxShadow: "none" }}
       disableGutters
     >
       <StyledAccordionSummary expandIcon={<ArrowIcon />}>
@@ -134,15 +136,15 @@ const BaseChannelsEdit = ({
           borderRadius: "0px",
           padding: "15px 21px",
           display: "flex",
-          justifyContent: "center"
+          justifyContent: "flex-start"
         }}
       >
-        <StyledButtonPrimary
+        <StyledButtonSecondary
           variant="contained"
           onClick={() => setIsAdding(true)}
         >
           + Add Channel
-        </StyledButtonPrimary>
+        </StyledButtonSecondary>
       </AccordionDetails>
     </Accordion>
   );

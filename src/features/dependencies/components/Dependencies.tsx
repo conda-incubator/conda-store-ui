@@ -33,13 +33,15 @@ export interface IDependenciesProps {
   mode: "read-only" | "edit";
   hasMore: boolean;
   next?: () => void;
+  maxWidth?: number;
 }
 
 export const Dependencies = ({
   mode,
   dependencies,
   hasMore,
-  next = () => null
+  next = () => null,
+  maxWidth = 420
 }: IDependenciesProps) => {
   const dispatch = useAppDispatch();
   const { selectedEnvironment } = useAppSelector(state => state.tabs);
@@ -53,7 +55,7 @@ export const Dependencies = ({
   return (
     <Accordion
       sx={{
-        maxWidth: 420,
+        maxWidth,
         boxShadow: "none"
       }}
       disableGutters
@@ -61,7 +63,7 @@ export const Dependencies = ({
     >
       <StyledAccordionSummary expandIcon={<ArrowIcon />}>
         <StyledAccordionTitle sx={{ color: "primary.main" }}>
-          Packages Installed{" "}
+          Installed Packages{" "}
           <Tooltip title="Includes requested packages and their dependencies">
             <InfoOutlinedIcon
               sx={{
@@ -98,7 +100,7 @@ export const Dependencies = ({
         >
           {dependencies.length ? (
             <TableContainer>
-              <Table sx={{ width: "420px", tableLayout: "fixed" }}>
+              <Table sx={{ width: "100%", tableLayout: "fixed" }}>
                 <TableHead>
                   <TableRow>
                     <TableCell sx={{ fontSize: "13px" }}>Package</TableCell>
@@ -130,7 +132,15 @@ export const Dependencies = ({
               </Table>
             </TableContainer>
           ) : (
-            <CircularProgress size={20} />
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                padding: "10px"
+              }}
+            >
+              <CircularProgress size={20} />
+            </Box>
           )}
         </InfiniteScroll>
       </StyledAccordionDetails>

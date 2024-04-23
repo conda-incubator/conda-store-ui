@@ -229,12 +229,14 @@ export const SpecificationEdit = ({
                 dependencies={dependencies}
                 hasMore={hasMore}
                 next={() => dispatch(pageChanged(page + 1))}
+                maxWidth={500}
               />
             </Box>
             <Box sx={{ margiBottom: "30px" }}>
               <ChannelsEdit
                 channelsList={channels}
                 updateChannels={onUpdateChannels}
+                maxWidth={500}
               />
             </Box>
           </>
