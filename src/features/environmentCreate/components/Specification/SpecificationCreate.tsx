@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import { ChannelsEdit } from "../../../../features/channels";
 import { BlockContainerEditMode } from "../../../../components";
-import { StyledButtonPrimary } from "../../../../styles";
+import { StyledButton } from "../../../../styles";
 import { CodeEditor } from "../../../../features/yamlEditor";
 import { stringify } from "yaml";
 import { CreateEnvironmentPackages } from "../CreateEnvironmentPackages";
@@ -156,9 +156,13 @@ export const SpecificationCreate = ({ onCreateEnvironment }: any) => {
             marginBottom: "10px"
           }}
         >
-          <StyledButtonPrimary sx={buttonStyles} onClick={handleSubmit}>
+          <StyledButton
+            color="primary"
+            sx={buttonStyles}
+            onClick={handleSubmit}
+          >
             Create
-          </StyledButtonPrimary>
+          </StyledButton>
         </Box>
       </Box>
     </BlockContainerEditMode>

@@ -14,7 +14,7 @@ import {
   StyledAccordionDetails,
   StyledAccordionSummary,
   StyledAccordionTitle,
-  StyledButtonSecondary,
+  StyledButton,
   StyledEditPackagesTableCell
 } from "../../../styles";
 import { CondaSpecificationPip } from "../../../common/models";
@@ -142,12 +142,13 @@ export const RequestedPackagesEdit = ({
           justifyContent: "flex-start"
         }}
       >
-        <StyledButtonSecondary
+        <StyledButton
+          color="secondary"
           variant="contained"
           onClick={() => setIsAdding(true)}
         >
           + Add Package
-        </StyledButtonSecondary>
+        </StyledButton>
       </AccordionDetails>
     </Accordion>
   );

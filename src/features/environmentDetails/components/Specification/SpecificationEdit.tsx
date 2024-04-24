@@ -23,7 +23,7 @@ import {
 } from "../../../../features/requestedPackages";
 import { CodeEditor } from "../../../../features/yamlEditor";
 import { useAppDispatch, useAppSelector } from "../../../../hooks";
-import { StyledButtonPrimary } from "../../../../styles";
+import { StyledButton } from "../../../../styles";
 import { CondaSpecificationPip } from "../../../../common/models";
 interface ISpecificationEdit {
   descriptionUpdated: boolean;
@@ -262,19 +262,21 @@ export const SpecificationEdit = ({
           >
             Delete environment
           </Typography>
-          <StyledButtonPrimary
+          <StyledButton
+            color="primary"
             sx={{ padding: "5px 48px" }}
             onClick={onCancelEdition}
           >
             Cancel
-          </StyledButtonPrimary>
-          <StyledButtonPrimary
+          </StyledButton>
+          <StyledButton
+            color="primary"
             sx={{ padding: "5px 48px" }}
             onClick={onEditEnvironment}
             disabled={!envIsUpdated}
           >
             Save
-          </StyledButtonPrimary>
+          </StyledButton>
         </Box>
       </Box>
     </BlockContainerEditMode>

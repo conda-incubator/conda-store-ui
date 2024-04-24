@@ -15,7 +15,7 @@ import {
   StyledAccordionDetails,
   StyledAccordionSummary,
   StyledAccordionTitle,
-  StyledButtonSecondary
+  StyledButton
 } from "../../../styles";
 import { reorderArray } from "../../../utils/helpers";
 import { ArrowIcon } from "../../../components";
@@ -139,12 +139,13 @@ const BaseChannelsEdit = ({
           justifyContent: "flex-start"
         }}
       >
-        <StyledButtonSecondary
+        <StyledButton
+          color="secondary"
           variant="contained"
           onClick={() => setIsAdding(true)}
         >
           + Add Channel
-        </StyledButtonSecondary>
+        </StyledButton>
       </AccordionDetails>
     </Accordion>
   );

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-import { StyledButtonPrimary } from "../../../styles";
+import { StyledButton } from "../../../styles";
 import { PrefContext } from "../../../preferences";
 import {
   useLazyGetAuthQuery,
@@ -53,13 +53,14 @@ export const AuthButton = () => {
   }, []);
 
   return (
-    <StyledButtonPrimary
+    <StyledButton
+      color="primary"
       onClick={() => {
         handleOnClick();
       }}
       sx={{ position: "absolute", top: 14, right: 18 }}
     >
       {authenticated ? "Log out" : "Log in"}
-    </StyledButtonPrimary>
+    </StyledButton>
   );
 };

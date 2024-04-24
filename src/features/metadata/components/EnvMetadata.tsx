@@ -2,7 +2,7 @@ import React from "react";
 import { useAppSelector } from "../../../hooks";
 import { BlockContainer } from "../../../components";
 import { Description, EnvBuilds } from "../../../features/metadata/components";
-import { StyledButtonPrimary } from "../../../styles";
+import { StyledButton } from "../../../styles";
 
 export enum EnvironmentDetailsModes {
   "CREATE" = "create",
@@ -84,13 +84,14 @@ export const EnvMetadata = ({
         {mode === EnvironmentDetailsModes.EDIT &&
           newCurrentBuild &&
           currentBuildId !== newCurrentBuild && (
-            <StyledButtonPrimary
+            <StyledButton
+              color="primary"
               variant="contained"
               onClick={() => defaultEnvironmentChanged(newCurrentBuild)}
               disabled={specificationDidChange()}
             >
               Change environment version
-            </StyledButtonPrimary>
+            </StyledButton>
           )}
       </div>
     </BlockContainer>
