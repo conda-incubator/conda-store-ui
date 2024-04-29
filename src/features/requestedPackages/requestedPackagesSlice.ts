@@ -8,7 +8,6 @@ import {
 import { requestedPackageParser } from "../../utils/helpers";
 import { dependenciesApiSlice } from "../dependencies";
 import { environmentDetailsApiSlice } from "../environmentDetails";
-import { stringify } from "yaml";
 export interface IRequestedPackagesState {
   requestedPackages: (string | CondaSpecificationPip)[];
   versionsWithoutConstraints: { [key: string]: string };
