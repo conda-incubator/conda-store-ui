@@ -8,7 +8,7 @@ import {
 import { requestedPackageParser } from "../../utils/helpers";
 import { dependenciesApiSlice } from "../dependencies";
 import { environmentDetailsApiSlice } from "../environmentDetails";
-
+import { stringify } from "yaml";
 export interface IRequestedPackagesState {
   requestedPackages: (string | CondaSpecificationPip)[];
   versionsWithoutConstraints: { [key: string]: string };
@@ -79,13 +79,15 @@ export const requestedPackagesSlice = createSlice({
         {
           payload: {
             data: {
-              specification: {
-                spec: { dependencies }
-              }
+              specification: { spec }
             }
           }
         }
       ) => {
+        // dependencies can be undefined if a lockfile specification is provided
+        // TODO: parse the lockfile and populate the dependencies
+        const dependencies = spec?.dependencies ?? [];
+
         state.requestedPackages = dependencies;
         state.packagesWithLatestVersions = {};
         state.versionsWithConstraints = {};

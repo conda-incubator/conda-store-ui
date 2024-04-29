@@ -69,14 +69,28 @@ export const EnvironmentCreate = () => {
     dispatch(descriptionChanged(value));
   }, 300);
 
-  const createEnvironment = async (code: ICreateEnvironmentArgs) => {
+  const createEnvironment = async (
+    code: ICreateEnvironmentArgs,
+    is_lockfile: boolean
+  ) => {
     const namespace = newEnvironment?.namespace;
-    const environmentInfo = {
-      namespace,
-      specification: `${stringify(
-        code
-      )}\ndescription: '${description}'\nname: ${name}\nprefix: null`
-    };
+    let environmentInfo;
+    if (is_lockfile) {
+      environmentInfo = {
+        namespace,
+        specification: stringify(code),
+        environment_name: name,
+        environment_description: description,
+        is_lockfile: true
+      };
+    } else {
+      environmentInfo = {
+        namespace,
+        specification: `${stringify(
+          code
+        )}\ndescription: '${description}'\nname: ${name}\nprefix: null`
+      };
+    }
 
     try {
       const { data } = await createOrUpdate(environmentInfo).unwrap();
