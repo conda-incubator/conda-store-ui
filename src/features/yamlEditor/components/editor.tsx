@@ -9,11 +9,7 @@ import { PrefContext } from "../../../preferences";
 
 export interface ICodeEditor {
   code: any;
-  onChangeEditor: (code: {
-    channels: string[];
-    dependencies: string[];
-    variables: Record<string, string>;
-  }) => void;
+  onChangeEditor: (code: any) => void;
 }
 
 export const CodeEditor = ({ code, onChangeEditor }: ICodeEditor) => {

@@ -13,6 +13,9 @@ import {
   environmentCreateStateCleared
 } from "../../environmentCreateSlice";
 import { getStylesForStyleType } from "../../../../utils/helpers";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
 
 export const SpecificationCreate = ({ onCreateEnvironment }: any) => {
   const dispatch = useAppDispatch();
@@ -20,16 +23,23 @@ export const SpecificationCreate = ({ onCreateEnvironment }: any) => {
     state => state.environmentCreate
   );
   const [show, setShow] = useState(false);
+  const [specificationType, setSpecificationType] =
+    React.useState("specification");
   const [editorContent, setEditorContent] = useState<{
     channels: string[];
     dependencies: string[];
     variables: Record<string, string>;
   }>({ channels: [], dependencies: [], variables: {} });
+  const [editorContentLockfile, setEditorContentLockfile] = useState<any>({});
 
   const buttonStyles = getStylesForStyleType(
     { padding: "5px 60px" },
     { padding: "5px 48px" }
   );
+
+  const onUpdateSpecificationType = (event: SelectChangeEvent) => {
+    setSpecificationType(event.target.value as string);
+  };
 
   const onUpdateChannels = useCallback((channels: string[]) => {
     dispatch(channelsChanged(channels));
@@ -71,15 +81,22 @@ export const SpecificationCreate = ({ onCreateEnvironment }: any) => {
     setEditorContent(code);
   };
 
+  const onUpdateEditorLockfile = (lockfile: any) => {
+    setEditorContentLockfile(lockfile);
+  };
+
   const onToggleEditorView = (value: boolean) => {
     if (show) {
-      dispatch(
-        editorCodeUpdated({
-          channels: editorContent.channels,
-          dependencies: editorContent.dependencies,
-          variables: editorContent.variables
-        })
-      );
+      if (specificationType === "specification") {
+        dispatch(
+          editorCodeUpdated({
+            channels: editorContent.channels,
+            dependencies: editorContent.dependencies,
+            variables: editorContent.variables
+          })
+        );
+      }
+      // Do nothing when specificationType === lockfile
     } else {
       setEditorContent({
         dependencies: requestedPackages,
@@ -103,16 +120,36 @@ export const SpecificationCreate = ({ onCreateEnvironment }: any) => {
     return stringify({ channels, dependencies, variables });
   };
 
-  const handleSubmit = () => {
-    const code = show
-      ? editorContent
-      : {
-          dependencies: requestedPackages,
-          variables: environmentVariables,
-          channels
-        };
+  const formatCodeLockfile = () => {
+    return stringify({
+      version: 1,
+      metadata: {},
+      package: []
+    });
+  };
 
-    onCreateEnvironment(code);
+  const handleSubmit = () => {
+    let code;
+    let is_lockfile;
+
+    if (show) {
+      if (specificationType === "specification") {
+        code = editorContent;
+        is_lockfile = false;
+      } else {
+        code = editorContentLockfile;
+        is_lockfile = true;
+      }
+    } else {
+      code = {
+        dependencies: requestedPackages,
+        variables: environmentVariables,
+        channels
+      };
+      is_lockfile = false;
+    }
+
+    onCreateEnvironment(code, is_lockfile);
   };
 
   useEffect(() => {
@@ -129,10 +166,33 @@ export const SpecificationCreate = ({ onCreateEnvironment }: any) => {
     >
       <Box>
         {show ? (
-          <CodeEditor
-            code={formatCode(channels, requestedPackages, environmentVariables)}
-            onChangeEditor={onUpdateEditor}
-          />
+          <>
+            <FormControl sx={{ m: 1, minWidth: 120 }}>
+              <Select
+                value={specificationType}
+                onChange={onUpdateSpecificationType}
+                displayEmpty
+              >
+                <MenuItem value="specification">specification</MenuItem>
+                <MenuItem value="lockfile">unified lockfile</MenuItem>
+              </Select>
+            </FormControl>
+            {specificationType === "specification" ? (
+              <CodeEditor
+                code={formatCode(
+                  channels,
+                  requestedPackages,
+                  environmentVariables
+                )}
+                onChangeEditor={onUpdateEditor}
+              />
+            ) : (
+              <CodeEditor
+                code={formatCodeLockfile()}
+                onChangeEditor={onUpdateEditorLockfile}
+              />
+            )}
+          </>
         ) : (
           <>
             <Box sx={{ marginBottom: "30px" }}>
@@ -140,7 +200,7 @@ export const SpecificationCreate = ({ onCreateEnvironment }: any) => {
                 requestedPackages={requestedPackages}
               />
             </Box>
-            <Box sx={{ margiBottom: "30px" }}>
+            <Box sx={{ marginBottom: "30px" }}>
               <ChannelsEdit
                 channelsList={channels}
                 updateChannels={onUpdateChannels}

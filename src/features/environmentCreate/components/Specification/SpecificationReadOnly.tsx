@@ -34,7 +34,8 @@ export const SpecificationReadOnly = () => {
         />
       </Box>
       <Box sx={{ margiBottom: "30px" }}>
-        <ChannelsList channelList={channels} />
+        {/* TODO: make sure channels are never undefined in the state */}
+        <ChannelsList channelList={channels ?? []} />
       </Box>
     </BlockContainer>
   );
