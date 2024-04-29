@@ -24,13 +24,15 @@ export const channelsSlice = createSlice({
         {
           payload: {
             data: {
-              specification: {
-                spec: { channels }
-              }
+              specification: { spec }
             }
           }
         }
       ) => {
+        // channels can be undefined if a lockfile specification is provided
+        // TODO: parse the lockfile and populate the channels
+        const channels = spec?.channels ?? [];
+
         state.channels = channels;
       }
     );
