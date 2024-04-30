@@ -49,11 +49,15 @@ describe("<SpecificationCreate />", () => {
     fireEvent.click(switchButton);
 
     fireEvent.click(createButton);
-    expect(mockOnCreateEnvironment).toHaveBeenCalledWith({
-      channels: [],
-      dependencies: [],
-      variables: {}
-    });
+    const is_lockfile = false;
+    expect(mockOnCreateEnvironment).toHaveBeenCalledWith(
+      {
+        channels: [],
+        dependencies: [],
+        variables: {}
+      },
+      is_lockfile
+    );
   });
 
   it("should update channels and dependencies", async () => {
