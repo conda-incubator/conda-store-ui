@@ -29,9 +29,14 @@ export const channelsSlice = createSlice({
           }
         }
       ) => {
-        // channels can be undefined if a lockfile specification is provided
-        // TODO: parse the lockfile and populate the channels
-        const channels = spec?.channels ?? [];
+        // channels can be undefined if a lockfile specification is provided,
+        // try getting channels from metadata in that case
+        const channels =
+          spec?.channels ??
+          spec?.lockfile?.metadata?.channels?.map(
+            (channel: any) => channel?.url
+          ) ??
+          [];
 
         state.channels = channels;
       }
