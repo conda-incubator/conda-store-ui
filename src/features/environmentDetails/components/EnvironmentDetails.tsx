@@ -207,19 +207,33 @@ export const EnvironmentDetails = () => {
     }
   }, [currentBuild]);
 
-  const updateEnvironment = async (code: IUpdateEnvironmentArgs) => {
+  const updateEnvironment = async (
+    code: IUpdateEnvironmentArgs,
+    is_lockfile: boolean
+  ) => {
     if (!selectedEnvironment) {
       return;
     }
 
     const namespace = selectedEnvironment.namespace.name;
     const environment = selectedEnvironment.name;
-    const environmentInfo = {
-      specification: `${stringify(
-        code
-      )}\ndescription: ${description}\nname: ${environment}\nprefix: null`,
-      namespace
-    };
+    let environmentInfo;
+    if (is_lockfile) {
+      environmentInfo = {
+        namespace,
+        specification: stringify(code),
+        environment_name: environment,
+        environment_description: description,
+        is_lockfile: true
+      };
+    } else {
+      environmentInfo = {
+        specification: `${stringify(
+          code
+        )}\ndescription: ${description}\nname: ${environment}\nprefix: null`,
+        namespace
+      };
+    }
 
     try {
       const { data } = await createOrUpdate(environmentInfo).unwrap();
