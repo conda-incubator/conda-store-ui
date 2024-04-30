@@ -83,9 +83,14 @@ export const requestedPackagesSlice = createSlice({
           }
         }
       ) => {
-        // dependencies can be undefined if a lockfile specification is provided
-        // TODO: parse the lockfile and populate the dependencies
-        const dependencies = spec?.dependencies ?? [];
+        // dependencies can be undefined if a lockfile specification is provided,
+        // try getting dependencies from lockfile conda packages
+        const dependencies =
+          spec?.dependencies ??
+          spec?.lockfile?.package
+            ?.filter((p: any) => p?.manager === "conda")
+            ?.map((p: any) => `${p?.name}==${p?.version}`) ??
+          [];
 
         state.requestedPackages = dependencies;
         state.packagesWithLatestVersions = {};
