@@ -68,7 +68,6 @@ export const EnvironmentDetails = () => {
     state => state.namespaces.data
   );
   const namespace = namespaces.find(({ name }) => name === namespaceName);
-  const foundNamespace = Boolean(namespace);
   const environments: Environment[] = useAppSelector(
     state => state.environments.data
   );
@@ -77,7 +76,6 @@ export const EnvironmentDetails = () => {
       environment.namespace.name === namespaceName &&
       environment.name === environmentName
   );
-  const foundEnvironment = Boolean(environment);
   useEffect(() => {
     if (namespace && environment) {
       dispatch(
@@ -89,7 +87,7 @@ export const EnvironmentDetails = () => {
       dispatch(modeChanged(EnvironmentDetailsModes.READ));
       dispatch(toggleNewEnvironmentView(false));
     }
-  }, [namespaceName, environmentName, foundNamespace, foundEnvironment]);
+  }, [namespace, environment]);
 
   const navigate = useNavigate();
 
