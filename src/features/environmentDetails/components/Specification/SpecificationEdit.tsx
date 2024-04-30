@@ -12,6 +12,7 @@ import { stringify } from "yaml";
 import { BlockContainerEditMode } from "../../../../components";
 import { ChannelsEdit, updateChannels } from "../../../../features/channels";
 import { updateEnvironmentVariables } from "../../../../features/environmentVariables";
+import { updateLockfile } from "../../../../features/lockfile";
 import { Dependencies, pageChanged } from "../../../../features/dependencies";
 import {
   modeChanged,
@@ -25,12 +26,16 @@ import { CodeEditor } from "../../../../features/yamlEditor";
 import { useAppDispatch, useAppSelector } from "../../../../hooks";
 import { StyledButtonPrimary } from "../../../../styles";
 import { CondaSpecificationPip } from "../../../../common/models";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+
 interface ISpecificationEdit {
   descriptionUpdated: boolean;
   defaultEnvVersIsChanged: boolean;
   onSpecificationIsChanged: (specificationIsChanged: boolean) => void;
   onDefaultEnvIsChanged: (defaultEnvVersIsChanged: boolean) => void;
-  onUpdateEnvironment: (specification: any) => void;
+  onUpdateEnvironment: (specification: any, is_lockfile: boolean) => void;
   onShowDialogAlert: (showDialog: boolean) => void;
 }
 export const SpecificationEdit = ({
@@ -51,10 +56,14 @@ export const SpecificationEdit = ({
   const { dependencies, size, count, page } = useAppSelector(
     state => state.dependencies
   );
+  const { lockfile } = useAppSelector(state => state.lockfile);
   const hasMore = size * page <= count;
   const dispatch = useAppDispatch();
 
   const [show, setShow] = useState(false);
+  const [specificationType, setSpecificationType] = React.useState(
+    Object.keys(lockfile).length === 0 ? "specification" : "lockfile"
+  );
   const [code, setCode] = useState<{
     dependencies: (string | CondaSpecificationPip)[];
     channels: string[];
@@ -64,11 +73,13 @@ export const SpecificationEdit = ({
     variables: environmentVariables,
     channels
   });
+  const [codeLockfile, setCodeLockfile] = useState<any>(lockfile);
   const [envIsUpdated, setEnvIsUpdated] = useState(false);
 
   const initialChannels = useRef(cloneDeep(channels));
   const initialPackages = useRef(cloneDeep(requestedPackages));
   const initialEnvironmentVariables = useRef(cloneDeep(environmentVariables));
+  const initialLockfile = useRef(cloneDeep(lockfile));
 
   const stringifiedInitialChannels = useMemo(() => {
     return JSON.stringify(initialChannels.current);
@@ -81,6 +92,14 @@ export const SpecificationEdit = ({
   const stringifiedInitialEnvironmentVariables = useMemo(() => {
     return JSON.stringify(initialEnvironmentVariables.current);
   }, [initialEnvironmentVariables.current]);
+
+  const stringifiedInitialLockfile = useMemo(() => {
+    return JSON.stringify(initialLockfile.current);
+  }, [initialLockfile.current]);
+
+  const onUpdateSpecificationType = (event: SelectChangeEvent) => {
+    setSpecificationType(event.target.value as string);
+  };
 
   const onUpdateChannels = useCallback((channels: string[]) => {
     dispatch(updateChannels(channels));
@@ -138,11 +157,27 @@ export const SpecificationEdit = ({
     200
   );
 
+  const onUpdateEditorLockfile = debounce((lockfile: any) => {
+    const isDifferentLockfile =
+      JSON.stringify(lockfile) !== stringifiedInitialLockfile;
+
+    if (isDifferentLockfile) {
+      setEnvIsUpdated(true);
+      onUpdateDefaultEnvironment(false);
+      onSpecificationIsChanged(true);
+    }
+
+    setCodeLockfile(lockfile);
+  }, 200);
+
   const onToggleEditorView = (value: boolean) => {
     if (show) {
-      dispatch(updatePackages(code.dependencies));
-      dispatch(updateChannels(code.channels));
-      dispatch(updateEnvironmentVariables(code.variables));
+      if (specificationType === "specification") {
+        dispatch(updatePackages(code.dependencies));
+        dispatch(updateChannels(code.channels));
+        dispatch(updateEnvironmentVariables(code.variables));
+      }
+      // Do nothing when specificationType === lockfile
     } else {
       setCode({
         dependencies: requestedPackages,
@@ -155,15 +190,27 @@ export const SpecificationEdit = ({
   };
 
   const onEditEnvironment = () => {
-    const envContent = show
-      ? code
-      : {
-          dependencies: requestedPackages,
-          variables: environmentVariables,
-          channels
-        };
+    let envContent;
+    let is_lockfile;
 
-    onUpdateEnvironment(envContent);
+    if (show) {
+      if (specificationType === "specification") {
+        envContent = code;
+        is_lockfile = false;
+      } else {
+        envContent = codeLockfile;
+        is_lockfile = true;
+      }
+    } else {
+      envContent = {
+        dependencies: requestedPackages,
+        variables: environmentVariables,
+        channels
+      };
+      is_lockfile = false;
+    }
+
+    onUpdateEnvironment(envContent, is_lockfile);
   };
 
   const onCancelEdition = () => {
@@ -173,6 +220,7 @@ export const SpecificationEdit = ({
     dispatch(updatePackages(initialPackages.current));
     dispatch(updateChannels(initialChannels.current));
     dispatch(updateEnvironmentVariables(initialEnvironmentVariables.current));
+    dispatch(updateLockfile(initialLockfile.current));
   };
 
   useEffect(() => {
@@ -187,17 +235,26 @@ export const SpecificationEdit = ({
     const isDifferentEnvironmentVariables =
       JSON.stringify(environmentVariables) !==
       stringifiedInitialEnvironmentVariables;
+    const isDifferentLockfile =
+      JSON.stringify(lockfile) !== stringifiedInitialLockfile;
 
     if (defaultEnvVersIsChanged) {
       setEnvIsUpdated(false);
     } else if (
       isDifferentChannels ||
       isDifferentPackages ||
-      isDifferentEnvironmentVariables
+      isDifferentEnvironmentVariables ||
+      isDifferentLockfile
     ) {
       setEnvIsUpdated(true);
     }
-  }, [channels, requestedPackages, environmentVariables, descriptionUpdated]);
+  }, [
+    channels,
+    requestedPackages,
+    environmentVariables,
+    lockfile,
+    descriptionUpdated
+  ]);
 
   return (
     <BlockContainerEditMode
@@ -207,14 +264,33 @@ export const SpecificationEdit = ({
     >
       <Box>
         {show ? (
-          <CodeEditor
-            code={stringify({
-              channels,
-              dependencies: requestedPackages,
-              variables: environmentVariables
-            })}
-            onChangeEditor={onUpdateEditor}
-          />
+          <>
+            <FormControl sx={{ m: 1, minWidth: 120 }}>
+              <Select
+                value={specificationType}
+                onChange={onUpdateSpecificationType}
+                displayEmpty
+              >
+                <MenuItem value="specification">specification</MenuItem>
+                <MenuItem value="lockfile">unified lockfile</MenuItem>
+              </Select>
+            </FormControl>
+            {specificationType === "specification" ? (
+              <CodeEditor
+                code={stringify({
+                  channels,
+                  dependencies: requestedPackages,
+                  variables: environmentVariables
+                })}
+                onChangeEditor={onUpdateEditor}
+              />
+            ) : (
+              <CodeEditor
+                code={stringify(lockfile)}
+                onChangeEditor={onUpdateEditorLockfile}
+              />
+            )}
+          </>
         ) : (
           <>
             <Box sx={{ marginBottom: "30px" }}>
