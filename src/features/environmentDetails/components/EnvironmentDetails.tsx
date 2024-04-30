@@ -87,7 +87,23 @@ export const EnvironmentDetails = () => {
       dispatch(modeChanged(EnvironmentDetailsModes.READ));
       dispatch(toggleNewEnvironmentView(false));
     }
-  }, [namespace, environment]);
+  }, [
+    // We only want to run this effect when:
+    //
+    // 1. User navigates to different environment - i.e., (namespaceName,
+    //    environmentName) in the URL change
+    // 2. The corresponding (namespace, environment) data have been fetched
+    //
+    // We cannot pass [namespace, environment] as the dependencies to
+    // useEffect() because whenever an environment is created or updated, a
+    // refetch of the data is triggered, which creates new data objects for
+    // [namespace, environment] in the Redux store, which would cause this
+    // effect to rerun, but, again, we only want to run this effect when the
+    // user navigates to a new (namespaceName, environmentName), hence the `&&
+    // namespace.name` and `&& environment.name`.
+    namespace && namespace.name,
+    environment && environment.name
+  ]);
 
   const navigate = useNavigate();
 
