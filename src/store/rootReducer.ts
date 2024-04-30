@@ -4,6 +4,7 @@ import { dependenciesSlice } from "../features/dependencies";
 import { environmentDetailsSlice } from "../features/environmentDetails";
 import { requestedPackagesSlice } from "../features/requestedPackages";
 import { environmentVariablesSlice } from "../features/environmentVariables";
+import { lockfileSlice } from "../features/lockfile";
 import { tabsSlice } from "../features/tabs";
 import { enviromentsSlice } from "../features/metadata";
 import { environmentCreateSlice } from "../features/environmentCreate/environmentCreateSlice";
@@ -17,6 +18,7 @@ export const rootReducer = {
   channels: channelsSlice.reducer,
   requestedPackages: requestedPackagesSlice.reducer,
   environmentVariables: environmentVariablesSlice.reducer,
+  lockfile: lockfileSlice.reducer,
   tabs: tabsSlice.reducer,
   // TODO: rename (fix spelling) and consolidate with environments slice
   enviroments: enviromentsSlice.reducer,
