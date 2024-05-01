@@ -1,5 +1,6 @@
 import React from "react";
 import { Provider } from "react-redux";
+import { BrowserRouter } from "react-router-dom";
 import { act, fireEvent, render, waitFor } from "@testing-library/react";
 import { ENVIRONMENTS, mockTheme } from "../testutils";
 import {
@@ -35,16 +36,16 @@ describe("<EnvironmentDetails />", () => {
     const component = render(
       mockTheme(
         <Provider store={store}>
-          <EnvironmentDetails environmentNotification={jest.fn()} />
+          <EnvironmentDetails />
         </Provider>
-      )
+      ),
+      { wrapper: BrowserRouter }
     );
 
     act(() => {
       store.dispatch(
         environmentOpened({
-          environment: ENVIRONMENTS[0],
-          selectedEnvironmentId: 1
+          environment: ENVIRONMENTS[0]
         })
       );
     });
@@ -58,16 +59,16 @@ describe("<EnvironmentDetails />", () => {
     const component = render(
       mockTheme(
         <Provider store={store}>
-          <EnvironmentDetails environmentNotification={jest.fn()} />
+          <EnvironmentDetails />
         </Provider>
-      )
+      ),
+      { wrapper: BrowserRouter }
     );
 
     act(() => {
       store.dispatch(
         environmentOpened({
-          environment: ENVIRONMENTS[0],
-          selectedEnvironmentId: 1
+          environment: ENVIRONMENTS[0]
         })
       );
       store.dispatch(modeChanged(EnvironmentDetailsModes.EDIT));

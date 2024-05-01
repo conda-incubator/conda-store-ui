@@ -23,4 +23,4 @@ export const StyledIconButton = styled(Button)(({ theme }) => ({
     border: "none",
     color: theme.palette.secondary[300]
   }
-}));
+})) as typeof Button;
