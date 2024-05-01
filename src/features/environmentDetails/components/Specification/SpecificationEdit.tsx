@@ -1,31 +1,32 @@
-import React, {
-  useState,
-  useRef,
-  useEffect,
-  useCallback,
-  useMemo
-} from "react";
+import React, { useState, useEffect, useCallback, useMemo } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import { cloneDeep, debounce } from "lodash";
-import { stringify } from "yaml";
+import { debounce } from "lodash";
+import { stringify, parse } from "yaml";
 import { BlockContainerEditMode } from "../../../../components";
-import { ChannelsEdit, updateChannels } from "../../../../features/channels";
-import { updateEnvironmentVariables } from "../../../../features/environmentVariables";
+import { ChannelsEdit } from "../../../../features/channels";
 import { Dependencies, pageChanged } from "../../../../features/dependencies";
 import {
   modeChanged,
   EnvironmentDetailsModes
 } from "../../../../features/environmentDetails";
-import {
-  RequestedPackagesEdit,
-  updatePackages
-} from "../../../../features/requestedPackages";
+import { RequestedPackagesEdit } from "../../../../features/requestedPackages";
 import { CodeEditor } from "../../../../features/yamlEditor";
 import { useAppDispatch, useAppSelector } from "../../../../hooks";
 import { StyledButtonPrimary } from "../../../../styles";
-import { CondaSpecificationPip } from "../../../../common/models";
+import {
+  channelsChanged,
+  requestedPackagesChanged,
+  codeEditorExited,
+  codeEditorContentChanged,
+  showCodeEditorChanged,
+  environmentVariablesChanged
+} from "../../../environmentCreate/environmentCreateSlice";
+import parseCodeEditorContent from "../../../../utils/helpers/parseCodeEditorContent";
+
 interface ISpecificationEdit {
+  environmentName: string;
+  namespaceName: string;
   descriptionUpdated: boolean;
   defaultEnvVersIsChanged: boolean;
   onSpecificationIsChanged: (specificationIsChanged: boolean) => void;
@@ -34,6 +35,8 @@ interface ISpecificationEdit {
   onShowDialogAlert: (showDialog: boolean) => void;
 }
 export const SpecificationEdit = ({
+  environmentName,
+  namespaceName,
   descriptionUpdated,
   defaultEnvVersIsChanged,
   onSpecificationIsChanged,
@@ -41,11 +44,11 @@ export const SpecificationEdit = ({
   onUpdateEnvironment,
   onShowDialogAlert
 }: ISpecificationEdit) => {
-  const { channels } = useAppSelector(state => state.channels);
-  const { requestedPackages } = useAppSelector(
+  const { channels: initialChannels } = useAppSelector(state => state.channels);
+  const { requestedPackages: initialRequestedPackages } = useAppSelector(
     state => state.requestedPackages
   );
-  const { environmentVariables } = useAppSelector(
+  const { environmentVariables: initialEnvironmentVariables } = useAppSelector(
     state => state.environmentVariables
   );
   const { dependencies, size, count, page } = useAppSelector(
@@ -54,75 +57,80 @@ export const SpecificationEdit = ({
   const hasMore = size * page <= count;
   const dispatch = useAppDispatch();
 
-  const [show, setShow] = useState(false);
-  const [code, setCode] = useState<{
-    dependencies: (string | CondaSpecificationPip)[];
-    channels: string[];
-    variables: Record<string, string>;
-  }>({
-    dependencies: requestedPackages,
-    variables: environmentVariables,
-    channels
-  });
+  const {
+    channels,
+    requestedPackages,
+    environmentVariables,
+    codeEditorContent,
+    showCodeEditor
+  } = useAppSelector(
+    state =>
+      state.environmentCreate[`${namespaceName}/${environmentName}`] ||
+      state.environmentCreate[""]
+  );
+
+  console.log(
+    "rendering Specification Edit, requestedPackages",
+    requestedPackages
+  );
+
   const [envIsUpdated, setEnvIsUpdated] = useState(false);
 
-  const initialChannels = useRef(cloneDeep(channels));
-  const initialPackages = useRef(cloneDeep(requestedPackages));
-  const initialEnvironmentVariables = useRef(cloneDeep(environmentVariables));
+  // const initialChannels = useRef(cloneDeep(channels));
+  // const initialPackages = useRef(cloneDeep(requestedPackages));
+  // const initialEnvironmentVariables = useRef(cloneDeep(environmentVariables));
+
+  const formKey = `${namespaceName}/${environmentName}`;
+  useEffect(() => {
+    dispatch(channelsChanged([formKey, initialChannels]));
+  }, [initialChannels]);
+
+  useEffect(() => {
+    dispatch(requestedPackagesChanged([formKey, initialRequestedPackages]));
+  }, [initialRequestedPackages]);
+
+  useEffect(() => {
+    dispatch(
+      environmentVariablesChanged([formKey, initialEnvironmentVariables])
+    );
+  }, [initialEnvironmentVariables]);
 
   const stringifiedInitialChannels = useMemo(() => {
-    return JSON.stringify(initialChannels.current);
-  }, [initialChannels.current]);
+    return JSON.stringify(initialChannels);
+  }, [initialChannels]);
 
   const stringifiedInitialPackages = useMemo(() => {
-    return JSON.stringify(initialPackages.current);
-  }, [initialPackages.current]);
+    return JSON.stringify(initialRequestedPackages);
+  }, [initialRequestedPackages]);
 
   const stringifiedInitialEnvironmentVariables = useMemo(() => {
-    return JSON.stringify(initialEnvironmentVariables.current);
-  }, [initialEnvironmentVariables.current]);
+    return JSON.stringify(initialEnvironmentVariables);
+  }, [initialEnvironmentVariables]);
 
-  const onUpdateChannels = useCallback((channels: string[]) => {
-    dispatch(updateChannels(channels));
-    onDefaultEnvIsChanged(false);
-  }, []);
+  const onUpdateChannels = useCallback(
+    (channels: string[]) => {
+      dispatch(
+        channelsChanged([`${namespaceName}/${environmentName}`, channels])
+      );
+      onDefaultEnvIsChanged(false);
+    },
+    [namespaceName, environmentName]
+  );
 
   const onUpdateDefaultEnvironment = (isChanged: boolean) => {
     onDefaultEnvIsChanged(isChanged);
     onSpecificationIsChanged(!isChanged);
   };
 
-  const onUpdateEditor = debounce(
-    ({
-      channels,
-      dependencies,
-      variables
-    }: {
-      channels: string[];
-      dependencies: string[];
-      variables: Record<string, string>;
-    }) => {
-      const code = { dependencies, channels, variables };
+  const onUpdateEditor = debounce((code: string) => {
+    try {
+      const { channels, dependencies, variables } = parse(code);
       const isDifferentChannels =
-        JSON.stringify(code.channels) !== stringifiedInitialChannels;
+        JSON.stringify(channels) !== stringifiedInitialChannels;
       const isDifferentPackages =
-        JSON.stringify(code.dependencies) !== stringifiedInitialPackages;
+        JSON.stringify(dependencies) !== stringifiedInitialPackages;
       const isDifferentEnvironmentVariables =
-        JSON.stringify(code.variables) !==
-        stringifiedInitialEnvironmentVariables;
-
-      if (!channels || channels.length === 0) {
-        code.channels = [];
-      }
-
-      if (!dependencies || dependencies.length === 0) {
-        code.dependencies = [];
-      }
-
-      if (!variables || Object.keys(variables).length === 0) {
-        code.variables = {};
-      }
-
+        JSON.stringify(variables) !== stringifiedInitialEnvironmentVariables;
       if (
         isDifferentChannels ||
         isDifferentPackages ||
@@ -132,47 +140,94 @@ export const SpecificationEdit = ({
         onUpdateDefaultEnvironment(false);
         onSpecificationIsChanged(true);
       }
-
-      setCode(code);
-    },
-    200
-  );
-
-  const onToggleEditorView = (value: boolean) => {
-    if (show) {
-      dispatch(updatePackages(code.dependencies));
-      dispatch(updateChannels(code.channels));
-      dispatch(updateEnvironmentVariables(code.variables));
-    } else {
-      setCode({
-        dependencies: requestedPackages,
-        variables: environmentVariables,
-        channels
-      });
+    } catch (_err) {
+      // do nothing
     }
 
-    setShow(value);
+    dispatch(
+      codeEditorContentChanged([`${namespaceName}/${environmentName}`, code])
+    );
+  }, 200);
+
+  const onToggleCodeEditor = (shouldShowCodeEditor: boolean) => {
+    if (!shouldShowCodeEditor) {
+      // YAML Code Editor -> GUI
+
+      // Try to push code editor values into GUI
+      try {
+        const { channels, dependencies, variables } =
+          parseCodeEditorContent(codeEditorContent);
+        dispatch(
+          codeEditorExited([
+            `${namespaceName}/${environmentName}`,
+            {
+              channels,
+              requestedPackages: dependencies,
+              environmentVariables: variables
+            }
+          ])
+        );
+      } catch (_err) {
+        // do nothing
+      }
+    } else {
+      // GUI -> YAML Code Editor
+
+      try {
+        const spec = parseCodeEditorContent(codeEditorContent);
+        dispatch(
+          codeEditorContentChanged([
+            `${namespaceName}/${environmentName}`,
+            stringify(
+              codeEditorContent === "" &&
+                channels === initialChannels &&
+                requestedPackages === initialRequestedPackages &&
+                environmentVariables === initialEnvironmentVariables
+                ? {
+                    channels: initialChannels,
+                    dependencies: initialRequestedPackages,
+                    variables: initialEnvironmentVariables
+                  }
+                : {
+                    ...spec,
+                    channels,
+                    dependencies: requestedPackages
+                  }
+            )
+          ])
+        );
+      } catch (_err) {
+        // do nothing
+      }
+    }
+
+    dispatch(
+      showCodeEditorChanged([
+        `${namespaceName}/${environmentName}`,
+        shouldShowCodeEditor
+      ])
+    );
   };
 
   const onEditEnvironment = () => {
-    const envContent = show
-      ? code
-      : {
+    const yaml = showCodeEditor
+      ? codeEditorContent
+      : stringify({
           dependencies: requestedPackages,
           variables: environmentVariables,
           channels
-        };
+        });
 
-    onUpdateEnvironment(envContent);
+    onUpdateEnvironment(yaml);
   };
 
   const onCancelEdition = () => {
     setEnvIsUpdated(false);
     onSpecificationIsChanged(false);
     dispatch(modeChanged(EnvironmentDetailsModes.READ));
-    dispatch(updatePackages(initialPackages.current));
-    dispatch(updateChannels(initialChannels.current));
-    dispatch(updateEnvironmentVariables(initialEnvironmentVariables.current));
+    // dispatch(updatePackages(initialPackages.current));
+    // dispatch(updateChannels(initialChannels.current));
+    // dispatch(updateEnvironmentVariables(initialEnvironmentVariables.current));
   };
 
   useEffect(() => {
@@ -202,23 +257,26 @@ export const SpecificationEdit = ({
   return (
     <BlockContainerEditMode
       title="Specification"
-      onToggleEditMode={onToggleEditorView}
-      isEditMode={show}
+      onToggleEditMode={onToggleCodeEditor}
+      isEditMode={showCodeEditor}
     >
       <Box>
-        {show ? (
+        {showCodeEditor ? (
           <CodeEditor
-            code={stringify({
-              channels,
-              dependencies: requestedPackages,
-              variables: environmentVariables
-            })}
+            // code={stringify({
+            //   channels,
+            //   dependencies: requestedPackages,
+            //   variables: environmentVariables
+            // })}
+            code={codeEditorContent}
             onChangeEditor={onUpdateEditor}
           />
         ) : (
           <>
             <Box sx={{ marginBottom: "30px" }}>
               <RequestedPackagesEdit
+                environmentName={environmentName}
+                namespaceName={namespaceName}
                 packageList={requestedPackages}
                 onDefaultEnvIsChanged={onUpdateDefaultEnvironment}
               />

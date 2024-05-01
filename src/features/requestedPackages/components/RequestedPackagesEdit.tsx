@@ -19,27 +19,38 @@ import {
 } from "../../../styles";
 import { CondaSpecificationPip } from "../../../common/models";
 import { useAppDispatch } from "../../../hooks";
-import { packageAdded } from "../requestedPackagesSlice";
 import { ArrowIcon } from "../../../components";
+import { requestedPackageAdded } from "../../environmentCreate/environmentCreateSlice";
 
 export interface IRequestedPackagesEditProps {
   /**
    * @param packageList list of packages that we get from the API
    */
+  environmentName: string;
+  namespaceName: string;
   packageList: (string | CondaSpecificationPip)[];
   onDefaultEnvIsChanged?: (isChanged: boolean) => void;
 }
 
 export const RequestedPackagesEdit = ({
+  environmentName,
+  namespaceName,
   packageList,
   onDefaultEnvIsChanged
 }: IRequestedPackagesEditProps) => {
+  console.log("rendering RequestedPackagesEdit, packageList", packageList);
+
   const dispatch = useAppDispatch();
   const [isAdding, setIsAdding] = useState(false);
   const { palette } = useTheme();
 
   const handleSubmit = (packageName: string) => {
-    dispatch(packageAdded(packageName));
+    dispatch(
+      requestedPackageAdded([
+        `${namespaceName}/${environmentName}`,
+        packageName
+      ])
+    );
     if (onDefaultEnvIsChanged) {
       onUpdateDefaultEnvironment(false);
     }
@@ -114,6 +125,8 @@ export const RequestedPackagesEdit = ({
             {filteredPackageList.map(requestedPackage => (
               <RequestedPackagesTableRow
                 key={requestedPackage}
+                environmentName={environmentName}
+                namespaceName={namespaceName}
                 requestedPackage={requestedPackage}
                 onDefaultEnvIsChanged={onUpdateDefaultEnvironment}
               />

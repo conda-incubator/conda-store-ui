@@ -1,70 +1,210 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { CondaSpecificationPip } from "../../common/models/CondaSpecificationPip";
 
-export interface IEnvironmentCreateState {
+interface INewEnvironmentForm {
   name: string;
   description: string;
-  requestedPackages: string[];
+  requestedPackages: Array<string | CondaSpecificationPip>;
   channels: string[];
   environmentVariables: Record<string, string>;
+  showCodeEditor: boolean;
+  codeEditorContent: string;
+}
+export interface IEnvironmentCreateState {
+  [key: string]: INewEnvironmentForm;
 }
 
-const initialState: IEnvironmentCreateState = {
+const getNewEnvironmentForm = (): INewEnvironmentForm => ({
   name: "",
   description: "",
   requestedPackages: [],
   channels: [],
-  environmentVariables: {}
+  environmentVariables: {},
+  showCodeEditor: false,
+  codeEditorContent: ""
+});
+
+const initialState: IEnvironmentCreateState = {
+  "": getNewEnvironmentForm()
 };
 
 export const environmentCreateSlice = createSlice({
   name: "environmentCreate",
   initialState,
   reducers: {
-    nameChanged: (state, action: PayloadAction<string>) => {
-      state.name = action.payload;
+    nameChanged: (state, action: PayloadAction<[string, string]>) => {
+      const [key, name] = action.payload;
+      return {
+        ...state,
+        [key]: {
+          ...state[key],
+          name
+        }
+      };
     },
-    descriptionChanged: (state, action: PayloadAction<string>) => {
-      state.description = action.payload;
+    descriptionChanged: (state, action: PayloadAction<[string, string]>) => {
+      const [key, description] = action.payload;
+      return {
+        ...state,
+        [key]: {
+          ...state[key],
+          description
+        }
+      };
     },
-    channelsChanged: (state, action: PayloadAction<string[]>) => {
-      state.channels = action.payload;
+    channelsChanged: (state, action: PayloadAction<[string, string[]]>) => {
+      const [key, channels] = action.payload;
+      return {
+        ...state,
+        [key]: {
+          ...state[key],
+          channels
+        }
+      };
     },
-    requestedPackagesChanged: (state, action: PayloadAction<string[]>) => {
-      state.requestedPackages = action.payload;
+    requestedPackagesChanged: (
+      state,
+      action: PayloadAction<[string, Array<string | CondaSpecificationPip>]>
+    ) => {
+      const [key, requestedPackages] = action.payload;
+      return {
+        ...state,
+        [key]: {
+          ...state[key],
+          requestedPackages
+        }
+      };
     },
-    requestedPackageRemoved: (state, action: PayloadAction<string>) => {
-      state.requestedPackages = state.requestedPackages.filter(
-        p => p !== action.payload
+    requestedPackageAdded: (state, action: PayloadAction<[string, string]>) => {
+      const [key, packageName] = action.payload;
+      const requestedPackages = [...state[key].requestedPackages];
+      if (requestedPackages.indexOf(packageName) === -1) {
+        requestedPackages.push(packageName);
+      }
+      return {
+        ...state,
+        [key]: {
+          ...state[key],
+          requestedPackages
+        }
+      };
+    },
+    requestedPackageRemoved: (
+      state,
+      action: PayloadAction<[string, string]>
+    ) => {
+      const [key, packageName] = action.payload;
+      const requestedPackages = state[key].requestedPackages.filter(
+        (p: string) => p !== packageName
       );
+
+      console.log(
+        `action requestedPackageRemoved ${packageName}, requestedPackages after filter`,
+        requestedPackages
+      );
+
+      return {
+        ...state,
+        [key]: {
+          ...state[key],
+          requestedPackages
+        }
+      };
     },
     requestedPackageUpdated: (
       state,
-      action: PayloadAction<{ currentPackage: string; updatedPackage: string }>
+      action: PayloadAction<
+        [string, { currentPackage: string; updatedPackage: string }]
+      >
     ) => {
-      const { currentPackage, updatedPackage } = action.payload;
-
-      state.requestedPackages = state.requestedPackages.map(p =>
+      const [key, { currentPackage, updatedPackage }] = action.payload;
+      const requestedPackages = state[key].requestedPackages.map((p: string) =>
         p === currentPackage ? updatedPackage : p
       );
+      return {
+        ...state,
+        [key]: {
+          ...state[key],
+          requestedPackages
+        }
+      };
     },
-    editorCodeUpdated: (
+    environmentVariablesChanged: (
       state,
-      action: PayloadAction<{
-        dependencies: string[];
-        channels: string[];
-        variables: Record<string, string>;
-      }>
+      action: PayloadAction<[string, Record<string, string>]>
     ) => {
-      state.requestedPackages = action.payload.dependencies;
-      state.channels = action.payload.channels;
-      state.environmentVariables = action.payload.variables;
+      const [key, environmentVariables] = action.payload;
+      return {
+        ...state,
+        [key]: {
+          ...state[key],
+          environmentVariables
+        }
+      };
     },
-    environmentCreateStateCleared: state => {
-      state.name = "";
-      state.description = "";
-      state.channels = [];
-      state.requestedPackages = [];
-      state.environmentVariables = {};
+    codeEditorExited: (
+      state,
+      action: PayloadAction<
+        [
+          string,
+          {
+            requestedPackages: (string | CondaSpecificationPip)[];
+            channels: string[];
+            environmentVariables: Record<string, string>;
+          }
+        ]
+      >
+    ) => {
+      const [key, { requestedPackages, channels, environmentVariables }] =
+        action.payload;
+      return {
+        ...state,
+        [key]: {
+          ...state[key],
+          requestedPackages,
+          channels,
+          environmentVariables
+        }
+      };
+    },
+    codeEditorContentChanged: (
+      state,
+      action: PayloadAction<[string, string]>
+    ) => {
+      const [key, codeEditorContent] = action.payload;
+      return {
+        ...state,
+        [key]: {
+          ...state[key],
+          codeEditorContent
+        }
+      };
+    },
+    showCodeEditorChanged: (
+      state,
+      action: PayloadAction<[string, boolean]>
+    ) => {
+      const [key, showCodeEditor] = action.payload;
+      return {
+        ...state,
+        [key]: {
+          ...state[key],
+          showCodeEditor
+        }
+      };
+    },
+    startNewEnvironmentForm: (state, action: PayloadAction<string>) => {
+      const key = action.payload;
+      return {
+        ...state,
+        [key]: getNewEnvironmentForm()
+      };
+    },
+    clearNewEnvironmentForm: (state, action: PayloadAction<string>) => {
+      const key = action.payload;
+      const nextState = { ...state };
+      delete nextState[key];
+      return nextState;
     }
   }
 });
@@ -74,8 +214,13 @@ export const {
   descriptionChanged,
   channelsChanged,
   requestedPackagesChanged,
+  requestedPackageAdded,
   requestedPackageRemoved,
   requestedPackageUpdated,
-  editorCodeUpdated,
-  environmentCreateStateCleared
+  environmentVariablesChanged,
+  codeEditorExited,
+  codeEditorContentChanged,
+  showCodeEditorChanged,
+  startNewEnvironmentForm,
+  clearNewEnvironmentForm
 } = environmentCreateSlice.actions;
