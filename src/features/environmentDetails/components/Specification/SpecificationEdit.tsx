@@ -7,6 +7,10 @@ import React, {
 } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
 import { cloneDeep, debounce } from "lodash";
 import { stringify } from "yaml";
 import { BlockContainerEditMode } from "../../../../components";
@@ -25,17 +29,17 @@ import {
 import { CodeEditor } from "../../../../features/yamlEditor";
 import { useAppDispatch, useAppSelector } from "../../../../hooks";
 import { StyledButtonPrimary } from "../../../../styles";
-import { CondaSpecificationPip } from "../../../../common/models";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
+import type {
+  CondaSpecificationPip,
+  Lockfile
+} from "../../../../common/models";
 
 interface ISpecificationEdit {
   descriptionUpdated: boolean;
   defaultEnvVersIsChanged: boolean;
   onSpecificationIsChanged: (specificationIsChanged: boolean) => void;
   onDefaultEnvIsChanged: (defaultEnvVersIsChanged: boolean) => void;
-  onUpdateEnvironment: (specification: any, is_lockfile: boolean) => void;
+  onUpdateEnvironment: (specification: any, isLockfile: boolean) => void;
   onShowDialogAlert: (showDialog: boolean) => void;
 }
 export const SpecificationEdit = ({
@@ -73,7 +77,7 @@ export const SpecificationEdit = ({
     variables: environmentVariables,
     channels
   });
-  const [codeLockfile, setCodeLockfile] = useState<any>(lockfile);
+  const [codeLockfile, setCodeLockfile] = useState<Lockfile>(lockfile);
   const [envIsUpdated, setEnvIsUpdated] = useState(false);
 
   const initialChannels = useRef(cloneDeep(channels));
@@ -157,7 +161,7 @@ export const SpecificationEdit = ({
     200
   );
 
-  const onUpdateEditorLockfile = debounce((lockfile: any) => {
+  const onUpdateEditorLockfile = debounce((lockfile: Lockfile) => {
     const isDifferentLockfile =
       JSON.stringify(lockfile) !== stringifiedInitialLockfile;
 
@@ -172,18 +176,22 @@ export const SpecificationEdit = ({
 
   const onToggleEditorView = (value: boolean) => {
     if (show) {
+      // Code Editor -> GUI
       if (specificationType === "specification") {
         dispatch(updatePackages(code.dependencies));
         dispatch(updateChannels(code.channels));
         dispatch(updateEnvironmentVariables(code.variables));
+      } else {
+        // TODO: sync GUI with lockfile code
       }
-      // Do nothing when specificationType === lockfile
     } else {
+      // GUI -> Code Editor
       setCode({
         dependencies: requestedPackages,
         variables: environmentVariables,
         channels
       });
+      // TODO: sync lockfile code with GUI
     }
 
     setShow(value);
@@ -191,15 +199,15 @@ export const SpecificationEdit = ({
 
   const onEditEnvironment = () => {
     let envContent;
-    let is_lockfile;
+    let isLockfile;
 
     if (show) {
       if (specificationType === "specification") {
         envContent = code;
-        is_lockfile = false;
+        isLockfile = false;
       } else {
         envContent = codeLockfile;
-        is_lockfile = true;
+        isLockfile = true;
       }
     } else {
       envContent = {
@@ -207,10 +215,10 @@ export const SpecificationEdit = ({
         variables: environmentVariables,
         channels
       };
-      is_lockfile = false;
+      isLockfile = false;
     }
 
-    onUpdateEnvironment(envContent, is_lockfile);
+    onUpdateEnvironment(envContent, isLockfile);
   };
 
   const onCancelEdition = () => {
@@ -266,13 +274,16 @@ export const SpecificationEdit = ({
         {show ? (
           <>
             <FormControl sx={{ m: 1, minWidth: 120 }}>
+              <InputLabel id="editor-format-select-label">Format</InputLabel>
               <Select
+                labelId="editor-format-select-label"
+                label="Format"
                 value={specificationType}
                 onChange={onUpdateSpecificationType}
                 displayEmpty
               >
-                <MenuItem value="specification">specification</MenuItem>
-                <MenuItem value="lockfile">unified lockfile</MenuItem>
+                <MenuItem value="specification">Specification</MenuItem>
+                <MenuItem value="lockfile">Unified lockfile</MenuItem>
               </Select>
             </FormControl>
             {specificationType === "specification" ? (

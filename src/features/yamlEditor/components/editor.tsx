@@ -8,8 +8,8 @@ import { greenAccentTheme } from "../themes";
 import { PrefContext } from "../../../preferences";
 
 export interface ICodeEditor {
-  code: any;
-  onChangeEditor: (code: any) => void;
+  code: string;
+  onChangeEditor: (parsedCode: unknown) => void;
 }
 
 export const CodeEditor = ({ code, onChangeEditor }: ICodeEditor) => {

@@ -209,7 +209,7 @@ export const EnvironmentDetails = () => {
 
   const updateEnvironment = async (
     code: IUpdateEnvironmentArgs,
-    is_lockfile: boolean
+    isLockfile: boolean
   ) => {
     if (!selectedEnvironment) {
       return;
@@ -218,7 +218,7 @@ export const EnvironmentDetails = () => {
     const namespace = selectedEnvironment.namespace.name;
     const environment = selectedEnvironment.name;
     let environmentInfo;
-    if (is_lockfile) {
+    if (isLockfile) {
       environmentInfo = {
         namespace,
         specification: stringify(code),

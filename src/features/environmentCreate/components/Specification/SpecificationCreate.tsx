@@ -1,5 +1,9 @@
 import React, { useCallback, useEffect, useState } from "react";
 import Box from "@mui/material/Box";
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
 import { ChannelsEdit } from "../../../../features/channels";
 import { BlockContainerEditMode } from "../../../../components";
 import { StyledButtonPrimary } from "../../../../styles";
@@ -13,9 +17,6 @@ import {
   environmentCreateStateCleared
 } from "../../environmentCreateSlice";
 import { getStylesForStyleType } from "../../../../utils/helpers";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
 
 export const SpecificationCreate = ({ onCreateEnvironment }: any) => {
   const dispatch = useAppDispatch();
@@ -95,14 +96,16 @@ export const SpecificationCreate = ({ onCreateEnvironment }: any) => {
             variables: editorContent.variables
           })
         );
+      } else {
+        // TODO: sync GUI with lockfile code
       }
-      // Do nothing when specificationType === lockfile
     } else {
       setEditorContent({
         dependencies: requestedPackages,
         variables: environmentVariables,
         channels
       });
+      // TODO: sync lockfile code with GUI
     }
 
     setShow(value);
@@ -130,15 +133,15 @@ export const SpecificationCreate = ({ onCreateEnvironment }: any) => {
 
   const handleSubmit = () => {
     let code;
-    let is_lockfile;
+    let isLockfile;
 
     if (show) {
       if (specificationType === "specification") {
         code = editorContent;
-        is_lockfile = false;
+        isLockfile = false;
       } else {
         code = editorContentLockfile;
-        is_lockfile = true;
+        isLockfile = true;
       }
     } else {
       code = {
@@ -146,10 +149,10 @@ export const SpecificationCreate = ({ onCreateEnvironment }: any) => {
         variables: environmentVariables,
         channels
       };
-      is_lockfile = false;
+      isLockfile = false;
     }
 
-    onCreateEnvironment(code, is_lockfile);
+    onCreateEnvironment(code, isLockfile);
   };
 
   useEffect(() => {
@@ -168,13 +171,16 @@ export const SpecificationCreate = ({ onCreateEnvironment }: any) => {
         {show ? (
           <>
             <FormControl sx={{ m: 1, minWidth: 120 }}>
+              <InputLabel id="editor-format-select-label">Format</InputLabel>
               <Select
+                labelId="editor-format-select-label"
+                label="Format"
                 value={specificationType}
                 onChange={onUpdateSpecificationType}
                 displayEmpty
               >
-                <MenuItem value="specification">specification</MenuItem>
-                <MenuItem value="lockfile">unified lockfile</MenuItem>
+                <MenuItem value="specification">Specification</MenuItem>
+                <MenuItem value="lockfile">Unified lockfile</MenuItem>
               </Select>
             </FormControl>
             {specificationType === "specification" ? (
