@@ -55,11 +55,11 @@ export const EnvironmentCreate = ({ environmentNotification }: IEnvCreate) => {
 
   const createEnvironment = async (
     code: ICreateEnvironmentArgs,
-    is_lockfile: boolean
+    isLockfile: boolean
   ) => {
     const namespace = newEnvironment?.namespace;
     let environmentInfo;
-    if (is_lockfile) {
+    if (isLockfile) {
       environmentInfo = {
         namespace,
         specification: stringify(code),

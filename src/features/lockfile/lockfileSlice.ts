@@ -1,8 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { environmentDetailsApiSlice } from "../environmentDetails";
+import type { Lockfile } from "../../common/models/Lockfile";
 
 export interface ILockfileState {
-  lockfile: any;
+  lockfile: Lockfile;
 }
 
 const initialState: ILockfileState = { lockfile: {} };

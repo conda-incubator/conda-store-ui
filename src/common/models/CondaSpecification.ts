@@ -1,4 +1,5 @@
-import { CondaSpecificationPip } from "./CondaSpecificationPip";
+import type { CondaSpecificationPip } from "./CondaSpecificationPip";
+import type { Lockfile } from "./Lockfile";
 
 export type CondaSpecification = {
   name: string;
@@ -6,5 +7,5 @@ export type CondaSpecification = {
   dependencies: (string | CondaSpecificationPip)[];
   variables: Record<string, string>;
   prefix?: string | null;
-  lockfile?: any | null;
+  lockfile?: Lockfile;
 };

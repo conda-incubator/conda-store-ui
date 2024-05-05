@@ -7,3 +7,4 @@ export * from "./Artifact";
 export * from "./BuildPackage";
 export * from "./BuildArtifact";
 export * from "./Namespace";
+export * from "./Lockfile";

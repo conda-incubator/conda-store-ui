@@ -83,20 +83,21 @@ export const requestedPackagesSlice = createSlice({
           }
         }
       ) => {
-        // dependencies can be undefined if a lockfile specification is provided,
-        // try getting dependencies from lockfile conda packages
-        const dependencies =
-          spec?.dependencies ??
-          spec?.lockfile?.package
-            ?.filter((p: any) => p?.manager === "conda")
-            ?.map((p: any) => `${p?.name}==${p?.version}`) ??
-          [];
+        let dependencies = [];
+
+        if (spec.dependencies) {
+          dependencies = spec.dependencies;
+        } else if (spec.lockfile?.package) {
+          dependencies = spec.lockfile.package
+            .filter((p: Record<string, any>) => p.manager === "conda")
+            .map((p: Record<string, any>) => `${p?.name}==${p?.version}`);
+        }
 
         state.requestedPackages = dependencies;
         state.packagesWithLatestVersions = {};
         state.versionsWithConstraints = {};
 
-        dependencies.forEach(dep => {
+        dependencies.forEach((dep: string | CondaSpecificationPip) => {
           if (typeof dep === "string") {
             const { constraint, name, version } = requestedPackageParser(dep);
 

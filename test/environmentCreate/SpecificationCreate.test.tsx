@@ -49,14 +49,14 @@ describe("<SpecificationCreate />", () => {
     fireEvent.click(switchButton);
 
     fireEvent.click(createButton);
-    const is_lockfile = false;
+    const isLockfile = false;
     expect(mockOnCreateEnvironment).toHaveBeenCalledWith(
       {
         channels: [],
         dependencies: [],
         variables: {}
       },
-      is_lockfile
+      isLockfile
     );
   });
 
