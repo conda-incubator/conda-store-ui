@@ -82,7 +82,12 @@ const BaseRequestedPackagesTableRow = ({
       </StyledRequestedPackagesTableCell>
       <StyledRequestedPackagesTableCell align="left">
         <Typography
-          sx={{ fontSize: "13px", fontWeight: 400, color: "#676666" }}
+          sx={{
+            fontFamily: "monospace",
+            fontSize: "13px",
+            fontWeight: 400,
+            color: "#676666"
+          }}
         >
           {versionsWithConstraints[name] ?? versionsWithoutConstraints[name]}
         </Typography>
