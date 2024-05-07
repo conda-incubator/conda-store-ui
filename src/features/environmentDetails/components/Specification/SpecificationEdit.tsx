@@ -5,6 +5,7 @@ import React, {
   useCallback,
   useMemo
 } from "react";
+import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import FormControl from "@mui/material/FormControl";
@@ -273,6 +274,16 @@ export const SpecificationEdit = ({
       <Box>
         {show ? (
           <>
+            {specificationType === "lockfile" && (
+              <Alert
+                severity="warning"
+                sx={{
+                  mb: "20px"
+                }}
+              >
+                Syncing between lockfile format and the GUI has not yet been implemented. Do not be surprised if changes made here do not show up in the GUI and vice versa.
+              </Alert>
+            )}
             <FormControl sx={{ m: 1, minWidth: 120 }}>
               <InputLabel id="editor-format-select-label">Format</InputLabel>
               <Select
