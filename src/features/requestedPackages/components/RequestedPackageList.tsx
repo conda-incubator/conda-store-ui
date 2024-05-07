@@ -52,7 +52,7 @@ export const RequestedPackageList = ({
               <TableRow>
                 <TableCell sx={{ fontSize: "13px" }}>Package</TableCell>
                 <TableCell sx={{ fontSize: "13px", textAlign: "right" }}>
-                  Version Requested
+                  Requested Version
                 </TableCell>
               </TableRow>
             </TableHead>

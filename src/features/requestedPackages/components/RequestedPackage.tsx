@@ -42,8 +42,9 @@ export const RequestedPackage = ({
         <Typography
           sx={{
             fontSize: "13px",
-            color: "#333",
-            fontStyle: constraint === "latest" ? "italic" : "normal"
+            fontFamily: constraint === "latest" ? "inherit" : "monospace",
+            fontStyle: constraint === "latest" ? "italic" : "normal",
+            color: "#333"
           }}
         >
           {constraint === "latest"

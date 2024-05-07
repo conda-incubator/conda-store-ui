@@ -1,12 +1,12 @@
 import React, { useEffect, useRef } from "react";
 import Accordion from "@mui/material/Accordion";
 import Box from "@mui/material/Box";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
+import Table from "@mui/material/Table";
 import TableHead from "@mui/material/TableHead";
+import TableBody from "@mui/material/TableBody";
 import TableRow from "@mui/material/TableRow";
+import TableCell from "@mui/material/TableCell";
 import CircularProgress from "@mui/material/CircularProgress";
 import Tooltip from "@mui/material/Tooltip";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
@@ -111,22 +111,19 @@ export const Dependencies = ({
                 </TableHead>
                 <TableBody>
                   {dependencies.map((dependency, index) => (
-                    <TableRow
+                    <DependenciesItem
                       key={dependency.id}
                       sx={{
                         backgroundColor:
                           index % 2 ? "secondary.50" : "transparent"
                       }}
-                    >
-                      <DependenciesItem
-                        mode={mode}
-                        dependency={dependency}
-                        handleClick={() =>
-                          dispatch(dependencyPromoted(dependency))
-                        }
-                        isLast={index === dependencies.length - 1}
-                      />
-                    </TableRow>
+                      mode={mode}
+                      dependency={dependency}
+                      handleClick={() =>
+                        dispatch(dependencyPromoted(dependency))
+                      }
+                      isLast={index === dependencies.length - 1}
+                    />
                   ))}
                 </TableBody>
               </Table>

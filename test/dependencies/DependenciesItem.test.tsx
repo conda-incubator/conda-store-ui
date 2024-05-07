@@ -12,14 +12,12 @@ describe("<DependenciesItem />", () => {
       mockTheme(
         <table>
           <tbody>
-            <tr>
-              <DependenciesItem
-                mode="edit"
-                dependency={DEPENDENCY}
-                handleClick={handleClick}
-                isLast={false}
-              />
-            </tr>
+            <DependenciesItem
+              mode="edit"
+              dependency={DEPENDENCY}
+              handleClick={handleClick}
+              isLast={false}
+            />
           </tbody>
         </table>
       )
