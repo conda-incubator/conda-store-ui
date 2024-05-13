@@ -4,6 +4,7 @@ import { styled } from "@mui/system";
 export const StyledScrollContainer = styled(Box, {
   shouldForwardProp: prop => prop !== "styleType"
 })<{ styleType?: string }>(({ theme: { palette } }) => ({
+  height: "100%",
   overflowY: "scroll",
   overflowX: "hidden",
   paddingRight: "0px",
