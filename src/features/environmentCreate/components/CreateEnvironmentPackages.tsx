@@ -20,25 +20,28 @@ import {
   StyledEditPackagesTableCell
 } from "../../../styles";
 import { AddRequestedPackage } from "../../requestedPackages";
-import { requestedPackagesChanged } from "../environmentCreateSlice";
+import { requestedPackageAdded } from "../environmentCreateSlice";
 import { CreateEnvironmentPackagesTableRow } from "./CreateEnvironmentPackagesTableRow";
+import { CondaSpecificationPip } from "../../../common/models/CondaSpecificationPip";
 
 interface ICreateEnvironmentPackagesProps {
   /**
    * @param requestedPackages list of created packages
    */
-  requestedPackages: string[];
+  namespaceName: string;
+  requestedPackages: (string | CondaSpecificationPip)[];
 }
 
 export const CreateEnvironmentPackages = ({
+  namespaceName,
   requestedPackages
 }: ICreateEnvironmentPackagesProps) => {
   const dispatch = useAppDispatch();
   const [isAdding, setIsAdding] = useState(false);
   const { palette } = useTheme();
 
-  const filteredRequestedPackages = useMemo(
-    () => requestedPackages.filter(item => typeof item !== "object"),
+  const filteredRequestedPackages: string[] = useMemo(
+    () => requestedPackages.filter(item => typeof item === "string") as string[],
     [requestedPackages]
   );
 
@@ -87,6 +90,7 @@ export const CreateEnvironmentPackages = ({
             {filteredRequestedPackages.map(requestedPackage => (
               <CreateEnvironmentPackagesTableRow
                 key={requestedPackage}
+                namespaceName={namespaceName}
                 requestedPackage={requestedPackage}
               />
             ))}
@@ -97,8 +101,8 @@ export const CreateEnvironmentPackages = ({
             <AddRequestedPackage
               onSubmit={(value: string) =>
                 dispatch(
-                  requestedPackagesChanged([
-                    ...filteredRequestedPackages,
+                  requestedPackageAdded([
+                    `${namespaceName}/new-environment`,
                     value
                   ])
                 )

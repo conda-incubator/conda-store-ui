@@ -1,53 +1,64 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
+import debounce from "lodash/debounce";
 import { StreamLanguage } from "@codemirror/language";
 import { yaml as yamlLanguage } from "@codemirror/legacy-modes/mode/yaml";
 import Alert from "@mui/material/Alert";
 import CodeMirror from "@uiw/react-codemirror";
-import { parse } from "yaml";
 import { greenAccentTheme } from "../themes";
 import { PrefContext } from "../../../preferences";
+import parseCodeEditorContent from "../../../utils/helpers/parseCodeEditorContent";
+import Typography from "@mui/material/Typography";
 
 export interface ICodeEditor {
-  code: any;
-  onChangeEditor: (code: {
-    channels: string[];
-    dependencies: string[];
-    variables: Record<string, string>;
-  }) => void;
+  code: string;
+  onChangeEditor: (code: string) => void;
 }
+
+const checkForError = debounce((code, setErrorMessage) => {
+  try {
+    parseCodeEditorContent(code);
+    setErrorMessage("");
+  } catch (err) {
+    setErrorMessage(err.toString());
+  }
+}, 400);
+
+const formatCode = (code: string) =>
+  code === ""
+    ? "channels:\n  -\ndependencies:\n  -\nvariables: {}\n"
+    : code
+        .replace("channels: []", "channels:\n  -")
+        .replace("dependencies: []", "dependencies:\n  -");
 
 export const CodeEditor = ({ code, onChangeEditor }: ICodeEditor) => {
   const prefs = React.useContext(PrefContext);
   const isGrayscaleStyleType = prefs.styleType === "grayscale";
-  const [isError, setIsError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
-  const convertToJSON = (e: string) => {
-    try {
-      setIsError(false);
-      onChangeEditor(parse(e));
-    } catch (e) {
-      setIsError(true);
-    }
-  };
+  const onChange = useCallback((code: string) => {
+    onChangeEditor(code);
+    checkForError(code, setErrorMessage);
+  }, []);
 
   return (
     <>
-      {isError && (
+      {errorMessage && (
         <Alert
           severity="error"
           sx={{
             mb: "20px"
           }}
         >
-          You have an error in your yaml syntax
+          You have an error.
+          <Typography>{errorMessage}</Typography>
         </Alert>
       )}
       <CodeMirror
-        value={code}
+        value={formatCode(code)}
         height="200px"
         theme={isGrayscaleStyleType ? undefined : greenAccentTheme}
         extensions={[StreamLanguage.define(yamlLanguage)]}
-        onChange={e => convertToJSON(e)}
+        onChange={onChange}
       />
     </>
   );

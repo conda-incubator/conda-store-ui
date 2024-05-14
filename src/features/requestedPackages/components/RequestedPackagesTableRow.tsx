@@ -13,17 +13,24 @@ import {
   StyledRequestedPackagesTableCell
 } from "../../../styles";
 import { requestedPackageParser } from "../../../utils/helpers";
-import { packageRemoved, packageUpdated } from "../requestedPackagesSlice";
+import {
+  requestedPackageRemoved,
+  requestedPackageUpdated
+} from "../../environmentCreate/environmentCreateSlice";
 
 interface IRequestedPackagesTableRowProps {
   /**
    * @param requestedPackage requested package
    */
+  environmentName: string;
+  namespaceName: string;
   requestedPackage: string;
   onDefaultEnvIsChanged?: (isChanged: boolean) => void;
 }
 
 const BaseRequestedPackagesTableRow = ({
+  environmentName,
+  namespaceName,
   requestedPackage,
   onDefaultEnvIsChanged
 }: IRequestedPackagesTableRowProps) => {
@@ -54,7 +61,10 @@ const BaseRequestedPackagesTableRow = ({
     const updatedPackage = `${name}${pkgConstraint}${value}`;
 
     dispatch(
-      packageUpdated({ currentPackage: requestedPackage, updatedPackage })
+      requestedPackageUpdated([
+        `${namespaceName}/${environmentName}`,
+        { currentPackage: requestedPackage, updatedPackage }
+      ])
     );
     onUpdateDefaultEnvironment(false);
   };
@@ -63,13 +73,26 @@ const BaseRequestedPackagesTableRow = ({
     const updatedPackage = `${name}${value}${version ? version : ""}`;
 
     dispatch(
-      packageUpdated({ currentPackage: requestedPackage, updatedPackage })
+      requestedPackageUpdated([
+        `${namespaceName}/${environmentName}`,
+        { currentPackage: requestedPackage, updatedPackage }
+      ])
     );
     onUpdateDefaultEnvironment(false);
   };
 
   const handleRemove = () => {
-    dispatch(packageRemoved(requestedPackage));
+    console.log(
+      "removing package",
+      `${namespaceName}/${environmentName}`,
+      requestedPackage
+    );
+    dispatch(
+      requestedPackageRemoved([
+        `${namespaceName}/${environmentName}`,
+        requestedPackage
+      ])
+    );
     onUpdateDefaultEnvironment(false);
   };
 

@@ -18,6 +18,10 @@ export default {
 
 export const Primary = () => (
   <Provider store={store}>
-    <RequestedPackagesEdit packageList={packageList} />
+    <RequestedPackagesEdit
+      namespaceName="test_namespace"
+      environmentName="test_environment"
+      packageList={packageList}
+    />
   </Provider>
 );

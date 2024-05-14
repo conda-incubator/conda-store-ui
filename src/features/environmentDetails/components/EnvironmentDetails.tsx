@@ -3,7 +3,6 @@ import { skipToken } from "@reduxjs/toolkit/query/react";
 import { useNavigate, useParams } from "react-router-dom";
 import Box from "@mui/material/Box";
 import Alert from "@mui/material/Alert";
-import { stringify } from "yaml";
 import { parseArtifacts } from "../../../utils/helpers/parseArtifactList";
 import { EnvironmentDetailsHeader } from "./EnvironmentDetailsHeader";
 import { SpecificationEdit, SpecificationReadOnly } from "./Specification";
@@ -38,19 +37,14 @@ import artifactList from "../../../utils/helpers/artifact";
 import createLabel from "../../../common/config/labels";
 import { AlertDialog } from "../../../components/Dialog";
 import { useAppDispatch, useAppSelector } from "../../../hooks";
-import {
-  CondaSpecificationPip,
-  Environment,
-  Namespace
-} from "../../../common/models";
+import { Environment, Namespace } from "../../../common/models";
 import { useInterval } from "../../../utils/helpers";
 import { showNotification } from "../../notification/notificationSlice";
 import { useScrollRef } from "../../../layouts/PageLayout";
-
-interface IUpdateEnvironmentArgs {
-  dependencies: (string | CondaSpecificationPip)[];
-  channels: string[];
-}
+import {
+  descriptionChanged,
+  startNewEnvironmentForm
+} from "../../environmentCreate/environmentCreateSlice";
 
 const INTERVAL_REFRESHING = 5000;
 
@@ -60,7 +54,7 @@ export const EnvironmentDetails = () => {
   // Url routing params
   // If user loads the app at /<namespace_name>/<environment_name>
   // This will put the app in the correct state
-  const { namespaceName, environmentName } = useParams<{
+  const { namespaceName = "", environmentName = "" } = useParams<{
     namespaceName: string;
     environmentName: string;
   }>();
@@ -76,6 +70,12 @@ export const EnvironmentDetails = () => {
       environment.namespace.name === namespaceName &&
       environment.name === environmentName
   );
+
+  const formKey = `${namespaceName}/${environmentName}`;
+  const environmentForm = useAppSelector(
+    state => state.environmentCreate[formKey]
+  );
+
   useEffect(() => {
     if (namespace && environment) {
       dispatch(
@@ -86,11 +86,14 @@ export const EnvironmentDetails = () => {
       );
       dispatch(modeChanged(EnvironmentDetailsModes.READ));
       dispatch(toggleNewEnvironmentView(false));
+      if (!environmentForm) {
+        dispatch(startNewEnvironmentForm(formKey));
+      }
     }
   }, [
     // We only want to run this effect when:
     //
-    // 1. User navigates to different environment = change of 
+    // 1. User navigates to different environment = change of
     //    (namespaceName, environmentName) in the URL
     // 2. The corresponding (namespace, environment) data have been fetched
     //
@@ -111,12 +114,14 @@ export const EnvironmentDetails = () => {
   const { page, dependencies } = useAppSelector(state => state.dependencies);
   const { selectedEnvironment } = useAppSelector(state => state.tabs);
   const { currentBuild } = useAppSelector(state => state.enviroments);
-  const [name, setName] = useState(selectedEnvironment?.name || "");
+  const name = selectedEnvironment?.name || "";
   const scrollRef = useScrollRef();
 
   const [descriptionIsUpdated, setDescriptionIsUpdated] = useState(false);
-  const [description, setDescription] = useState(
-    selectedEnvironment ? selectedEnvironment.description : undefined
+  const { description } = useAppSelector(
+    state =>
+      state.environmentCreate[`${namespaceName}/${environmentName}`] ||
+      state.environmentCreate[""]
   );
   const [currentBuildId, setCurrentBuildId] = useState(
     selectedEnvironment?.current_build_id
@@ -154,7 +159,9 @@ export const EnvironmentDetails = () => {
   );
 
   const updateDescription = (description: string) => {
-    setDescription(description);
+    dispatch(
+      descriptionChanged([`${namespaceName}/${environmentName}`, description])
+    );
     setDescriptionIsUpdated(true);
   };
 
@@ -189,8 +196,6 @@ export const EnvironmentDetails = () => {
   };
 
   useEffect(() => {
-    setName(selectedEnvironment?.name || "");
-    setDescription(selectedEnvironment?.description || "");
     setCurrentBuildId(selectedEnvironment?.current_build_id);
     setError({
       message: "",
@@ -207,7 +212,7 @@ export const EnvironmentDetails = () => {
     }
   }, [currentBuild]);
 
-  const updateEnvironment = async (code: IUpdateEnvironmentArgs) => {
+  const updateEnvironment = async (code: string) => {
     if (!selectedEnvironment) {
       return;
     }
@@ -215,9 +220,9 @@ export const EnvironmentDetails = () => {
     const namespace = selectedEnvironment.namespace.name;
     const environment = selectedEnvironment.name;
     const environmentInfo = {
-      specification: `${stringify(
-        code
-      )}\ndescription: ${description}\nname: ${environment}\nprefix: null`,
+      specification:
+        code.trimEnd() +
+        `\ndescription: ${description}\nname: ${environment}\nprefix: null`,
       namespace
     };
 
@@ -300,7 +305,9 @@ export const EnvironmentDetails = () => {
     })();
   }, INTERVAL_REFRESHING);
 
-  if (!selectedEnvironment) {
+  useEffect(() => {}, [namespaceName]);
+
+  if (!namespaceName || !selectedEnvironment) {
     return null;
   }
 
@@ -308,8 +315,7 @@ export const EnvironmentDetails = () => {
     <Box sx={{ padding: "15px 12px" }}>
       <EnvironmentDetailsHeader
         envName={name}
-        namespace={namespace?.name}
-        onUpdateName={setName}
+        namespace={namespaceName}
         showEditButton={selectedEnvironment?.canUpdate}
       />
       {error.visible && (
@@ -327,7 +333,11 @@ export const EnvironmentDetails = () => {
           mode={mode}
           currentBuildId={selectedEnvironment?.current_build_id}
           selectedBuildId={currentBuildId}
-          description={description}
+          description={
+            mode === "read-only"
+              ? selectedEnvironment?.description || ""
+              : description
+          }
           specificationIsChanged={specificationIsChanged}
           onDefaultEnvIsChanged={updateDefaultEnvironmentVersion}
           onUpdateDescription={updateDescription}
@@ -338,6 +348,8 @@ export const EnvironmentDetails = () => {
         {mode === "read-only" && <SpecificationReadOnly />}
         {mode === "edit" && (
           <SpecificationEdit
+            environmentName={environmentName}
+            namespaceName={namespaceName}
             descriptionUpdated={descriptionIsUpdated}
             defaultEnvVersIsChanged={defaultEnvVersIsChanged}
             onSpecificationIsChanged={updateSpecificationIsChanged}

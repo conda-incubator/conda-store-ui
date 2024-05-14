@@ -55,9 +55,6 @@ export const requestedPackagesSlice = createSlice({
         p => p !== action.payload
       );
     },
-    packageAdded: (state, action: PayloadAction<string>) => {
-      state.requestedPackages.push(action.payload);
-    },
     buildPackagesCacheAdded: (
       state,
       action: PayloadAction<{
@@ -127,6 +124,5 @@ export const {
   dependencyPromoted,
   packageUpdated,
   packageRemoved,
-  packageAdded,
   buildPackagesCacheAdded
 } = requestedPackagesSlice.actions;

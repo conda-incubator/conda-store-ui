@@ -21,10 +21,12 @@ interface IProps {
   /**
    * @param requestedPackage requested package
    */
+  namespaceName: string;
   requestedPackage: string;
 }
 
 const BaseCreateEnvironmentPackagesTableRow = ({
+  namespaceName,
   requestedPackage
 }: IProps) => {
   const dispatch = useAppDispatch();
@@ -35,10 +37,13 @@ const BaseCreateEnvironmentPackagesTableRow = ({
     const updatedPackage = `${name}${value}${version}`;
 
     dispatch(
-      requestedPackageUpdated({
-        currentPackage: requestedPackage,
-        updatedPackage
-      })
+      requestedPackageUpdated([
+        `${namespaceName}/new-environment`,
+        {
+          currentPackage: requestedPackage,
+          updatedPackage
+        }
+      ])
     );
   };
 
@@ -52,15 +57,23 @@ const BaseCreateEnvironmentPackagesTableRow = ({
     const updatedPackage = `${name}${pkgConstraint}${value}`;
 
     dispatch(
-      requestedPackageUpdated({
-        currentPackage: requestedPackage,
-        updatedPackage
-      })
+      requestedPackageUpdated([
+        `${namespaceName}/new-environment`,
+        {
+          currentPackage: requestedPackage,
+          updatedPackage
+        }
+      ])
     );
   };
 
   const handleRemovePackage = (requestedPackage: string) => {
-    dispatch(requestedPackageRemoved(requestedPackage));
+    dispatch(
+      requestedPackageRemoved([
+        `${namespaceName}/new-environment`,
+        requestedPackage
+      ])
+    );
   };
 
   return (

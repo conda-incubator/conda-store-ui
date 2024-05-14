@@ -14,7 +14,7 @@ interface IEnvMetadataProps {
    * @param mode change whether the component only displays the list of builds, edit the environment description or create a new description
    * @param onUpdateDescription change environment description
    */
-  description?: any;
+  description: string;
   mode: "create" | "read-only" | "edit";
   currentBuildId?: number | undefined;
   selectedBuildId?: number;
@@ -27,7 +27,7 @@ interface IEnvMetadataProps {
 
 export const EnvMetadata = ({
   mode,
-  description = "",
+  description,
   currentBuildId,
   selectedBuildId,
   specificationIsChanged,
@@ -58,7 +58,7 @@ export const EnvMetadata = ({
     <BlockContainer title="Environment Metadata">
       <Description
         mode={mode}
-        description={description || undefined}
+        description={description}
         onChangeDescription={onUpdateDescription}
       />
       <div

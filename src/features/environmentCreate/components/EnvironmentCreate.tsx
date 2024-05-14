@@ -2,8 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Box from "@mui/material/Box";
 import Alert from "@mui/material/Alert";
-import { stringify } from "yaml";
-import { debounce } from "lodash";
 import {
   EnvironmentDetailsHeader,
   modeChanged,
@@ -22,13 +20,15 @@ import {
 } from "../../../features/tabs";
 import { useAppDispatch, useAppSelector } from "../../../hooks";
 import { SpecificationCreate, SpecificationReadOnly } from "./Specification";
-import { descriptionChanged, nameChanged } from "../environmentCreateSlice";
+import {
+  descriptionChanged,
+  nameChanged,
+  startNewEnvironmentForm,
+  clearNewEnvironmentForm
+} from "../environmentCreateSlice";
 import createLabel from "../../../common/config/labels";
 import { showNotification } from "../../notification/notificationSlice";
 
-interface ICreateEnvironmentArgs {
-  code: { channels: string[]; dependencies: string[] };
-}
 
 export const EnvironmentCreate = () => {
   const dispatch = useAppDispatch();
@@ -36,23 +36,28 @@ export const EnvironmentCreate = () => {
   // Url routing params
   // If user loads the app at /<namespace_name>/new-environment
   // This will put the app in the correct state
-  const { namespaceName } = useParams<{
+  const { namespaceName = "" } = useParams<{
     namespaceName: string;
   }>();
+
+  const environmentForm = useAppSelector(
+    state => state.environmentCreate[`${namespaceName}/new-environment`]
+  );
 
   useEffect(() => {
     if (namespaceName) {
       dispatch(modeChanged(EnvironmentDetailsModes.CREATE));
       dispatch(openCreateNewEnvironmentTab(namespaceName));
+      if (!environmentForm) {
+        dispatch(startNewEnvironmentForm(`${namespaceName}/new-environment`));
+      }
     }
   }, [namespaceName]);
 
   const navigate = useNavigate();
 
   const { mode } = useAppSelector(state => state.environmentDetails);
-  const { name, description } = useAppSelector(
-    state => state.environmentCreate
-  );
+  const { name = "", description = "" } = environmentForm || {};
   const { newEnvironment } = useAppSelector(state => state.tabs);
   const [error, setError] = useState({
     message: "",
@@ -61,21 +66,13 @@ export const EnvironmentCreate = () => {
   const [createOrUpdate] = useCreateOrUpdateMutation();
   const [triggerQuery] = useLazyGetEnviromentBuildQuery();
 
-  const handleChangeName = debounce((value: string) => {
-    dispatch(nameChanged(value));
-  }, 300);
-
-  const handleChangeDescription = debounce((value: string) => {
-    dispatch(descriptionChanged(value));
-  }, 300);
-
-  const createEnvironment = async (code: ICreateEnvironmentArgs) => {
+  const createEnvironment = async (yaml: string) => {
     const namespace = newEnvironment?.namespace;
     const environmentInfo = {
       namespace,
-      specification: `${stringify(
-        code
-      )}\ndescription: '${description}'\nname: ${name}\nprefix: null`
+      specification:
+        yaml.trimEnd() +
+        `\ndescription: '${description}'\nname: ${name}\nprefix: null`
     };
 
     try {
@@ -112,14 +109,20 @@ export const EnvironmentCreate = () => {
         message: e?.data?.message ?? createLabel(undefined, "error"),
         visible: true
       });
+    } finally {
+      // clear form datha from app state
+      dispatch(clearNewEnvironmentForm(`${namespaceName}/new-environment`));
     }
   };
 
   return (
     <Box sx={{ padding: "14px 12px" }}>
       <EnvironmentDetailsHeader
+        envName={name}
         namespace={newEnvironment.namespace}
-        onUpdateName={handleChangeName}
+        onUpdateName={(value: string) => {
+          dispatch(nameChanged([`${namespaceName}/new-environment`, value]));
+        }}
         showEditButton={true}
       />
       {error.visible && (
@@ -135,14 +138,22 @@ export const EnvironmentCreate = () => {
       <Box sx={{ marginBottom: "30px" }}>
         <EnvMetadata
           mode={mode}
-          onUpdateDescription={handleChangeDescription}
+          description={description}
+          onUpdateDescription={(value: string) => {
+            dispatch(
+              descriptionChanged([`${namespaceName}/new-environment`, value])
+            );
+          }}
           onUpdateBuildId={() => {}}
         />
       </Box>
       <Box sx={{ marginBottom: "30px" }}>
         {mode === "read-only" && <SpecificationReadOnly />}
         {mode === "create" && (
-          <SpecificationCreate onCreateEnvironment={createEnvironment} />
+          <SpecificationCreate
+            namespaceName={namespaceName}
+            onCreateEnvironment={createEnvironment}
+          />
         )}
       </Box>
     </Box>

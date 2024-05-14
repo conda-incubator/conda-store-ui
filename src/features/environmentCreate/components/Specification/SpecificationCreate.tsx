@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback } from "react";
 import Box from "@mui/material/Box";
 import { ChannelsEdit } from "../../../../features/channels";
 import { BlockContainerEditMode } from "../../../../components";
@@ -9,134 +9,127 @@ import { CreateEnvironmentPackages } from "../CreateEnvironmentPackages";
 import { useAppDispatch, useAppSelector } from "../../../../hooks";
 import {
   channelsChanged,
-  editorCodeUpdated,
-  environmentCreateStateCleared
+  codeEditorExited,
+  codeEditorContentChanged,
+  showCodeEditorChanged
 } from "../../environmentCreateSlice";
 import { getStylesForStyleType } from "../../../../utils/helpers";
+import parseCodeEditorContent from "../../../../utils/helpers/parseCodeEditorContent";
 
-export const SpecificationCreate = ({ onCreateEnvironment }: any) => {
+export const SpecificationCreate = ({
+  onCreateEnvironment,
+  namespaceName
+}: any) => {
   const dispatch = useAppDispatch();
-  const { channels, requestedPackages, environmentVariables } = useAppSelector(
-    state => state.environmentCreate
+  const {
+    channels,
+    requestedPackages,
+    environmentVariables,
+    showCodeEditor,
+    codeEditorContent
+  } = useAppSelector(
+    state =>
+      state.environmentCreate[`${namespaceName}/new-environment`] ||
+      state.environmentCreate[""]
   );
-  const [show, setShow] = useState(false);
-  const [editorContent, setEditorContent] = useState<{
-    channels: string[];
-    dependencies: string[];
-    variables: Record<string, string>;
-  }>({ channels: [], dependencies: [], variables: {} });
 
   const buttonStyles = getStylesForStyleType(
     { padding: "5px 60px" },
     { padding: "5px 48px" }
   );
 
-  const onUpdateChannels = useCallback((channels: string[]) => {
-    dispatch(channelsChanged(channels));
-  }, []);
+  const onUpdateChannels = useCallback(
+    (channels: string[]) => {
+      dispatch(channelsChanged([`${namespaceName}/new-environment`, channels]));
+    },
+    [namespaceName]
+  );
 
-  const onUpdateEditor = ({
-    channels,
-    dependencies,
-    variables
-  }: {
-    channels: string[];
-    dependencies: string[];
-    variables: Record<string, string>;
-  }) => {
-    const code = { channels, dependencies, variables };
+  const onToggleCodeEditor = (shouldShowCodeEditor: boolean) => {
+    if (!shouldShowCodeEditor) {
+      // YAML Code Editor -> GUI
 
-    // Note: the [null] checks are due to empty lists in the pretty-printed case
-    // of formatCode
-    if (
-      !channels ||
-      channels.length === 0 ||
-      (channels.length === 1 && channels[0] === null)
-    ) {
-      code.channels = [];
+      // Push code editor values into GUI
+      try {
+        const { channels, dependencies, variables } =
+          parseCodeEditorContent(codeEditorContent);
+        dispatch(
+          codeEditorExited([
+            `${namespaceName}/new-environment`,
+            {
+              channels,
+              requestedPackages: dependencies,
+              environmentVariables: variables
+            }
+          ])
+        );
+      } catch (_err) {
+        // do nothing
+      }
+    } else if (channels.length || requestedPackages.length) {
+      // GUI -> YAML Code Editor
+
+      // Try to push GUI values into code editor
+      try {
+        dispatch(
+          codeEditorContentChanged([
+            `${namespaceName}/new-environment`,
+            stringify({
+              ...parseCodeEditorContent(codeEditorContent),
+              channels,
+              dependencies: requestedPackages
+            })
+          ])
+        );
+      } catch (_err) {
+        // do nothing
+      }
     }
 
-    if (
-      !dependencies ||
-      dependencies.length === 0 ||
-      (dependencies.length === 1 && dependencies[0] === null)
-    ) {
-      code.dependencies = [];
-    }
-
-    if (!variables || Object.keys(variables).length === 0) {
-      code.variables = {};
-    }
-
-    setEditorContent(code);
-  };
-
-  const onToggleEditorView = (value: boolean) => {
-    if (show) {
-      dispatch(
-        editorCodeUpdated({
-          channels: editorContent.channels,
-          dependencies: editorContent.dependencies,
-          variables: editorContent.variables
-        })
-      );
-    } else {
-      setEditorContent({
-        dependencies: requestedPackages,
-        variables: environmentVariables,
-        channels
-      });
-    }
-
-    setShow(value);
-  };
-
-  const formatCode = (
-    channels: string[],
-    dependencies: string[],
-    variables: Record<string, string>
-  ) => {
-    if (channels.length === 0 && dependencies.length === 0) {
-      // Note: these empty pretty-printed lists translate to [null]
-      return "channels:\n  -\ndependencies:\n  -\n" + stringify({ variables });
-    }
-    return stringify({ channels, dependencies, variables });
+    dispatch(
+      showCodeEditorChanged([
+        `${namespaceName}/new-environment`,
+        shouldShowCodeEditor
+      ])
+    );
   };
 
   const handleSubmit = () => {
-    const code = show
-      ? editorContent
-      : {
+    const yaml = showCodeEditor
+      ? codeEditorContent
+      : stringify({
           dependencies: requestedPackages,
           variables: environmentVariables,
           channels
-        };
+        });
 
-    onCreateEnvironment(code);
+    onCreateEnvironment(yaml);
   };
-
-  useEffect(() => {
-    return () => {
-      dispatch(environmentCreateStateCleared());
-    };
-  }, []);
 
   return (
     <BlockContainerEditMode
       title="Specification"
-      onToggleEditMode={onToggleEditorView}
-      isEditMode={show}
+      onToggleEditMode={onToggleCodeEditor}
+      isEditMode={showCodeEditor}
     >
       <Box>
-        {show ? (
+        {showCodeEditor ? (
           <CodeEditor
-            code={formatCode(channels, requestedPackages, environmentVariables)}
-            onChangeEditor={onUpdateEditor}
+            code={codeEditorContent}
+            onChangeEditor={code =>
+              dispatch(
+                codeEditorContentChanged([
+                  `${namespaceName}/new-environment`,
+                  code
+                ])
+              )
+            }
           />
         ) : (
           <>
             <Box sx={{ marginBottom: "30px" }}>
               <CreateEnvironmentPackages
+                namespaceName={namespaceName}
                 requestedPackages={requestedPackages}
               />
             </Box>

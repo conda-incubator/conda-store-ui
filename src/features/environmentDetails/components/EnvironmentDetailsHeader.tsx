@@ -16,15 +16,15 @@ interface IEnvironmentDetailsHeaderProps {
    * @param namespace namespace of the environment
    * @param onUpdateName change environment name
    */
-  envName?: string;
-  namespace?: string;
+  envName: string;
+  namespace: string;
   showEditButton: boolean | undefined;
-  onUpdateName: (value: string) => void;
+  onUpdateName?: (value: string) => void;
 }
 
 export const EnvironmentDetailsHeader = ({
   envName = "",
-  namespace,
+  namespace = "",
   onUpdateName,
   showEditButton = true
 }: IEnvironmentDetailsHeaderProps) => {
@@ -57,9 +57,9 @@ export const EnvironmentDetailsHeader = ({
           {mode === EnvironmentDetailsModes.READ && (
             <StyledButtonPrimary
               disabled={!showEditButton}
-              onClick={() =>
-                dispatch(modeChanged(EnvironmentDetailsModes.EDIT))
-              }
+              onClick={() => {
+                dispatch(modeChanged(EnvironmentDetailsModes.EDIT));
+              }}
             >
               Edit
             </StyledButtonPrimary>
@@ -103,7 +103,8 @@ export const EnvironmentDetailsHeader = ({
               }
             }}
             size="small"
-            onChange={e => onUpdateName(e.target.value)}
+            value={envName}
+            onChange={e => onUpdateName && onUpdateName(e.target.value)}
           />
           {/* <StyledButtonPrimary>Archive</StyledButtonPrimary> */}
         </>

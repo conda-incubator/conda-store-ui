@@ -11,7 +11,7 @@ import {
 import { Dependency } from "../../../common/models";
 import { DependenciesItem } from "./DependenciesItem";
 import { useAppDispatch, useAppSelector } from "../../../hooks";
-import { dependencyPromoted } from "../../../features/requestedPackages";
+import { requestedPackageAdded } from "../../environmentCreate/environmentCreateSlice";
 import { ArrowIcon } from "../../../components";
 
 export interface IDependenciesProps {
@@ -91,7 +91,21 @@ export const Dependencies = ({
                   <DependenciesItem
                     mode={mode}
                     dependency={dependency}
-                    handleClick={() => dispatch(dependencyPromoted(dependency))}
+                    handleClick={() => {
+                      if (!selectedEnvironment) {
+                        return;
+                      }
+                      const {
+                        namespace: { name: namespaceName },
+                        name: environmentName
+                      } = selectedEnvironment;
+                      dispatch(
+                        requestedPackageAdded([
+                          `${namespaceName}/${environmentName}`,
+                          `${dependency.name}==${dependency.version}`
+                        ])
+                      );
+                    }}
                   />
                 </Box>
               ))}
