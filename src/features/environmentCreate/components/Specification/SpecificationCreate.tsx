@@ -1,5 +1,9 @@
 import React, { useCallback, useEffect, useState } from "react";
+import { DropzoneArea } from "mui-file-dropzone";
 import Box from "@mui/material/Box";
+import Tabs from "@mui/material/Tabs";
+import Tab from "@mui/material/Tab";
+import Typography from "@mui/material/Typography";
 import { ChannelsEdit } from "../../../../features/channels";
 import { BlockContainerEditMode } from "../../../../components";
 import { StyledButtonPrimary } from "../../../../styles";
@@ -13,6 +17,28 @@ import {
   environmentCreateStateCleared
 } from "../../environmentCreateSlice";
 import { getStylesForStyleType } from "../../../../utils/helpers";
+
+interface ITabPanelProps {
+  children?: React.ReactNode;
+  index: number;
+  value: number;
+  id: string;
+  "aria-labelledby": string;
+}
+
+function CustomTabPanel(props: ITabPanelProps) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div role="tabpanel" hidden={value !== index} {...other}>
+      {value === index && (
+        <Box sx={{ p: 3 }}>
+          <Typography>{children}</Typography>
+        </Box>
+      )}
+    </div>
+  );
+}
 
 export const SpecificationCreate = ({ onCreateEnvironment }: any) => {
   const dispatch = useAppDispatch();
@@ -103,16 +129,25 @@ export const SpecificationCreate = ({ onCreateEnvironment }: any) => {
     return stringify({ channels, dependencies, variables });
   };
 
-  const handleSubmit = () => {
-    const code = show
-      ? editorContent
-      : {
-          dependencies: requestedPackages,
-          variables: environmentVariables,
-          channels
-        };
+  const [tabIndex, setTabIndex] = React.useState<number>(0);
+  const [files, setFiles] = React.useState<File[]>([]);
 
-    onCreateEnvironment(code);
+  const handleSubmit = async () => {
+    if (tabIndex === 0) {
+      const code = show
+        ? editorContent
+        : {
+            dependencies: requestedPackages,
+            variables: environmentVariables,
+            channels
+          };
+
+      onCreateEnvironment(code);
+    } else if (files.length) {
+      // tabIndex = 1
+      const text = await files[0].text();
+      onCreateEnvironment(text);
+    }
   };
 
   useEffect(() => {
@@ -122,45 +157,96 @@ export const SpecificationCreate = ({ onCreateEnvironment }: any) => {
   }, []);
 
   return (
-    <BlockContainerEditMode
-      title="Specification"
-      onToggleEditMode={onToggleEditorView}
-      isEditMode={show}
-    >
-      <Box>
-        {show ? (
-          <CodeEditor
-            code={formatCode(channels, requestedPackages, environmentVariables)}
-            onChangeEditor={onUpdateEditor}
-          />
-        ) : (
-          <>
-            <Box sx={{ marginBottom: "30px" }}>
-              <CreateEnvironmentPackages
-                requestedPackages={requestedPackages}
-              />
-            </Box>
-            <Box sx={{ margiBottom: "30px" }}>
-              <ChannelsEdit
-                channelsList={channels}
-                updateChannels={onUpdateChannels}
-              />
-            </Box>
-          </>
-        )}
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            marginTop: "30px",
-            marginBottom: "10px"
-          }}
+    <Box>
+      <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+        <Tabs
+          value={tabIndex}
+          onChange={(_, tabIndex) => setTabIndex(tabIndex)}
+          aria-label="Specification or Lockfile"
         >
-          <StyledButtonPrimary sx={buttonStyles} onClick={handleSubmit}>
-            Create
-          </StyledButtonPrimary>
-        </Box>
+          <Tab
+            label="Specification"
+            id="specification-tab"
+            aria-controls="specification-tabpanel"
+          />
+          <Tab
+            label="Lockfile"
+            id="lockfile-tab"
+            aria-controls="lockfile-tabpanel"
+          />
+        </Tabs>
       </Box>
-    </BlockContainerEditMode>
+      <CustomTabPanel
+        value={tabIndex}
+        index={0}
+        id="specifaction-tabpanel"
+        aria-labelledby="specification-tab"
+      >
+        <BlockContainerEditMode
+          title="Specification"
+          onToggleEditMode={onToggleEditorView}
+          isEditMode={show}
+        >
+          <Box>
+            {show ? (
+              <CodeEditor
+                code={formatCode(
+                  channels,
+                  requestedPackages,
+                  environmentVariables
+                )}
+                onChangeEditor={onUpdateEditor}
+              />
+            ) : (
+              <>
+                <Box sx={{ marginBottom: "30px" }}>
+                  <CreateEnvironmentPackages
+                    requestedPackages={requestedPackages}
+                  />
+                </Box>
+                <Box sx={{ marginBottom: "30px" }}>
+                  <ChannelsEdit
+                    channelsList={channels}
+                    updateChannels={onUpdateChannels}
+                  />
+                </Box>
+              </>
+            )}
+          </Box>
+        </BlockContainerEditMode>
+      </CustomTabPanel>
+      <CustomTabPanel
+        value={tabIndex}
+        index={1}
+        id="lockfile-tabpanel"
+        aria-labelledby="lockfile-tab"
+      >
+        <DropzoneArea
+          fileObjects={files}
+          onChange={async files => setFiles(files)}
+          filesLimit={1}
+          showPreviews={true}
+          showPreviewsInDropzone={false}
+          showFileNamesInPreview={true}
+          previewText=""
+        />
+      </CustomTabPanel>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          marginTop: "30px",
+          marginBottom: "10px"
+        }}
+      >
+        <StyledButtonPrimary
+          sx={buttonStyles}
+          onClick={handleSubmit}
+          disabled={tabIndex === 1 && !files?.length}
+        >
+          Create
+        </StyledButtonPrimary>
+      </Box>
+    </Box>
   );
 };
