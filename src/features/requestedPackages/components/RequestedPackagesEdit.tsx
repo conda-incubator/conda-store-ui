@@ -2,10 +2,12 @@ import React, { useMemo, useState } from "react";
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import Box from "@mui/material/Box";
+import TableContainer from "@mui/material/TableContainer";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
+import TableCell from "@mui/material/TableCell";
 import Typography from "@mui/material/Typography";
 import useTheme from "@mui/material/styles/useTheme";
 import { RequestedPackagesTableRow } from "./RequestedPackagesTableRow";
@@ -14,8 +16,7 @@ import {
   StyledAccordionDetails,
   StyledAccordionSummary,
   StyledAccordionTitle,
-  StyledButton,
-  StyledEditPackagesTableCell
+  StyledButton
 } from "../../../styles";
 import { CondaSpecificationPip } from "../../../common/models";
 import { useAppDispatch } from "../../../hooks";
@@ -69,68 +70,74 @@ export const RequestedPackagesEdit = ({
       </StyledAccordionSummary>
       <StyledAccordionDetails
         sx={{
-          padding: "20px 15px",
-          borderRadius: "0px"
+          borderRadius: "0px",
+          padding: 0
         }}
       >
-        <Table aria-label="requested packages">
-          <TableHead sx={{ border: "none" }}>
-            <TableRow>
-              <StyledEditPackagesTableCell
-                align="left"
-                sx={{
-                  width: "120px"
-                }}
-              >
-                <Typography
-                  component="p"
-                  sx={{ fontSize: "13px", fontWeight: 500 }}
+        <TableContainer>
+          <Table aria-label="requested packages">
+            <TableHead sx={{ border: "none" }}>
+              <TableRow>
+                <TableCell
+                  align="left"
+                  sx={{
+                    width: "120px"
+                  }}
                 >
-                  Name
-                </Typography>
-              </StyledEditPackagesTableCell>
-              <StyledEditPackagesTableCell
-                align="left"
-                sx={{
-                  width: "180px"
-                }}
-              >
-                <Typography
-                  component="p"
-                  sx={{ fontSize: "13px", fontWeight: 500 }}
+                  <Typography
+                    component="p"
+                    sx={{ fontSize: "13px", fontWeight: 500 }}
+                  >
+                    Name
+                  </Typography>
+                </TableCell>
+                <TableCell align="left">
+                  <Typography
+                    component="p"
+                    sx={{ fontSize: "13px", fontWeight: 500 }}
+                  >
+                    Version Constraint
+                  </Typography>
+                </TableCell>
+                <TableCell
+                  align="right"
+                  sx={{
+                    width: "180px"
+                  }}
                 >
-                  Installed Version
-                </Typography>
-              </StyledEditPackagesTableCell>
-              <StyledEditPackagesTableCell align="left">
-                <Typography
-                  component="p"
-                  sx={{ fontSize: "13px", fontWeight: 500 }}
-                >
-                  Version Constraint
-                </Typography>
-              </StyledEditPackagesTableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {filteredPackageList.map(requestedPackage => (
-              <RequestedPackagesTableRow
-                key={requestedPackage}
-                requestedPackage={requestedPackage}
-                onDefaultEnvIsChanged={onUpdateDefaultEnvironment}
-              />
-            ))}
-          </TableBody>
-        </Table>
-        <Box>
-          {isAdding && (
+                  <Typography
+                    component="p"
+                    sx={{ fontSize: "13px", fontWeight: 500 }}
+                  >
+                    Installed Version
+                  </Typography>
+                </TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {filteredPackageList.map((requestedPackage, index) => (
+                <RequestedPackagesTableRow
+                  key={requestedPackage}
+                  requestedPackage={requestedPackage}
+                  onDefaultEnvIsChanged={onUpdateDefaultEnvironment}
+                />
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+        {isAdding && (
+          <Box
+            sx={{
+              padding: "0 0 16px 16px"
+            }}
+          >
             <AddRequestedPackage
               onSubmit={handleSubmit}
               onCancel={setIsAdding}
               isCreating={false}
             />
-          )}
-        </Box>
+          </Box>
+        )}
       </StyledAccordionDetails>
       <AccordionDetails
         sx={{

@@ -6,6 +6,7 @@ import {
   TableBody,
   TableHead,
   TableRow,
+  TableCell,
   Typography
 } from "@mui/material";
 import useTheme from "@mui/material/styles/useTheme";
@@ -17,7 +18,6 @@ import {
   StyledAccordionSummary,
   StyledAccordionTitle,
   StyledButton,
-  StyledEditPackagesTableCell
 } from "../../../styles";
 import { AddRequestedPackage } from "../../requestedPackages";
 import { requestedPackagesChanged } from "../environmentCreateSlice";
@@ -55,14 +55,14 @@ export const CreateEnvironmentPackages = ({
       </StyledAccordionSummary>
       <StyledAccordionDetails
         sx={{
-          padding: "20px 15px",
+          padding: 0,
           borderRadius: "0px"
         }}
       >
         <Table aria-label="requested packages">
           <TableHead sx={{ border: "none" }}>
             <TableRow>
-              <StyledEditPackagesTableCell
+              <TableCell
                 align="left"
                 sx={{
                   width: "120px"
@@ -74,15 +74,15 @@ export const CreateEnvironmentPackages = ({
                 >
                   Name
                 </Typography>
-              </StyledEditPackagesTableCell>
-              <StyledEditPackagesTableCell align="left">
+              </TableCell>
+              <TableCell align="left">
                 <Typography
                   component="p"
                   sx={{ fontSize: "13px", fontWeight: 500 }}
                 >
                   Version Constraint
                 </Typography>
-              </StyledEditPackagesTableCell>
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -94,8 +94,8 @@ export const CreateEnvironmentPackages = ({
             ))}
           </TableBody>
         </Table>
-        <Box>
-          {isAdding && (
+        {isAdding && (
+          <Box sx={{ padding: "0 0 16px 16px" }}>
             <AddRequestedPackage
               onSubmit={(value: string) =>
                 dispatch(
@@ -108,8 +108,8 @@ export const CreateEnvironmentPackages = ({
               onCancel={() => setIsAdding(false)}
               isCreating={true}
             />
-          )}
-        </Box>
+          </Box>
+        )}
       </StyledAccordionDetails>
       <AccordionDetails
         sx={{
