@@ -17,7 +17,7 @@ import {
   StyledAccordionDetails,
   StyledAccordionSummary,
   StyledAccordionTitle,
-  StyledButton,
+  StyledButton
 } from "../../../styles";
 import { AddRequestedPackage } from "../../requestedPackages";
 import { requestedPackagesChanged } from "../environmentCreateSlice";
