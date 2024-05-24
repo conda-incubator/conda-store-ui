@@ -1,52 +1,46 @@
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Environment } from "../../common/models";
 
-export enum ActionTypes {
-  DATA_FETCHED = "environments/data_fetched",
-  SEARCHED = "environments/searched",
-  NEXT_FETCHED = "environments/next_fetched"
-}
-
-interface IInitialState {
+export interface IEnvironmentsState {
   page: number;
   data: Environment[];
   count: number;
   search: string;
 }
 
-type Action =
-  | {
-      type: ActionTypes.DATA_FETCHED;
-      payload: { data: Environment[]; count: number };
-    }
-  | {
-      type: ActionTypes.SEARCHED;
-      payload: { data: Environment[]; count: number; search: string };
-    }
-  | {
-      type: ActionTypes.NEXT_FETCHED;
-      payload: { data: Environment[]; count: number };
-    };
-
-export const initialState: IInitialState = {
+export const initialState: IEnvironmentsState = {
   page: 1,
   data: [],
   count: 0,
   search: ""
 };
 
-export const environmentsReducer = (state: IInitialState, action: Action) => {
-  switch (action.type) {
-    case ActionTypes.DATA_FETCHED: {
+export const environmentsSlice = createSlice({
+  name: "environments",
+  initialState,
+  reducers: {
+    dataFetched: (
+      state: IEnvironmentsState,
+      action: PayloadAction<{ data: Environment[]; count: number }>
+    ) => {
       const { count, data } = action.payload;
 
       return { ...state, count: count, data: data };
-    }
-
-    case ActionTypes.SEARCHED: {
+    },
+    searched: (
+      state: IEnvironmentsState,
+      action: PayloadAction<{
+        data: Environment[];
+        count: number;
+        search: string;
+      }>
+    ) => {
       return { ...action.payload, page: 1 };
-    }
-
-    case ActionTypes.NEXT_FETCHED: {
+    },
+    nextFetched: (
+      state: IEnvironmentsState,
+      action: PayloadAction<{ data: Environment[]; count: number }>
+    ) => {
       const { data, count } = action.payload;
 
       const newData = state.data?.concat(data);
@@ -60,4 +54,6 @@ export const environmentsReducer = (state: IInitialState, action: Action) => {
       };
     }
   }
-};
+});
+
+export const { dataFetched, searched, nextFetched } = environmentsSlice.actions;

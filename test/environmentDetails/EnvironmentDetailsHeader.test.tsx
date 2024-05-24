@@ -8,6 +8,7 @@ import {
 } from "../../src/features/environmentDetails";
 import { store } from "../../src/store";
 import { mockTheme } from "../testutils";
+import { BrowserRouter } from "react-router-dom";
 
 describe("<EnvironmentDetailsHeader />", () => {
   it("should render component in read mode", () => {
@@ -20,7 +21,8 @@ describe("<EnvironmentDetailsHeader />", () => {
             showEditButton={true}
           />
         </Provider>
-      )
+      ),
+      { wrapper: BrowserRouter }
     );
 
     act(() => {
@@ -28,9 +30,10 @@ describe("<EnvironmentDetailsHeader />", () => {
     });
     expect(component.container).toHaveTextContent("Environment name");
 
-    const editButton = component.getByText("Edit");
+    const editButton = component.getByRole("button", { name: "Edit" });
+    expect(editButton).toBeInTheDocument();
     fireEvent.click(editButton);
-    expect(store.getState().environmentDetails.mode).toEqual("edit");
+    expect(editButton).not.toBeInTheDocument();
   });
 
   it("should render component in edit mode", async () => {
@@ -43,7 +46,8 @@ describe("<EnvironmentDetailsHeader />", () => {
             showEditButton={true}
           />
         </Provider>
-      )
+      ),
+      { wrapper: BrowserRouter }
     );
     act(() => {
       store.dispatch(modeChanged(EnvironmentDetailsModes.EDIT));
@@ -53,7 +57,7 @@ describe("<EnvironmentDetailsHeader />", () => {
     });
   });
 
-  it("should render component in create mode", () => {
+  it("should render component in create mode without namespace", () => {
     const mockOnUpdateName = jest.fn();
     const component = render(
       mockTheme(
@@ -64,15 +68,38 @@ describe("<EnvironmentDetailsHeader />", () => {
             showEditButton={true}
           />
         </Provider>
-      )
+      ),
+      { wrapper: BrowserRouter }
     );
     act(() => {
       store.dispatch(modeChanged(EnvironmentDetailsModes.CREATE));
     });
 
-    const input = component.getByPlaceholderText("Environment name");
+    const input = component.getByLabelText("Environment name");
     const newEnvName = "My new environment name";
     fireEvent.change(input, { target: { value: newEnvName } });
     expect(mockOnUpdateName).toHaveBeenCalledWith(newEnvName);
+    expect(component.queryByText("Namespace")).not.toBeInTheDocument();
+  });
+
+  it("should render component in create mode with namespace", () => {
+    const mockOnUpdateName = jest.fn();
+    const component = render(
+      mockTheme(
+        <Provider store={store}>
+          <EnvironmentDetailsHeader
+            envName={undefined}
+            namespace="test-namespace"
+            onUpdateName={mockOnUpdateName}
+            showEditButton={true}
+          />
+        </Provider>
+      ),
+      { wrapper: BrowserRouter }
+    );
+    act(() => {
+      store.dispatch(modeChanged(EnvironmentDetailsModes.CREATE));
+    });
+    expect(component.getByLabelText("Namespace")).toBeInTheDocument();
   });
 });

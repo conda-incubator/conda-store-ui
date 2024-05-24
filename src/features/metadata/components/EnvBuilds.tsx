@@ -1,11 +1,11 @@
 import React from "react";
-import { CircularProgress, Typography } from "@mui/material";
+import { CircularProgress } from "@mui/material";
 import { StyledMetadataItem } from "../../../styles/StyledMetadataItem";
 import { Build as IBuild } from "../../../common/models";
-import { Build } from "../../../features/metadata/components";
-import { buildMapper } from "../../../utils/helpers/buildMapper";
+import { BuildDropdown } from "../../../features/metadata/components";
+import { EnvBuildStatus } from "./EnvBuildStatus";
 
-interface IData {
+export interface IEnvBuildsProps {
   currentBuildId: number;
   selectedBuildId: number;
   builds: IBuild[];
@@ -17,10 +17,8 @@ export const EnvBuilds = ({
   selectedBuildId,
   builds,
   mode
-}: IData) => {
-  const envBuilds = builds.length ? buildMapper(builds, currentBuildId) : [];
-  const currentBuild = envBuilds.find(build => build.id === selectedBuildId);
-
+}: IEnvBuildsProps) => {
+  const selectedBuild = builds.find(build => build.id === selectedBuildId);
   return (
     <>
       <StyledMetadataItem
@@ -31,40 +29,16 @@ export const EnvBuilds = ({
       >
         {mode === "edit" ? "Change active environment version:" : "Builds:"}
       </StyledMetadataItem>
-      {currentBuild && (
+      {selectedBuild ? (
         <>
-          <Build builds={envBuilds} selectedBuildId={selectedBuildId} />
-          <StyledMetadataItem
-            sx={{
-              marginTop: "0",
-              fontSize: "13px",
-              fontWeight: 500,
-              paddingBottom: "0"
-            }}
-          >
-            Status: {""}
-            <Typography component="span" sx={{ fontSize: "13px" }}>
-              {currentBuild.status_info ? (
-                <>
-                  {currentBuild.status} ({currentBuild.status_info})
-                </>
-              ) : (
-                <>{currentBuild.status}</>
-              )}
-              {(currentBuild.status === "Building" ||
-                currentBuild.status === "Queued") && (
-                <CircularProgress
-                  size={10}
-                  sx={{
-                    marginLeft: "8px"
-                  }}
-                />
-              )}
-            </Typography>
-          </StyledMetadataItem>
+          <BuildDropdown
+            builds={builds}
+            currentBuildId={currentBuildId}
+            selectedBuildId={selectedBuildId}
+          />
+          <EnvBuildStatus build={selectedBuild} />
         </>
-      )}
-      {!currentBuild && (
+      ) : (
         <CircularProgress
           size={20}
           sx={{ marginLeft: "15px", marginTop: "6px", marginBottom: "7px" }}

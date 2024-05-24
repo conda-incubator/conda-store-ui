@@ -34,9 +34,13 @@ describe("<CreateEnvironmentPackagesTableRow />", () => {
     return render(
       mockTheme(
         <Provider store={store}>
-          <CreateEnvironmentPackagesTableRow
-            requestedPackage={requestedPackage}
-          />
+          <table>
+            <tbody>
+              <CreateEnvironmentPackagesTableRow
+                requestedPackage={requestedPackage}
+              />
+            </tbody>
+          </table>
         </Provider>
       )
     );

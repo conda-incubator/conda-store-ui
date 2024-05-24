@@ -83,6 +83,74 @@ To create a new version of this package, follow these steps:
 
 [^github-activity]: If you wish, use [`github-activity` to generate a Changelog](https://github.com/choldgraf/github-activity), e.g. `github-activity conda-incubator/conda-store-ui --since 2023.9.1 --until 2023.10.1 --auth <GH personal access token>`
 
+### Running Tests
+
+This repo contains two types of tests: Jest and Playwright
+
+#### Jest tests
+
+To run the Jest tests, run the following command:
+
+```sh
+yarn test
+```
+
+#### Playwright tests
+
+Steps to install and set up:
+
+1. Create Conda environment
+   ```sh
+   conda env create -f environment_dev.yml
+   ```
+2. Activate Conda environment
+   ```sh
+   conda activate cs-ui-dev-env
+   ```
+3. Install Playwright-usable browser
+   ```sh
+   playwright install chromium
+   ```
+4. Copy environment variables
+   ```sh
+   cp .env.example .env
+   ```
+5. Install JavaScript dependencies
+   ```sh
+   yarn install --immutable
+   ```
+6. Build app
+   ```sh
+   yarn build
+   ```
+
+To run the tests, you will need to run commands in two separate terminal windows
+or tabs.
+
+Steps to run:
+
+1. In the first terminal window/tab, enter the following:
+   ```sh
+   conda activate cs-ui-dev-env
+   yarn start
+   ```
+2. Wait for server to start (you'll know it's ready when it says "webpack 5.xx.x
+compiled successfully"). Open a **new terminal window or tab** and enter the
+following:
+   ```sh
+   conda activate cs-ui-dev-env
+   pytest
+   ```
+
+If you need to debug, try replacing the last command with:
+
+```sh
+PWDEBUG=1 pytest
+```
+
+Note: PW stands for Playwright. `PWDEBUG=1` puts [Playwright in debug
+mode](https://playwright.dev/python/docs/debug).
+
 ## Code of Conduct 🤝
 
 To guarantee a welcoming and friendly community, we require all community members to follow our [Code of Conduct](https://github.com/conda-incubator/governance/blob/main/CODE_OF_CONDUCT.md).
@@ -93,7 +161,7 @@ conda-store-ui is developed under the [BSD-3 LICENSE](./LICENSE).
 
 <!-- reusable links -->
 
-[conda-store-docs]: https://conda.store/en/latest/
-[conda-store-ui-docs]: https://conda-incubator.github.io/conda-store-ui/?path=/story/welcome--page
+[conda-store-docs]: https://conda.store/
+[conda-store-ui-docs]: https://conda-incubator.github.io/conda-store-ui/?path=/docs/welcome--docs
 [conda-store-repo]: https://github.com/conda-incubator/conda-store
 [jupyterlab-conda-store-repo]: https://github.com/conda-incubator/jupyterlab-conda-store

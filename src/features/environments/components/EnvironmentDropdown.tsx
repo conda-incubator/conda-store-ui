@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import Accordion from "@mui/material/Accordion";
 import AddIcon from "@mui/icons-material/Add";
 import Tooltip from "@mui/material/Tooltip";
@@ -9,17 +10,8 @@ import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import useTheme from "@mui/material/styles/useTheme";
 import { Environment } from "./Environment";
+import { useAppSelector } from "../../../hooks";
 import { INamespaceEnvironments } from "../../../common/interfaces";
-import {
-  modeChanged,
-  EnvironmentDetailsModes
-} from "../../../features/environmentDetails";
-import {
-  environmentOpened,
-  openCreateNewEnvironmentTab,
-  toggleNewEnvironmentView
-} from "../../../features/tabs";
-import { useAppDispatch, useAppSelector } from "../../../hooks";
 import { StyledAccordionSummary, StyledIconButton } from "../../../styles";
 import { ArrowIcon } from "../../../components";
 
@@ -35,24 +27,7 @@ export const EnvironmentDropdown = ({
 }: IEnvironmentDropdownProps) => {
   const { selectedEnvironment } = useAppSelector(state => state.tabs);
   const [isExpanded, setIsExpanded] = useState(false);
-  const dispatch = useAppDispatch();
   const { palette } = useTheme();
-
-  const onCreateNewEnvironmentTab = (
-    event: React.SyntheticEvent,
-    namespace: string
-  ) => {
-    if (!canCreate) {
-      event.stopPropagation();
-      return;
-    }
-
-    if (isExpanded) {
-      event.stopPropagation();
-    }
-    dispatch(modeChanged(EnvironmentDetailsModes.CREATE));
-    dispatch(openCreateNewEnvironmentTab(namespace));
-  };
 
   return (
     <Accordion
@@ -100,10 +75,27 @@ export const EnvironmentDropdown = ({
             }
           >
             <StyledIconButton
-              onClick={e => onCreateNewEnvironmentTab(e, namespace)}
-              disabled={!canCreate}
+              component={Link}
+              to={`/${namespace}/new-environment`}
+              style={{
+                textTransform: "none",
+                paddingRight: "0.4rem"
+              }}
+              onClick={event => {
+                if (!canCreate) {
+                  event.preventDefault();
+                  event.stopPropagation();
+                } else if (isExpanded) {
+                  event.stopPropagation();
+                }
+              }}
+              // Do not use the `disabled` attribute. Disable manually with
+              // JavaScript and the `aria-disabled` attribute, otherwise the
+              // tooltip won't work. More info:
+              // https://github.com/conda-incubator/conda-store-ui/pull/370/files#r1486492450
+              aria-disabled={!canCreate}
             >
-              <AddIcon />
+              <AddIcon /> New
             </StyledIconButton>
           </Tooltip>
         </Box>
@@ -119,17 +111,6 @@ export const EnvironmentDropdown = ({
               sx={{ marginBottom: "20px" }}
             >
               <Environment
-                onClick={() => {
-                  dispatch(
-                    environmentOpened({
-                      environment,
-                      selectedEnvironmentId: selectedEnvironment?.id,
-                      canUpdate
-                    })
-                  );
-                  dispatch(modeChanged(EnvironmentDetailsModes.READ));
-                  dispatch(toggleNewEnvironmentView(false));
-                }}
                 environment={environment}
                 selectedEnvironmentId={selectedEnvironment?.id}
               />

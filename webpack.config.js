@@ -21,24 +21,24 @@ const {
   getContext,
   getOptimization,
   getResolve,
-  tsRules,
-  mdxRules
+  tsRules
 } = require("./webpack.rules");
 
 const isProd = process.env.NODE_ENV === "production";
 
 const basicConfig = {
   devServer: {
-    port: 8000
+    port: 8000,
   },
   devtool: isProd ? false : "source-map",
-  entry: ["src/index.tsx", "src/AppExample.tsx"],
+  entry: ["src/index.tsx", "src/main.tsx"],
   watch: false,
   ...getContext(__dirname),
 
   output: {
     path: path.resolve(__dirname, "dist"),
-    filename: "[name].js"
+    filename: "[name].js",
+    publicPath: "/"
   },
 
   module: {
@@ -47,7 +47,6 @@ const basicConfig = {
       ...stylingRules,
       ...svgUrlRules,
       ...tsRules,
-      ...mdxRules
     ]
   },
 

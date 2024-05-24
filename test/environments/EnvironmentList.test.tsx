@@ -1,4 +1,5 @@
 import React from "react";
+import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import { render } from "@testing-library/react";
 import { EnvironmentsList } from "../../src/features/environments";
@@ -31,7 +32,8 @@ describe("<EnvironmentsList />", () => {
             search={""}
           ></EnvironmentsList>
         </Provider>
-      )
+      ),
+      { wrapper: BrowserRouter }
     );
 
     expect(component.container).toHaveTextContent("python-flask-env");
@@ -54,10 +56,11 @@ describe("<EnvironmentsList />", () => {
             search={""}
           ></EnvironmentsList>
         </Provider>
-      )
+      ),
+      { wrapper: BrowserRouter }
     );
 
-    expect(component.container).toHaveTextContent("Shared environments");
+    expect(component.container).toHaveTextContent("Shared Environments");
     expect(component.container).toHaveTextContent("default");
   });
 });

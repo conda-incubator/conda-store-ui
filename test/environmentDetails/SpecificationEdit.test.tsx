@@ -1,4 +1,5 @@
 import React from "react";
+import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import {
   act,
@@ -32,7 +33,8 @@ describe("<SpecificationEdit />", () => {
             onUpdateEnvironment={jest.fn()}
           />
         </Provider>
-      )
+      ),
+      { wrapper: BrowserRouter }
     );
 
     act(() => {
@@ -50,9 +52,10 @@ describe("<SpecificationEdit />", () => {
             onUpdateEnvironment={jest.fn()}
           />
         </Provider>
-      )
+      ),
+      { wrapper: BrowserRouter }
     );
-    const switchButton = component.getByLabelText("Switch to YAML Editor");
+    const switchButton = component.getByLabelText("YAML", { exact: false });
     fireEvent.click(switchButton);
 
     act(() => {
@@ -60,9 +63,7 @@ describe("<SpecificationEdit />", () => {
       store.dispatch(updateChannels(["conda-store"]));
     });
 
-    expect(
-      component.queryByText("Switch to Standard View")
-    ).toBeInTheDocument();
+    expect(component.queryByText("YAML", { exact: false })).toBeInTheDocument();
   });
 
   it("should cancel environment edition", () => {
@@ -72,9 +73,11 @@ describe("<SpecificationEdit />", () => {
           <SpecificationEdit
             descriptionUpdated={false}
             onUpdateEnvironment={jest.fn()}
+            onSpecificationIsChanged={jest.fn()}
           />
         </Provider>
-      )
+      ),
+      { wrapper: BrowserRouter }
     );
     const cancelButton = component.getByText("Cancel");
     fireEvent.click(cancelButton);
@@ -91,9 +94,10 @@ describe("<SpecificationEdit />", () => {
             onUpdateEnvironment={jest.fn()}
           />
         </Provider>
-      )
+      ),
+      { wrapper: BrowserRouter }
     );
-    const switchButton = component.getByLabelText("Switch to YAML Editor");
+    const switchButton = component.getByLabelText("YAML", { exact: false });
     fireEvent.click(switchButton);
 
     const code = stringify({
@@ -106,7 +110,9 @@ describe("<SpecificationEdit />", () => {
     });
 
     await waitFor(() => {
-      expect(screen.getByText("conda-channel")).not.toBeNull();
+      expect(
+        screen.getByText("conda-channel", { exact: false })
+      ).not.toBeNull();
     });
 
     const emptyCode = stringify({

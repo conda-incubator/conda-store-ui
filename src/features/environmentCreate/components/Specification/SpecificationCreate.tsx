@@ -16,14 +16,15 @@ import { getStylesForStyleType } from "../../../../utils/helpers";
 
 export const SpecificationCreate = ({ onCreateEnvironment }: any) => {
   const dispatch = useAppDispatch();
-  const { channels, requestedPackages } = useAppSelector(
+  const { channels, requestedPackages, environmentVariables } = useAppSelector(
     state => state.environmentCreate
   );
   const [show, setShow] = useState(false);
   const [editorContent, setEditorContent] = useState<{
     channels: string[];
     dependencies: string[];
-  }>({ channels: [], dependencies: [] });
+    variables: Record<string, string>;
+  }>({ channels: [], dependencies: [], variables: {} });
 
   const buttonStyles = getStylesForStyleType(
     { padding: "5px 60px" },
@@ -36,19 +37,35 @@ export const SpecificationCreate = ({ onCreateEnvironment }: any) => {
 
   const onUpdateEditor = ({
     channels,
-    dependencies
+    dependencies,
+    variables
   }: {
     channels: string[];
     dependencies: string[];
+    variables: Record<string, string>;
   }) => {
-    const code = { channels, dependencies };
+    const code = { channels, dependencies, variables };
 
-    if (!channels || channels.length === 0) {
+    // Note: the [null] checks are due to empty lists in the pretty-printed case
+    // of formatCode
+    if (
+      !channels ||
+      channels.length === 0 ||
+      (channels.length === 1 && channels[0] === null)
+    ) {
       code.channels = [];
     }
 
-    if (!dependencies || dependencies.length === 0) {
+    if (
+      !dependencies ||
+      dependencies.length === 0 ||
+      (dependencies.length === 1 && dependencies[0] === null)
+    ) {
       code.dependencies = [];
+    }
+
+    if (!variables || Object.keys(variables).length === 0) {
+      code.variables = {};
     }
 
     setEditorContent(code);
@@ -59,27 +76,41 @@ export const SpecificationCreate = ({ onCreateEnvironment }: any) => {
       dispatch(
         editorCodeUpdated({
           channels: editorContent.channels,
-          dependencies: editorContent.dependencies
+          dependencies: editorContent.dependencies,
+          variables: editorContent.variables
         })
       );
     } else {
-      setEditorContent({ dependencies: requestedPackages, channels });
+      setEditorContent({
+        dependencies: requestedPackages,
+        variables: environmentVariables,
+        channels
+      });
     }
 
     setShow(value);
   };
 
-  const formatCode = (channels: string[], dependencies: string[]) => {
+  const formatCode = (
+    channels: string[],
+    dependencies: string[],
+    variables: Record<string, string>
+  ) => {
     if (channels.length === 0 && dependencies.length === 0) {
-      return "channels:\n  -\ndependencies:\n  -";
+      // Note: these empty pretty-printed lists translate to [null]
+      return "channels:\n  -\ndependencies:\n  -\n" + stringify({ variables });
     }
-    return stringify({ channels, dependencies: dependencies });
+    return stringify({ channels, dependencies, variables });
   };
 
   const handleSubmit = () => {
     const code = show
       ? editorContent
-      : { dependencies: requestedPackages, channels };
+      : {
+          dependencies: requestedPackages,
+          variables: environmentVariables,
+          channels
+        };
 
     onCreateEnvironment(code);
   };
@@ -99,7 +130,7 @@ export const SpecificationCreate = ({ onCreateEnvironment }: any) => {
       <Box>
         {show ? (
           <CodeEditor
-            code={formatCode(channels, requestedPackages)}
+            code={formatCode(channels, requestedPackages, environmentVariables)}
             onChangeEditor={onUpdateEditor}
           />
         ) : (

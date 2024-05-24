@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import Box from "@mui/material/Box";
 import Alert from "@mui/material/Alert";
 import { stringify } from "yaml";
@@ -16,23 +17,38 @@ import {
 } from "../../../features/metadata";
 import {
   environmentOpened,
-  closeCreateNewEnvironmentTab
+  closeCreateNewEnvironmentTab,
+  openCreateNewEnvironmentTab
 } from "../../../features/tabs";
 import { useAppDispatch, useAppSelector } from "../../../hooks";
 import { SpecificationCreate, SpecificationReadOnly } from "./Specification";
 import { descriptionChanged, nameChanged } from "../environmentCreateSlice";
 import createLabel from "../../../common/config/labels";
-
-export interface IEnvCreate {
-  environmentNotification: (notification: any) => void;
-}
+import { showNotification } from "../../notification/notificationSlice";
 
 interface ICreateEnvironmentArgs {
   code: { channels: string[]; dependencies: string[] };
 }
 
-export const EnvironmentCreate = ({ environmentNotification }: IEnvCreate) => {
+export const EnvironmentCreate = () => {
   const dispatch = useAppDispatch();
+
+  // Url routing params
+  // If user loads the app at /<namespace_name>/new-environment
+  // This will put the app in the correct state
+  const { namespaceName } = useParams<{
+    namespaceName: string;
+  }>();
+
+  useEffect(() => {
+    if (namespaceName) {
+      dispatch(modeChanged(EnvironmentDetailsModes.CREATE));
+      dispatch(openCreateNewEnvironmentTab(namespaceName));
+    }
+  }, [namespaceName]);
+
+  const navigate = useNavigate();
+
   const { mode } = useAppSelector(state => state.environmentDetails);
   const { name, description } = useAppSelector(
     state => state.environmentCreate
@@ -84,17 +100,13 @@ export const EnvironmentCreate = ({ environmentNotification }: IEnvCreate) => {
       dispatch(
         environmentOpened({
           environment,
-          selectedEnvironmentId: newEnvId,
           canUpdate: true
         })
       );
+      // After new environment has been created, navigate to the new environment's web page
+      navigate(`/${namespace}/${name}`);
       dispatch(currentBuildIdChanged(data.build_id));
-      environmentNotification({
-        data: {
-          show: true,
-          description: createLabel(name, "create")
-        }
-      });
+      dispatch(showNotification(createLabel(name, "create")));
     } catch (e) {
       setError({
         message: e?.data?.message ?? createLabel(undefined, "error"),
@@ -106,6 +118,7 @@ export const EnvironmentCreate = ({ environmentNotification }: IEnvCreate) => {
   return (
     <Box sx={{ padding: "14px 12px" }}>
       <EnvironmentDetailsHeader
+        namespace={newEnvironment.namespace}
         onUpdateName={handleChangeName}
         showEditButton={true}
       />

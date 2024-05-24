@@ -1,4 +1,5 @@
 import React from "react";
+import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import {
   fireEvent,
@@ -70,7 +71,8 @@ describe("<Environment />", () => {
             onUpdateRefreshEnvironments={mockOnUpdateRefreshEnvironments}
           />
         </Provider>
-      )
+      ),
+      { wrapper: BrowserRouter }
     );
     await waitFor(() => {
       expect(component.queryByText("filesystem")).toBeInTheDocument();
@@ -91,7 +93,10 @@ describe("<Environment />", () => {
     const searchInput = component.getByPlaceholderText(
       "Search for environment"
     );
-    fireEvent.change(searchInput, { target: { value: "python-flask-env-2" } });
+
+    fireEvent.change(searchInput, {
+      target: { value: "python-flask-env-2" }
+    });
 
     await waitFor(() => {
       expect(screen.getByText("python-flask-env-2")).not.toBeNull();

@@ -24,7 +24,8 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18
-          registry-url: "https://registry.npmjs.org"
+          registry-url: 'https://registry.npmjs.org'
+          scope: "@conda-store-ui"
 
       - name: "Install dependencies 📦"
         run: yarn
@@ -40,6 +41,14 @@ jobs:
 
       - name: "Generate package tarball 📦"
         run: yarn pack --filename conda-store-ui.tgz
+
+      - name: "Set NPM scope" #(setup-node workaround https://github.com/actions/setup-node/issues/763)
+        env:
+          NPM_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          npm config delete @conda-store-ui:registry --location project
+          npm config set @conda-store-ui:registry 'https://registry.npmjs.org' --location project
+          npm config set //registry.npmjs.org/:_authToken '${NPM_AUTH_TOKEN}' --location project
 
       - name: "Publish to npm 📤"
         run: |
