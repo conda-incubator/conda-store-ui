@@ -42,7 +42,7 @@ We use [Docker Compose](https://docs.docker.com/compose/) to set up the infrastr
 Running conda-store-ui in Docker is the most straightforward way to set up your local development environment.
 
 1. Run `yarn run start:docker` to start the entire development stack.
-2. Open you local browser and go to [http://localhost:8000](http://localhost:8000) so see conda-store-ui.
+2. Open you local browser and go to [http://localhost:8000](http://localhost:8000) to see conda-store-ui.
 3. You can then log in using the default username of `username` and default password of `password`.
 
 Hot reloading is enabled, so when you make changes to source files, your browser will reload and reflect the changes.
