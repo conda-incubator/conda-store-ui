@@ -182,10 +182,8 @@ def _existing_environment_interactions(
         "new description"
     )
     # change the vesion spec of an existing package
-    page.get_by_role("row", name="ipykernel", exact=False).get_by_role(
-        "combobox"
-    ).first.click()
-    page.get_by_role("option", name=">=").click()
+    page.get_by_role("row", name="rich").get_by_role("button").first.click()
+    page.get_by_role("option", name="=").click()
     # Note: purposefully not testing version constraint since there is inconsistent behavior here
 
     # add a new package
