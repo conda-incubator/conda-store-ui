@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import useTheme from "@mui/material/styles/useTheme";
-import { StyledButtonPrimary } from "../../../styles";
+import { StyledButton } from "../../../styles";
 import { useAppDispatch, useAppSelector } from "../../../hooks";
 import {
   EnvironmentDetailsModes,
@@ -55,14 +55,15 @@ export const EnvironmentDetailsHeader = ({
             {envName}
           </Typography>
           {mode === EnvironmentDetailsModes.READ && (
-            <StyledButtonPrimary
+            <StyledButton
+              color="primary"
               disabled={!showEditButton}
               onClick={() =>
                 dispatch(modeChanged(EnvironmentDetailsModes.EDIT))
               }
             >
               Edit
-            </StyledButtonPrimary>
+            </StyledButton>
           )}
         </>
       )}
@@ -105,7 +106,6 @@ export const EnvironmentDetailsHeader = ({
             size="small"
             onChange={e => onUpdateName(e.target.value)}
           />
-          {/* <StyledButtonPrimary>Archive</StyledButtonPrimary> */}
         </>
       )}
     </Box>

@@ -123,7 +123,7 @@ export const AddRequestedPackage = ({
         alignItems: "center",
         justifyContent: "space-between",
         marginTop: "15px",
-        width: isCreating ? 330 : "100%"
+        width: isCreating ? 360 : "100%"
       }}
     >
       <Box>

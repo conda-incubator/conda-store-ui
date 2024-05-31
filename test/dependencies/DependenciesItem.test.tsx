@@ -10,11 +10,16 @@ describe("<DependenciesItem />", () => {
   beforeEach(() => {
     component = render(
       mockTheme(
-        <DependenciesItem
-          mode="edit"
-          dependency={DEPENDENCY}
-          handleClick={handleClick}
-        />
+        <table>
+          <tbody>
+            <DependenciesItem
+              mode="edit"
+              dependency={DEPENDENCY}
+              handleClick={handleClick}
+              isLast={false}
+            />
+          </tbody>
+        </table>
       )
     );
   });

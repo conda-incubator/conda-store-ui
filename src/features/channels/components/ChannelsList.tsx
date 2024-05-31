@@ -18,8 +18,6 @@ export interface IChannelsListProps {
 }
 
 export const ChannelsList = ({ channelList }: IChannelsListProps) => {
-  const listLength = channelList.length;
-
   return (
     <Accordion
       sx={{ maxWidth: 420, boxShadow: "none" }}
@@ -27,13 +25,17 @@ export const ChannelsList = ({ channelList }: IChannelsListProps) => {
       defaultExpanded
     >
       <StyledAccordionSummary expandIcon={<ArrowIcon />}>
-        <StyledAccordionTitle>Channels</StyledAccordionTitle>
+        <StyledAccordionTitle sx={{ color: "primary.main" }}>
+          Channels
+        </StyledAccordionTitle>
       </StyledAccordionSummary>
-      <StyledAccordionDetails sx={{ padding: "11px 21px" }}>
+      <StyledAccordionDetails sx={{ padding: 0 }}>
         {channelList.map((channel, index) => (
           <Box
             key={channel}
-            sx={{ marginBottom: index === listLength - 1 ? "0px" : "10px" }}
+            sx={{
+              padding: "16px"
+            }}
           >
             <Channel channelName={channel} />
           </Box>

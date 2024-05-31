@@ -1,5 +1,6 @@
 import React, { memo } from "react";
-import Box from "@mui/material/Box";
+import TableRow from "@mui/material/TableRow";
+import TableCell from "@mui/material/TableCell";
 import Typography from "@mui/material/Typography";
 import { Dependency } from "../../../common/models";
 import Tooltip from "@mui/material/Tooltip";
@@ -14,40 +15,64 @@ interface IDependenciesItemProps {
    */
   dependency: Dependency;
   mode: "read-only" | "edit";
+  isLast: boolean;
   handleClick: () => void;
+  sx?: any;
 }
 
 const BaseDependenciesItem = ({
   dependency,
   mode,
-  handleClick
+  isLast,
+  handleClick,
+  sx = {}
 }: IDependenciesItemProps) => {
   const { name, version } = dependency;
   const isEditMode = mode === "edit";
 
   return (
-    <Box sx={{ display: "flex", alignItems: "center" }}>
-      <Box sx={{ display: "flex", alignItems: "center", width: "300px" }}>
-        <Typography sx={{ fontSize: "13px", color: "#333" }}>{name}</Typography>
-      </Box>
-      <Typography
-        sx={{
-          color: "#333",
-          width: isEditMode ? "140px" : "auto",
-          marginLeft: isEditMode ? "20px" : "0px",
-          fontSize: "13px"
-        }}
-      >
-        {version}
-      </Typography>
-      {isEditMode && (
-        <Tooltip title="Promote as requested package" placement="right-start">
-          <StyledIconButton onClick={handleClick} data-testid="PromoteIcon">
-            <UploadIcon />
-          </StyledIconButton>
-        </Tooltip>
-      )}
-    </Box>
+    <>
+      <TableRow sx={sx}>
+        <TableCell
+          sx={{
+            fontSize: "13px",
+            color: "#333",
+            borderBottom: isLast ? "none" : undefined
+          }}
+        >
+          {name}
+        </TableCell>
+        <TableCell
+          sx={{ textAlign: "right", borderBottom: isLast ? "none" : undefined }}
+        >
+          <Typography
+            sx={{
+              color: "#333",
+              fontSize: "13px",
+              fontFamily: "monospace"
+            }}
+          >
+            {version}
+            {isEditMode && (
+              <>
+                &nbsp;
+                <Tooltip
+                  title="Promote as requested package"
+                  placement="right-start"
+                >
+                  <StyledIconButton
+                    onClick={handleClick}
+                    data-testid="PromoteIcon"
+                  >
+                    <UploadIcon />
+                  </StyledIconButton>
+                </Tooltip>
+              </>
+            )}
+          </Typography>
+        </TableCell>
+      </TableRow>
+    </>
   );
 };
 
