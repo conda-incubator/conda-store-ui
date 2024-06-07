@@ -26,22 +26,4 @@
    npm publish --verbose --access public conda-store-ui.tgz --dry-run
    ```
 
-6. If the dry run looks good, publish to npmjs:
-
-   ```bash
-   # you will more than likely need to login first
-   # npm login --registry https://registry.npmjs.org --scope @conda-store-ui
-
-   # publish release to npmjs
-   npm publish --verbose --access public conda-store-ui.tgz
-   ```
-
-7. Ensure that whatever code you published is checked into git, then tag and push the commit and tag
-
-```bash
-# use the same version here as in package.json, but without a leading `v`
-git tag -a YYYY.M.ReleaseNumber
-
-# push to upstream
-git push && git push --tags
-```
+6. If the dry run looks good, continue with the release checklist items
