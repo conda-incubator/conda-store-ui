@@ -1,11 +1,9 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { DropzoneArea } from "mui-file-dropzone";
 import Box from "@mui/material/Box";
-import Tabs from "@mui/material/Tabs";
-import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
 import { ChannelsEdit } from "../../../../features/channels";
-import { BlockContainerEditMode } from "../../../../components";
+import { BlockContainerEditMode, AlertDialog } from "../../../../components";
 import { StyledButtonPrimary } from "../../../../styles";
 import { CodeEditor } from "../../../../features/yamlEditor";
 import { stringify } from "yaml";
@@ -17,28 +15,6 @@ import {
   environmentCreateStateCleared
 } from "../../environmentCreateSlice";
 import { getStylesForStyleType } from "../../../../utils/helpers";
-
-interface ITabPanelProps {
-  children?: React.ReactNode;
-  index: number;
-  value: number;
-  id: string;
-  "aria-labelledby": string;
-}
-
-function CustomTabPanel(props: ITabPanelProps) {
-  const { children, value, index, ...other } = props;
-
-  return (
-    <div role="tabpanel" hidden={value !== index} {...other}>
-      {value === index && (
-        <Box sx={{ p: 3 }}>
-          <Typography>{children}</Typography>
-        </Box>
-      )}
-    </div>
-  );
-}
 
 export const SpecificationCreate = ({ onCreateEnvironment }: any) => {
   const dispatch = useAppDispatch();
@@ -129,11 +105,12 @@ export const SpecificationCreate = ({ onCreateEnvironment }: any) => {
     return stringify({ channels, dependencies, variables });
   };
 
-  const [tabIndex, setTabIndex] = React.useState<number>(0);
+  const [mode, setMode] = React.useState<number>(0);
+  const [showDialog, setShowDialog] = React.useState<boolean>(false);
   const [files, setFiles] = React.useState<File[]>([]);
 
   const handleSubmit = async () => {
-    if (tabIndex === 0) {
+    if (mode === 0) {
       const code = show
         ? editorContent
         : {
@@ -144,7 +121,7 @@ export const SpecificationCreate = ({ onCreateEnvironment }: any) => {
 
       onCreateEnvironment(code);
     } else if (files.length) {
-      // tabIndex = 1
+      // mode = 1
       const text = await files[0].text();
       onCreateEnvironment(text);
     }
@@ -158,30 +135,7 @@ export const SpecificationCreate = ({ onCreateEnvironment }: any) => {
 
   return (
     <Box>
-      <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-        <Tabs
-          value={tabIndex}
-          onChange={(_, tabIndex) => setTabIndex(tabIndex)}
-          aria-label="Specification or Lockfile"
-        >
-          <Tab
-            label="Specification"
-            id="specification-tab"
-            aria-controls="specification-tabpanel"
-          />
-          <Tab
-            label="Lockfile"
-            id="lockfile-tab"
-            aria-controls="lockfile-tabpanel"
-          />
-        </Tabs>
-      </Box>
-      <CustomTabPanel
-        value={tabIndex}
-        index={0}
-        id="specifaction-tabpanel"
-        aria-labelledby="specification-tab"
-      >
+      {mode === 0 ? (
         <BlockContainerEditMode
           title="Specification"
           onToggleEditMode={onToggleEditorView}
@@ -212,25 +166,110 @@ export const SpecificationCreate = ({ onCreateEnvironment }: any) => {
                 </Box>
               </>
             )}
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "flex-end",
+                alignItems: "flex-end",
+                gap: "30px",
+                marginTop: "45px",
+                marginBottom: "10px"
+              }}
+            >
+              <Typography
+                sx={{
+                  fontSize: "13px",
+                  color: "#333",
+                  textDecoration: "underline",
+                  cursor: "pointer"
+                }}
+                onClick={() => setShowDialog(true)}
+              >
+                Switch to lockfile upload
+              </Typography>
+            </Box>
           </Box>
         </BlockContainerEditMode>
-      </CustomTabPanel>
-      <CustomTabPanel
-        value={tabIndex}
-        index={1}
-        id="lockfile-tabpanel"
-        aria-labelledby="lockfile-tab"
-      >
-        <DropzoneArea
-          fileObjects={files}
-          onChange={async files => setFiles(files)}
-          filesLimit={1}
-          showPreviews={true}
-          showPreviewsInDropzone={false}
-          showFileNamesInPreview={true}
-          previewText=""
-        />
-      </CustomTabPanel>
+      ) : (
+        <Box
+          sx={{
+            border: "1px solid #E0E0E0",
+            paddingBottom: "15px"
+          }}
+        >
+          <Box
+            sx={{
+              padding: "10px 15px",
+              borderBottom: "1px solid #E0E0E0"
+            }}
+          >
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center"
+              }}
+            >
+              <Typography
+                data-testid="block-container-title"
+                sx={{ fontSize: "14px", fontWeight: 600, color: "#333" }}
+              >
+                Lockfile
+              </Typography>
+            </Box>
+          </Box>
+          <Box
+            sx={{
+              padding: "15px 15px 0 15px"
+            }}
+          >
+            <DropzoneArea
+              fileObjects={files}
+              onChange={async files => setFiles(files)}
+              filesLimit={1}
+              showPreviews={true}
+              showPreviewsInDropzone={false}
+              showFileNamesInPreview={true}
+              previewText=""
+            />
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "flex-end",
+                alignItems: "flex-end",
+                gap: "30px",
+                marginTop: "45px",
+                marginBottom: "10px"
+              }}
+            >
+              <Typography
+                sx={{
+                  fontSize: "13px",
+                  color: "#333",
+                  textDecoration: "underline",
+                  cursor: "pointer"
+                }}
+                onClick={() => setShowDialog(true)}
+              >
+                Switch to specification
+              </Typography>
+            </Box>
+          </Box>
+        </Box>
+      )}
+      <AlertDialog
+        title={`Switch to ${mode === 0 ? "lockfile upload" : "specification"}`}
+        description={`If you switch to ${
+          mode === 0 ? "lockfile upload" : "specification"
+        }, you may lose your work in this section of the form.`}
+        isOpen={showDialog}
+        closeAction={() => setShowDialog(false)}
+        confirmAction={() => {
+          setMode(mode === 0 ? 1 : 0);
+          setShowDialog(false);
+        }}
+        confirmText="Continue"
+      />
       <Box
         sx={{
           display: "flex",
@@ -242,7 +281,7 @@ export const SpecificationCreate = ({ onCreateEnvironment }: any) => {
         <StyledButtonPrimary
           sx={buttonStyles}
           onClick={handleSubmit}
-          disabled={tabIndex === 1 && !files?.length}
+          disabled={mode === 1 && !files?.length}
         >
           Create
         </StyledButtonPrimary>

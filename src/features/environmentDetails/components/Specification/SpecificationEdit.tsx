@@ -5,11 +5,12 @@ import React, {
   useCallback,
   useMemo
 } from "react";
+import { DropzoneArea } from "mui-file-dropzone";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { cloneDeep, debounce } from "lodash";
 import { stringify } from "yaml";
-import { BlockContainerEditMode } from "../../../../components";
+import { BlockContainerEditMode, AlertDialog } from "../../../../components";
 import { ChannelsEdit, updateChannels } from "../../../../features/channels";
 import { updateEnvironmentVariables } from "../../../../features/environmentVariables";
 import { Dependencies, pageChanged } from "../../../../features/dependencies";
@@ -154,18 +155,6 @@ export const SpecificationEdit = ({
     setShow(value);
   };
 
-  const onEditEnvironment = () => {
-    const envContent = show
-      ? code
-      : {
-          dependencies: requestedPackages,
-          variables: environmentVariables,
-          channels
-        };
-
-    onUpdateEnvironment(envContent);
-  };
-
   const onCancelEdition = () => {
     setEnvIsUpdated(false);
     onSpecificationIsChanged(false);
@@ -199,82 +188,212 @@ export const SpecificationEdit = ({
     }
   }, [channels, requestedPackages, environmentVariables, descriptionUpdated]);
 
+  const [mode, setMode] = React.useState<number>(0);
+  const [showDialog, setShowDialog] = React.useState<boolean>(false);
+  const [files, setFiles] = React.useState<File[]>([]);
+
+  const handleSubmit = async () => {
+    if (mode === 0) {
+      const envContent = show
+        ? code
+        : {
+            dependencies: requestedPackages,
+            variables: environmentVariables,
+            channels
+          };
+
+      onUpdateEnvironment(envContent);
+    } else if (files.length) {
+      // mode = 1
+      const text = await files[0].text();
+      onUpdateEnvironment(text);
+    }
+  };
+
   return (
-    <BlockContainerEditMode
-      title="Specification"
-      onToggleEditMode={onToggleEditorView}
-      isEditMode={show}
-    >
-      <Box>
-        {show ? (
-          <CodeEditor
-            code={stringify({
-              channels,
-              dependencies: requestedPackages,
-              variables: environmentVariables
-            })}
-            onChangeEditor={onUpdateEditor}
-          />
-        ) : (
-          <>
-            <Box sx={{ marginBottom: "30px" }}>
-              <RequestedPackagesEdit
-                packageList={requestedPackages}
-                onDefaultEnvIsChanged={onUpdateDefaultEnvironment}
+    <Box>
+      {mode === 0 ? (
+        <BlockContainerEditMode
+          title="Specification"
+          onToggleEditMode={onToggleEditorView}
+          isEditMode={show}
+        >
+          <Box>
+            {show ? (
+              <CodeEditor
+                code={stringify({
+                  channels,
+                  dependencies: requestedPackages,
+                  variables: environmentVariables
+                })}
+                onChangeEditor={onUpdateEditor}
               />
+            ) : (
+              <>
+                <Box sx={{ marginBottom: "30px" }}>
+                  <RequestedPackagesEdit
+                    packageList={requestedPackages}
+                    onDefaultEnvIsChanged={onUpdateDefaultEnvironment}
+                  />
+                </Box>
+                <Box sx={{ marginBottom: "30px" }}>
+                  <Dependencies
+                    mode="edit"
+                    dependencies={dependencies}
+                    hasMore={hasMore}
+                    next={() => dispatch(pageChanged(page + 1))}
+                  />
+                </Box>
+                <Box sx={{ marginBottom: "30px" }}>
+                  <ChannelsEdit
+                    channelsList={channels}
+                    updateChannels={onUpdateChannels}
+                  />
+                </Box>
+              </>
+            )}
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "flex-end",
+                alignItems: "flex-end",
+                gap: "30px",
+                marginTop: "45px",
+                marginBottom: "10px"
+              }}
+            >
+              <Typography
+                sx={{
+                  fontSize: "13px",
+                  color: "#333",
+                  textDecoration: "underline",
+                  cursor: "pointer"
+                }}
+                onClick={() => setShowDialog(true)}
+              >
+                Switch to lockfile upload
+              </Typography>
             </Box>
-            <Box sx={{ marginBottom: "30px" }}>
-              <Dependencies
-                mode="edit"
-                dependencies={dependencies}
-                hasMore={hasMore}
-                next={() => dispatch(pageChanged(page + 1))}
-              />
-            </Box>
-            <Box sx={{ margiBottom: "30px" }}>
-              <ChannelsEdit
-                channelsList={channels}
-                updateChannels={onUpdateChannels}
-              />
-            </Box>
-          </>
-        )}
+          </Box>
+        </BlockContainerEditMode>
+      ) : (
         <Box
           sx={{
-            display: "flex",
-            justifyContent: "flex-end",
-            alignItems: "flex-end",
-            gap: "30px",
-            marginTop: "45px",
-            marginBottom: "10px"
+            border: "1px solid #E0E0E0",
+            paddingBottom: "15px"
           }}
         >
-          <Typography
+          <Box
             sx={{
-              fontSize: "13px",
-              color: "#333",
-              textDecoration: "underline",
-              cursor: "pointer"
+              padding: "10px 15px",
+              borderBottom: "1px solid #E0E0E0"
             }}
-            onClick={() => onShowDialogAlert(true)}
           >
-            Delete environment
-          </Typography>
-          <StyledButtonPrimary
-            sx={{ padding: "5px 48px" }}
-            onClick={onCancelEdition}
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center"
+              }}
+            >
+              <Typography
+                data-testid="block-container-title"
+                sx={{ fontSize: "14px", fontWeight: 600, color: "#333" }}
+              >
+                Lockfile
+              </Typography>
+            </Box>
+          </Box>
+          <Box
+            sx={{
+              padding: "15px 15px 0 15px"
+            }}
           >
-            Cancel
-          </StyledButtonPrimary>
-          <StyledButtonPrimary
-            sx={{ padding: "5px 48px" }}
-            onClick={onEditEnvironment}
-            disabled={!envIsUpdated}
-          >
-            Save
-          </StyledButtonPrimary>
+            <DropzoneArea
+              fileObjects={files}
+              onChange={async files => setFiles(files)}
+              filesLimit={1}
+              showPreviews={true}
+              showPreviewsInDropzone={false}
+              showFileNamesInPreview={true}
+              previewText=""
+            />
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "flex-end",
+                alignItems: "flex-end",
+                gap: "30px",
+                marginTop: "45px",
+                marginBottom: "10px"
+              }}
+            >
+              <Typography
+                sx={{
+                  fontSize: "13px",
+                  color: "#333",
+                  textDecoration: "underline",
+                  cursor: "pointer"
+                }}
+                onClick={() => setShowDialog(true)}
+              >
+                Switch to specification
+              </Typography>
+            </Box>
+          </Box>
         </Box>
+      )}
+
+      <AlertDialog
+        title={`Switch to ${mode === 0 ? "lockfile upload" : "specification"}`}
+        description={`If you switch to ${
+          mode === 0 ? "lockfile upload" : "specification"
+        }, you may lose your work in this section of the form.`}
+        isOpen={showDialog}
+        closeAction={() => setShowDialog(false)}
+        confirmAction={() => {
+          setMode(mode === 0 ? 1 : 0);
+          setShowDialog(false);
+        }}
+        confirmText="Continue"
+      />
+
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "flex-end",
+          alignItems: "flex-end",
+          gap: "30px",
+          marginTop: "45px",
+          marginBottom: "10px"
+        }}
+      >
+        <Typography
+          sx={{
+            fontSize: "13px",
+            color: "#333",
+            textDecoration: "underline",
+            cursor: "pointer"
+          }}
+          onClick={() => onShowDialogAlert(true)}
+        >
+          Delete environment
+        </Typography>
+        <StyledButtonPrimary
+          sx={{ padding: "5px 48px" }}
+          onClick={onCancelEdition}
+        >
+          Cancel
+        </StyledButtonPrimary>
+        <StyledButtonPrimary
+          sx={{ padding: "5px 48px" }}
+          // onClick={onEditEnvironment}
+          onClick={handleSubmit}
+          disabled={!envIsUpdated || (mode === 1 && !files?.length)}
+        >
+          Save
+        </StyledButtonPrimary>
       </Box>
-    </BlockContainerEditMode>
+    </Box>
   );
 };
