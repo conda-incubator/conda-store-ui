@@ -4,7 +4,7 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import { StyledButtonPrimary } from "../styles";
+import { StyledButton } from "../styles";
 
 interface IAlertDialog {
   title: string;
@@ -47,10 +47,12 @@ export const AlertDialog = ({
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-        <StyledButtonPrimary onClick={closeAction}>Cancel</StyledButtonPrimary>
-        <StyledButtonPrimary onClick={() => confirmAction()}>
+        <StyledButton color="primary" onClick={closeAction}>
+          Cancel
+        </StyledButton>
+        <StyledButton color="primary" onClick={() => confirmAction()}>
           {confirmText}
-        </StyledButtonPrimary>
+        </StyledButton>
       </DialogActions>
     </Dialog>
   );

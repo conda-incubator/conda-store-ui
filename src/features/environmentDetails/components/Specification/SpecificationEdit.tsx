@@ -24,8 +24,9 @@ import {
 } from "../../../../features/requestedPackages";
 import { CodeEditor } from "../../../../features/yamlEditor";
 import { useAppDispatch, useAppSelector } from "../../../../hooks";
-import { StyledButtonPrimary } from "../../../../styles";
+import { StyledButton } from "../../../../styles";
 import { CondaSpecificationPip } from "../../../../common/models";
+
 interface ISpecificationEdit {
   descriptionUpdated: boolean;
   defaultEnvVersIsChanged: boolean;
@@ -34,6 +35,7 @@ interface ISpecificationEdit {
   onUpdateEnvironment: (specification: any) => void;
   onShowDialogAlert: (showDialog: boolean) => void;
 }
+
 export const SpecificationEdit = ({
   descriptionUpdated,
   defaultEnvVersIsChanged,
@@ -242,12 +244,14 @@ export const SpecificationEdit = ({
                     dependencies={dependencies}
                     hasMore={hasMore}
                     next={() => dispatch(pageChanged(page + 1))}
+                    maxWidth={500}
                   />
                 </Box>
                 <Box sx={{ marginBottom: "30px" }}>
                   <ChannelsEdit
                     channelsList={channels}
                     updateChannels={onUpdateChannels}
+                    maxWidth={500}
                   />
                 </Box>
               </>
@@ -379,20 +383,21 @@ export const SpecificationEdit = ({
         >
           Delete environment
         </Typography>
-        <StyledButtonPrimary
+        <StyledButton
+          color="primary"
           sx={{ padding: "5px 48px" }}
           onClick={onCancelEdition}
         >
           Cancel
-        </StyledButtonPrimary>
-        <StyledButtonPrimary
+        </StyledButton>
+        <StyledButton
+          color="primary"
           sx={{ padding: "5px 48px" }}
-          // onClick={onEditEnvironment}
           onClick={handleSubmit}
           disabled={!envIsUpdated || (mode === 1 && !files?.length)}
         >
           Save
-        </StyledButtonPrimary>
+        </StyledButton>
       </Box>
     </Box>
   );

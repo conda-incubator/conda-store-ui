@@ -1,38 +1,57 @@
 import React from "react";
-import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
+import TableCell from "@mui/material/TableCell";
 import { requestedPackageParser } from "../../../utils/helpers";
 interface IRequestedPackageProps {
   /**
    * @param requestedPackage requested package
    */
   requestedPackage: string;
+  isLast: boolean;
 }
 
 export const RequestedPackage = ({
-  requestedPackage
+  requestedPackage,
+  isLast
 }: IRequestedPackageProps) => {
   const { constraint, name, version } =
     requestedPackageParser(requestedPackage);
 
-  const displayConstraint = () => {
-    if (constraint === "latest") {
-      return "";
-    }
-    const newConstraint = constraint === "==" ? "=" : constraint;
-    return `${newConstraint}${version}`;
-  };
-
   return (
-    <Box sx={{ display: "flex", alignItems: "center" }}>
-      <Box sx={{ display: "flex", alignItems: "center" }}>
-        <Typography sx={{ width: 190, fontSize: "13px", color: "#333" }}>
+    <>
+      <TableCell
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          borderBottom: isLast ? "none" : undefined
+        }}
+      >
+        <Typography
+          sx={{
+            width: 190,
+            fontSize: "13px",
+            color: "#333"
+          }}
+        >
           {name}
         </Typography>
-      </Box>
-      <Typography sx={{ fontSize: "13px", color: "#333" }}>
-        {displayConstraint()}
-      </Typography>
-    </Box>
+      </TableCell>
+      <TableCell
+        sx={{ textAlign: "right", borderBottom: isLast ? "none" : undefined }}
+      >
+        <Typography
+          sx={{
+            fontSize: "13px",
+            fontFamily: constraint === "latest" ? "inherit" : "monospace",
+            fontStyle: constraint === "latest" ? "italic" : "normal",
+            color: "#333"
+          }}
+        >
+          {constraint === "latest"
+            ? "(no version requested)"
+            : `${constraint.replace("==", "=")}${version}`}
+        </Typography>
+      </TableCell>
+    </>
   );
 };

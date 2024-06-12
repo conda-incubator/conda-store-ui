@@ -4,7 +4,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { ChannelsEdit } from "../../../../features/channels";
 import { BlockContainerEditMode, AlertDialog } from "../../../../components";
-import { StyledButtonPrimary } from "../../../../styles";
+import { StyledButton } from "../../../../styles";
 import { CodeEditor } from "../../../../features/yamlEditor";
 import { stringify } from "yaml";
 import { CreateEnvironmentPackages } from "../CreateEnvironmentPackages";
@@ -278,13 +278,14 @@ export const SpecificationCreate = ({ onCreateEnvironment }: any) => {
           marginBottom: "10px"
         }}
       >
-        <StyledButtonPrimary
+        <StyledButton
+          color="primary"
           sx={buttonStyles}
           onClick={handleSubmit}
           disabled={mode === 1 && !files?.length}
         >
           Create
-        </StyledButtonPrimary>
+        </StyledButton>
       </Box>
     </Box>
   );

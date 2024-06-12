@@ -1,7 +1,15 @@
 import React, { useEffect, useRef } from "react";
 import Accordion from "@mui/material/Accordion";
 import Box from "@mui/material/Box";
+import TableContainer from "@mui/material/TableContainer";
+import Table from "@mui/material/Table";
+import TableHead from "@mui/material/TableHead";
+import TableBody from "@mui/material/TableBody";
+import TableRow from "@mui/material/TableRow";
+import TableCell from "@mui/material/TableCell";
 import CircularProgress from "@mui/material/CircularProgress";
+import Tooltip from "@mui/material/Tooltip";
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import InfiniteScroll from "react-infinite-scroll-component";
 import {
   StyledAccordionDetails,
@@ -25,13 +33,15 @@ export interface IDependenciesProps {
   mode: "read-only" | "edit";
   hasMore: boolean;
   next?: () => void;
+  maxWidth?: number;
 }
 
 export const Dependencies = ({
   mode,
   dependencies,
   hasMore,
-  next = () => null
+  next = () => null,
+  maxWidth = 420
 }: IDependenciesProps) => {
   const dispatch = useAppDispatch();
   const { selectedEnvironment } = useAppSelector(state => state.tabs);
@@ -45,20 +55,29 @@ export const Dependencies = ({
   return (
     <Accordion
       sx={{
-        maxWidth: 420,
+        maxWidth,
         boxShadow: "none"
       }}
       disableGutters
       defaultExpanded
     >
       <StyledAccordionSummary expandIcon={<ArrowIcon />}>
-        <StyledAccordionTitle>
-          Packages Installed as Dependencies
+        <StyledAccordionTitle sx={{ color: "primary.main" }}>
+          Installed Packages{" "}
+          <Tooltip title="Includes requested packages and their dependencies">
+            <InfoOutlinedIcon
+              sx={{
+                fontSize: "20px",
+                verticalAlign: "top",
+                color: "secondary.main"
+              }}
+            />
+          </Tooltip>
         </StyledAccordionTitle>
       </StyledAccordionSummary>
       <StyledAccordionDetails
         id="infScroll"
-        sx={{ padding: "15px 21px", maxHeight: "300px" }}
+        sx={{ padding: 0, maxHeight: "300px" }}
         ref={scrollRef}
       >
         <InfiniteScroll
@@ -80,24 +99,45 @@ export const Dependencies = ({
           style={{ overflow: "hidden" }}
         >
           {dependencies.length ? (
-            <>
-              {dependencies.map((dependency, index) => (
-                <Box
-                  key={dependency.id}
-                  sx={{
-                    marginBottom: index === listLength - 1 ? "0px" : "2px"
-                  }}
-                >
-                  <DependenciesItem
-                    mode={mode}
-                    dependency={dependency}
-                    handleClick={() => dispatch(dependencyPromoted(dependency))}
-                  />
-                </Box>
-              ))}
-            </>
+            <TableContainer>
+              <Table sx={{ width: "100%", tableLayout: "fixed" }}>
+                <TableHead>
+                  <TableRow>
+                    <TableCell sx={{ fontSize: "13px" }}>Package</TableCell>
+                    <TableCell sx={{ fontSize: "13px", textAlign: "right" }}>
+                      Installed Version
+                    </TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {dependencies.map((dependency, index) => (
+                    <DependenciesItem
+                      key={dependency.id}
+                      sx={{
+                        backgroundColor:
+                          index % 2 ? "secondary.50" : "transparent"
+                      }}
+                      mode={mode}
+                      dependency={dependency}
+                      handleClick={() =>
+                        dispatch(dependencyPromoted(dependency))
+                      }
+                      isLast={index === dependencies.length - 1}
+                    />
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
           ) : (
-            <CircularProgress size={20} />
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                padding: "10px"
+              }}
+            >
+              <CircularProgress size={20} />
+            </Box>
           )}
         </InfiniteScroll>
       </StyledAccordionDetails>

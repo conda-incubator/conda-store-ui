@@ -182,10 +182,8 @@ def _existing_environment_interactions(
         "new description"
     )
     # change the vesion spec of an existing package
-    page.get_by_role("row", name="ipykernel", exact=False).get_by_role(
-        "combobox"
-    ).first.click()
-    page.get_by_role("option", name=">=").click()
+    page.get_by_role("row", name="rich").get_by_role("button").first.click()
+    page.get_by_role("option", name="12.5.1").click()
     # Note: purposefully not testing version constraint since there is inconsistent behavior here
 
     # add a new package
@@ -200,9 +198,7 @@ def _existing_environment_interactions(
     ).click()
 
     # promote a package installed as dependency to specified package
-    page.locator(
-        "#infScroll > .infinite-scroll-component__outerdiv > .infinite-scroll-component > div > div > .MuiButtonBase-root"
-    ).first.click()
+    page.get_by_test_id("PromoteIcon").first.click()
 
     # delete conda-forge channel
     page.get_by_test_id("DeleteIcon").click()
