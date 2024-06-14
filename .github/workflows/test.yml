@@ -46,7 +46,7 @@ jobs:
         shell: bash -el {0}
         run: |
           yarn run start &
-          wait-for-it localhost:8000  # wait for conda-store-ui to start
+          wait-for-it localhost:8000 -t 240   # wait for conda-store-ui to start (seconds)
 
       - name: "Run playwright tests"
         shell: bash -el {0}
