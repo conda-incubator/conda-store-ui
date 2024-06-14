@@ -260,9 +260,7 @@ def _existing_environment_interactions(page, env_name, time_to_build_env=5*60*10
     ).click()
 
     # promote a package installed as dependency to specified package
-    page.locator(
-        "#infScroll > .infinite-scroll-component__outerdiv > .infinite-scroll-component > div > div > .MuiButtonBase-root"
-    ).first.click()
+    page.get_by_test_id("PromoteIcon").first.click()
 
     # delete conda-forge channel
     page.get_by_test_id("DeleteIcon").click()

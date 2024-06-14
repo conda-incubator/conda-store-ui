@@ -90,7 +90,7 @@ export const EnvironmentDetails = () => {
   }, [
     // We only want to run this effect when:
     //
-    // 1. User navigates to different environment = change of 
+    // 1. User navigates to different environment = change of
     //    (namespaceName, environmentName) in the URL
     // 2. The corresponding (namespace, environment) data have been fetched
     //

@@ -162,7 +162,9 @@ export const VersionSelect = ({
         sx: {
           padding: "7px 9px !important",
           backgroundColor: palette.common.white,
-          borderRadius: "0px"
+          borderRadius: "0px",
+          fontFamily: "monospace",
+          fontSize: "13px"
         },
         "data-testid": "VersionSelectTest"
       }}
@@ -171,7 +173,11 @@ export const VersionSelect = ({
         {" "}
       </MenuItem>
       {versionsList.map(v => (
-        <MenuItem key={v} value={v}>
+        <MenuItem
+          key={v}
+          value={v}
+          sx={{ fontFamily: "monospace", fontSize: "13px" }}
+        >
           {v}
         </MenuItem>
       ))}

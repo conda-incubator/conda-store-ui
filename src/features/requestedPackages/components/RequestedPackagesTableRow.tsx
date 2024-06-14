@@ -81,13 +81,6 @@ const BaseRequestedPackagesTableRow = ({
         </Typography>
       </StyledRequestedPackagesTableCell>
       <StyledRequestedPackagesTableCell align="left">
-        <Typography
-          sx={{ fontSize: "13px", fontWeight: 400, color: "#676666" }}
-        >
-          {versionsWithConstraints[name] ?? versionsWithoutConstraints[name]}
-        </Typography>
-      </StyledRequestedPackagesTableCell>
-      <StyledRequestedPackagesTableCell align="left">
         <Box sx={{ display: "flex", alignItems: "center" }}>
           <ConstraintSelect
             onUpdate={updateConstraint}
@@ -98,14 +91,25 @@ const BaseRequestedPackagesTableRow = ({
             version={constraint === "latest" ? "" : version}
             name={name}
           />
+        </Box>
+      </StyledRequestedPackagesTableCell>
+      <StyledRequestedPackagesTableCell align="right">
+        <Typography
+          sx={{
+            fontFamily: "monospace",
+            fontSize: "13px",
+            fontWeight: 400,
+            color: "#676666"
+          }}
+        >
+          {versionsWithConstraints[name] ?? versionsWithoutConstraints[name]}{" "}
           <StyledIconButton
             onClick={handleRemove}
-            sx={{ marginLeft: "24px" }}
             data-testid="RemovePackageTest"
           >
             <DeleteIconAlt />
           </StyledIconButton>
-        </Box>
+        </Typography>
       </StyledRequestedPackagesTableCell>
     </TableRow>
   );
