@@ -82,7 +82,7 @@ def _create_new_environment(page, screenshot=False):
     if screenshot:
         page.screenshot(path="test-results/create-new-env.png", clip={'x': 0, 'y': 145, 'width': 275, 'height': 50})
     # fill in the env name
-    page.get_by_placeholder("Environment name").fill(new_env_name)
+    page.get_by_label("Environment name").fill(new_env_name)
     # fill in the description
     page.get_by_placeholder("Enter here the description of your environment").fill("description")
     if screenshot:
@@ -97,15 +97,16 @@ def _create_new_environment(page, screenshot=False):
     if screenshot:
         page.screenshot(path="test-results/package-selection.png")
     page.get_by_role("option", name="rich", exact=True).click()
+
     # add version spec
-    page.get_by_role("row", name="rich").get_by_role("button").first.click()
+    page.get_by_role("combobox").first.click()
     if screenshot:
         page.screenshot(path="test-results/package-version-constraint.png")
     page.get_by_role("option", name=">", exact=True).click()
-    page.get_by_role("cell", name=">").get_by_role("button").nth(1).click()
+    page.get_by_role("combobox").nth(1).click()
     if screenshot:
         page.screenshot(path="test-results/package-version-number.png")
-    page.get_by_role("option", name="12.5.1", exact=False).click()
+    page.get_by_role("option", name="12.6.0").click()
 
     # python
     # click the + to add a package
@@ -114,8 +115,10 @@ def _create_new_environment(page, screenshot=False):
     page.get_by_label("Enter package").fill("python")
     page.keyboard.press("Enter")
     # add version spec
-    page.get_by_role("row", name="python", exact=False).get_by_role("button").nth(2).click()
-    page.get_by_role("option", name="3.10.9", exact=False).click()
+    page.get_by_role("combobox").nth(2).click()
+    page.get_by_role("option", name="=", exact=True).click()
+    page.get_by_role("combobox").nth(3).click()
+    page.get_by_role("option", name="3.10.9").click()
 
     # update channels
     # open up the channels accordian card
@@ -133,7 +136,7 @@ def _create_new_environment(page, screenshot=False):
     if screenshot:
         page.screenshot(path="test-results/yaml-editor.png")
     # switch back
-    page.get_by_label("Switch to Standard View", exact=False).click()
+    page.get_by_label("YAML", exact=False).click()
     
     if screenshot:
         page.screenshot(path="test-results/create-button.png")
@@ -142,12 +145,12 @@ def _create_new_environment(page, screenshot=False):
 
     # Interact with the environment shortly after creation
     # click to open the Active environment dropdown manu
-    page.get_by_role("button", name=" - Active", exact=False).click()
+    page.get_by_text(" - Active", exact=False).click()
     if screenshot:
         page.keyboard.press("PageUp")  # ensure we are at the top of the page
         page.screenshot(path="test-results/version-select.png")
     # click on the Active environment on the dropdown menu item (which is currently building)
-    page.get_by_role("option", name=" - Active", exact=False).click()
+    page.get_by_role("option", name="- Active", exact=False).click()
     if screenshot:
         page.screenshot(path="test-results/version-select-done.png")
     # ensure that the environment is building
@@ -198,7 +201,7 @@ def _existing_environment_interactions(page, env_name, time_to_build_env=5*60*10
         grab screenshots
 
     """
-    env_link = page.get_by_role("button", name=env_name)
+    env_link = page.get_by_role("link", name=env_name)
     edit_button = page.get_by_role("button", name="Edit")
 
     # edit existing environment throught the YAML editor
@@ -215,7 +218,7 @@ def _existing_environment_interactions(page, env_name, time_to_build_env=5*60*10
     if screenshot:
         page.screenshot(path="test-results/pip-section.png")
     page.get_by_text("- rich").click() # bring focus to the section
-    page.get_by_text("channels: - conda-forgedependencies: - rich>12.5.1 - python>=3.10.9 - pip: - nothing - ipykernel").fill("channels:\n  - conda-forge\ndependencies:\n  - rich>12.5.1\n  - python=3.10\n  - pip:\n      - ragna\n  - ipykernel\n\n")
+    page.get_by_text("channels:  - conda-forgedependencies:  - rich>12.6.0  - python=3.10.9  - pip:      - nothing  - ipykernelvariables: {}").fill("channels:\n  - conda-forge\ndependencies:\n  - rich>12.6.0\n  - python=3.10\n")
     page.get_by_role("button", name="Save").click()
     edit_button.wait_for(state="attached")
 
@@ -235,13 +238,13 @@ def _existing_environment_interactions(page, env_name, time_to_build_env=5*60*10
     # edit existing environment
     env_link.click()
     edit_button.click()
-    # page.get_by_placeholder("Enter here the description of your environment").click()
+
     # change the description
     page.get_by_placeholder("Enter here the description of your environment").fill(
         "new description"
     )
     # change the vesion spec of an existing package
-    page.get_by_role("row", name="rich").get_by_role("button").first.click()
+    page.get_by_text(">", exact=True).click()
     page.get_by_role("option", name=">=").click()
     # Note: purposefully not testing version constraint since there is inconsistent behavior here
 

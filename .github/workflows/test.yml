@@ -42,10 +42,16 @@ jobs:
           yarn install --immutable
           yarn run build
 
-      - name: "Start web server and run tests"
+      - name: "Start web server"
         shell: bash -el {0}
         run: |
-          yarn run start & pytest --video on --output video --screenshots true test/playwright/test_ux.py
+          yarn run start &
+          wait-for-it localhost:8000  # wait for conda-store-ui to start
+
+      - name: "Run playwright tests"
+        shell: bash -el {0}
+        run: |
+          pytest --video on --output video --screenshots true test/playwright/test_ux.py
 
       - name: "Upload screenshot artifacts"
         uses: actions/upload-artifact@v3
