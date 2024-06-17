@@ -23,7 +23,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: "Set up Python"
-        uses: conda-incubator/setup-miniconda@v2
+        uses: conda-incubator/setup-miniconda@v3
         env:
           CONDA_SOLVER: libmamba
         with:
@@ -42,14 +42,27 @@ jobs:
           yarn install --immutable
           yarn run build
 
-      - name: "Start web server and run tests"
+      - name: "Start web server"
         shell: bash -el {0}
         run: |
-          yarn run start & pytest --video on --output test-results --screenshots true test/playwright/test_ux.py
+          yarn run start &
+          wait-for-it localhost:8000 -t 240   # wait for conda-store-ui to start (seconds)
 
-      - name: "Upload artifacts"
-        uses: actions/upload-artifact@v3
+      - name: "Run playwright tests"
+        shell: bash -el {0}
+        run: |
+          pytest --video on --output video --screenshots true test/playwright/test_ux.py
+
+      - name: "Upload screenshot artifacts"
+        uses: actions/upload-artifact@v4
         if: ${{ always() }}
         with:
-          name: playwright-tests
+          name: screenshots
           path: test-results
+
+      - name: "Upload video artifact"
+        uses: actions/upload-artifact@v4
+        if: ${{ always() }}
+        with:
+          name: video
+          path: video
