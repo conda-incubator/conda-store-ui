@@ -106,7 +106,7 @@ def _create_new_environment(page, screenshot=False):
     page.get_by_role("combobox").nth(1).click()
     if screenshot:
         page.screenshot(path="test-results/package-version-number.png")
-    page.get_by_role("option", name="12.6.0").click()
+    page.get_by_role("option", name="12.5.1").click()
 
     # python
     # click the + to add a package
@@ -218,7 +218,7 @@ def _existing_environment_interactions(page, env_name, time_to_build_env=5*60*10
     if screenshot:
         page.screenshot(path="test-results/pip-section.png")
     page.get_by_text("- rich").click() # bring focus to the section
-    page.get_by_text("channels:  - conda-forgedependencies:  - rich>12.6.0  - python=3.10.9  - pip:      - nothing  - ipykernelvariables: {}").fill("channels:\n  - conda-forge\ndependencies:\n  - rich>12.6.0\n  - python=3.10\n")
+    page.get_by_text("channels:  - conda-forgedependencies:  - rich>12.5.1  - python=3.10.9  - pip:      - nothing  - ipykernelvariables: {}").fill("channels:\n  - conda-forge\ndependencies:\n  - rich>12.5.1\n  - python=3.10\n")
     page.get_by_role("button", name="Save").click()
     edit_button.wait_for(state="attached")
 

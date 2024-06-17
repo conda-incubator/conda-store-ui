@@ -23,7 +23,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: "Set up Python"
-        uses: conda-incubator/setup-miniconda@v2
+        uses: conda-incubator/setup-miniconda@v3
         env:
           CONDA_SOLVER: libmamba
         with:
@@ -54,14 +54,14 @@ jobs:
           pytest --video on --output video --screenshots true test/playwright/test_ux.py
 
       - name: "Upload screenshot artifacts"
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: ${{ always() }}
         with:
           name: screenshots
           path: test-results
 
       - name: "Upload video artifact"
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: ${{ always() }}
         with:
           name: video
