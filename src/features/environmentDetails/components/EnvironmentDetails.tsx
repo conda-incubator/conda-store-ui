@@ -351,7 +351,7 @@ export const EnvironmentDetails = () => {
       </Box>
       <Box sx={{ marginBottom: "30px" }}>
         {mode === "read-only" && <SpecificationReadOnly />}
-        {mode === "edit" && (
+        {mode === "edit" && !isFetching && (
           <SpecificationEdit
             descriptionUpdated={descriptionIsUpdated}
             defaultEnvVersIsChanged={defaultEnvVersIsChanged}
@@ -360,12 +360,12 @@ export const EnvironmentDetails = () => {
             onUpdateEnvironment={updateEnvironment}
             onShowDialogAlert={showDialog => setShowDialog(showDialog)}
             isFromLockfile={Boolean(isFromLockfile)}
-            // Use key to reset the state of this component so that it matches
-            // the lockfile/!lockfile state of the chosen build (i.e., when the
-            // user selects a different build from the dropdown this component
-            // should update to match the build spec type, which is either a
-            // lockfile or yaml spec)
-            key={String(isFromLockfile)}
+            // Use key to reset the state of this component when user selects
+            // new build from dropdown in the UI. This is primarily to make sure
+            // the specification/lockfile section of the form changes to match
+            // the specification type (yaml spec versus lockfile) of the newly
+            // selected build.
+            key={currentBuildId}
           />
         )}
       </Box>
