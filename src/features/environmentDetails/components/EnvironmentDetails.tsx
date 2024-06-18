@@ -111,6 +111,8 @@ export const EnvironmentDetails = () => {
   const { page, dependencies } = useAppSelector(state => state.dependencies);
   const { selectedEnvironment } = useAppSelector(state => state.tabs);
   const { currentBuild } = useAppSelector(state => state.enviroments);
+  const { isFromLockfile } = useAppSelector(state => state.environmentDetails);
+
   const [name, setName] = useState(selectedEnvironment?.name || "");
   const scrollRef = useScrollRef();
 
@@ -357,6 +359,13 @@ export const EnvironmentDetails = () => {
             onDefaultEnvIsChanged={updateDefaultEnvironmentVersion}
             onUpdateEnvironment={updateEnvironment}
             onShowDialogAlert={showDialog => setShowDialog(showDialog)}
+            isFromLockfile={Boolean(isFromLockfile)}
+            // Use key to reset the state of this component so that it matches
+            // the lockfile/!lockfile state of the chosen build (i.e., when the
+            // user selects a different build from the dropdown this component
+            // should update to match the build spec type, which is either a
+            // lockfile or yaml spec)
+            key={String(isFromLockfile)}
           />
         )}
       </Box>

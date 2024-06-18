@@ -14,16 +14,19 @@ export const SpecificationReadOnly = () => {
   const { dependencies, size, count, page } = useAppSelector(
     state => state.dependencies
   );
+  const { isFromLockfile } = useAppSelector(state => state.environmentDetails);
 
   const dispatch = useAppDispatch();
 
   const hasMore = size * page <= count;
 
   return (
-    <BlockContainer title="Specification">
-      <Box sx={{ marginBottom: "30px" }}>
-        <RequestedPackageList packageList={requestedPackages} />
-      </Box>
+    <BlockContainer title={isFromLockfile ? "Lockfile" : "Specification"}>
+      {!isFromLockfile && (
+        <Box sx={{ marginBottom: "30px" }}>
+          <RequestedPackageList packageList={requestedPackages} />
+        </Box>
+      )}
       <Box sx={{ marginBottom: "30px" }}>
         <Dependencies
           mode="read-only"
@@ -32,7 +35,7 @@ export const SpecificationReadOnly = () => {
           next={() => dispatch(pageChanged(page + 1))}
         />
       </Box>
-      <Box sx={{ margiBottom: "30px" }}>
+      <Box sx={{ marginBottom: "30px" }}>
         <ChannelsList channelList={channels} />
       </Box>
     </BlockContainer>

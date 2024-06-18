@@ -34,6 +34,7 @@ interface ISpecificationEdit {
   onDefaultEnvIsChanged: (defaultEnvVersIsChanged: boolean) => void;
   onUpdateEnvironment: (specification: any) => void;
   onShowDialogAlert: (showDialog: boolean) => void;
+  isFromLockfile: boolean;
 }
 
 export const SpecificationEdit = ({
@@ -42,7 +43,8 @@ export const SpecificationEdit = ({
   onSpecificationIsChanged,
   onDefaultEnvIsChanged,
   onUpdateEnvironment,
-  onShowDialogAlert
+  onShowDialogAlert,
+  isFromLockfile
 }: ISpecificationEdit) => {
   const { channels } = useAppSelector(state => state.channels);
   const { requestedPackages } = useAppSelector(
@@ -54,6 +56,7 @@ export const SpecificationEdit = ({
   const { dependencies, size, count, page } = useAppSelector(
     state => state.dependencies
   );
+
   const hasMore = size * page <= count;
   const dispatch = useAppDispatch();
 
@@ -190,7 +193,7 @@ export const SpecificationEdit = ({
     }
   }, [channels, requestedPackages, environmentVariables, descriptionUpdated]);
 
-  const [mode, setMode] = React.useState<number>(0);
+  const [mode, setMode] = React.useState<number>(isFromLockfile ? 1 : 0);
   const [showDialog, setShowDialog] = React.useState<boolean>(false);
   const [files, setFiles] = React.useState<File[]>([]);
 
@@ -394,7 +397,7 @@ export const SpecificationEdit = ({
           color="primary"
           sx={{ padding: "5px 48px" }}
           onClick={handleSubmit}
-          disabled={!envIsUpdated || (mode === 1 && !files?.length)}
+          disabled={mode === 0 ? !envIsUpdated : !files?.length}
         >
           Save
         </StyledButton>
