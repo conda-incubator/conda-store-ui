@@ -12,6 +12,7 @@ interface IAlertDialog {
   isOpen: boolean;
   closeAction: () => void;
   confirmAction: () => void;
+  confirmText?: string;
 }
 
 export const AlertDialog = ({
@@ -19,7 +20,8 @@ export const AlertDialog = ({
   description,
   isOpen,
   closeAction,
-  confirmAction
+  confirmAction,
+  confirmText = "Delete"
 }: IAlertDialog) => {
   return (
     <Dialog open={isOpen} onClose={closeAction}>
@@ -49,7 +51,7 @@ export const AlertDialog = ({
           Cancel
         </StyledButton>
         <StyledButton color="primary" onClick={() => confirmAction()}>
-          Delete
+          {confirmText}
         </StyledButton>
       </DialogActions>
     </Dialog>

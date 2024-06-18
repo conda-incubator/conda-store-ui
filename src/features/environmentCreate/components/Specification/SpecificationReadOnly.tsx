@@ -33,7 +33,7 @@ export const SpecificationReadOnly = () => {
           next={() => dispatch(pageChanged(page + 1))}
         />
       </Box>
-      <Box sx={{ margiBottom: "30px" }}>
+      <Box sx={{ marginBottom: "30px" }}>
         <ChannelsList channelList={channels} />
       </Box>
     </BlockContainer>
