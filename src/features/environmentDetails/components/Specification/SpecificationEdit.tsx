@@ -26,6 +26,7 @@ import { CodeEditor } from "../../../../features/yamlEditor";
 import { useAppDispatch, useAppSelector } from "../../../../hooks";
 import { StyledButton } from "../../../../styles";
 import { CondaSpecificationPip } from "../../../../common/models";
+import CondaLockfileInfo from "../../../../components/CondaLockfileInfo";
 
 interface ISpecificationEdit {
   descriptionUpdated: boolean;
@@ -287,7 +288,7 @@ export const SpecificationEdit = ({
                 }}
                 onClick={() => setShowDialog(true)}
               >
-                Switch to lockfile upload
+                Switch to Conda Lockfile Upload
               </Typography>
             </Box>
           </Box>
@@ -317,7 +318,7 @@ export const SpecificationEdit = ({
                 data-testid="block-container-title"
                 sx={{ fontSize: "14px", fontWeight: 600, color: "#333" }}
               >
-                Lockfile
+                <CondaLockfileInfo />
               </Typography>
             </Box>
           </Box>
@@ -354,7 +355,7 @@ export const SpecificationEdit = ({
                 }}
                 onClick={() => setShowDialog(true)}
               >
-                Switch to specification
+                Switch to Specification
               </Typography>
             </Box>
           </Box>
@@ -362,9 +363,11 @@ export const SpecificationEdit = ({
       )}
 
       <AlertDialog
-        title={`Switch to ${mode === 0 ? "lockfile upload" : "specification"}`}
+        title={`Switch to ${
+          mode === 0 ? "Conda Lockfile Upload" : "Specification"
+        }`}
         description={`If you switch to ${
-          mode === 0 ? "lockfile upload" : "specification"
+          mode === 0 ? "Conda Lockfile Upload" : "Specification"
         }, you may lose your work in this section of the form.`}
         isOpen={showDialog}
         closeAction={() => setShowDialog(false)}

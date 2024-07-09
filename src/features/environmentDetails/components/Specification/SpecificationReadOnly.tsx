@@ -29,7 +29,7 @@ export const SpecificationReadOnly = ({
   const hasMore = size * page <= count;
 
   return (
-    <BlockContainer title="Specification">
+    <BlockContainer title={isFromLockfile ? "Conda Lockfile" : "Specification"}>
       {!isFromLockfile && (
         <Box sx={{ marginBottom: "30px" }}>
           <RequestedPackageList packageList={requestedPackages} />
@@ -44,7 +44,9 @@ export const SpecificationReadOnly = ({
               marginBottom: "30px"
             }}
           >
-            <ArtifactItem artifact={{ name: "Lockfile", route: lockfileUrl }} />
+            <ArtifactItem
+              artifact={{ name: "Show .conda-lock.yml file", route: lockfileUrl }}
+            />
           </Box>
         )}
         <Dependencies

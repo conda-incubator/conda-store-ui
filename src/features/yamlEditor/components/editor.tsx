@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Box from "@mui/material/Box";
 import { StreamLanguage } from "@codemirror/language";
 import { yaml as yamlLanguage } from "@codemirror/legacy-modes/mode/yaml";
 import Alert from "@mui/material/Alert";
@@ -6,6 +7,7 @@ import CodeMirror from "@uiw/react-codemirror";
 import { parse } from "yaml";
 import { greenAccentTheme } from "../themes";
 import { PrefContext } from "../../../preferences";
+import { StyledMetadataItem } from "../../../styles";
 
 export interface ICodeEditor {
   code: any;
@@ -42,6 +44,29 @@ export const CodeEditor = ({ code, onChangeEditor }: ICodeEditor) => {
           You have an error in your yaml syntax
         </Alert>
       )}
+      <Box
+        sx={{
+          mb: "20px"
+        }}
+      >
+        <StyledMetadataItem>
+          <details>
+            <summary>Conda environment.yml</summary>
+            <p>
+              We currently only support the{" "}
+              <a
+                href="https://conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html#creating-an-environment-file-manually"
+                target="_blank"
+                rel="noreferrer"
+              >
+                Conda environment.yml
+              </a>{" "}
+              format. Other environment specification file formats are not
+              supported.
+            </p>
+          </details>
+        </StyledMetadataItem>
+      </Box>
       <CodeMirror
         value={code}
         height="200px"
