@@ -45,7 +45,10 @@ export const SpecificationReadOnly = ({
             }}
           >
             <ArtifactItem
-              artifact={{ name: "Show .conda-lock.yml file", route: lockfileUrl }}
+              artifact={{
+                name: "Show .conda-lock.yml file",
+                route: lockfileUrl
+              }}
             />
           </Box>
         )}
