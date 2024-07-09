@@ -352,7 +352,6 @@ export const EnvironmentDetails = () => {
       <Box sx={{ marginBottom: "30px" }}>
         {mode === "read-only" && (
           <SpecificationReadOnly
-            environmentName={environmentName}
             isFromLockfile={Boolean(isFromLockfile)}
             lockfileUrl={`api/v1/build/${currentBuildId}/lockfile`}
           />

@@ -8,13 +8,11 @@ import { useAppDispatch, useAppSelector } from "../../../../hooks";
 import { ArtifactItem } from "../../../artifacts";
 
 interface ISpecificationReadOnly {
-  environmentName?: string;
   isFromLockfile?: boolean;
   lockfileUrl?: string;
 }
 
 export const SpecificationReadOnly = ({
-  environmentName,
   isFromLockfile,
   lockfileUrl
 }: ISpecificationReadOnly) => {
@@ -32,33 +30,33 @@ export const SpecificationReadOnly = ({
 
   return (
     <BlockContainer title="Specification">
-      {isFromLockfile && lockfileUrl ? (
-        <Box
-          sx={{
-            display: "flex",
-            fontFamily: "fontFamily"
-          }}
-        >
-          <ArtifactItem artifact={{ name: "Lockfile", route: lockfileUrl }} />
+      {!isFromLockfile && (
+        <Box sx={{ marginBottom: "30px" }}>
+          <RequestedPackageList packageList={requestedPackages} />
         </Box>
-      ) : (
-        <>
-          <Box sx={{ marginBottom: "30px" }}>
-            <RequestedPackageList packageList={requestedPackages} />
-          </Box>
-          <Box sx={{ marginBottom: "30px" }}>
-            <Dependencies
-              mode="read-only"
-              dependencies={dependencies}
-              hasMore={hasMore}
-              next={() => dispatch(pageChanged(page + 1))}
-            />
-          </Box>
-          <Box sx={{ marginBottom: "30px" }}>
-            <ChannelsList channelList={channels} />
-          </Box>
-        </>
       )}
+      <Box sx={{ marginBottom: "30px" }}>
+        {isFromLockfile && lockfileUrl && (
+          <Box
+            sx={{
+              display: "flex",
+              fontFamily: "fontFamily",
+              marginBottom: "30px"
+            }}
+          >
+            <ArtifactItem artifact={{ name: "Lockfile", route: lockfileUrl }} />
+          </Box>
+        )}
+        <Dependencies
+          mode="read-only"
+          dependencies={dependencies}
+          hasMore={hasMore}
+          next={() => dispatch(pageChanged(page + 1))}
+        />
+      </Box>
+      <Box sx={{ marginBottom: "30px" }}>
+        <ChannelsList channelList={channels} />
+      </Box>
     </BlockContainer>
   );
 };
