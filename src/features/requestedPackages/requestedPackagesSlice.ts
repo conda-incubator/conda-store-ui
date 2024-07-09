@@ -83,14 +83,10 @@ export const requestedPackagesSlice = createSlice({
           }
         }
       ) => {
-        let dependencies = [];
+        let dependencies: Array<string | CondaSpecificationPip> = [];
 
         if (spec.dependencies) {
           dependencies = spec.dependencies;
-        } else if (spec.lockfile?.package) {
-          dependencies = spec.lockfile.package
-            .filter((p: Record<string, any>) => p.manager === "conda")
-            .map((p: Record<string, any>) => `${p?.name}==${p?.version}`);
         }
 
         state.requestedPackages = dependencies;

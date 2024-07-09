@@ -350,7 +350,13 @@ export const EnvironmentDetails = () => {
         />
       </Box>
       <Box sx={{ marginBottom: "30px" }}>
-        {mode === "read-only" && <SpecificationReadOnly />}
+        {mode === "read-only" && (
+          <SpecificationReadOnly
+            environmentName={environmentName}
+            isFromLockfile={Boolean(isFromLockfile)}
+            lockfileUrl={`api/v1/build/${currentBuildId}/lockfile`}
+          />
+        )}
         {mode === "edit" && !isFetching && (
           <SpecificationEdit
             descriptionUpdated={descriptionIsUpdated}

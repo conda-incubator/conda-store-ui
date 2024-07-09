@@ -5,8 +5,19 @@ import { Dependencies, pageChanged } from "../../../../features/dependencies";
 import { ChannelsList } from "../../../../features/channels";
 import { BlockContainer } from "../../../../components";
 import { useAppDispatch, useAppSelector } from "../../../../hooks";
+import { ArtifactItem } from "../../../artifacts";
 
-export const SpecificationReadOnly = () => {
+interface ISpecificationReadOnly {
+  environmentName?: string;
+  isFromLockfile?: boolean;
+  lockfileUrl?: string;
+}
+
+export const SpecificationReadOnly = ({
+  environmentName,
+  isFromLockfile,
+  lockfileUrl
+}: ISpecificationReadOnly) => {
   const { requestedPackages } = useAppSelector(
     state => state.requestedPackages
   );
@@ -14,30 +25,40 @@ export const SpecificationReadOnly = () => {
   const { dependencies, size, count, page } = useAppSelector(
     state => state.dependencies
   );
-  const { isFromLockfile } = useAppSelector(state => state.environmentDetails);
 
   const dispatch = useAppDispatch();
 
   const hasMore = size * page <= count;
 
   return (
-    <BlockContainer title={isFromLockfile ? "Lockfile" : "Specification"}>
-      {!isFromLockfile && (
-        <Box sx={{ marginBottom: "30px" }}>
-          <RequestedPackageList packageList={requestedPackages} />
+    <BlockContainer title="Specification">
+      {isFromLockfile && lockfileUrl ? (
+        <Box
+          sx={{
+            display: "flex",
+            fontFamily: "fontFamily"
+          }}
+        >
+          <ArtifactItem artifact={{ name: "Lockfile", route: lockfileUrl }} />
         </Box>
+      ) : (
+        <>
+          <Box sx={{ marginBottom: "30px" }}>
+            <RequestedPackageList packageList={requestedPackages} />
+          </Box>
+          <Box sx={{ marginBottom: "30px" }}>
+            <Dependencies
+              mode="read-only"
+              dependencies={dependencies}
+              hasMore={hasMore}
+              next={() => dispatch(pageChanged(page + 1))}
+            />
+          </Box>
+          <Box sx={{ marginBottom: "30px" }}>
+            <ChannelsList channelList={channels} />
+          </Box>
+        </>
       )}
-      <Box sx={{ marginBottom: "30px" }}>
-        <Dependencies
-          mode="read-only"
-          dependencies={dependencies}
-          hasMore={hasMore}
-          next={() => dispatch(pageChanged(page + 1))}
-        />
-      </Box>
-      <Box sx={{ marginBottom: "30px" }}>
-        <ChannelsList channelList={channels} />
-      </Box>
     </BlockContainer>
   );
 };

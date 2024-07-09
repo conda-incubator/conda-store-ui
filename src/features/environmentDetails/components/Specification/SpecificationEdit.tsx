@@ -218,6 +218,7 @@ export const SpecificationEdit = ({
   return (
     <Box>
       {mode === 0 ? (
+        // mode 0 : Specification (as opposed to Lockfile)
         <BlockContainerEditMode
           title="Specification"
           onToggleEditMode={onToggleEditorView}
@@ -241,15 +242,23 @@ export const SpecificationEdit = ({
                     onDefaultEnvIsChanged={onUpdateDefaultEnvironment}
                   />
                 </Box>
-                <Box sx={{ marginBottom: "30px" }}>
-                  <Dependencies
-                    mode="edit"
-                    dependencies={dependencies}
-                    hasMore={hasMore}
-                    next={() => dispatch(pageChanged(page + 1))}
-                    maxWidth={500}
-                  />
-                </Box>
+                {!isFromLockfile && (
+                  // The dependencies list is filled automagically when the page
+                  // requests info about the build. But if the environment was
+                  // created from a lockfile, showing this list may suggest to
+                  // the user that they can build or edit the list of
+                  // dependencies manually. But that's not the case with a
+                  // lockfile; they are not meant to be edited in a manual way.
+                  <Box sx={{ marginBottom: "30px" }}>
+                    <Dependencies
+                      mode="edit"
+                      dependencies={dependencies}
+                      hasMore={hasMore}
+                      next={() => dispatch(pageChanged(page + 1))}
+                      maxWidth={500}
+                    />
+                  </Box>
+                )}
                 <Box sx={{ marginBottom: "30px" }}>
                   <ChannelsEdit
                     channelsList={channels}
@@ -284,6 +293,7 @@ export const SpecificationEdit = ({
           </Box>
         </BlockContainerEditMode>
       ) : (
+        // mode 1 : Lockfile (as opposed to Specification)
         <Box
           sx={{
             border: "1px solid #E0E0E0",
