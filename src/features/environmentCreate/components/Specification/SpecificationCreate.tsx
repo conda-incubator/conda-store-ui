@@ -1,7 +1,9 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { DropzoneArea } from "mui-file-dropzone";
 import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
+import CodeOutlinedIcon from "@mui/icons-material/CodeOutlined";
 import { ChannelsEdit } from "../../../../features/channels";
 import { BlockContainerEditMode, AlertDialog } from "../../../../components";
 import { StyledButton } from "../../../../styles";
@@ -15,7 +17,7 @@ import {
   environmentCreateStateCleared
 } from "../../environmentCreateSlice";
 import { getStylesForStyleType } from "../../../../utils/helpers";
-import CondaLockfileInfo from "../../../../components/CondaLockfileInfo";
+import LockfileSupportInfo from "../../../../components/LockfileSupportInfo";
 
 export const SpecificationCreate = ({ onCreateEnvironment }: any) => {
   const dispatch = useAppDispatch();
@@ -141,6 +143,7 @@ export const SpecificationCreate = ({ onCreateEnvironment }: any) => {
           title="Specification"
           onToggleEditMode={onToggleEditorView}
           isEditMode={show}
+          setShowDialog={setShowDialog}
         >
           <Box>
             {show ? (
@@ -167,28 +170,6 @@ export const SpecificationCreate = ({ onCreateEnvironment }: any) => {
                 </Box>
               </>
             )}
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "flex-end",
-                alignItems: "flex-end",
-                gap: "30px",
-                marginTop: "45px",
-                marginBottom: "10px"
-              }}
-            >
-              <Typography
-                sx={{
-                  fontSize: "13px",
-                  color: "#333",
-                  textDecoration: "underline",
-                  cursor: "pointer"
-                }}
-                onClick={() => setShowDialog(true)}
-              >
-                Switch to Conda Lockfile Upload
-              </Typography>
-            </Box>
           </Box>
         </BlockContainerEditMode>
       ) : (
@@ -215,8 +196,17 @@ export const SpecificationCreate = ({ onCreateEnvironment }: any) => {
                 data-testid="block-container-title"
                 sx={{ fontSize: "14px", fontWeight: 600, color: "#333" }}
               >
-                <CondaLockfileInfo />
+                Conda Lockfile Upload
               </Typography>
+              <Button
+                variant="outlined"
+                color="secondary"
+                size="small"
+                startIcon={<CodeOutlinedIcon />}
+                onClick={() => setShowDialog(true)}
+              >
+                Switch to Specification
+              </Button>
             </Box>
           </Box>
           <Box
@@ -233,27 +223,8 @@ export const SpecificationCreate = ({ onCreateEnvironment }: any) => {
               showFileNamesInPreview={true}
               previewText=""
             />
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "flex-end",
-                alignItems: "flex-end",
-                gap: "30px",
-                marginTop: "45px",
-                marginBottom: "10px"
-              }}
-            >
-              <Typography
-                sx={{
-                  fontSize: "13px",
-                  color: "#333",
-                  textDecoration: "underline",
-                  cursor: "pointer"
-                }}
-                onClick={() => setShowDialog(true)}
-              >
-                Switch to Specification
-              </Typography>
+            <Box>
+              <LockfileSupportInfo />
             </Box>
           </Box>
         </Box>
@@ -264,7 +235,9 @@ export const SpecificationCreate = ({ onCreateEnvironment }: any) => {
         }`}
         description={`If you switch to ${
           mode === 0 ? "Conda Lockfile Upload" : "Specification"
-        }, you may lose your work in this section of the form.`}
+        }, you ${
+          mode === 0 ? "may" : "will"
+        } lose your work in this section of the form.`}
         isOpen={showDialog}
         closeAction={() => setShowDialog(false)}
         confirmAction={() => {

@@ -7,7 +7,9 @@ import React, {
 } from "react";
 import { DropzoneArea } from "mui-file-dropzone";
 import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
+import CodeOutlinedIcon from "@mui/icons-material/CodeOutlined";
 import { cloneDeep, debounce } from "lodash";
 import { stringify } from "yaml";
 import { BlockContainerEditMode, AlertDialog } from "../../../../components";
@@ -26,7 +28,7 @@ import { CodeEditor } from "../../../../features/yamlEditor";
 import { useAppDispatch, useAppSelector } from "../../../../hooks";
 import { StyledButton } from "../../../../styles";
 import { CondaSpecificationPip } from "../../../../common/models";
-import CondaLockfileInfo from "../../../../components/CondaLockfileInfo";
+import LockfileSupportInfo from "../../../../components/LockfileSupportInfo";
 
 interface ISpecificationEdit {
   descriptionUpdated: boolean;
@@ -224,6 +226,7 @@ export const SpecificationEdit = ({
           title="Specification"
           onToggleEditMode={onToggleEditorView}
           isEditMode={show}
+          setShowDialog={setShowDialog}
         >
           <Box>
             {show ? (
@@ -269,28 +272,6 @@ export const SpecificationEdit = ({
                 </Box>
               </>
             )}
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "flex-end",
-                alignItems: "flex-end",
-                gap: "30px",
-                marginTop: "45px",
-                marginBottom: "10px"
-              }}
-            >
-              <Typography
-                sx={{
-                  fontSize: "13px",
-                  color: "#333",
-                  textDecoration: "underline",
-                  cursor: "pointer"
-                }}
-                onClick={() => setShowDialog(true)}
-              >
-                Switch to Conda Lockfile Upload
-              </Typography>
-            </Box>
           </Box>
         </BlockContainerEditMode>
       ) : (
@@ -318,8 +299,17 @@ export const SpecificationEdit = ({
                 data-testid="block-container-title"
                 sx={{ fontSize: "14px", fontWeight: 600, color: "#333" }}
               >
-                <CondaLockfileInfo />
+                Conda Lockfile Upload
               </Typography>
+              <Button
+                variant="outlined"
+                color="secondary"
+                size="small"
+                startIcon={<CodeOutlinedIcon />}
+                onClick={() => setShowDialog(true)}
+              >
+                Switch to Specification
+              </Button>
             </Box>
           </Box>
           <Box
@@ -336,27 +326,8 @@ export const SpecificationEdit = ({
               showFileNamesInPreview={true}
               previewText=""
             />
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "flex-end",
-                alignItems: "flex-end",
-                gap: "30px",
-                marginTop: "45px",
-                marginBottom: "10px"
-              }}
-            >
-              <Typography
-                sx={{
-                  fontSize: "13px",
-                  color: "#333",
-                  textDecoration: "underline",
-                  cursor: "pointer"
-                }}
-                onClick={() => setShowDialog(true)}
-              >
-                Switch to Specification
-              </Typography>
+            <Box>
+              <LockfileSupportInfo />
             </Box>
           </Box>
         </Box>
@@ -368,7 +339,9 @@ export const SpecificationEdit = ({
         }`}
         description={`If you switch to ${
           mode === 0 ? "Conda Lockfile Upload" : "Specification"
-        }, you may lose your work in this section of the form.`}
+        }, you ${
+          mode === 0 ? "may" : "will"
+        } lose your work in this section of the form.`}
         isOpen={showDialog}
         closeAction={() => setShowDialog(false)}
         confirmAction={() => {

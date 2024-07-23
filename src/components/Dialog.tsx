@@ -1,4 +1,5 @@
 import React from "react";
+import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
@@ -47,10 +48,14 @@ export const AlertDialog = ({
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-        <StyledButton color="primary" onClick={closeAction}>
+        <Button color="secondary" onClick={closeAction}>
           Cancel
-        </StyledButton>
-        <StyledButton color="primary" onClick={() => confirmAction()}>
+        </Button>
+        <StyledButton
+          color="primary"
+          onClick={() => confirmAction()}
+          sx={{ textTransform: "uppercase" }}
+        >
           {confirmText}
         </StyledButton>
       </DialogActions>
