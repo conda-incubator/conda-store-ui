@@ -2028,6 +2028,7 @@ __metadata:
     semver: "npm:^7.3.8"
     source-map-loader: "npm:^3.0.1"
     storybook: "npm:^8.0.4"
+    terser-webpack-plugin: "npm:^5.3.10"
     ts-loader: "npm:^8.0.17"
     typescript: "npm:^4.6.3"
     webpack: "npm:^5.72.0"
