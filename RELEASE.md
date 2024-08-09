@@ -11,7 +11,8 @@
    # build the package
    yarn run build
 
-   # for the browser bundle
+   # for the browser bundle - this will generate a dist directory for the
+   # compiled assets
    yarn run webpack bundle
 
    # pack the bundle
@@ -30,25 +31,25 @@ If the dry run looks good, continue with the release checklist items.
 
 ## Troubleshooting notes
 
-* If there are issues with the [GitHub Release UI](https://github.com/conda-incubator/conda-store-ui/releases/new), ensure that whatever code you published is checked into git, then tag and push the commit and tag:
+- If there are issues with the [GitHub Release UI](https://github.com/conda-incubator/conda-store-ui/releases/new), ensure that whatever code you published is checked into git, then tag and push the commit and tag:
 
-   ```bash
-   # use the same version here as in package.json, but without a leading `v`
-   git tag -a YYYY.M.ReleaseNumber
+  ```bash
+  # use the same version here as in package.json, but without a leading `v`
+  git tag -a YYYY.M.ReleaseNumber
 
-   # push to upstream
-   git push && git push --tags
-   ```
+  # push to upstream
+  git push && git push --tags
+  ```
 
-* In case the [Release GitHub Actions workflow][release-action] fails, publish to npmjs manually. You need access to the [conda-store-ui npm package][cs-ui-npm] for this:
+- In case the [Release GitHub Actions workflow][release-action] fails, publish to npmjs manually. You need access to the [conda-store-ui npm package][cs-ui-npm] for this:
 
-   ```bash
-   # you likely need to login first
-   # npm login --registry https://registry.npmjs.org --scope @conda-store-ui
+  ```bash
+  # you likely need to login first
+  # npm login --registry https://registry.npmjs.org --scope @conda-store-ui
 
-   # publish release to npmjs
-   npm publish --verbose --access public conda-store-ui.tgz
-   ```
+  # publish release to npmjs
+  npm publish --verbose --access public conda-store-ui.tgz
+  ```
 
 <!-- Link -->
 

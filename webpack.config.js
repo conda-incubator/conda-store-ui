@@ -1,74 +1,135 @@
 /*
- * Copyright (c) 2022,  Quansight
+ * Copyright (c) 2022, conda-store development team
  *
- * This file is part of the tree-finder library, distributed under the terms of
- * the BSD 3 Clause license. The full license can be found in the LICENSE file.
+ * This file is distributed under the terms of the BSD 3 Clause license. 
+ * The full license can be found in the LICENSE file.
  */
-const HtmlWebpackPlugin = require("html-webpack-plugin");
+
 const path = require("path");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
+const TerserPlugin = require("terser-webpack-plugin");
 const Dotenv = require("dotenv-webpack");
 const webpack = require("webpack");
 
-// const TsconfigPathsPlugin = require("tsconfig-paths-webpack-plugin");
-// To improve build times for large projects enable fork-ts-checker-webpack-plugin
-// const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
-
-const {
-  dependencySrcMapRules,
-  stylingRules,
-  svgUrlRules,
-  getContext,
-  getOptimization,
-  getResolve,
-  tsRules
-} = require("./webpack.rules");
-
+// Need to differentiate between dev and production
 const isProd = process.env.NODE_ENV === "production";
+const ASSET_PATH = isProd ? "" : "/";
 
-const basicConfig = {
-  devServer: {
-    port: 8000,
+const rules = [
+  // Dependency source maps
+  {
+    test: /\.js$/,
+    use: "source-map-loader",
+    enforce: "pre",
+    exclude: /node_modules/
   },
-  devtool: isProd ? false : "source-map",
-  entry: ["src/index.tsx", "src/main.tsx"],
-  watch: false,
-  ...getContext(__dirname),
+  { test: /\.js.map$/, use: "file-loader" },
 
-  output: {
-    path: path.resolve(__dirname, "dist"),
-    filename: "[name].js",
-    publicPath: "/"
+  // Styling rules
+  {
+    test: /\.module\.css$/,
+    use: [
+      "css-loader",
+    ]
   },
-
-  module: {
-    rules: [
-      ...dependencySrcMapRules,
-      ...stylingRules,
-      ...svgUrlRules,
-      ...tsRules,
+  {
+    test: /(?<!\.module)\.css$/,
+    use: [
+      MiniCssExtractPlugin.loader,
+      "css-loader"
+    ]
+  },
+  {
+    test: /\.module\.less$/,
+    use: [
+      "css-loader",
+      "less-loader"
+    ]
+  },
+  {
+    test: /(?<!\.module)\.less$/,
+    use: [
+      MiniCssExtractPlugin.loader,
+      "css-loader",
+      "less-loader"
     ]
   },
 
-  resolve: {
-    ...getResolve(__dirname)
+  // SVG rules
+  {
+    test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
+    use: {
+      loader: "svg-url-loader",
+      options: { encoding: "none", limit: 10000 }
+    }
   },
 
-  plugins: [
-    new HtmlWebpackPlugin({
-      title: "conda-store"
-    }),
-    new MiniCssExtractPlugin(),
-    new Dotenv(),
-    new webpack.EnvironmentPlugin(['REACT_APP_VERSION'])
-  ],
-
-  mode: isProd ? "production" : "development",
-
-  optimization: {
-    minimize: isProd,
-    ...(isProd && getOptimization())
+  // TypeScript rules
+  {
+    test: /\.tsx?$/,
+    exclude: /node_modules/,
+    use: {
+      loader: "ts-loader",
+      options: {
+        transpileOnly: false,
+        projectReferences: true
+      }
+    }
   }
+];
+
+const resolve = {
+  modules: [
+    "node_modules",
+    path.resolve(__dirname)
+  ],
+  extensions: [".tsx", ".ts", ".jsx", ".js", ".less", ".css"]
 };
 
-module.exports = [basicConfig];
+const plugins = [
+  new HtmlWebpackPlugin({
+    title: "conda-store"
+  }),
+  new MiniCssExtractPlugin(),
+  new Dotenv(),
+  new webpack.EnvironmentPlugin(['REACT_APP_VERSION'])
+];
+
+const optimization = {
+  minimize: isProd,
+  minimizer: [
+    new TerserPlugin({
+      terserOptions: {
+        format: {
+          comments: false
+        }
+      },
+      extractComments: false
+    }),
+    new CssMinimizerPlugin()
+  ]
+};
+
+module.exports = {
+  mode: isProd ? "production" : "development",
+  devtool: isProd ? false : "source-map",
+  devServer: {
+    port: 8000
+  },
+  entry: ["src/index.tsx", "src/main.tsx"],
+  watch: false,
+  output: {
+    path: path.resolve(__dirname, "dist"),
+    filename: "[name].js",
+    publicPath: ASSET_PATH,
+    clean: true
+  },
+  module: {
+    rules
+  },
+  resolve,
+  plugins,
+  optimization
+};
