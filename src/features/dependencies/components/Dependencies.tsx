@@ -64,7 +64,10 @@ export const Dependencies = ({
       <StyledAccordionSummary expandIcon={<ArrowIcon />}>
         <StyledAccordionTitle sx={{ color: "primary.main" }}>
           Installed Packages{" "}
-          <Tooltip title="Includes requested packages and their dependencies">
+          <Tooltip
+            title="Includes requested packages and their dependencies"
+            tabIndex={0}
+          >
             <InfoOutlinedIcon
               sx={{
                 fontSize: "20px",

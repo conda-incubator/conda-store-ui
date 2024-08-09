@@ -24,13 +24,15 @@ export const environmentVariablesSlice = createSlice({
         {
           payload: {
             data: {
-              specification: {
-                spec: { variables: environmentVariables }
-              }
+              specification: { spec }
             }
           }
         }
       ) => {
+        // variables can be undefined if a lockfile specification is provided
+        // TODO: parse the lockfile and populate the variables
+        const environmentVariables = spec?.variables ?? [];
+
         state.environmentVariables = environmentVariables;
       }
     );

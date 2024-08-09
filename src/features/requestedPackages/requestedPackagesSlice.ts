@@ -8,7 +8,6 @@ import {
 import { requestedPackageParser } from "../../utils/helpers";
 import { dependenciesApiSlice } from "../dependencies";
 import { environmentDetailsApiSlice } from "../environmentDetails";
-
 export interface IRequestedPackagesState {
   requestedPackages: (string | CondaSpecificationPip)[];
   versionsWithoutConstraints: { [key: string]: string };
@@ -79,18 +78,22 @@ export const requestedPackagesSlice = createSlice({
         {
           payload: {
             data: {
-              specification: {
-                spec: { dependencies }
-              }
+              specification: { spec }
             }
           }
         }
       ) => {
+        let dependencies: Array<string | CondaSpecificationPip> = [];
+
+        if (spec.dependencies) {
+          dependencies = spec.dependencies;
+        }
+
         state.requestedPackages = dependencies;
         state.packagesWithLatestVersions = {};
         state.versionsWithConstraints = {};
 
-        dependencies.forEach(dep => {
+        dependencies.forEach((dep: string | CondaSpecificationPip) => {
           if (typeof dep === "string") {
             const { constraint, name, version } = requestedPackageParser(dep);
 

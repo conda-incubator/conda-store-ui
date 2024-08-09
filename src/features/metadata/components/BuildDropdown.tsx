@@ -71,6 +71,7 @@ export const BuildDropdown = ({
         <IconButton
           sx={{ padding: "0px" }}
           onClick={() => setOpen(currState => !currState)}
+          size="large"
         >
           <ArrowDropDownIcon
             sx={{

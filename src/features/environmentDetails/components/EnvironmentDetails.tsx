@@ -111,6 +111,8 @@ export const EnvironmentDetails = () => {
   const { page, dependencies } = useAppSelector(state => state.dependencies);
   const { selectedEnvironment } = useAppSelector(state => state.tabs);
   const { currentBuild } = useAppSelector(state => state.enviroments);
+  const { isFromLockfile } = useAppSelector(state => state.environmentDetails);
+
   const [name, setName] = useState(selectedEnvironment?.name || "");
   const scrollRef = useScrollRef();
 
@@ -207,19 +209,32 @@ export const EnvironmentDetails = () => {
     }
   }, [currentBuild]);
 
-  const updateEnvironment = async (code: IUpdateEnvironmentArgs) => {
+  const updateEnvironment = async (code: IUpdateEnvironmentArgs | string) => {
     if (!selectedEnvironment) {
       return;
     }
 
     const namespace = selectedEnvironment.namespace.name;
     const environment = selectedEnvironment.name;
-    const environmentInfo = {
-      specification: `${stringify(
-        code
-      )}\ndescription: ${description}\nname: ${environment}\nprefix: null`,
-      namespace
-    };
+    const isLockfile = typeof code === "string";
+
+    let environmentInfo;
+    if (isLockfile) {
+      environmentInfo = {
+        namespace,
+        specification: code,
+        environment_name: environment,
+        environment_description: description,
+        is_lockfile: true
+      };
+    } else {
+      environmentInfo = {
+        specification: `${stringify(
+          code
+        )}\ndescription: ${description}\nname: ${environment}\nprefix: null`,
+        namespace
+      };
+    }
 
     try {
       const { data } = await createOrUpdate(environmentInfo).unwrap();
@@ -335,8 +350,13 @@ export const EnvironmentDetails = () => {
         />
       </Box>
       <Box sx={{ marginBottom: "30px" }}>
-        {mode === "read-only" && <SpecificationReadOnly />}
-        {mode === "edit" && (
+        {mode === "read-only" && (
+          <SpecificationReadOnly
+            isFromLockfile={Boolean(isFromLockfile)}
+            lockfileUrl={`api/v1/build/${currentBuildId}/lockfile`}
+          />
+        )}
+        {mode === "edit" && !isFetching && (
           <SpecificationEdit
             descriptionUpdated={descriptionIsUpdated}
             defaultEnvVersIsChanged={defaultEnvVersIsChanged}
@@ -344,6 +364,13 @@ export const EnvironmentDetails = () => {
             onDefaultEnvIsChanged={updateDefaultEnvironmentVersion}
             onUpdateEnvironment={updateEnvironment}
             onShowDialogAlert={showDialog => setShowDialog(showDialog)}
+            isFromLockfile={Boolean(isFromLockfile)}
+            // Use key to reset the state of this component when user selects
+            // new build from dropdown in the UI. This is primarily to make sure
+            // the specification/lockfile section of the form changes to match
+            // the specification type (yaml spec versus lockfile) of the newly
+            // selected build.
+            key={currentBuildId}
           />
         )}
       </Box>

@@ -1,7 +1,11 @@
 import React, { useCallback, useEffect, useState } from "react";
+import { DropzoneArea } from "mui-file-dropzone";
 import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
+import CodeOutlinedIcon from "@mui/icons-material/CodeOutlined";
 import { ChannelsEdit } from "../../../../features/channels";
-import { BlockContainerEditMode } from "../../../../components";
+import { BlockContainerEditMode, AlertDialog } from "../../../../components";
 import { StyledButton } from "../../../../styles";
 import { CodeEditor } from "../../../../features/yamlEditor";
 import { stringify } from "yaml";
@@ -13,6 +17,7 @@ import {
   environmentCreateStateCleared
 } from "../../environmentCreateSlice";
 import { getStylesForStyleType } from "../../../../utils/helpers";
+import LockfileSupportInfo from "../../../../components/LockfileSupportInfo";
 
 export const SpecificationCreate = ({ onCreateEnvironment }: any) => {
   const dispatch = useAppDispatch();
@@ -103,16 +108,26 @@ export const SpecificationCreate = ({ onCreateEnvironment }: any) => {
     return stringify({ channels, dependencies, variables });
   };
 
-  const handleSubmit = () => {
-    const code = show
-      ? editorContent
-      : {
-          dependencies: requestedPackages,
-          variables: environmentVariables,
-          channels
-        };
+  const [mode, setMode] = React.useState<number>(0);
+  const [showDialog, setShowDialog] = React.useState<boolean>(false);
+  const [files, setFiles] = React.useState<File[]>([]);
 
-    onCreateEnvironment(code);
+  const handleSubmit = async () => {
+    if (mode === 0) {
+      const code = show
+        ? editorContent
+        : {
+            dependencies: requestedPackages,
+            variables: environmentVariables,
+            channels
+          };
+
+      onCreateEnvironment(code);
+    } else if (files.length) {
+      // mode = 1
+      const text = await files[0].text();
+      onCreateEnvironment(text);
+    }
   };
 
   useEffect(() => {
@@ -122,49 +137,132 @@ export const SpecificationCreate = ({ onCreateEnvironment }: any) => {
   }, []);
 
   return (
-    <BlockContainerEditMode
-      title="Specification"
-      onToggleEditMode={onToggleEditorView}
-      isEditMode={show}
-    >
-      <Box>
-        {show ? (
-          <CodeEditor
-            code={formatCode(channels, requestedPackages, environmentVariables)}
-            onChangeEditor={onUpdateEditor}
-          />
-        ) : (
-          <>
-            <Box sx={{ marginBottom: "30px" }}>
-              <CreateEnvironmentPackages
-                requestedPackages={requestedPackages}
+    <Box>
+      {mode === 0 ? (
+        <BlockContainerEditMode
+          title="Specification"
+          onToggleEditMode={onToggleEditorView}
+          isEditMode={show}
+          setShowDialog={setShowDialog}
+        >
+          <Box>
+            {show ? (
+              <CodeEditor
+                code={formatCode(
+                  channels,
+                  requestedPackages,
+                  environmentVariables
+                )}
+                onChangeEditor={onUpdateEditor}
               />
-            </Box>
-            <Box sx={{ margiBottom: "30px" }}>
-              <ChannelsEdit
-                channelsList={channels}
-                updateChannels={onUpdateChannels}
-              />
-            </Box>
-          </>
-        )}
+            ) : (
+              <>
+                <Box sx={{ marginBottom: "30px" }}>
+                  <CreateEnvironmentPackages
+                    requestedPackages={requestedPackages}
+                  />
+                </Box>
+                <Box sx={{ marginBottom: "30px" }}>
+                  <ChannelsEdit
+                    channelsList={channels}
+                    updateChannels={onUpdateChannels}
+                  />
+                </Box>
+              </>
+            )}
+          </Box>
+        </BlockContainerEditMode>
+      ) : (
         <Box
           sx={{
-            display: "flex",
-            justifyContent: "center",
-            marginTop: "30px",
-            marginBottom: "10px"
+            border: "1px solid #E0E0E0",
+            paddingBottom: "15px"
           }}
         >
-          <StyledButton
-            color="primary"
-            sx={buttonStyles}
-            onClick={handleSubmit}
+          <Box
+            sx={{
+              padding: "10px 15px",
+              borderBottom: "1px solid #E0E0E0"
+            }}
           >
-            Create
-          </StyledButton>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center"
+              }}
+            >
+              <Typography
+                data-testid="block-container-title"
+                sx={{ fontSize: "14px", fontWeight: 600, color: "#333" }}
+              >
+                Conda Lockfile Upload
+              </Typography>
+              <Button
+                variant="outlined"
+                color="secondary"
+                size="small"
+                startIcon={<CodeOutlinedIcon />}
+                onClick={() => setShowDialog(true)}
+              >
+                Switch to Specification
+              </Button>
+            </Box>
+          </Box>
+          <Box
+            sx={{
+              padding: "15px 15px 0 15px"
+            }}
+          >
+            <DropzoneArea
+              fileObjects={files}
+              onChange={async files => setFiles(files)}
+              filesLimit={1}
+              showPreviews={true}
+              showPreviewsInDropzone={false}
+              showFileNamesInPreview={true}
+              previewText=""
+            />
+            <Box>
+              <LockfileSupportInfo />
+            </Box>
+          </Box>
         </Box>
+      )}
+      <AlertDialog
+        title={`Switch to ${
+          mode === 0 ? "Conda Lockfile Upload" : "Specification"
+        }`}
+        description={`If you switch to ${
+          mode === 0 ? "Conda Lockfile Upload" : "Specification"
+        }, you ${
+          mode === 0 ? "may" : "will"
+        } lose your work in this section of the form.`}
+        isOpen={showDialog}
+        closeAction={() => setShowDialog(false)}
+        confirmAction={() => {
+          setMode(mode === 0 ? 1 : 0);
+          setShowDialog(false);
+        }}
+        confirmText="Continue"
+      />
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          marginTop: "30px",
+          marginBottom: "10px"
+        }}
+      >
+        <StyledButton
+          color="primary"
+          sx={buttonStyles}
+          onClick={handleSubmit}
+          disabled={mode === 1 && !files?.length}
+        >
+          Create
+        </StyledButton>
       </Box>
-    </BlockContainerEditMode>
+    </Box>
   );
 };

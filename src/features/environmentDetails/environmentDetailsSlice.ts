@@ -11,12 +11,15 @@ export interface IEnvironmentDetailsState {
   mode: EnvironmentDetailsModes;
   name: string;
   prefix: string | null | undefined;
+  // Was this environment built from a lockfile?
+  isFromLockfile: boolean | null;
 }
 
 const initialState: IEnvironmentDetailsState = {
   mode: EnvironmentDetailsModes.READ,
   name: "",
-  prefix: null
+  prefix: null,
+  isFromLockfile: null
 };
 
 export const environmentDetailsSlice = createSlice({
@@ -39,7 +42,7 @@ export const environmentDetailsSlice = createSlice({
           payload: {
             data: {
               specification: {
-                spec: { name, prefix }
+                spec: { name, prefix, lockfile }
               }
             }
           }
@@ -47,6 +50,7 @@ export const environmentDetailsSlice = createSlice({
       ) => {
         state.name = name;
         state.prefix = prefix;
+        state.isFromLockfile = Boolean(lockfile);
       }
     );
   }
