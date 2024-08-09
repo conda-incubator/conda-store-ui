@@ -12,8 +12,9 @@
    yarn run build
 
    # for the browser bundle - this will generate a dist directory for the
-   # compiled assets
-   yarn run webpack bundle
+   # compiled assets, by using the prod target we ensure assets will be
+   # optimised accordingly
+   yarn run webpack:prod bundle
 
    # pack the bundle
    yarn pack --filename conda-store-ui.tgz
