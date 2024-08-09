@@ -6,6 +6,7 @@
   "bugs": {
     "url": "https://github.com/conda-incubator/conda-store-ui/issues"
   },
+  
   "scripts": {
     "build": "REACT_APP_VERSION=$npm_package_version tsc --build",
     "build:watch": "tsc --build --watch",
@@ -16,8 +17,8 @@
     "eslint:check": "eslint . --ext .ts,.tsx",
     "prepare": "yarnpkg run build && husky install",
     "prepublishOnly": "yarnpkg run clean && yarnpkg run webpack:prod",
-    "start:docker": "docker-compose --profile local-dev up --build",
     "start": "yarn run start:services && yarn run start:ui",
+    "start:docker": "docker-compose --profile local-dev up --build",
     "start:services": "docker-compose up -d",
     "start:ui": "REACT_APP_VERSION=$npm_package_version webpack server --history-api-fallback",
     "start:chromium": "webpack serve --open 'chromium'",
@@ -132,6 +133,7 @@
     "rimraf": "^3.0.2",
     "source-map-loader": "^3.0.1",
     "storybook": "^8.0.4",
+    "terser-webpack-plugin": "^5.3.10",
     "ts-loader": "^8.0.17",
     "typescript": "^4.6.3",
     "webpack": "^5.72.0",
