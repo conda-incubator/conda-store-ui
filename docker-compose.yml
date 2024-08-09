@@ -1,5 +1,3 @@
-version: "3.8"
-
 services:
   conda-store-worker:
     image: quansight/conda-store-server:${CONDA_STORE_SERVER_VERSION:-2024.3.1}

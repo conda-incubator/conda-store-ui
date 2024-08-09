@@ -32,7 +32,7 @@ This guide will help you to set up your local development environment.
 
 Before setting up conda-store-ui, you must prepare your environment.
 
-We use [Docker Compose](https://docs.docker.com/compose/) to set up the infrastructure before starting ensure that you have docker-compose installed. If you need to install docker-compose, please see their [installation documentation](https://docs.docker.com/compose/install/)
+We use [Docker Compose](https://docs.docker.com/compose/) to set up the infrastructure before starting ensure that you have Docker Compose installed. If you need to install Docker Compose, please see their [installation documentation](https://docs.docker.com/compose/install/)
 
 1. Clone the [conda-store-ui](https://github.com/conda-incubator/conda-store-ui.git) repository.
 2. Copy `.env.example` to `.env`. All default settings should work, but if you want to test against a different version of conda-store-server, you can specify if in the `.env` file by setting the `CONDA_STORE_SERVER_VERSION` variable to the desired version. Refer to the [Configuration documentation](https://conda-incubator.github.io/conda-store-ui/?path=/docs/docs-configuration--page) for more information on the `.env` file.
