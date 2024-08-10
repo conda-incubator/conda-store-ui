@@ -24,13 +24,22 @@ export const channelsSlice = createSlice({
         {
           payload: {
             data: {
-              specification: {
-                spec: { channels }
-              }
+              specification: { spec }
             }
           }
         }
       ) => {
+        let channels = [];
+
+        if (spec.channels) {
+          channels = spec.channels;
+        } else if (spec.lockfile?.metadata?.channels) {
+          channels = spec.lockfile.metadata.channels.map(
+            // Note: in the lockfile spec, a channel URL can be a string identifier like "conda-forge"
+            (channel: { url: string }) => channel.url
+          );
+        }
+
         state.channels = channels;
       }
     );

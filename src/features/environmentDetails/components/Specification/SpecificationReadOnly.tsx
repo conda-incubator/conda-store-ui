@@ -5,8 +5,17 @@ import { Dependencies, pageChanged } from "../../../../features/dependencies";
 import { ChannelsList } from "../../../../features/channels";
 import { BlockContainer } from "../../../../components";
 import { useAppDispatch, useAppSelector } from "../../../../hooks";
+import { ArtifactItem } from "../../../artifacts";
 
-export const SpecificationReadOnly = () => {
+interface ISpecificationReadOnly {
+  isFromLockfile?: boolean;
+  lockfileUrl?: string;
+}
+
+export const SpecificationReadOnly = ({
+  isFromLockfile,
+  lockfileUrl
+}: ISpecificationReadOnly) => {
   const { requestedPackages } = useAppSelector(
     state => state.requestedPackages
   );
@@ -20,11 +29,29 @@ export const SpecificationReadOnly = () => {
   const hasMore = size * page <= count;
 
   return (
-    <BlockContainer title="Specification">
+    <BlockContainer title={isFromLockfile ? "Conda Lockfile" : "Specification"}>
+      {!isFromLockfile && (
+        <Box sx={{ marginBottom: "30px" }}>
+          <RequestedPackageList packageList={requestedPackages} />
+        </Box>
+      )}
       <Box sx={{ marginBottom: "30px" }}>
-        <RequestedPackageList packageList={requestedPackages} />
-      </Box>
-      <Box sx={{ marginBottom: "30px" }}>
+        {isFromLockfile && lockfileUrl && (
+          <Box
+            sx={{
+              display: "flex",
+              fontFamily: "fontFamily",
+              marginBottom: "30px"
+            }}
+          >
+            <ArtifactItem
+              artifact={{
+                name: "Show .conda-lock.yml file",
+                route: lockfileUrl
+              }}
+            />
+          </Box>
+        )}
         <Dependencies
           mode="read-only"
           dependencies={dependencies}
@@ -32,7 +59,7 @@ export const SpecificationReadOnly = () => {
           next={() => dispatch(pageChanged(page + 1))}
         />
       </Box>
-      <Box sx={{ margiBottom: "30px" }}>
+      <Box sx={{ marginBottom: "30px" }}>
         <ChannelsList channelList={channels} />
       </Box>
     </BlockContainer>

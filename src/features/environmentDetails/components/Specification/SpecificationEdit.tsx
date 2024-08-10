@@ -5,11 +5,14 @@ import React, {
   useCallback,
   useMemo
 } from "react";
+import { DropzoneArea } from "mui-file-dropzone";
 import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
+import CodeOutlinedIcon from "@mui/icons-material/CodeOutlined";
 import { cloneDeep, debounce } from "lodash";
 import { stringify } from "yaml";
-import { BlockContainerEditMode } from "../../../../components";
+import { BlockContainerEditMode, AlertDialog } from "../../../../components";
 import { ChannelsEdit, updateChannels } from "../../../../features/channels";
 import { updateEnvironmentVariables } from "../../../../features/environmentVariables";
 import { Dependencies, pageChanged } from "../../../../features/dependencies";
@@ -25,6 +28,8 @@ import { CodeEditor } from "../../../../features/yamlEditor";
 import { useAppDispatch, useAppSelector } from "../../../../hooks";
 import { StyledButton } from "../../../../styles";
 import { CondaSpecificationPip } from "../../../../common/models";
+import LockfileSupportInfo from "../../../../components/LockfileSupportInfo";
+
 interface ISpecificationEdit {
   descriptionUpdated: boolean;
   defaultEnvVersIsChanged: boolean;
@@ -32,14 +37,17 @@ interface ISpecificationEdit {
   onDefaultEnvIsChanged: (defaultEnvVersIsChanged: boolean) => void;
   onUpdateEnvironment: (specification: any) => void;
   onShowDialogAlert: (showDialog: boolean) => void;
+  isFromLockfile: boolean;
 }
+
 export const SpecificationEdit = ({
   descriptionUpdated,
   defaultEnvVersIsChanged,
   onSpecificationIsChanged,
   onDefaultEnvIsChanged,
   onUpdateEnvironment,
-  onShowDialogAlert
+  onShowDialogAlert,
+  isFromLockfile
 }: ISpecificationEdit) => {
   const { channels } = useAppSelector(state => state.channels);
   const { requestedPackages } = useAppSelector(
@@ -51,6 +59,7 @@ export const SpecificationEdit = ({
   const { dependencies, size, count, page } = useAppSelector(
     state => state.dependencies
   );
+
   const hasMore = size * page <= count;
   const dispatch = useAppDispatch();
 
@@ -154,18 +163,6 @@ export const SpecificationEdit = ({
     setShow(value);
   };
 
-  const onEditEnvironment = () => {
-    const envContent = show
-      ? code
-      : {
-          dependencies: requestedPackages,
-          variables: environmentVariables,
-          channels
-        };
-
-    onUpdateEnvironment(envContent);
-  };
-
   const onCancelEdition = () => {
     setEnvIsUpdated(false);
     onSpecificationIsChanged(false);
@@ -199,86 +196,198 @@ export const SpecificationEdit = ({
     }
   }, [channels, requestedPackages, environmentVariables, descriptionUpdated]);
 
+  const [mode, setMode] = React.useState<number>(isFromLockfile ? 1 : 0);
+  const [showDialog, setShowDialog] = React.useState<boolean>(false);
+  const [files, setFiles] = React.useState<File[]>([]);
+
+  const handleSubmit = async () => {
+    if (mode === 0) {
+      const envContent = show
+        ? code
+        : {
+            dependencies: requestedPackages,
+            variables: environmentVariables,
+            channels
+          };
+
+      onUpdateEnvironment(envContent);
+    } else if (files.length) {
+      // mode = 1
+      const text = await files[0].text();
+      onUpdateEnvironment(text);
+    }
+  };
+
   return (
-    <BlockContainerEditMode
-      title="Specification"
-      onToggleEditMode={onToggleEditorView}
-      isEditMode={show}
-    >
-      <Box>
-        {show ? (
-          <CodeEditor
-            code={stringify({
-              channels,
-              dependencies: requestedPackages,
-              variables: environmentVariables
-            })}
-            onChangeEditor={onUpdateEditor}
-          />
-        ) : (
-          <>
-            <Box sx={{ marginBottom: "30px" }}>
-              <RequestedPackagesEdit
-                packageList={requestedPackages}
-                onDefaultEnvIsChanged={onUpdateDefaultEnvironment}
+    <Box>
+      {mode === 0 ? (
+        // mode 0 : Specification (as opposed to Lockfile)
+        <BlockContainerEditMode
+          title="Specification"
+          onToggleEditMode={onToggleEditorView}
+          isEditMode={show}
+          setShowDialog={setShowDialog}
+        >
+          <Box>
+            {show ? (
+              <CodeEditor
+                code={stringify({
+                  channels,
+                  dependencies: requestedPackages,
+                  variables: environmentVariables
+                })}
+                onChangeEditor={onUpdateEditor}
               />
-            </Box>
-            <Box sx={{ marginBottom: "30px" }}>
-              <Dependencies
-                mode="edit"
-                dependencies={dependencies}
-                hasMore={hasMore}
-                next={() => dispatch(pageChanged(page + 1))}
-                maxWidth={500}
-              />
-            </Box>
-            <Box sx={{ margiBottom: "30px" }}>
-              <ChannelsEdit
-                channelsList={channels}
-                updateChannels={onUpdateChannels}
-                maxWidth={500}
-              />
-            </Box>
-          </>
-        )}
+            ) : (
+              <>
+                <Box sx={{ marginBottom: "30px" }}>
+                  <RequestedPackagesEdit
+                    packageList={requestedPackages}
+                    onDefaultEnvIsChanged={onUpdateDefaultEnvironment}
+                  />
+                </Box>
+                {!isFromLockfile && (
+                  // The dependencies list is filled automagically when the page
+                  // requests info about the build. But if the environment was
+                  // created from a lockfile, showing this list may suggest to
+                  // the user that they can build or edit the list of
+                  // dependencies manually. But that's not the case with a
+                  // lockfile; they are not meant to be edited in a manual way.
+                  <Box sx={{ marginBottom: "30px" }}>
+                    <Dependencies
+                      mode="edit"
+                      dependencies={dependencies}
+                      hasMore={hasMore}
+                      next={() => dispatch(pageChanged(page + 1))}
+                      maxWidth={500}
+                    />
+                  </Box>
+                )}
+                <Box sx={{ marginBottom: "30px" }}>
+                  <ChannelsEdit
+                    channelsList={channels}
+                    updateChannels={onUpdateChannels}
+                    maxWidth={500}
+                  />
+                </Box>
+              </>
+            )}
+          </Box>
+        </BlockContainerEditMode>
+      ) : (
+        // mode 1 : Lockfile (as opposed to Specification)
         <Box
           sx={{
-            display: "flex",
-            justifyContent: "flex-end",
-            alignItems: "flex-end",
-            gap: "30px",
-            marginTop: "45px",
-            marginBottom: "10px"
+            border: "1px solid #E0E0E0",
+            paddingBottom: "15px"
           }}
         >
-          <Typography
+          <Box
             sx={{
-              fontSize: "13px",
-              color: "#333",
-              textDecoration: "underline",
-              cursor: "pointer"
+              padding: "10px 15px",
+              borderBottom: "1px solid #E0E0E0"
             }}
-            onClick={() => onShowDialogAlert(true)}
           >
-            Delete environment
-          </Typography>
-          <StyledButton
-            color="primary"
-            sx={{ padding: "5px 48px" }}
-            onClick={onCancelEdition}
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center"
+              }}
+            >
+              <Typography
+                data-testid="block-container-title"
+                sx={{ fontSize: "14px", fontWeight: 600, color: "#333" }}
+              >
+                Conda Lockfile Upload
+              </Typography>
+              <Button
+                variant="outlined"
+                color="secondary"
+                size="small"
+                startIcon={<CodeOutlinedIcon />}
+                onClick={() => setShowDialog(true)}
+              >
+                Switch to Specification
+              </Button>
+            </Box>
+          </Box>
+          <Box
+            sx={{
+              padding: "15px 15px 0 15px"
+            }}
           >
-            Cancel
-          </StyledButton>
-          <StyledButton
-            color="primary"
-            sx={{ padding: "5px 48px" }}
-            onClick={onEditEnvironment}
-            disabled={!envIsUpdated}
-          >
-            Save
-          </StyledButton>
+            <DropzoneArea
+              fileObjects={files}
+              onChange={async files => setFiles(files)}
+              filesLimit={1}
+              showPreviews={true}
+              showPreviewsInDropzone={false}
+              showFileNamesInPreview={true}
+              previewText=""
+            />
+            <Box>
+              <LockfileSupportInfo />
+            </Box>
+          </Box>
         </Box>
+      )}
+
+      <AlertDialog
+        title={`Switch to ${
+          mode === 0 ? "Conda Lockfile Upload" : "Specification"
+        }`}
+        description={`If you switch to ${
+          mode === 0 ? "Conda Lockfile Upload" : "Specification"
+        }, you ${
+          mode === 0 ? "may" : "will"
+        } lose your work in this section of the form.`}
+        isOpen={showDialog}
+        closeAction={() => setShowDialog(false)}
+        confirmAction={() => {
+          setMode(mode === 0 ? 1 : 0);
+          setShowDialog(false);
+        }}
+        confirmText="Continue"
+      />
+
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "flex-end",
+          alignItems: "flex-end",
+          gap: "30px",
+          marginTop: "45px",
+          marginBottom: "10px"
+        }}
+      >
+        <Typography
+          sx={{
+            fontSize: "13px",
+            color: "#333",
+            textDecoration: "underline",
+            cursor: "pointer"
+          }}
+          onClick={() => onShowDialogAlert(true)}
+        >
+          Delete environment
+        </Typography>
+        <StyledButton
+          color="primary"
+          sx={{ padding: "5px 48px" }}
+          onClick={onCancelEdition}
+        >
+          Cancel
+        </StyledButton>
+        <StyledButton
+          color="primary"
+          sx={{ padding: "5px 48px" }}
+          onClick={handleSubmit}
+          disabled={mode === 0 ? !envIsUpdated : !files?.length}
+        >
+          Save
+        </StyledButton>
       </Box>
-    </BlockContainerEditMode>
+    </Box>
   );
 };
