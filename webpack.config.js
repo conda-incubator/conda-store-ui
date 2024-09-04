@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022, conda-store development team
+ * Copyright (c) 2020, conda-store development team
  *
  * This file is distributed under the terms of the BSD 3 Clause license. 
  * The full license can be found in the LICENSE file.
@@ -13,123 +13,89 @@ const TerserPlugin = require("terser-webpack-plugin");
 const Dotenv = require("dotenv-webpack");
 const webpack = require("webpack");
 
-// Need to differentiate between dev and production
 const isProd = process.env.NODE_ENV === "production";
 const ASSET_PATH = isProd ? "" : "/";
 
+const cssLoader = {
+  loader: "css-loader",
+  options: {
+    modules: {
+      auto: true,
+      localIdentName: isProd ? "[hash:base64]" : "[name]__[local]--[hash:base64:5]",
+    },
+  },
+};
+
 const rules = [
-  // Dependency source maps
   {
     test: /\.js$/,
     use: "source-map-loader",
     enforce: "pre",
-    exclude: /node_modules/
-  },
-  { test: /\.js.map$/, use: "file-loader" },
-
-  // Styling rules
-  {
-    test: /\.module\.css$/,
-    use: [
-      "css-loader",
-    ]
+    exclude: /node_modules/,
   },
   {
-    test: /(?<!\.module)\.css$/,
+    test: /\.(css|less)$/,
     use: [
-      MiniCssExtractPlugin.loader,
-      "css-loader"
-    ]
+      isProd ? MiniCssExtractPlugin.loader : "style-loader",
+      cssLoader,
+      "less-loader",
+    ],
   },
-  {
-    test: /\.module\.less$/,
-    use: [
-      "css-loader",
-      "less-loader"
-    ]
-  },
-  {
-    test: /(?<!\.module)\.less$/,
-    use: [
-      MiniCssExtractPlugin.loader,
-      "css-loader",
-      "less-loader"
-    ]
-  },
-
-  // SVG rules
   {
     test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
-    use: {
-      loader: "svg-url-loader",
-      options: { encoding: "none", limit: 10000 }
-    }
+    type: "asset",
+    parser: {
+      dataUrlCondition: {
+        maxSize: 10 * 1024, // 10kb
+      },
+    },
   },
-
-  // TypeScript rules
   {
     test: /\.tsx?$/,
     exclude: /node_modules/,
-    use: {
-      loader: "ts-loader",
-      options: {
-        transpileOnly: false,
-        projectReferences: true
-      }
-    }
-  }
-];
-
-const resolve = {
-  modules: [
-    "node_modules",
-    path.resolve(__dirname)
-  ],
-  extensions: [".tsx", ".ts", ".jsx", ".js", ".less", ".css"]
-};
-
-const plugins = [
-  new HtmlWebpackPlugin({
-    title: "conda-store"
-  }),
-  new MiniCssExtractPlugin(),
-  new Dotenv(),
-  new webpack.EnvironmentPlugin(['REACT_APP_VERSION'])
-];
-
-const optimization = {
-  minimize: isProd,
-  minimizer: [
-    new TerserPlugin({
-      terserOptions: {
-        format: {
-          comments: false
-        }
+    use: [
+      {
+        loader: "ts-loader",
+        options: {
+          transpileOnly: true,
+          experimentalWatchApi: true,
+        },
       },
-      extractComments: false
-    }),
-    new CssMinimizerPlugin()
-  ]
-};
+    ],
+  },
+];
 
 module.exports = {
   mode: isProd ? "production" : "development",
-  devtool: isProd ? false : "source-map",
+  devtool: isProd ? "source-map" : "eval-cheap-module-source-map",
   devServer: {
-    port: 8000
+    port: 8000,
+    hot: true,
   },
   entry: ["src/index.tsx", "src/main.tsx"],
-  watch: false,
   output: {
     path: path.resolve(__dirname, "dist"),
-    filename: "[name].js",
+    filename: isProd ? "[name].[contenthash].js" : "[name].js",
     publicPath: ASSET_PATH,
-    clean: true
+    clean: true,
   },
-  module: {
-    rules
+  module: { rules },
+  resolve: {
+    modules: ["node_modules", path.resolve(__dirname)],
+    extensions: [".tsx", ".ts", ".jsx", ".js", ".less", ".css"],
   },
-  resolve,
-  plugins,
-  optimization
+  plugins: [
+    new HtmlWebpackPlugin({ title: "conda-store" }),
+    new MiniCssExtractPlugin({
+      filename: isProd ? "[name].[contenthash].css" : "[name].css",
+    }),
+    new Dotenv(),
+    new webpack.EnvironmentPlugin(["REACT_APP_VERSION"]),
+    new webpack.ids.HashedModuleIdsPlugin(),
+  ],
+  optimization: {
+    minimize: isProd,
+    minimizer: [new TerserPlugin(), new CssMinimizerPlugin()],
+    runtimeChunk: "single",
+  },
 };
