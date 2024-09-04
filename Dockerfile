@@ -11,4 +11,4 @@ RUN --mount=type=cache,target=/root/.yarn YARN_CACHE_FOLDER=/root/.yarn \
 
 EXPOSE 8000
 
-CMD [ "yarn", "webpack-dev-server", "--port", "8000" ]
+CMD [ "yarn", "run", "start:ui" ]
