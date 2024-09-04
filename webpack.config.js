@@ -16,6 +16,8 @@ const webpack = require("webpack");
 const isProd = process.env.NODE_ENV === "production";
 const ASSET_PATH = isProd ? "" : "/";
 
+// Calculate hash based on content, will be used when generating production 
+// bundles
 const cssLoader = {
   loader: "css-loader",
   options: {
@@ -67,9 +69,11 @@ const rules = [
 
 module.exports = {
   mode: isProd ? "production" : "development",
+  // generate a sourcemap for production, in dev we generate mapping faster
   devtool: isProd ? "source-map" : "eval-cheap-module-source-map",
   devServer: {
     port: 8000,
+    // enable hot module replacement
     hot: true,
   },
   entry: ["src/index.tsx", "src/main.tsx"],
