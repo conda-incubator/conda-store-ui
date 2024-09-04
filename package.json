@@ -11,14 +11,14 @@
     "build:watch": "tsc --build --watch",
     "clean": "rimraf coverage lib storybook-static types .env  *.tsbuildinfo",
     "clean:slate": "yarn run clean && rimraf node_modules",
-    "clean:docker": "docker-compose down -v --remove-orphans",
+    "clean:docker": "docker compose down -v --remove-orphans",
     "eslint": "eslint . --ext .ts,.tsx --fix",
     "eslint:check": "eslint . --ext .ts,.tsx",
     "prepare": "yarnpkg run build && husky install",
     "prepublishOnly": "yarnpkg run clean && yarnpkg run webpack:prod",
-    "start:docker": "docker-compose --profile local-dev up --build",
+    "start:docker": "docker compose --profile local-dev up --build",
     "start": "yarn run start:services && yarn run start:ui",
-    "start:services": "docker-compose up -d",
+    "start:services": "docker compose up -d",
     "start:ui": "REACT_APP_VERSION=$npm_package_version webpack server --history-api-fallback",
     "start:chromium": "webpack serve --open 'chromium'",
     "start:prod": "NODE_ENV=production webpack serve",
@@ -70,6 +70,7 @@
     "date-fns-tz": "^1.3.7",
     "lodash": "^4.17.21",
     "match-sorter": "^6.3.1",
+    "mui-file-dropzone": "^4.0.2",
     "react": "^18.0.0",
     "react-beautiful-dnd": "^13.1.0",
     "react-dom": "^18.0.0",
@@ -141,5 +142,6 @@
   },
   "engines": {
     "node": ">=18.0.0"
-  }
+  },
+  "packageManager": "yarn@4.4.0"
 }

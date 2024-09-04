@@ -32,7 +32,7 @@ This guide will help you to set up your local development environment.
 
 Before setting up conda-store-ui, you must prepare your environment.
 
-We use [Docker Compose](https://docs.docker.com/compose/) to set up the infrastructure before starting ensure that you have docker-compose installed. If you need to install docker-compose, please see their [installation documentation](https://docs.docker.com/compose/install/)
+We use [Docker Compose](https://docs.docker.com/compose/) to set up the infrastructure before starting ensure that you have Docker Compose installed. If you need to install Docker Compose, please see their [installation documentation](https://docs.docker.com/compose/install/)
 
 1. Clone the [conda-store-ui](https://github.com/conda-incubator/conda-store-ui.git) repository.
 2. Copy `.env.example` to `.env`. All default settings should work, but if you want to test against a different version of conda-store-server, you can specify if in the `.env` file by setting the `CONDA_STORE_SERVER_VERSION` variable to the desired version. Refer to the [Configuration documentation](https://conda-incubator.github.io/conda-store-ui/?path=/docs/docs-configuration--page) for more information on the `.env` file.
@@ -41,9 +41,10 @@ We use [Docker Compose](https://docs.docker.com/compose/) to set up the infrastr
 
 Running conda-store-ui in Docker is the most straightforward way to set up your local development environment.
 
-1. Run `yarn run start:docker` to start the entire development stack.
-2. Open your local browser and go to [http://localhost:8000](http://localhost:8000) to see conda-store-ui.
-3. You can then log in using the default username of `username` and default password of `password`.
+1. Run `yarn install`. This will download the needed JavaScript dependencies into a directory named `node_modules/`. This directory will later be copied into the `conda-store-ui` Docker container for use at runtime by the Conda Store UI app.
+2. Run `yarn run start:docker` to start the entire development stack.
+3. Open you local browser and go to [http://localhost:8000](http://localhost:8000) so see conda-store-ui.
+4. You can then log in using the default username of `username` and default password of `password`.
 
 Hot reloading is enabled, so when you make changes to source files, your browser will reload and reflect the changes.
 
