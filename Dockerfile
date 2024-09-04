@@ -1,5 +1,7 @@
 FROM node:18.18-alpine3.18
 
+RUN corepack enable
+
 WORKDIR /usr/src/app
 
 COPY . .
