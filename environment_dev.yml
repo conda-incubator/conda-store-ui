@@ -6,7 +6,9 @@ channels:
   - conda-forge
 dependencies:
   - python=3.10
-  - nodejs=18.18 # do not install Yarn separately, will get Yarn via Corepack
+  # Match the version of Node.js defined for the Conda dev environment (environment_dev.yml).
+  # Also, do not install Yarn separately, use Corepack (comes with Node.js).
+  - nodejs=18.18
   - pytest
   - pip
   - pip:
