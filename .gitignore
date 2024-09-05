@@ -154,6 +154,8 @@ src/version.ts
 static
 
 # yarn
+# not using Zero-installs
+# https://yarnpkg.com/getting-started/qa#which-files-should-be-gitignored
 
 .yarn/*
 !.yarn/releases
@@ -161,4 +163,4 @@ static
 !.yarn/plugins
 !.yarn/sdks
 !.yarn/versions
-.pnp.*# 
+.pnp.*#
