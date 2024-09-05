@@ -27,8 +27,10 @@ jobs:
       uses: actions/setup-node@v4
       with:
         node-version: ${{ matrix.node-version }}
-        cache: 'yarn' 
+        cache: 'yarn'
         # https://github.com/actions/setup-node?tab=readme-ov-file#caching-global-packages-data
+    - name: Set Yarn to correct version
+      run: corepack enable
     - run: yarn install --immutable
       # https://yarnpkg.com/cli/install#options
     - run: yarn test

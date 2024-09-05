@@ -5,10 +5,10 @@ on:
     branches: [ "main" ]
 
   workflow_dispatch:
-  
+
 permissions:
   contents: write
-  
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
@@ -17,11 +17,12 @@ jobs:
       - name: Checkout 🛎️
         uses: actions/checkout@v3
 
-      - name: Install and Build 🔧 
+      - name: Install and Build 🔧
         run: |
+          corepack enable
           yarn
           yarn run storybook:build
-          
+
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4
         with:

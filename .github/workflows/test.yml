@@ -35,6 +35,9 @@ jobs:
         run: |
           cp .env.example .env
 
+      - name: "Set Yarn to correct version"
+        run: corepack enable
+
       - name: "Install Dependencies"
         run: |
           sudo apt install wait-for-it -y

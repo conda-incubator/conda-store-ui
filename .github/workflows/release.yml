@@ -27,6 +27,9 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
           scope: "@conda-store-ui"
 
+      - name: "Set Yarn to correct version"
+        run: corepack enable
+
       - name: "Install dependencies 📦"
         run: yarn
 
