@@ -1,3 +1,4 @@
+# Keep this in sync with the Node version specified for the Conda dev environment (environment_dev.yml)
 FROM node:18.18-alpine3.18
 
 RUN corepack enable
