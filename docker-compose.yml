@@ -81,7 +81,7 @@ services:
 
   conda-store-ui:
     build: .
-    command: yarn run start:ui
+    command: "yarn run start:ui"
     profiles:
       - local-dev
     ports:
