@@ -25,7 +25,7 @@ To learn how to use conda-store-ui alongside conda-store, please visit [the cond
 
 ## Development 👩🏻‍💻
 
-Please refer to the Conda Store docs: [Local development setup for conda-store-ui codebase](https://conda.store/community/contribute/contribute/local-setup-ui).
+Please refer to the `conda-store` docs: [Local development setup for conda-store-ui codebase](https://conda.store/community/contribute/contribute/local-setup-ui).
 
 ### Making a release 🚀
 
