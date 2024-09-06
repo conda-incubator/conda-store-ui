@@ -17,7 +17,7 @@ jobs:
       - name: "Checkout repository 🛎"
         uses: actions/checkout@v4
 
-      - name: "Set Yarn to correct version"
+      - name: "Set Yarn to correct version 📌"
         run: corepack enable
 
       - name: "Set up Node.js 🧶"
