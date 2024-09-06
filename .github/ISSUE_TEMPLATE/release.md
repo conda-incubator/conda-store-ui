@@ -22,11 +22,11 @@ Release captain responsible - <@gh_username>
 
 ### 2. Prepare the codebase for a new release
 
-- [ ] Create a new git branch for the release `git checkout -b release-2023.9.1`
+- [ ] Create a new git branch for the release `git checkout -b release-2024.9.1`
   - [ ] Prepare the branch just in case `git clean -fxdq`
 - [ ] Bump `conda-store-ui` version in `package.json`
-- [ ] Follow the manual release instructions in the Release.md file (do not make the release yet!)
-- [ ] Make a release commit: `git commit -m 'REL - 2023.9.1'`
+- [ ] Follow the manual release instructions in the `Release.md` file (do not make the release yet!)
+- [ ] Make a release commit: `git commit -m 'REL - 2024.9.1'`
 - [ ] Push the release (REL) commit
 - [ ] If a **release candidate** is needed, tick this box when we're ready for a full release.
 
