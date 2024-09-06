@@ -1,5 +1,5 @@
 # Keep this in sync with the Node version specified for the Conda dev environment (in environment_dev.yml)
-FROM node:22-alpine3.20
+FROM node:22.8.0-alpine3.20
 
 RUN corepack enable
 
