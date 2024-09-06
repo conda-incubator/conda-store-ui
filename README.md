@@ -32,16 +32,24 @@ This guide will help you to set up your local development environment.
 
 Before setting up conda-store-ui, you must prepare your environment.
 
-We use [Docker Compose](https://docs.docker.com/compose/) to set up the infrastructure before starting ensure that you have Docker Compose installed. If you need to install Docker Compose, please see their [installation documentation](https://docs.docker.com/compose/install/)
+We use [Docker Compose](https://docs.docker.com/compose/) to set up the infrastructure before starting ensure that you
+have Docker Compose installed.
+If you need to install Docker Compose, please see their [installation documentation](https://docs.docker.com/compose/install/)
 
 1. Clone the [conda-store-ui](https://github.com/conda-incubator/conda-store-ui.git) repository.
-2. Copy `.env.example` to `.env`. All default settings should work, but if you want to test against a different version of conda-store-server, you can specify if in the `.env` file by setting the `CONDA_STORE_SERVER_VERSION` variable to the desired version. Refer to the [Configuration documentation](https://conda-incubator.github.io/conda-store-ui/?path=/docs/docs-configuration--page) for more information on the `.env` file.
+2. Copy `.env.example` to `.env`. All default settings should work, but if you want to test against a different version
+   of conda-store-server, you can specify if in the `.env` file by setting the `CONDA_STORE_SERVER_VERSION` variable to
+   the desired version.
+   Refer to the [Configuration documentation](https://conda.store/conda-store-ui/how-tos/configure-ui/) for more
+   information on the `.env` file.
 
 ### Local Development with conda-store-ui running in Docker 🐳
 
 Running conda-store-ui in Docker is the most straightforward way to set up your local development environment.
 
-1. Run `yarn install`. This will download the needed JavaScript dependencies into a directory named `node_modules/`. This directory will later be copied into the `conda-store-ui` Docker container for use at runtime by the Conda Store UI app.
+1. Run `yarn install`. This will download the needed JavaScript dependencies into a directory named `node_modules/`.
+   This directory will later be copied into the `conda-store-ui` Docker container for use at runtime by the Conda Store
+   UI app.
 2. Run `yarn run start:docker` to start the entire development stack.
 3. Open you local browser and go to [http://localhost:8000](http://localhost:8000) so see conda-store-ui.
 4. You can then log in using the default username of `username` and default password of `password`.
@@ -54,7 +62,8 @@ This setup still uses Docker for supporting services but runs conda-store-ui loc
 
 #### Set up your environment
 
-This project uses [Conda](https://conda.io) for package management. To set up Conda, please see their [installation documentation](https://docs.conda.io/projects/conda/en/latest/user-guide/install/index.html).
+This project uses [conda](https://conda.io) for package management.
+To set up conda, please see their [installation documentation](https://docs.conda.io/projects/conda/en/latest/user-guide/install/index.html).
 
 1. Change to the project root `cd conda-store-ui`
 2. From the project root create the conda environment `conda env create -f environment_dev.yml`
@@ -71,18 +80,11 @@ Hot reloading is enabled, so when you make changes to source files, your browser
 
 ### Making a release 🚀
 
-To create a new version of this package, follow these steps:
+To create a new version of this package: the release captain will open an issue with the `release` template and follow
+the steps outlined in the issue.
 
-1. Bump the version number in `package.json` (we use CalVer: `YYYY.MM.releaseNumber` starting with `releaseNumber=1`)
-2. [Start a new GitHub release](https://github.com/conda-incubator/conda-store-ui/releases/new)
-   - Call the release the current version, e.g. `2023.9.1`
-   - In the **`Choose a Tag:`** dropdown, type in the release name (e.g., `2023.9.1`) and click "Create new tag"
-   - Add the release notes in the text field [^github-activity]
-3. Confirm that the release completed successfully by checking the [GitHub Actions page](https://github.com/conda-incubator/conda-store-ui/actions). Once completed, a new release will be available at [npm - @conda-store/conda-store-ui](https://libraries.io/npm/@conda-store%2Fconda-store-ui)
-
-🔗 You can find more details about out release process and versioning approach in our [Maintenance docs](https://conda.store/community/maintenance/release).
-
-[^github-activity]: If you wish, use [`github-activity` to generate a Changelog](https://github.com/choldgraf/github-activity), e.g. `github-activity conda-incubator/conda-store-ui --since 2023.9.1 --until 2023.10.1 --auth <GH personal access token>`
+🔗 You can find more details about out release process and versioning approach in our
+[Maintenance docs](https://conda.store/community/maintenance/release).
 
 ### Running Tests
 
@@ -125,10 +127,8 @@ Steps to install and set up:
    yarn build
    ```
 
-To run the tests, you will need to run commands in two separate terminal windows
-or tabs.
-
-Steps to run:
+To run the tests, you will need to run the following commands in two separate terminal windows
+or tabs:
 
 1. In the first terminal window/tab, enter the following:
    ```sh
@@ -136,8 +136,8 @@ Steps to run:
    yarn start
    ```
 2. Wait for server to start (you'll know it's ready when it says "webpack 5.xx.x
-compiled successfully"). Open a **new terminal window or tab** and enter the
-following:
+   compiled successfully"). Open a **new terminal window or tab** and enter the
+   following:
    ```sh
    conda activate cs-ui-dev-env
    pytest
@@ -149,8 +149,8 @@ If you need to debug, try replacing the last command with:
 PWDEBUG=1 pytest
 ```
 
-Note: PW stands for Playwright. `PWDEBUG=1` puts [Playwright in debug
-mode](https://playwright.dev/python/docs/debug).
+> [!NOTE]
+> PW stands for Playwright. `PWDEBUG=1` puts [Playwright in debug mode](https://playwright.dev/python/docs/debug).
 
 ## Code of Conduct 🤝
 
