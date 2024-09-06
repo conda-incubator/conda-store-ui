@@ -8,7 +8,7 @@ dependencies:
   - python=3.10
   # Match the version of Node.js defined in the Dockerfile.
   # Also, do not install Yarn separately, use Corepack (comes with Node.js).
-  - nodejs=18.18
+  - nodejs=22.8.0
   - pytest
   - pip
   - pip:
