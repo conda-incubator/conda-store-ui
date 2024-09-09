@@ -75,8 +75,8 @@ Line by line, here's what the commands above do:
 3. Install Playwright-usable browser
 4. Copy environment variables
 5. Use Corepack to set Yarn to correct version
-5. Use Yarn to install JavaScript dependencies
-6. Build app
+6. Use Yarn to install JavaScript dependencies
+7. Build app
 
 To run the tests, you will need to run commands in two separate terminal windows
 or tabs.
