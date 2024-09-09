@@ -24,7 +24,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: 'yarn'
+          cache: "yarn"
 
       - name: "Install dependencies 📦"
         run: yarn
@@ -39,7 +39,7 @@ jobs:
         run: yarn run webpack bundle
 
       - name: "Upload artifacts 📤"
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: webpack-bundle
           path: dist/

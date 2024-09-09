@@ -22,36 +22,36 @@ jobs:
       - name: "Checkout repository 🛎"
         uses: actions/checkout@v4
 
-      - name: "Set up Python"
-        uses: conda-incubator/setup-miniconda@v2
-        env:
-          CONDA_SOLVER: libmamba
+      - name: "Set up Python 🐍"
+        uses: conda-incubator/setup-miniconda@v3
         with:
+          mamba-version: "*"
+          channels: conda-forge
           activate-environment: cs-ui-dev-env
           environment-file: environment_dev.yml
           auto-activate-base: false
 
-      - name: "Set up environment variables"
+      - name: "Set up environment variables 🔨"
         run: |
           cp .env.example .env
 
-      - name: "Set Yarn to correct version"
+      - name: "Set Yarn to correct version 📌"
         run: corepack enable
 
-      - name: "Install Dependencies"
+      - name: "Install Dependencies 📦"
         run: |
           sudo apt install wait-for-it -y
           playwright install chromium
           yarn install --immutable
           yarn run build
 
-      - name: "Start web server and run tests"
+      - name: "Start web server and run tests 🧪"
         shell: bash -el {0}
         run: |
           yarn run start & pytest --video on --output test-results --screenshots true test/playwright/test_ux.py
 
-      - name: "Upload artifacts"
-        uses: actions/upload-artifact@v3
+      - name: "Upload artifacts 📤"
+        uses: actions/upload-artifact@v4
         if: ${{ always() }}
         with:
           name: playwright-tests

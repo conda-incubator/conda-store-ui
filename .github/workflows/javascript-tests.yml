@@ -8,12 +8,11 @@ name: JavaScript tests (Jest)
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     strategy:
@@ -22,15 +21,18 @@ jobs:
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
-    - uses: actions/checkout@v4
-    - name: Set Yarn to correct version
-      run: corepack enable
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v4
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'yarn'
-        # https://github.com/actions/setup-node?tab=readme-ov-file#caching-global-packages-data
-    - run: yarn install --immutable
-      # https://yarnpkg.com/cli/install#options
-    - run: yarn test
+      - name: "Checkout repository 🛎"
+        uses: actions/checkout@v4
+      - name: "Set Yarn to correct version 📌"
+        run: corepack enable
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "yarn"
+          # https://github.com/actions/setup-node?tab=readme-ov-file#caching-global-packages-data
+      - name: "Install dependencies 📦"
+        run: yarn install --immutable
+        # https://yarnpkg.com/cli/install#options
+      - name: "Run tests 🧪"
+        run: yarn test

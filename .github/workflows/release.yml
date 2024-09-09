@@ -24,7 +24,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
-          registry-url: 'https://registry.npmjs.org'
+          registry-url: "https://registry.npmjs.org"
           scope: "@conda-store-ui"
 
       - name: "Set Yarn to correct version 📌"
@@ -37,7 +37,7 @@ jobs:
         run: yarn eslint:check
 
       - name: "Download webpack bundle 📦"
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: webpack-bundle
           path: dist/
