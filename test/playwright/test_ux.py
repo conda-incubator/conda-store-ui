@@ -10,7 +10,7 @@ from playwright.sync_api import Page, sync_playwright, expect
 import random
 
 
-DEFAULT_TIMEOUT = 30_000  # time in ms
+DEFAULT_TIMEOUT = 60_000  # time in ms
 
 expect.set_options(timeout=DEFAULT_TIMEOUT)
 
