@@ -39,6 +39,7 @@ Release captain responsible - <@gh_username>
   - Add release notes in the field below [^github-activity].
 - [ ] Confirm that the release completed
   - [The `release` GitHub action job](https://github.com/conda-incubator/conda-store-ui/blob/main/.github/workflows/release.yml) has been completed successfully in the [actions tab](https://github.com/conda-incubator/conda-store-ui/actions).
+- Once the release is completed open a PR to adjust the `version` in `package.json` to the next release-dev (e.g., `2023.9.1-dev`)
 - [ ] Celebrate, you're done! 🎉
 
 [^github-activity]: If you wish, use [`github-activity` to generate a changelog](https://github.com/choldgraf/github-activity), e.g. `github-activity conda-incubator/conda-store --since 2023.9.1 --until 2023.10.1`.

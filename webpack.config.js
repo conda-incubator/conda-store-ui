@@ -12,9 +12,11 @@ const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
 const Dotenv = require("dotenv-webpack");
 const webpack = require("webpack");
+const packageJson = require('./package.json');
 
 const isProd = process.env.NODE_ENV === "production";
 const ASSET_PATH = isProd ? "" : "/";
+const version = packageJson.version;
 
 // Calculate hash based on content, will be used when generating production 
 // bundles
@@ -79,7 +81,7 @@ module.exports = {
   entry: ["src/index.tsx", "src/main.tsx"],
   output: {
     path: path.resolve(__dirname, "dist"),
-    filename: isProd ? "[name].[contenthash].js" : "[name].js",
+    filename: isProd ? "[name].js" : "[name].js",
     publicPath: ASSET_PATH,
     clean: true,
   },
@@ -91,15 +93,21 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({ title: "conda-store" }),
     new MiniCssExtractPlugin({
-      filename: isProd ? "[name].[contenthash].css" : "[name].css",
+      filename: "[name].css",
     }),
     new Dotenv(),
     new webpack.EnvironmentPlugin(["REACT_APP_VERSION"]),
     new webpack.ids.HashedModuleIdsPlugin(),
+    new webpack.DefinePlugin({
+      'process.env.VERSION': JSON.stringify(version),
+    }),
+    new webpack.BannerPlugin({
+      banner: `file: [file], fullhash:[fullhash] - ui version: ${version}`,
+      include: [/\.css$/, /\.html$/],
+    }),
   ],
   optimization: {
     minimize: isProd,
     minimizer: [new TerserPlugin(), new CssMinimizerPlugin()],
-    runtimeChunk: "single",
   },
 };
