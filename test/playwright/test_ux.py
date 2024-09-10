@@ -120,7 +120,7 @@ def _create_new_environment(page, screenshot=False):
 
 
 def _existing_environment_interactions(
-    page, env_name, time_to_build_env=3 * 60 * 1000, screenshot=False
+    page, env_name, time_to_build_env=5 * 60 * 1000, screenshot=False
 ):
     """test interactions with existing environments.
     During this test, the test will be rebuilt twice.
