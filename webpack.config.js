@@ -81,7 +81,7 @@ module.exports = {
   entry: ["src/index.tsx", "src/main.tsx"],
   output: {
     path: path.resolve(__dirname, "dist"),
-    filename: isProd ? "[name].js" : "[name].js",
+    filename: "[name].js",
     publicPath: ASSET_PATH,
     clean: true,
   },
@@ -101,6 +101,8 @@ module.exports = {
     new webpack.DefinePlugin({
       'process.env.VERSION': JSON.stringify(version),
     }),
+    // Add comment to generated files indicating the hash and ui version 
+    // this is helpful for vendoring with server
     new webpack.BannerPlugin({
       banner: `file: [file], fullhash:[fullhash] - ui version: ${version}`,
       include: [/\.css$/, /\.html$/],
