@@ -37,7 +37,7 @@ If the dry run looks good, continue with the release checklist items.
 
 ## Troubleshooting notes
 
-- If there are issues with the [GitHub Release UI](https://github.com/conda-incubator/conda-store-ui/releases/new), ensure that whatever code you published is checked into git, then tag and push the commit and tag:
+- If there are issues with the [GitHub Release UI](https://github.com/conda-incubator/conda-store-ui/releases/new), ensure that whatever code you published is checked into git, then tag and push both the commit and the tag:
 
   ```bash
   # use the same version here as in package.json, but without a leading `v`

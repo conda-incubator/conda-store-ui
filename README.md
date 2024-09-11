@@ -32,7 +32,7 @@ This guide will help you to set up your local development environment.
 
 Before setting up conda-store-ui, you must prepare your environment.
 
-We use [Docker Compose](https://docs.docker.com/compose/) to set up the infrastructure before starting ensure that you
+We use [Docker Compose](https://docs.docker.com/compose/) to set up the infrastructure. Before starting ensure that you
 have Docker Compose installed.
 If you need to install Docker Compose, please see their [installation documentation](https://docs.docker.com/compose/install/)
 
