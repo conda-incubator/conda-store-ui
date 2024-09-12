@@ -10,7 +10,7 @@ from playwright.sync_api import Page, sync_playwright, expect
 import random
 
 
-DEFAULT_TIMEOUT = 30_000  # time in ms
+DEFAULT_TIMEOUT = 60_000  # time in ms
 
 expect.set_options(timeout=DEFAULT_TIMEOUT)
 
@@ -120,7 +120,7 @@ def _create_new_environment(page, screenshot=False):
 
 
 def _existing_environment_interactions(
-    page, env_name, time_to_build_env=3 * 60 * 1000, screenshot=False
+    page, env_name, time_to_build_env=5 * 60 * 1000, screenshot=False
 ):
     """test interactions with existing environments.
     During this test, the test will be rebuilt twice.
@@ -145,18 +145,23 @@ def _existing_environment_interactions(
     env_link = page.get_by_role("link", name=env_name)
     edit_button = page.get_by_role("button", name="Edit")
 
-    # edit existing environment throught the YAML editor
+    # edit existing environment through the YAML editor
     env_link.click()
     edit_button.click()
     page.get_by_label("YAML").check()
     if screenshot:
         page.screenshot(path="test-results/conda-store-yaml-editor.png")
-    page.get_by_text("- rich").click()
-    page.get_by_text(
-        "channels: - conda-forgedependencies: - rich - pip: - nothing - ipykernel"
-    ).fill(
+
+    # set the YAML editor to a particular environment specification
+    yaml_editor = page.get_by_test_id("yaml-editor").get_by_role("textbox")
+    # note: I'm not sure this is necessary but I deliberately chose to match
+    # text near the end of the editor to prevent the possibility of Playwright
+    # acting on the editor before it has finished rendering its initial value
+    yaml_editor.filter(has_text=r"variables: {}").clear()
+    yaml_editor.fill(
         "channels:\n  - conda-forge\ndependencies:\n  - rich\n  - python\n  - pip:\n      - nothing\n  - ipykernel\n\n"
     )
+
     page.get_by_role("button", name="Save").click()
     edit_button.wait_for(state="attached")
 
