@@ -27,7 +27,7 @@ export const CodeEditor = ({ code, onChangeEditor }: ICodeEditor) => {
   const convertToJSON = (e: string) => {
     try {
       setIsError(false);
-      onChangeEditor(parse(e));
+      onChangeEditor(parse(e) || {});
     } catch (e) {
       setIsError(true);
     }
@@ -52,6 +52,7 @@ export const CodeEditor = ({ code, onChangeEditor }: ICodeEditor) => {
         theme={isGrayscaleStyleType ? undefined : greenAccentTheme}
         extensions={[StreamLanguage.define(yamlLanguage)]}
         onChange={e => convertToJSON(e)}
+        data-testid="yaml-editor"
       />
 
       <Box
