@@ -33,7 +33,8 @@ jobs:
         run: yarn run build
 
       - name: "Build application artifacts 🏗"
-        run: yarn run webpack bundle
+        # ensure we use the prod target to minimise assets
+        run: yarn run webpack:prod bundle
 
       - name: "Upload artifacts 📤"
         uses: actions/upload-artifact@v4
