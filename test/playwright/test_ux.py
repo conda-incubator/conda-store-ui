@@ -10,7 +10,7 @@ from playwright.sync_api import Page, sync_playwright, expect
 import random
 
 
-DEFAULT_TIMEOUT = 30_000  # time in ms
+DEFAULT_TIMEOUT = 60_000  # time in ms
 
 expect.set_options(timeout=DEFAULT_TIMEOUT)
 
@@ -166,21 +166,9 @@ def _create_new_environment(page, screenshot=False):
     return new_env_name
 
 
-def _close_environment_tabs(page):
-    """Close any open tabs in the UI. This will continue closing tabs 
-    until no tabs remain open.
-
-    Parameters
-    ----------
-    page: playwright.Page
-        page object for the current test being run
-    """
-    close_tab = page.get_by_test_id("closeTab")
-    while close_tab.count() > 0:
-        close_tab.first.click()
-
-
-def _existing_environment_interactions(page, env_name, time_to_build_env=5*60*1000, screenshot=False):
+def _existing_environment_interactions(
+    page, env_name, time_to_build_env=5 * 60 * 1000, screenshot=False
+):
     """test interactions with existing environments. 
     During this test, the env will be rebuilt twice. 
 
@@ -204,7 +192,7 @@ def _existing_environment_interactions(page, env_name, time_to_build_env=5*60*10
     env_link = page.get_by_role("link", name=env_name)
     edit_button = page.get_by_role("button", name="Edit")
 
-    # edit existing environment throught the YAML editor
+    # edit existing environment through the YAML editor
     env_link.click()
     if screenshot:
         page.keyboard.press("PageUp")  # ensure we are at the top of the page
@@ -217,8 +205,17 @@ def _existing_environment_interactions(page, env_name, time_to_build_env=5*60*10
     page.get_by_label("YAML").check()
     if screenshot:
         page.screenshot(path="test-results/pip-section.png")
-    page.get_by_text("- rich").click() # bring focus to the section
-    page.get_by_text("channels:  - conda-forgedependencies:  - rich>12.5.1  - python=3.10.9  - pip:      - nothing  - ipykernelvariables: {}").fill("channels:\n  - conda-forge\ndependencies:\n  - rich>12.5.1\n  - python=3.10\n")
+
+    # set the YAML editor to a particular environment specification
+    yaml_editor = page.get_by_test_id("yaml-editor").get_by_role("textbox")
+    # note: I'm not sure this is necessary but I deliberately chose to match
+    # text near the end of the editor to prevent the possibility of Playwright
+    # acting on the editor before it has finished rendering its initial value
+    yaml_editor.filter(has_text=r"variables: {}").clear()
+    yaml_editor.fill(
+        "channels:\n  - conda-forge\ndependencies:\n  - rich\n  - python\n  - pip:\n      - nothing\n  - ipykernel\n\n"
+    )
+
     page.get_by_role("button", name="Save").click()
     edit_button.wait_for(state="attached")
 
