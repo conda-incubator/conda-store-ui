@@ -29,18 +29,11 @@ Please refer to the `conda-store` docs: [Local development setup for conda-store
 
 ### Making a release 🚀
 
-To create a new version of this package, follow these steps:
+To create a new version of this package: the release captain will open an issue with the `release` template and follow
+the steps outlined in the issue.
 
-1. Bump the version number in `package.json` (we use CalVer: `YYYY.MM.releaseNumber` starting with `releaseNumber=1`)
-2. [Start a new GitHub release](https://github.com/conda-incubator/conda-store-ui/releases/new)
-   - Call the release the current version, e.g. `2023.9.1`
-   - In the **`Choose a Tag:`** dropdown, type in the release name (e.g., `2023.9.1`) and click "Create new tag"
-   - Add the release notes in the text field [^github-activity]
-3. Confirm that the release completed successfully by checking the [GitHub Actions page](https://github.com/conda-incubator/conda-store-ui/actions). Once completed, a new release will be available at [npm - @conda-store/conda-store-ui](https://libraries.io/npm/@conda-store%2Fconda-store-ui)
-
-🔗 You can find more details about out release process and versioning approach in our [Maintenance docs](https://conda.store/community/maintenance/release).
-
-[^github-activity]: If you wish, use [`github-activity` to generate a Changelog](https://github.com/choldgraf/github-activity), e.g. `github-activity conda-incubator/conda-store-ui --since 2023.9.1 --until 2023.10.1 --auth <GH personal access token>`
+🔗 You can find more details about out release process and versioning approach in our
+[Maintenance docs](https://conda.store/community/maintenance/release).
 
 ### Running Tests
 
@@ -78,10 +71,8 @@ Line by line, here's what the commands above do:
 6. Use Yarn to install JavaScript dependencies
 7. Build app
 
-To run the tests, you will need to run commands in two separate terminal windows
-or tabs.
-
-Steps to run:
+To run the tests, you will need to run the following commands in two separate terminal windows
+or tabs:
 
 1. In the first terminal window/tab, enter the following:
    ```sh
@@ -89,8 +80,8 @@ Steps to run:
    yarn start
    ```
 2. Wait for server to start (you'll know it's ready when it says "webpack 5.xx.x
-compiled successfully"). Open a **new terminal window or tab** and enter the
-following:
+   compiled successfully"). Open a **new terminal window or tab** and enter the
+   following:
    ```sh
    conda activate cs-ui-dev-env
    pytest
@@ -102,8 +93,8 @@ If you need to debug, try replacing the last command with:
 PWDEBUG=1 pytest
 ```
 
-Note: PW stands for Playwright. `PWDEBUG=1` puts [Playwright in debug
-mode](https://playwright.dev/python/docs/debug).
+> [!NOTE]
+> PW stands for Playwright. `PWDEBUG=1` puts [Playwright in debug mode](https://playwright.dev/python/docs/debug).
 
 ## Code of Conduct 🤝
 

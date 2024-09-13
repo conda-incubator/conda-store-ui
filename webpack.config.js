@@ -1,74 +1,115 @@
 /*
- * Copyright (c) 2022,  Quansight
+ * Copyright (c) 2020, conda-store development team
  *
- * This file is part of the tree-finder library, distributed under the terms of
- * the BSD 3 Clause license. The full license can be found in the LICENSE file.
+ * This file is distributed under the terms of the BSD 3 Clause license. 
+ * The full license can be found in the LICENSE file.
  */
-const HtmlWebpackPlugin = require("html-webpack-plugin");
+
 const path = require("path");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
+const TerserPlugin = require("terser-webpack-plugin");
 const Dotenv = require("dotenv-webpack");
 const webpack = require("webpack");
-
-// const TsconfigPathsPlugin = require("tsconfig-paths-webpack-plugin");
-// To improve build times for large projects enable fork-ts-checker-webpack-plugin
-// const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
-
-const {
-  dependencySrcMapRules,
-  stylingRules,
-  svgUrlRules,
-  getContext,
-  getOptimization,
-  getResolve,
-  tsRules
-} = require("./webpack.rules");
+const packageJson = require('./package.json');
 
 const isProd = process.env.NODE_ENV === "production";
+const ASSET_PATH = isProd ? "" : "/";
+const version = packageJson.version;
 
-const basicConfig = {
+// Calculate hash based on content, will be used when generating production 
+// bundles
+const cssLoader = {
+  loader: "css-loader",
+  options: {
+    modules: {
+      auto: true,
+      localIdentName: isProd ? "[hash:base64]" : "[name]__[local]--[hash:base64:5]",
+    },
+  },
+};
+
+const rules = [
+  {
+    test: /\.js$/,
+    use: "source-map-loader",
+    enforce: "pre",
+    exclude: /node_modules/,
+  },
+  {
+    test: /\.(css|less)$/,
+    use: [
+      isProd ? MiniCssExtractPlugin.loader : "style-loader",
+      cssLoader,
+      "less-loader",
+    ],
+  },
+  {
+    test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
+    type: "asset",
+    parser: {
+      dataUrlCondition: {
+        maxSize: 10 * 1024, // 10kb
+      },
+    },
+  },
+  {
+    test: /\.tsx?$/,
+    exclude: /node_modules/,
+    use: [
+      {
+        loader: "ts-loader",
+        options: {
+          transpileOnly: true,
+          experimentalWatchApi: true,
+        },
+      },
+    ],
+  },
+];
+
+module.exports = {
+  mode: isProd ? "production" : "development",
+  // generate a sourcemap for production, in dev we generate mapping faster
+  devtool: isProd ? "source-map" : "eval-cheap-module-source-map",
   devServer: {
     port: 8000,
+    // enable hot module replacement
+    hot: true,
   },
-  devtool: isProd ? false : "source-map",
   entry: ["src/index.tsx", "src/main.tsx"],
-  watch: false,
-  ...getContext(__dirname),
-
   output: {
     path: path.resolve(__dirname, "dist"),
     filename: "[name].js",
-    publicPath: "/"
+    publicPath: ASSET_PATH,
+    clean: true,
   },
-
-  module: {
-    rules: [
-      ...dependencySrcMapRules,
-      ...stylingRules,
-      ...svgUrlRules,
-      ...tsRules,
-    ]
-  },
-
+  module: { rules },
   resolve: {
-    ...getResolve(__dirname)
+    modules: ["node_modules", path.resolve(__dirname)],
+    extensions: [".tsx", ".ts", ".jsx", ".js", ".less", ".css"],
   },
-
   plugins: [
-    new HtmlWebpackPlugin({
-      title: "conda-store"
+    new HtmlWebpackPlugin({ title: "conda-store" }),
+    new MiniCssExtractPlugin({
+      filename: "[name].css",
     }),
-    new MiniCssExtractPlugin(),
     new Dotenv(),
-    new webpack.EnvironmentPlugin(['REACT_APP_VERSION'])
+    new webpack.EnvironmentPlugin(["REACT_APP_VERSION"]),
+    new webpack.ids.HashedModuleIdsPlugin(),
+    new webpack.DefinePlugin({
+      'process.env.VERSION': JSON.stringify(version),
+    }),
+    // Add comment to generated files indicating the hash and ui version 
+    // this is helpful for vendoring with server
+    new webpack.BannerPlugin({
+      banner: `file: [file], fullhash:[fullhash] - ui version: ${version}`,
+      include: [/\.css$/, /\.html$/],
+    }),
   ],
-
-  mode: isProd ? "production" : "development",
-
   optimization: {
     minimize: isProd,
-    ...(isProd && getOptimization())
-  }
+    minimizer: [new TerserPlugin(), new CssMinimizerPlugin()],
+  },
 };
-
-module.exports = [basicConfig];
