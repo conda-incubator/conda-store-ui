@@ -87,6 +87,7 @@ jobs:
         with:
           token: ${{ secrets.CONDA_STORE_SYNC }}
           path: conda-store-repo
+          committer: ${{ github.actor }} <${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com>
           commit-message: "Copy updated screenshots from GitHub CI job for Conda Store docs. This commit was created by a script via GitHub Actions."
           branch: update_screenshots
           delete-branch: true
