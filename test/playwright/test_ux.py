@@ -192,10 +192,19 @@ def _existing_environment_interactions(
     env_link = page.get_by_role("link", name=env_name)
     edit_button = page.get_by_role("button", name="Edit")
 
+    # ensure the namespace is expanded
+    try:
+        expect(env_link).to_be_visible(timeout=5000)  # short timeout to allow for page loading
+    except Exception as e:
+        # click to expand the `username` namespace (but not click the +)
+        page.get_by_role(
+            "button", name="username Create a new environment in the username namespace"
+        ).click()
+
     # edit existing environment through the YAML editor
     env_link.click()
     if screenshot:
-        page.keyboard.press("PageUp")  # ensure we are at the top of the page
+        page.keyboard.press("Home")  # ensure we are at the top of the page
         page.screenshot(path="test-results/edit-env.png")
     edit_button.click()
     if screenshot:
@@ -223,15 +232,6 @@ def _existing_environment_interactions(
     completed = page.get_by_text("Completed", exact=False)
     completed.wait_for(state="attached", timeout=time_to_build_env)
 
-    # ensure the namespace is expanded
-    try:
-        expect(env_link).to_be_visible()
-    except Exception as e:
-        # click to expand the `username` name space (but not click the +)
-        page.get_by_role(
-            "button", name="username Create a new environment in the username namespace"
-        ).click()
-
     # edit existing environment
     env_link.click()
     edit_button.click()
@@ -241,7 +241,7 @@ def _existing_environment_interactions(
         "new description"
     )
     # change the vesion spec of an existing package
-    page.get_by_text(">", exact=True).click()
+    page.get_by_role("row", name="rich", exact=False).get_by_role("combobox").first.click()
     page.get_by_role("option", name=">=").click()
     # Note: purposefully not testing version constraint since there is inconsistent behavior here
 

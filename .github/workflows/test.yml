@@ -53,13 +53,15 @@ jobs:
         run: |
           pytest --video on --output video --screenshots true test/playwright/test_ux.py
 
+      # screenshots are used in the `push_images` workflow to push the screenshots to the codebase repo
       - name: "Upload screenshot artifacts 📤"
         uses: actions/upload-artifact@v4
         if: ${{ always() }}
         with:
           name: screenshots
           path: test-results
-
+      # video is added as an artifact to assist in debugging the CI failures, playwright traceback 
+      # often shows failures several steps beyond the actual failure which can be seen in a video
       - name: "Upload video artifact 📤"
         uses: actions/upload-artifact@v4
         if: ${{ always() }}
