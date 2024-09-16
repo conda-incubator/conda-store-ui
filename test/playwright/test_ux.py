@@ -80,7 +80,7 @@ def _create_new_environment(page, screenshot=False):
     # click the + to create a new env
     page.get_by_label("Create a new environment in the username namespace").click()
     if screenshot:
-        page.screenshot(path="test-results/create-new-env.png", clip={'x': 0, 'y': 145, 'width': 275, 'height': 50})
+        page.screenshot(path="test-results/create-new-env.png", clip={'x': 0, 'y': 160, 'width': 290, 'height': 50})
     # fill in the env name
     page.get_by_label("Environment name").fill(new_env_name)
     # fill in the description
@@ -139,6 +139,8 @@ def _create_new_environment(page, screenshot=False):
     page.get_by_label("YAML", exact=False).click()
     
     if screenshot:
+        page.keyboard.press("PageDown")  # ensure we are at the bottom of the page
+        page.keyboard.press("PageDown")
         page.screenshot(path="test-results/create-button.png")
     # click create to start building the env
     page.get_by_role("button", name="Create", exact=True).click()
@@ -147,7 +149,7 @@ def _create_new_environment(page, screenshot=False):
     # click to open the Active environment dropdown manu
     page.get_by_text(" - Active", exact=False).click()
     if screenshot:
-        page.keyboard.press("PageUp")  # ensure we are at the top of the page
+        page.keyboard.press("Home")  # ensure we are at the top of the page
         page.screenshot(path="test-results/version-select.png")
     # click on the Active environment on the dropdown menu item (which is currently building)
     page.get_by_role("option", name="- Active", exact=False).click()
@@ -210,6 +212,7 @@ def _existing_environment_interactions(
     if screenshot:
         page.screenshot(path="test-results/switch-to-yaml.png", clip={'x': 280, 'y': 385, 'width': 985, 'height': 75})
         page.keyboard.press("PageDown")  # ensure we are at the bottom of the page
+        page.keyboard.press("PageDown")
         page.screenshot(path="test-results/delete-env.png")
     page.get_by_label("YAML").check()
     if screenshot:
