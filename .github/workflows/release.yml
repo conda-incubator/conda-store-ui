@@ -8,9 +8,13 @@ on:
 
 jobs:
   call-build:
-    uses: conda-incubator/conda-store-ui/.github/workflows/build.yml@main
+    name: "Call Build Job 🏗️"
+    # uses: conda-incubator/conda-store-ui/.github/workflows/build.yml@main
+    # using local to debug
+    uses: ./.github/workflows/build.yml
 
   make-release:
+    name: "Make conda-store-ui Release 🚀"
     runs-on: ubuntu-latest
     # ensure that the artifacts are available from the build job
     needs: call-build

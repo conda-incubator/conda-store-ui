@@ -43,3 +43,6 @@ jobs:
         with:
           name: webpack-bundle
           path: dist/
+
+      - name: "Run pack dry-run 📦"
+        run: yarn run pack --filename conda-store-ui.tgz --dry-run
