@@ -5,9 +5,9 @@ on:
   push:
     tags:
       - "*"
+  pull_request:
     paths:
       - ".github/workflows/release.yml"
-  workflow_dispatch:
 
 jobs:
   call-build:
