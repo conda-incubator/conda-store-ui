@@ -5,6 +5,8 @@ on:
   push:
     tags:
       - "*"
+    paths:
+      - ".github/workflows/release.yml"
   workflow_dispatch:
 
 jobs:
@@ -31,12 +33,6 @@ jobs:
           node-version: 18
           registry-url: "https://registry.npmjs.org"
           scope: "@conda-store-ui"
-
-      - name: "Install dependencies 📦"
-        run: yarn
-
-      - name: "Lint code 🔎"
-        run: yarn eslint:check
 
       - name: "Download build artefacts 📦"
         uses: actions/download-artifact@v4
