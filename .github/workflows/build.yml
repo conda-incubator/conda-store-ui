@@ -30,9 +30,7 @@ jobs:
         run: yarn eslint:check
 
       - name: "Build application 🏗"
-        run: |
-          yarn run clean
-          yarn run build
+        run: yarn run build
 
       - name: "Build application artifacts 🏗"
         # ensure we use the prod target to minimise assets
@@ -41,8 +39,9 @@ jobs:
       - name: "Upload artifacts 📤"
         uses: actions/upload-artifact@v4
         with:
-          name: webpack-bundle
-          path: dist/
+          path: |
+            dist/
+            lib/
 
       - name: "Run pack dry-run 📦"
         run: yarn run pack --filename conda-store-ui.tgz --dry-run

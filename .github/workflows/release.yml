@@ -5,6 +5,7 @@ on:
   push:
     tags:
       - "*"
+  workflow_dispatch:
 
 jobs:
   call-build:
@@ -37,11 +38,10 @@ jobs:
       - name: "Lint code 🔎"
         run: yarn eslint:check
 
-      - name: "Download webpack bundle 📦"
+      - name: "Download build artefacts 📦"
         uses: actions/download-artifact@v4
-        with:
-          name: webpack-bundle
-          path: dist/
+
+      - run: ls -lR
 
       - name: "Generate package tarball 📦"
         run: yarn pack --filename conda-store-ui.tgz
@@ -49,12 +49,14 @@ jobs:
       - name: "Set NPM scope" #(setup-node workaround https://github.com/actions/setup-node/issues/763)
         env:
           NPM_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        if: github.repository_owner == 'conda-incubator' && github.event.push.tags == true
         run: |
           npm config delete @conda-store-ui:registry --location project
           npm config set @conda-store-ui:registry 'https://registry.npmjs.org' --location project
           npm config set //registry.npmjs.org/:_authToken '${NPM_AUTH_TOKEN}' --location project
 
       - name: "Publish to npm 📤"
+        if: github.repository_owner == 'conda-incubator' && github.event.push.tags == true
         run: |
           echo "Publishing with tag ${{ env.GITHUB_REF_NAME }}"
           npm publish --verbose --access public conda-store-ui.tgz
