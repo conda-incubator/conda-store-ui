@@ -44,4 +44,4 @@ jobs:
             lib/
 
       - name: "Run pack dry-run 📦"
-        run: yarn run pack --filename conda-store-ui.tgz --dry-run
+        run: yarn pack --filename conda-store-ui.tgz --dry-run
