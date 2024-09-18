@@ -30,7 +30,9 @@ jobs:
         run: yarn eslint:check
 
       - name: "Build application 🏗"
-        run: yarn run build
+        run: |
+          yarn run clean
+          yarn run build
 
       - name: "Build application artifacts 🏗"
         # ensure we use the prod target to minimise assets

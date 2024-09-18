@@ -7,6 +7,8 @@
 1. Build the package locally:
 
    ```bash
+   # clean build artefacts to avoid issues
+   yarn run clean
    yarn install
 
    # build the package
