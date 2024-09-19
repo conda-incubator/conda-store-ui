@@ -91,8 +91,8 @@ jobs:
           NPM_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
           npm config delete @conda-store-ui:registry --location project
-          # npm config set @conda-store-ui:registry 'https://registry.npmjs.org' --location project
-          # npm config set //registry.npmjs.org/:_authToken '${NPM_AUTH_TOKEN}' --location project
+          npm config set @conda-store-ui:registry 'https://registry.npmjs.org' --location project
+          npm config set //registry.npmjs.org/:_authToken '${NPM_AUTH_TOKEN}' --location project
 
       - name: "Check NPM scope"
         run: npm show
@@ -102,9 +102,13 @@ jobs:
         run: |
           echo "Publishing with tag ${{ env.GITHUB_REF_NAME }}"
           npm publish --verbose --access public packages/${{ env.PACKAGE_FILE }} --dry-run
+        env:
+          NPM_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: "Publish to npm 📤"
         if: github.repository_owner == 'conda-incubator' && github.event_name == 'release' && startsWith(github.ref, 'refs/tags/')
         run: |
           echo "Publishing with tag ${{ env.GITHUB_REF_NAME }}"
           npm publish --verbose --access public packages/${{ env.PACKAGE_FILE }} --dry-run
+        env:
+          NPM_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
