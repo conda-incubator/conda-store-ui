@@ -1,3 +1,4 @@
+# WARNING - This workflow must be run AFTER the "test" workflow. 
 # This workflow collects screenshots which have stored as artifacts in test.yml 
 # and opens a PR on the conda-incubator/conda-store repo to update the docs.
 #

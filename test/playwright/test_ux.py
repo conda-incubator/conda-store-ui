@@ -1,5 +1,11 @@
 """Test suite for user interactions with the UI. It is designed to run both
 inside and outside of pytest to make future development easier.
+
+If screenshots=True, clipped images of the UI are taken and stored in
+`test-results`. These images are used in the documentation. 
+
+Note: Image clipping syntax includes the x & y coordinate of the upper left
+corner of the clip area ((0,0) is at the top left of the page) and the width and height of the clip in pixels. 
 """
 
 import requests
@@ -86,7 +92,7 @@ def _create_new_environment(page, screenshot=False):
     # fill in the description
     page.get_by_placeholder("Enter here the description of your environment").fill("description")
     if screenshot:
-        page.screenshot(path="test-results/add-package-button.png", clip={'x': 300, 'y': 385, 'width': 425, 'height': 170})
+        page.screenshot(path="test-results/add-package-button.png", clip={'x': 305, 'y': 375, 'width': 445, 'height': 140})
         page.screenshot(path="test-results/name-description.png")
     
     # add `rich` package
@@ -101,6 +107,7 @@ def _create_new_environment(page, screenshot=False):
     # add version spec
     page.get_by_role("combobox").first.click()
     if screenshot:
+        time.sleep(0.2)  # need time for the fade in to complete in CI
         page.screenshot(path="test-results/package-version-constraint.png")
     page.get_by_role("option", name=">", exact=True).click()
     page.get_by_role("combobox").nth(1).click()
@@ -128,7 +135,7 @@ def _create_new_environment(page, screenshot=False):
     # fill in conda-forge as the new channel name
     page.get_by_label("Enter channel").fill("conda-forge")
     if screenshot:
-        page.screenshot(path="test-results/add-channel.png", clip={'x': 300, 'y': 440, 'width': 425, 'height': 202})
+        page.screenshot(path="test-results/add-channel.png", clip={'x': 310, 'y': 410, 'width': 445, 'height': 220})
     # press enter to submit the channel to the list
     page.get_by_label("Enter channel").press("Enter")
     # switch to yaml editor
@@ -159,7 +166,7 @@ def _create_new_environment(page, screenshot=False):
     expect(page.get_by_text("Building")).to_be_visible()
     if screenshot:
         page.keyboard.press("PageUp")  # ensure we are at the top of the page
-        page.screenshot(path="test-results/environment-building.png", clip={'x': 300, 'y': 190, 'width': 285, 'height': 100})
+        page.screenshot(path="test-results/environment-building.png", clip={'x': 300, 'y': 190, 'width': 285, 'height': 85})
     # wait until the status is `Completed`
     completed = page.get_by_text("Completed", exact=False)
     completed.wait_for(state="attached", timeout=time_to_build_env)
@@ -210,7 +217,7 @@ def _existing_environment_interactions(
         page.screenshot(path="test-results/edit-env.png")
     edit_button.click()
     if screenshot:
-        page.screenshot(path="test-results/switch-to-yaml.png", clip={'x': 280, 'y': 385, 'width': 985, 'height': 75})
+        page.screenshot(path="test-results/switch-to-yaml.png", clip={'x': 295, 'y': 340, 'width': 970, 'height': 75})
         page.keyboard.press("PageDown")  # ensure we are at the bottom of the page
         page.keyboard.press("PageDown")
         page.screenshot(path="test-results/delete-env.png")
