@@ -15,11 +15,6 @@ env:
   FORCE_COLOR: "1"
   PACKAGE_FILE: "conda-store-ui.tgz"
 
-permissions:
-  id-token: write
-  attestations: write
-  contents: read
-
 jobs:
   # always build and verify
   build-application:
@@ -33,7 +28,7 @@ jobs:
       - name: "Set up Node.js 🧶"
         uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: "20.x"
           cache: "yarn"
 
       - name: "Install dependencies 📦"
@@ -58,10 +53,15 @@ jobs:
           name: conda-store-ui-package
           path: ${{ env.PACKAGE_FILE }}
 
-  release-to-npm:
+  release-to-npmjs:
     name: "Release conda-store-ui to NPM 📦"
     runs-on: ubuntu-latest
     needs: build-application
+    # needed for attestations
+    permissions:
+      id-token: write
+      attestations: write
+      contents: read
 
     steps:
       # Setup .npmrc file to publish to npm
@@ -91,21 +91,20 @@ jobs:
           NPM_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
           npm config delete @conda-store-ui:registry --location project
-          npm config set @conda-store-ui:registry 'https://registry.npmjs.org' --location project
-          npm config set //registry.npmjs.org/:_authToken '${NPM_AUTH_TOKEN}' --location project
+          # npm config set @conda-store-ui:registry 'https://registry.npmjs.org' --location project
+          # npm config set //registry.npmjs.org/:_authToken '${NPM_AUTH_TOKEN}' --location project
+
+      - name: "Check NPM scope"
+        run: npm show
 
       #  we always do a dry run for the publish
       - name: "Check publish (dry run) 📤"
         run: |
           echo "Publishing with tag ${{ env.GITHUB_REF_NAME }}"
           npm publish --verbose --access public packages/${{ env.PACKAGE_FILE }} --dry-run
-        env:
-          NPM_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: "Publish to npm 📤"
         if: github.repository_owner == 'conda-incubator' && github.event_name == 'release' && startsWith(github.ref, 'refs/tags/')
         run: |
           echo "Publishing with tag ${{ env.GITHUB_REF_NAME }}"
           npm publish --verbose --access public packages/${{ env.PACKAGE_FILE }} --dry-run
-        env:
-          NPM_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
