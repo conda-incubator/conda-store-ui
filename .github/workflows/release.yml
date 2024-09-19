@@ -79,11 +79,9 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: conda-store-ui-package
-          path: packages
 
       - name: "Check downloaded artefacts 🔍"
         run: |
-          ls -R packages
           pwd
           ls -la
 
@@ -91,15 +89,15 @@ jobs:
         uses: actions/attest-build-provenance@v1
         if: github.repository_owner == 'conda-incubator' && github.event_name == 'release' && startsWith(github.ref, 'refs/tags/')
         with:
-          subject-path: packages/${{ env.PACKAGE_FILE }}
+          subject-path: ${{ env.PACKAGE_FILE }}
 
       - name: "Set NPM scope" #(setup-node workaround https://github.com/actions/setup-node/issues/763)
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
           npm config delete @conda-store-ui:registry --location project
-          # npm config set @conda-store-ui:registry 'https://registry.npmjs.org' --location project
-          # npm config set //registry.npmjs.org/:_authToken '${NODE_AUTH_TOKEN}' --location project
+          npm config set @conda-store-ui:registry 'https://registry.npmjs.org' --location project
+          npm config set //registry.npmjs.org/:_authToken '${NODE_AUTH_TOKEN}' --location project
 
       - name: "Check NPM scope"
         run: npm show
@@ -108,7 +106,7 @@ jobs:
       - name: "Check publish (dry run) 📤"
         run: |
           echo "Publishing dry run..."
-          npm publish --verbose --access public packages/${{ env.PACKAGE_FILE }} --dry-run
+          npm publish --verbose --access public ${{ env.PACKAGE_FILE }} --dry-run
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
@@ -116,6 +114,6 @@ jobs:
         if: github.repository_owner == 'conda-incubator' && github.event_name == 'release' && startsWith(github.ref, 'refs/tags/')
         run: |
           echo "Publishing with tag ${{ env.GITHUB_REF_NAME }}"
-          npm publish --verbose --access public packages/${{ env.PACKAGE_FILE }} --dry-run
+          npm publish --verbose --access public ${{ env.PACKAGE_FILE }} --dry-run
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
