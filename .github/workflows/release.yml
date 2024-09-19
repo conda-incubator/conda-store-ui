@@ -64,6 +64,9 @@ jobs:
       contents: read
 
     steps:
+      - name: "Checkout repository 🛎"
+        uses: actions/checkout@v4
+
       # Setup .npmrc file to publish to npm
       - name: "Set up Node.js 🧶"
         uses: actions/setup-node@v4
@@ -104,7 +107,7 @@ jobs:
       #  we always do a dry run for the publish
       - name: "Check publish (dry run) 📤"
         run: |
-          echo "Publishing with tag ${{ env.GITHUB_REF_NAME }}"
+          echo "Publishing dry run..."
           npm publish --verbose --access public packages/${{ env.PACKAGE_FILE }} --dry-run
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
