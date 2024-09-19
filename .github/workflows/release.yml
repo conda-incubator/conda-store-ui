@@ -54,7 +54,7 @@ jobs:
           path: ${{ env.PACKAGE_FILE }}
 
   release-to-npmjs:
-    name: "Release conda-store-ui to NPM 📦"
+    name: "Release conda-store-ui to npmjs 📦"
     runs-on: ubuntu-latest
     needs: build-application
     # needed for attestations
@@ -80,18 +80,13 @@ jobs:
         with:
           name: conda-store-ui-package
 
-      - name: "Check downloaded artefacts 🔍"
-        run: |
-          pwd
-          ls -la
-
       - name: "Attest Build Provenance ✨"
         uses: actions/attest-build-provenance@v1
         if: github.repository_owner == 'conda-incubator' && github.event_name == 'release' && startsWith(github.ref, 'refs/tags/')
         with:
           subject-path: ${{ env.PACKAGE_FILE }}
 
-      - name: "Set NPM scope" #(setup-node workaround https://github.com/actions/setup-node/issues/763)
+      - name: "Set npmjs scope" #(setup-node workaround https://github.com/actions/setup-node/issues/763)
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
@@ -99,7 +94,7 @@ jobs:
           npm config set @conda-store-ui:registry 'https://registry.npmjs.org' --location project
           npm config set //registry.npmjs.org/:_authToken '${NODE_AUTH_TOKEN}' --location project
 
-      - name: "Check NPM scope"
+      - name: "Check npmjs/conda-store-ui scope"
         run: npm show
 
       #  we always do a dry run for the publish
@@ -113,7 +108,6 @@ jobs:
       - name: "Publish to npm 📤"
         if: github.repository_owner == 'conda-incubator' && github.event_name == 'release' && startsWith(github.ref, 'refs/tags/')
         run: |
-          echo "Publishing with tag ${{ env.GITHUB_REF_NAME }}"
           npm publish --verbose --access public ${{ env.PACKAGE_FILE }} --dry-run
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
