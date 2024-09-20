@@ -37,10 +37,10 @@ jobs:
       - name: "Lint code 🔍"
         run: yarn eslint:check
 
-      - name: "Build application 🏗"
+      - name: "Build source code (library) 🏗"
         run: yarn run build
 
-      - name: "Build application artifacts 🏗"
+      - name: "Build source code (web app) 🏗"
         # ensure we use the prod target to minimise assets
         run: yarn run webpack:prod bundle
 
@@ -80,8 +80,8 @@ jobs:
         with:
           name: conda-store-ui-package
 
-      # Create an attestation with GitHub so others can verify that this particular 
-      # package tarball file was created with this particular GitHub workflow in 
+      # Create an attestation with GitHub so others can verify that this particular
+      # package tarball file was created with this particular GitHub workflow in
       # in this particular repository.
       #
       # More info: https://docs.github.com/en/actions/security-for-github-actions/using-artifact-attestations/using-artifact-attestations-to-establish-provenance-for-builds
