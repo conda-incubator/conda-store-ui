@@ -23,8 +23,8 @@
    ```
 
 > [!IMPORTANT]  
-> You need to be logged in to the npmjs registry to publish the package.
-> And have access to the conda-store npm namespace.
+> You need to be logged in to the `npmjs` registry to publish the package.
+> And have access to the `conda-store` npm namespace.
 
 1. Perform a local dry run publish:
 
