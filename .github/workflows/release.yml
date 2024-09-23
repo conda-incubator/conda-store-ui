@@ -53,10 +53,43 @@ jobs:
           name: conda-store-ui-package
           path: ${{ env.PACKAGE_FILE }}
 
+  verify-build:
+    name: "Verify conda-store-ui build"
+    runs-on: ubuntu-latest
+    needs: build-application
+
+    steps:
+      - name: "Checkout repository 🛎"
+        uses: actions/checkout@v4
+
+      - name: "Download build artefacts 📦"
+        uses: actions/download-artifact@v4
+        with:
+          name: conda-store-ui-package
+
+      # (setup-node workaround https://github.com/actions/setup-node/issues/763) otherwise the authentication fails for npmjs
+      - name: "Set npmjs scope"
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          npm config delete @conda-store-ui:registry --location project
+          npm config set @conda-store-ui:registry 'https://registry.npmjs.org' --location project
+          npm config set //registry.npmjs.org/:_authToken '${NODE_AUTH_TOKEN}' --location project
+
+      - name: "Check publish (dry run) 📤"
+        run: |
+          echo "Publishing dry run..."
+          npm publish --verbose --access public ${{ env.PACKAGE_FILE }} --dry-run
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
   release-to-npmjs:
     name: "Release conda-store-ui to npmjs 📦"
     runs-on: ubuntu-latest
-    needs: build-application
+    needs:
+      - build-application
+      - verify-build
+    if: github.repository_owner == 'conda-incubator' && github.event_name == 'release' && startsWith(github.ref, 'refs/tags/')
     # needed for attestations
     permissions:
       id-token: write
@@ -67,7 +100,8 @@ jobs:
       - name: "Checkout repository 🛎"
         uses: actions/checkout@v4
 
-      # Setup .npmrc file to publish to npm
+      # Set registry in .npmrc and set up auth to read in from
+      # env.NODE_AUTH_TOKEN.
       - name: "Set up Node.js 🧶"
         uses: actions/setup-node@v4
         with:
@@ -80,10 +114,7 @@ jobs:
         with:
           name: conda-store-ui-package
 
-      # Create an attestation with GitHub so others can verify that this particular
-      # package tarball file was created with this particular GitHub workflow in
-      # in this particular repository.
-      #
+      # Create an attestation with GitHub to track build provenance
       # More info: https://docs.github.com/en/actions/security-for-github-actions/using-artifact-attestations/using-artifact-attestations-to-establish-provenance-for-builds
       - name: "Attest Build Provenance ✨"
         uses: actions/attest-build-provenance@v1
@@ -91,7 +122,8 @@ jobs:
         with:
           subject-path: ${{ env.PACKAGE_FILE }}
 
-      - name: "Set npmjs scope" #(setup-node workaround https://github.com/actions/setup-node/issues/763)
+      # (setup-node workaround https://github.com/actions/setup-node/issues/763) otherwise the authentication fails for npmjs
+      - name: "Set npmjs scope"
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
@@ -102,16 +134,7 @@ jobs:
       - name: "Check npmjs/conda-store-ui scope"
         run: npm show
 
-      #  we always do a dry run for the publish
-      - name: "Check publish (dry run) 📤"
-        run: |
-          echo "Publishing dry run..."
-          npm publish --verbose --access public ${{ env.PACKAGE_FILE }} --dry-run
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-
       - name: "Publish to npm 📤"
-        if: github.repository_owner == 'conda-incubator' && github.event_name == 'release' && startsWith(github.ref, 'refs/tags/')
         run: |
           npm publish --verbose --access public ${{ env.PACKAGE_FILE }}
         env:
