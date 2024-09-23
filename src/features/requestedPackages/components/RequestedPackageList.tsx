@@ -47,7 +47,7 @@ export const RequestedPackageList = ({
       </StyledAccordionSummary>
       <StyledAccordionDetails sx={{ padding: 0 }}>
         <TableContainer>
-          <Table sx={{ width: "420px", tableLayout: "fixed" }}>
+          <Table sx={{ width: "100%", tableLayout: "fixed" }}>
             <TableHead>
               <TableRow>
                 <TableCell sx={{ fontSize: "13px" }}>Package</TableCell>
