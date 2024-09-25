@@ -19,6 +19,7 @@ jobs:
 
       - name: "Install and Build 🔧"
         run: |
+          corepack enable
           yarn
           yarn run storybook:build
 

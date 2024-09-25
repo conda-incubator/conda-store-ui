@@ -81,7 +81,7 @@ services:
 
   conda-store-ui:
     build: .
-    command: "yarn run start:ui --port 8000 --history-api-fallback"
+    command: "yarn run start:ui"
     profiles:
       - local-dev
     ports:
@@ -91,7 +91,8 @@ services:
         condition: service_healthy
     platform: linux/amd64
     volumes:
-      - .:/usr/src/app
+      - ./src:/usr/src/app/src
+      - ./style:/usr/src/app/style
     healthcheck:
       test:
         ["CMD", "curl", "--fail", "http://localhost:8000"]

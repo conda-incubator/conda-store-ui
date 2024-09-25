@@ -25,10 +25,16 @@ jobs:
       - name: "Checkout repository 🛎"
         uses: actions/checkout@v4
 
+      - name: "Set Yarn to correct version 📌"
+        run: corepack enable
+
+      # Setup .npmrc file to publish to npm
       - name: "Set up Node.js 🧶"
         uses: actions/setup-node@v4
         with:
-          node-version: "20.x"
+          node-version: "22.x"
+          registry-url: "https://registry.npmjs.org"
+          scope: "@conda-store-ui"
           cache: "yarn"
 
       - name: "Install dependencies 📦"
