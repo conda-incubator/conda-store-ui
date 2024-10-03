@@ -1,15 +1,19 @@
 import { ThemeProvider } from "@mui/material";
 import React from "react";
 import { Provider } from "react-redux";
-import { RouterProvider } from "react-router-dom";
-
+import {
+  RouterProvider,
+  createBrowserRouter,
+  createMemoryRouter
+} from "react-router-dom";
 import {
   IPreferences,
   PrefContext,
   prefDefault,
   prefGlobal
 } from "./preferences";
-import { router } from "./routes";
+import { routes } from "./routes";
+
 import { store } from "./store";
 import { condaStoreTheme, grayscaleTheme } from "./theme";
 
@@ -64,6 +68,11 @@ export class App<
   // }
 
   render(): React.ReactNode {
+    const router =
+      this.state.pref.routerType === "memory"
+        ? createMemoryRouter(routes, { initialEntries: ["/"] })
+        : createBrowserRouter(routes);
+
     return (
       <PrefContext.Provider value={this.state.pref}>
         <ThemeProvider

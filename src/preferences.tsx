@@ -8,6 +8,13 @@ export interface IPreferences {
   styleType: string;
   showAuthButton: boolean;
   logoutUrl: string;
+
+  // routerType - Should the app use the browser's history API for routing, or
+  // should app routes be handled internally in memory? This is needed for the
+  // JupyterLab extension because when conda-store-ui is embedded in JupyterLab,
+  // the URL routes in the browser address bar are for JupyterLab, not for
+  // conda-store-ui.
+  routerType: "browser" | "memory";
 }
 
 const { condaStoreConfig = {} } =
@@ -49,7 +56,12 @@ export const prefDefault: Readonly<IPreferences> = {
   logoutUrl:
     process.env.REACT_APP_LOGOUT_PAGE_URL ??
     condaStoreConfig.REACT_APP_LOGOUT_PAGE_URL ??
-    "http://localhost:8080/conda-store/logout?next=/"
+    "http://localhost:8080/conda-store/logout?next=/",
+
+  routerType:
+    process.env.REACT_APP_ROUTER_TYPE ??
+    condaStoreConfig.REACT_APP_ROUTER_TYPE ??
+    "browser"
 };
 
 export class Preferences implements IPreferences {
@@ -85,6 +97,10 @@ export class Preferences implements IPreferences {
     return this._logoutUrl;
   }
 
+  get routerType() {
+    return this._routerType;
+  }
+
   set(pref: IPreferences) {
     this._apiUrl = pref.apiUrl;
     this._authMethod = pref.authMethod;
@@ -93,6 +109,7 @@ export class Preferences implements IPreferences {
     this._styleType = pref.styleType;
     this._showAuthButton = pref.showAuthButton;
     this._logoutUrl = pref.logoutUrl;
+    this._routerType = pref.routerType;
   }
 
   private _apiUrl: IPreferences["apiUrl"];
@@ -102,6 +119,7 @@ export class Preferences implements IPreferences {
   private _styleType: IPreferences["styleType"];
   private _showAuthButton: IPreferences["showAuthButton"];
   private _logoutUrl: IPreferences["logoutUrl"];
+  private _routerType: IPreferences["routerType"];
 }
 
 export const prefGlobal = new Preferences();
