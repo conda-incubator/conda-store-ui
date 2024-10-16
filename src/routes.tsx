@@ -1,5 +1,4 @@
 import React from "react";
-import { createBrowserRouter } from "react-router-dom";
 
 import { PageLayout } from "./layouts";
 import { EnvironmentDetails } from "./features/environmentDetails";
@@ -8,7 +7,8 @@ import { EnvironmentCreate } from "./features/environmentCreate";
 /**
  * Define URL routes for the single page app
  */
-export const router = createBrowserRouter([
+
+export const routes = [
   {
     path: "/",
     element: <PageLayout />,
@@ -23,4 +23,4 @@ export const router = createBrowserRouter([
       }
     ]
   }
-]);
+];
