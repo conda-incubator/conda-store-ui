@@ -68,10 +68,12 @@ export class App<
   // }
 
   render(): React.ReactNode {
+    const { routerType, urlBasename: basename } = this.state.pref;
+
     const router =
-      this.state.pref.routerType === "memory"
+      routerType === "memory"
         ? createMemoryRouter(routes, { initialEntries: ["/"] })
-        : createBrowserRouter(routes);
+        : createBrowserRouter(routes, { basename });
 
     return (
       <PrefContext.Provider value={this.state.pref}>
