@@ -110,6 +110,10 @@ export class Preferences implements IPreferences {
     return this._routerType;
   }
 
+  get urlBasename() {
+    return this._urlBasename;
+  }
+
   set(pref: IPreferences) {
     this._apiUrl = pref.apiUrl;
     this._authMethod = pref.authMethod;
@@ -119,6 +123,7 @@ export class Preferences implements IPreferences {
     this._showAuthButton = pref.showAuthButton;
     this._logoutUrl = pref.logoutUrl;
     this._routerType = pref.routerType;
+    this._urlBasename = pref.urlBasename;
   }
 
   private _apiUrl: IPreferences["apiUrl"];
@@ -129,6 +134,7 @@ export class Preferences implements IPreferences {
   private _showAuthButton: IPreferences["showAuthButton"];
   private _logoutUrl: IPreferences["logoutUrl"];
   private _routerType: IPreferences["routerType"];
+  private _urlBasename: IPreferences["urlBasename"];
 }
 
 export const prefGlobal = new Preferences();
