@@ -15,6 +15,10 @@ export interface IPreferences {
   // the URL routes in the browser address bar are for JupyterLab, not for
   // conda-store-ui.
   routerType: "browser" | "memory";
+
+  // urlBasename - Defaults to "/" but can be changed if the app needs to be
+  // mounted at a different URL path, such as "/conda-store"
+  urlBasename: string;
 }
 
 const { condaStoreConfig = {} } =
@@ -61,7 +65,12 @@ export const prefDefault: Readonly<IPreferences> = {
   routerType:
     process.env.REACT_APP_ROUTER_TYPE ??
     condaStoreConfig.REACT_APP_ROUTER_TYPE ??
-    "browser"
+    "browser",
+
+  urlBasename:
+    process.env.REACT_APP_URL_BASENAME ??
+    condaStoreConfig.REACT_APP_URL_BASENAME ??
+    "/"
 };
 
 export class Preferences implements IPreferences {
