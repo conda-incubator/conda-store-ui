@@ -15,6 +15,10 @@ export interface IPreferences {
   // the URL routes in the browser address bar are for JupyterLab, not for
   // conda-store-ui.
   routerType: "browser" | "memory";
+
+  // urlBasename - Defaults to "/" but can be changed if the app needs to be
+  // mounted at a different URL path, such as "/conda-store"
+  urlBasename: string;
 }
 
 const { condaStoreConfig = {} } =
@@ -61,7 +65,12 @@ export const prefDefault: Readonly<IPreferences> = {
   routerType:
     process.env.REACT_APP_ROUTER_TYPE ??
     condaStoreConfig.REACT_APP_ROUTER_TYPE ??
-    "browser"
+    "browser",
+
+  urlBasename:
+    process.env.REACT_APP_URL_BASENAME ??
+    condaStoreConfig.REACT_APP_URL_BASENAME ??
+    "/"
 };
 
 export class Preferences implements IPreferences {
@@ -101,6 +110,10 @@ export class Preferences implements IPreferences {
     return this._routerType;
   }
 
+  get urlBasename() {
+    return this._urlBasename;
+  }
+
   set(pref: IPreferences) {
     this._apiUrl = pref.apiUrl;
     this._authMethod = pref.authMethod;
@@ -110,6 +123,7 @@ export class Preferences implements IPreferences {
     this._showAuthButton = pref.showAuthButton;
     this._logoutUrl = pref.logoutUrl;
     this._routerType = pref.routerType;
+    this._urlBasename = pref.urlBasename;
   }
 
   private _apiUrl: IPreferences["apiUrl"];
@@ -120,6 +134,7 @@ export class Preferences implements IPreferences {
   private _showAuthButton: IPreferences["showAuthButton"];
   private _logoutUrl: IPreferences["logoutUrl"];
   private _routerType: IPreferences["routerType"];
+  private _urlBasename: IPreferences["urlBasename"];
 }
 
 export const prefGlobal = new Preferences();
