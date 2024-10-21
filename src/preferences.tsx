@@ -68,8 +68,8 @@ export const prefDefault: Readonly<IPreferences> = {
     "browser",
 
   urlBasename:
-    process.env.REACT_APP_URL_BASENAME ??
     condaStoreConfig.REACT_APP_URL_BASENAME ??
+    process.env.REACT_APP_URL_BASENAME ??
     "/"
 };
 
