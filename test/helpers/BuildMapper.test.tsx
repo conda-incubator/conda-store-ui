@@ -32,6 +32,16 @@ describe("buildDatetimeStatus", () => {
     expect(buildDatetimeStatus(build, 2)).toMatch(/Failed$/);
   });
 
+  it("should return canceled build", () => {
+    const build = generateBuild("CANCELED");
+    expect(buildDatetimeStatus(build, 2)).toMatch(/Canceled$/);
+  });
+
+  it("should append canceled to an active build", () => {
+    const build = generateBuild("CANCELED");
+    expect(buildDatetimeStatus(build, build.id)).toMatch(/Active - Canceled$/);
+  });
+
   it("should use the scheduled_on date if the ended_on prop is null", () => {
     const datetimeStatus = buildDatetimeStatus(
       {
@@ -42,5 +52,10 @@ describe("buildDatetimeStatus", () => {
       2
     );
     expect(datetimeStatus).toContain("November 8th, 2022");
+  });
+
+  it("should add tack on additional status if current build has any status other than completed", () => {
+    const build = generateBuild("FAILED");
+    expect(buildDatetimeStatus(build, build.id)).toMatch(/Active - Failed$/);
   });
 });

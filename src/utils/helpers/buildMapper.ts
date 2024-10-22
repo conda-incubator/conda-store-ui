@@ -5,7 +5,8 @@ const STATUS_OPTIONS: { [key: Build["status"]]: string } = {
   COMPLETED: "Available",
   QUEUED: "Queued",
   FAILED: "Failed",
-  BUILDING: "Building"
+  BUILDING: "Building",
+  CANCELED: "Canceled"
 };
 
 const TIMEZONE = Intl.DateTimeFormat().resolvedOptions().timeZone;
@@ -25,7 +26,11 @@ export const buildDatetimeStatus = (
   currentBuildId: number
 ): string => {
   if (id === currentBuildId) {
-    return `${dateToTimezone(ended_on ?? scheduled_on)} - Active`;
+    let option = `${dateToTimezone(ended_on ?? scheduled_on)} - Active`;
+    if (status !== "COMPLETED") {
+      option += " - " + STATUS_OPTIONS[status];
+    }
+    return option;
   } else if (status === "BUILDING") {
     return `${dateToTimezone(scheduled_on)} - Building`;
   } else if (status === "QUEUED") {
