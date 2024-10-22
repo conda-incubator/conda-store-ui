@@ -48,11 +48,26 @@ jobs:
       - name: "Start web server and run tests 🧪"
         shell: bash -el {0}
         run: |
-          yarn run start & pytest --video on --output test-results --screenshots true test/playwright/test_ux.py
+          yarn run start &
+          wait-for-it localhost:8000 -t 240   # wait for conda-store-ui to start (seconds)
 
-      - name: "Upload artifacts 📤"
+      - name: "Run playwright tests"
+        shell: bash -el {0}
+        run: |
+          pytest --video on --output video --screenshots true test/playwright/test_ux.py
+
+      # screenshots are used in the `push_images` workflow to push the screenshots to the codebase repo
+      - name: "Upload screenshot artifacts 📤"
         uses: actions/upload-artifact@v4
         if: ${{ always() }}
         with:
-          name: playwright-tests
+          name: screenshots
           path: test-results
+      # video is added as an artifact to assist in debugging the CI failures, playwright traceback 
+      # often shows failures several steps beyond the actual failure which can be seen in a video
+      - name: "Upload video artifact 📤"
+        uses: actions/upload-artifact@v4
+        if: ${{ always() }}
+        with:
+          name: video
+          path: video
