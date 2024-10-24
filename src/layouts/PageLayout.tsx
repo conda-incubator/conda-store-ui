@@ -57,6 +57,7 @@ export const PageLayout = () => {
               justifyContent: "center",
               height: "100%"
             }}
+            data-testid="no-environment-selected"
           >
             <Typography sx={{ fontSize: "18px", color: "#333" }}>
               Select an environment to show details
