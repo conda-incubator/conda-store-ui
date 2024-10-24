@@ -33,8 +33,8 @@ export const prefDefault: Readonly<IPreferences> = {
     "http://localhost:8080/conda-store/",
 
   authMethod:
-    (condaStoreConfig.REACT_APP_AUTH_METHOD as IPreferences["authMethod"]) ??
-    (process.env.REACT_APP_AUTH_METHOD as IPreferences["authMethod"]) ??
+    condaStoreConfig.REACT_APP_AUTH_METHOD ??
+    process.env.REACT_APP_AUTH_METHOD ??
     "cookie",
 
   authToken:
@@ -52,10 +52,11 @@ export const prefDefault: Readonly<IPreferences> = {
     process.env.REACT_APP_STYLE_TYPE ??
     "green-accent",
 
-  showAuthButton:
-    (condaStoreConfig.REACT_APP_SHOW_AUTH_BUTTON ??
+  showAuthButton: /true/i.test(
+    condaStoreConfig.REACT_APP_SHOW_AUTH_BUTTON ??
       process.env.REACT_APP_SHOW_AUTH_BUTTON ??
-      "true") === "true",
+      "true"
+  ),
 
   logoutUrl:
     condaStoreConfig.REACT_APP_LOGOUT_PAGE_URL ??
