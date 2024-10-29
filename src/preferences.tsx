@@ -21,55 +21,56 @@ export interface IPreferences {
   urlBasename: string;
 }
 
-const { condaStoreConfig = {} } =
-  typeof window !== "undefined" && (window as any);
+let condaStoreConfig: any = {};
+if (typeof window !== "undefined" && "condaStoreConfig" in window) {
+  condaStoreConfig = window.condaStoreConfig;
+}
 
 export const prefDefault: Readonly<IPreferences> = {
   apiUrl:
-    process.env.REACT_APP_API_URL ??
     condaStoreConfig.REACT_APP_API_URL ??
+    process.env.REACT_APP_API_URL ??
     "http://localhost:8080/conda-store/",
 
   authMethod:
-    (process.env.REACT_APP_AUTH_METHOD as IPreferences["authMethod"]) ??
-    (condaStoreConfig.REACT_APP_AUTH_METHOD as IPreferences["authMethod"]) ??
+    condaStoreConfig.REACT_APP_AUTH_METHOD ??
+    process.env.REACT_APP_AUTH_METHOD ??
     "cookie",
 
   authToken:
-    process.env.REACT_APP_AUTH_TOKEN ??
     condaStoreConfig.REACT_APP_AUTH_TOKEN ??
+    process.env.REACT_APP_AUTH_TOKEN ??
     "",
 
   loginUrl:
-    process.env.REACT_APP_LOGIN_PAGE_URL ??
     condaStoreConfig.REACT_APP_LOGIN_PAGE_URL ??
+    process.env.REACT_APP_LOGIN_PAGE_URL ??
     "http://localhost:8080/conda-store/login?next=",
 
   styleType:
-    process.env.REACT_APP_STYLE_TYPE ??
     condaStoreConfig.REACT_APP_STYLE_TYPE ??
+    process.env.REACT_APP_STYLE_TYPE ??
     "green-accent",
 
-  showAuthButton: process.env.REACT_APP_SHOW_AUTH_BUTTON
-    ? JSON.parse(process.env.REACT_APP_SHOW_AUTH_BUTTON)
-    : condaStoreConfig !== undefined &&
-      condaStoreConfig.REACT_APP_SHOW_AUTH_BUTTON !== undefined
-    ? JSON.parse(condaStoreConfig.REACT_APP_SHOW_AUTH_BUTTON)
-    : true,
+  showAuthButton: /true/i.test(
+    condaStoreConfig.REACT_APP_SHOW_AUTH_BUTTON ??
+      process.env.REACT_APP_SHOW_AUTH_BUTTON ??
+      "true"
+  ),
 
   logoutUrl:
-    process.env.REACT_APP_LOGOUT_PAGE_URL ??
     condaStoreConfig.REACT_APP_LOGOUT_PAGE_URL ??
+    process.env.REACT_APP_LOGOUT_PAGE_URL ??
     "http://localhost:8080/conda-store/logout?next=/",
 
   routerType:
-    process.env.REACT_APP_ROUTER_TYPE ??
     condaStoreConfig.REACT_APP_ROUTER_TYPE ??
+    process.env.REACT_APP_ROUTER_TYPE ??
     "browser",
 
   urlBasename:
-    process.env.REACT_APP_URL_BASENAME ??
     condaStoreConfig.REACT_APP_URL_BASENAME ??
+    process.env.REACT_APP_URL_BASENAME ??
     "/"
 };
 
