@@ -15,7 +15,8 @@ const HardRedirectNotFound = () => {
   // useHref takes into account React Router basename option. So if basename is
   // set to "/conda-store", the hook will return "/conda-store/not-found"
   const url = useHref("/not-found");
-  return void window.location.replace(url);
+  window.location.replace(url);
+  return null;
 };
 
 export const routes = [
