@@ -2,13 +2,12 @@
 inside and outside of pytest to make future development easier.
 """
 
-import requests
+import random
 import time
 
 import pytest
-from playwright.sync_api import Page, sync_playwright, expect
-import random
-
+import requests
+from playwright.sync_api import Page, expect, sync_playwright
 
 DEFAULT_TIMEOUT = 60_000  # time in ms
 
@@ -93,7 +92,7 @@ def _create_new_environment(page, screenshot=False):
     # add a package to the ui
     page.get_by_label("Enter package").fill("rich")
     page.get_by_role("option", name="rich", exact=True).click()
-    # open up the channels accordian card
+    # open up the channels accordion card
     page.get_by_role("button", name="Channels").click()
     # click the + to add a channel
     page.get_by_role("button", name="+ Add Channel").click()
@@ -105,12 +104,12 @@ def _create_new_environment(page, screenshot=False):
     page.get_by_role("button", name="Create", exact=True).click()
 
     # Interact with the environment shortly after creation
-    # click to open the Active environment dropdown manu
+    # click to open the Active environment dropdown menu
     page.get_by_text(" - Active", exact=False).click()
     # click on the Active environment on the dropdown menu item (which is currently building)
     page.get_by_role("option", name=" - Active", exact=False).click()
     # ensure that the environment is building
-    expect(page.get_by_text("Building")).to_be_visible()
+    expect(page.get_by_test_id("build-status")).to_contain_text("Building", )
     # wait until the status is `Completed`
     completed = page.get_by_text("Completed", exact=False)
     completed.wait_for(state="attached", timeout=time_to_build_env)
@@ -172,7 +171,7 @@ def _existing_environment_interactions(
     # ensure the namespace is expanded
     try:
         expect(env_link).to_be_visible()
-    except Exception as e:
+    except Exception:
         # click to expand the `username` name space (but not click the +)
         page.get_by_role(
             "button", name="username Create a new environment in the username namespace"
