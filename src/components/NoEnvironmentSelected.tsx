@@ -12,6 +12,7 @@ export function NoEnvironmentSelected() {
         justifyContent: "center",
         height: "100%"
       }}
+      data-testid="no-environment-selected"
     >
       <Typography sx={{ fontSize: "18px", color: "secondary.dark" }}>
         Select an environment to show details
