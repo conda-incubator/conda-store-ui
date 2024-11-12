@@ -13,7 +13,7 @@ export function NoEnvironmentSelected() {
         height: "100%"
       }}
     >
-      <Typography sx={{ fontSize: "18px", color: "#333" }}>
+      <Typography sx={{ fontSize: "18px", color: "secondary.dark" }}>
         Select an environment to show details
       </Typography>
     </Box>

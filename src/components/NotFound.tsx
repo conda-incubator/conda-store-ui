@@ -13,7 +13,10 @@ export function NotFound() {
         height: "100%"
       }}
     >
-      <Typography variant="h1" sx={{ fontSize: "18px", color: "#333" }}>
+      <Typography
+        variant="h1"
+        sx={{ fontSize: "18px", color: "secondary.dark" }}
+      >
         404 - Not found
       </Typography>
     </Box>

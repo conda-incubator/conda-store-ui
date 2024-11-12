@@ -12,7 +12,7 @@ import {
   prefDefault,
   prefGlobal
 } from "./preferences";
-import { routes } from "./routes";
+import { createRoutes } from "./routes";
 
 import { store } from "./store";
 import { condaStoreTheme, grayscaleTheme } from "./theme";
@@ -72,8 +72,8 @@ export class App<
 
     const router =
       routerType === "memory"
-        ? createMemoryRouter(routes, { initialEntries: ["/"] })
-        : createBrowserRouter(routes, { basename });
+        ? createMemoryRouter(createRoutes("memory"), { initialEntries: ["/"] })
+        : createBrowserRouter(createRoutes("browser"), { basename });
 
     return (
       <PrefContext.Provider value={this.state.pref}>
