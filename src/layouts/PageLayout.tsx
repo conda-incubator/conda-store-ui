@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect, RefObject } from "react";
-import { Outlet, useOutletContext, useParams } from "react-router-dom";
+import { Outlet, useOutletContext } from "react-router-dom";
 import Box from "@mui/material/Box";
-import { Typography } from "@mui/material";
 import { Popup } from "../components";
 import { Environments } from "../features/environments";
 import { StyledScrollContainer } from "../styles";
@@ -20,8 +19,6 @@ export const PageLayout = () => {
   useEffect(() => {
     setRefreshEnvironments(true);
   }, [notification]);
-
-  const { namespaceName } = useParams();
 
   return (
     <Box
@@ -46,24 +43,7 @@ export const PageLayout = () => {
           overflowY: "scroll"
         }}
       >
-        {namespaceName ? (
-          <Outlet context={scrollRef} />
-        ) : (
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "center",
-              height: "100%"
-            }}
-            data-testid="no-environment-selected"
-          >
-            <Typography sx={{ fontSize: "18px", color: "#333" }}>
-              Select an environment to show details
-            </Typography>
-          </Box>
-        )}
+        <Outlet context={scrollRef} />
       </StyledScrollContainer>
       <Popup
         isVisible={notification.show}
