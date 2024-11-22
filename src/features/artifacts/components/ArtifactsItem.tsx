@@ -7,7 +7,6 @@ import { useTheme } from "@mui/material/styles";
 import { Artifact } from "../../../common/models";
 import { useApiUrl } from "../../../hooks";
 
-
 interface IArtifactsProps {
   /**
    * @param artifact type with the name and route properties
