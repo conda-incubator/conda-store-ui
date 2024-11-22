@@ -15,8 +15,8 @@ const isPathAbsolute = (path: string) => {
 
 export const artifactBaseUrl = (apiUrl: string, baseUrl: string) => {
   if (isPathAbsolute(apiUrl)) {
-    return apiUrl;
+    return `${apiUrl}/`;
   } else {
-    return `${baseUrl}${apiUrl}`;
+    return `${baseUrl}${apiUrl}/`;
   }
 };
