@@ -5,8 +5,8 @@ import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import { useTheme } from "@mui/material/styles";
 
 import { Artifact } from "../../../common/models";
-import { PrefContext } from "../../../preferences";
-import { artifactBaseUrl } from "../../../utils/helpers";
+import { useApiUrl } from "../../../hooks";
+
 
 interface IArtifactsProps {
   /**
@@ -16,9 +16,7 @@ interface IArtifactsProps {
 }
 
 export const ArtifactItem = ({ artifact }: IArtifactsProps) => {
-  const pref = React.useContext(PrefContext);
-  const url = artifactBaseUrl(pref.apiUrl, window.location.origin);
-  const route = new URL(artifact.route, url).toString();
+  const route = useApiUrl(artifact.route);
   const theme = useTheme();
 
   return (
