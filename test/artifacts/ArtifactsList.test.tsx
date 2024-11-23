@@ -32,7 +32,7 @@ describe("<ArtifactList />", () => {
     ["/", "/api/v1/build/1/lockfile/"],
     ["", "/api/v1/build/1/lockfile/"]
   ]) {
-    describe(`with REACT_APP_API_URL set to ${apiUrl}`, () => {
+    describe(`with REACT_APP_API_URL set to "${apiUrl}"`, () => {
       it(`should render expected artifact URL ${expectedArtifactUrl}`, () => {
         render(
           mockTheme(
