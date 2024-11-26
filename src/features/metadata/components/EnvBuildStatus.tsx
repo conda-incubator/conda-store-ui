@@ -3,18 +3,13 @@ import { CircularProgress, Typography } from "@mui/material";
 import Link from "@mui/material/Link";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import { Artifact, Build } from "../../../common/models";
-import { PrefContext } from "../../../preferences";
 import { StyledMetadataItem } from "../../../styles/StyledMetadataItem";
 import artifactList from "../../../utils/helpers/artifact";
-import { artifactBaseUrl } from "../../../utils/helpers/parseArtifactList";
 import { buildStatus } from "../../../utils/helpers/buildMapper";
+import { useApiUrl } from "../../../hooks";
 
 const LogLink = ({ logArtifact }: { logArtifact: Artifact }) => {
-  const pref = React.useContext(PrefContext);
-  const url = new URL(
-    logArtifact.route,
-    artifactBaseUrl(pref.apiUrl, window.location.origin)
-  );
+  const url = useApiUrl(logArtifact.route);
   return (
     <Link
       href={url.toString()}
