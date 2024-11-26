@@ -110,3 +110,8 @@ conda-store-ui is developed under the [BSD-3 LICENSE](./LICENSE).
 [conda-store-ui-docs]: https://conda-incubator.github.io/conda-store-ui/?path=/docs/welcome--docs
 [conda-store-repo]: https://github.com/conda-incubator/conda-store
 [jupyterlab-conda-store-repo]: https://github.com/conda-incubator/jupyterlab-conda-store
+
+
+## Version specification
+
+We follow a [style of CalVer](https://conda.store/community/maintenance/release/#calver-details).

@@ -24,7 +24,7 @@ Release captain responsible - <@gh_username>
 
 - [ ] Create a new git branch for the release `git checkout -b release-2024.9.1`
   - [ ] Prepare the branch just in case `git clean -fxdq`
-- [ ] Bump `conda-store-ui` version in `package.json`
+- [ ] Bump `conda-store-ui` version in `package.json` following our [version specification](https://conda.store/community/maintenance/release/#calver-details)
 - [ ] Follow the manual release instructions in the `Release.md` file (do not make the release yet!)
 - [ ] Make a release commit: `git commit -m 'REL - 2024.9.1'`
 - [ ] Push the release (REL) commit
