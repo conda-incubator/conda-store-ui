@@ -3,7 +3,7 @@
 1. Open a new release issue in the repository, following the [release issue template](../.github/ISSUE_TEMPLATE/release.md).
 1. Create a new branch for the release `git checkout -b release-2024.9.1`
 1. Clean the branch `git clean -fxdq`
-1. Increment the version in `package.json`
+1. Increment the version in `package.json` following our [version specification](https://conda.store/community/maintenance/release/#calver-details)
 1. Build the package locally:
 
    ```bash
@@ -22,7 +22,7 @@
 
    ```
 
-> [!IMPORTANT]  
+> [!IMPORTANT]
 > You need to be logged in to the `npmjs` registry to publish the package.
 > And have access to the `conda-store` npm namespace.
 
