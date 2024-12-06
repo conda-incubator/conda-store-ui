@@ -15,7 +15,7 @@ app.get('/preferences.js', function (req, res) {
     REACT_APP_SHOW_LOGIN_ICON: "true",
     REACT_APP_API_URL: "${api_url}",
     REACT_APP_LOGIN_PAGE_URL: "${login_page}",
-    REACT_APP_LOGOUT_PAGE_URL: "${login_page}",
+    REACT_APP_LOGOUT_PAGE_URL: "${logout_page}",
   };`
   res.set({
     'Content-Type': 'text/javascript',
