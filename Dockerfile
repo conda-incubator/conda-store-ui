@@ -20,15 +20,16 @@ RUN --mount=type=cache,target=/root/.yarn YARN_CACHE_FOLDER=/root/.yarn \
 # for production
 FROM node:22-slim AS prod
 
-WORKDIR /usr/src/build
+WORKDIR /usr/src/conda-store-ui
 
-RUN npm install -g serve@14.2.4
+COPY --from=build /usr/src/app/app /usr/src/conda-store-ui/app
+COPY --from=build /usr/src/app/dist /usr/src/conda-store-ui/dist
 
-COPY --from=build /usr/src/app/dist /usr/src/build
+RUN cd app && npm install
 
 EXPOSE 8000
 
-CMD ["serve", "-s", "/usr/src/build", "-l", "8000"]
+CMD ["node", "app/app.js"]
 
 # ---------------------------------------------------------------------------------
 # for dev
