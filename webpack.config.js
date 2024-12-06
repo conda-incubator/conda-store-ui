@@ -91,7 +91,10 @@ module.exports = {
     extensions: [".tsx", ".ts", ".jsx", ".js", ".less", ".css"],
   },
   plugins: [
-    new HtmlWebpackPlugin({ title: "conda-store" }),
+    new HtmlWebpackPlugin({
+      title: "conda-store",
+      template: "src/index.html",
+    }),
     new HtmlWebpackPlugin({
       filename: "memory-router-test.html",
       template: "test/playwright/memory-router-test.html",
