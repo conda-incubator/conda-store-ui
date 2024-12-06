@@ -29,7 +29,7 @@ RUN cd app && npm install
 
 EXPOSE 8000
 
-CMD ["node", "app/app.js"]
+CMD ["node", "app/serve.js"]
 
 # ---------------------------------------------------------------------------------
 # for dev
