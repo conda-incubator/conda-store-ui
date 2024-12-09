@@ -1,8 +1,10 @@
 const express = require('express');
+const compression = require('compression')
 const path = require('path');
 const app = express();
 
 app.use(express.static(path.join(__dirname, '..', 'dist')));
+app.use(compression())
 
 app.get('/runtime-config.js', function (req, res) {
   let js = 'var condaStoreConfig = {\n';
