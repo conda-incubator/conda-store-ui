@@ -14,7 +14,7 @@ COPY . ./
 RUN --mount=type=cache,target=/root/.yarn YARN_CACHE_FOLDER=/root/.yarn \
     yarn install --immutable && \
     yarn run build && \
-    yarn run webpack:prod bundle
+    STANDALONE=1 yarn run webpack:prod bundle
 
 # ---------------------------------------------------------------------------------
 # for production
@@ -27,9 +27,11 @@ COPY --from=build /usr/src/app/dist /usr/src/conda-store-ui/dist
 
 RUN cd app && npm install
 
+ENV NODE_ENV=production
+
 EXPOSE 8000
 
-CMD ["NODE_ENV=production", "node", "app/serve.js"]
+CMD ["node", "app/serve.js"]
 
 # ---------------------------------------------------------------------------------
 # for dev
