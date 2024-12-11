@@ -16,6 +16,7 @@ const packageJson = require('./package.json');
 
 const isProd = process.env.NODE_ENV === "production";
 const ASSET_PATH = isProd ? "" : "/";
+const needsRuntimeConfig = process.env.STANDALONE || false ;
 const version = packageJson.version;
 
 // Calculate hash based on content, will be used when generating production
@@ -94,6 +95,9 @@ module.exports = {
     new HtmlWebpackPlugin({
       title: "conda-store",
       template: "src/index.html",
+      templateParameters: {
+        needsRuntimeConfig: needsRuntimeConfig
+      }
     }),
     new HtmlWebpackPlugin({
       filename: "memory-router-test.html",
