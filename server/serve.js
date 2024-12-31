@@ -7,6 +7,13 @@ app.use(express.static(path.join(__dirname, '..', 'dist')));
 app.use(compression())
 
 app.get('/runtime-config.js', function (req, res) {
+  // Creates a runtime config from env vars
+  // This will look something like:
+  //    var condaStoreConfig = {
+  //      REACT_APP_API_URL: <provided url>,
+  //      REACT_APP_AUTH_METHOD: <provided auth method>,
+  //      . . .
+  //    }
   let js = 'var condaStoreConfig = {\n';
   for (const [ key, value ] of Object.entries(process.env)) {
     if (key.startsWith('REACT_APP_')) {
@@ -20,6 +27,13 @@ app.get('/runtime-config.js', function (req, res) {
   })
 
   res.send(js);
+});
+
+app.get('/status', function(req, res) {
+  const data = {
+    status: 'Ok',
+  }
+  res.status(200).send(data);
 });
 
 app.get('/*', function (req, res) {

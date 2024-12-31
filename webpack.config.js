@@ -16,6 +16,13 @@ const packageJson = require('./package.json');
 
 const isProd = process.env.NODE_ENV === "production";
 const ASSET_PATH = isProd ? "" : "/";
+// When STANDALONE is provided as an env var it signifies that conda store
+// ui will be running outside the context of the conda-store server. For
+// example, it may be served by the application defined in /server/serve.js.
+// When running in this mode, conda store ui must load runtime config from the
+// endpoint `/runtime-config.js`
+// When this setting is `true`, it will inject a line in the generated `index.html`
+// to load the `/runtime-config.js` script.
 const needsRuntimeConfig = process.env.STANDALONE || false ;
 const version = packageJson.version;
 
