@@ -22,16 +22,16 @@ FROM node:22-slim AS prod
 
 WORKDIR /usr/src/conda-store-ui
 
-COPY --from=build /usr/src/app/app /usr/src/conda-store-ui/app
+COPY --from=build /usr/src/app/server /usr/src/conda-store-ui/server
 COPY --from=build /usr/src/app/dist /usr/src/conda-store-ui/dist
 
-RUN cd app && npm install
+RUN cd server && npm install
 
 ENV NODE_ENV=production
 
 EXPOSE 8000
 
-CMD ["node", "app/serve.js"]
+CMD ["node", "server/serve.js"]
 
 # ---------------------------------------------------------------------------------
 # for dev
