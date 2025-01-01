@@ -10,14 +10,15 @@ app.get('/runtime-config.js', function (req, res) {
   // Creates a runtime config from env vars
   // This will look something like:
   //    var condaStoreConfig = {
-  //      REACT_APP_API_URL: <provided url>,
-  //      REACT_APP_AUTH_METHOD: <provided auth method>,
+  //      REACT_APP_API_URL: "<provided url>",
+  //      REACT_APP_AUTH_METHOD: "<provided auth method>",
   //      . . .
   //    }
   let js = 'var condaStoreConfig = {\n';
   for (const [ key, value ] of Object.entries(process.env)) {
     if (key.startsWith('REACT_APP_')) {
-      js += `  ${key}: ${value},\n`;
+      // Reminder: every value in process.env is a string
+      js += `  ${key}: "${value}",\n`;
     }
   }
   js += '};'

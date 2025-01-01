@@ -28,7 +28,8 @@ This is a simple endpoint that returns a 200 OK if the server is running.
 
 ### /*
 
-This serves the conda store ui application. This is a SPA application
-with it's own router built into the frontend. This route will catch all
-traffic (that is not caught by the other 2 routes) and present the conda
-store ui.
+This route will catch all traffic (that is not caught by the other 2 routes) 
+and serve the conda store ui application. This is a single page JavaScript 
+application with its own router that runs in the browser. This frontend router 
+handles any further routing needed by the UI application, including rendering 
+a 404 not found page if the route doesn't match any known routes.
