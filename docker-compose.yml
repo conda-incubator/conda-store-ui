@@ -80,7 +80,9 @@ services:
       REDIS_PASSWORD: password
 
   conda-store-ui:
-    build: .
+    build:
+      context: .
+      target: dev
     command: "yarn run start:ui"
     profiles:
       - local-dev
@@ -93,6 +95,7 @@ services:
     volumes:
       - ./src:/usr/src/app/src
       - ./style:/usr/src/app/style
+      - ./.env:/usr/src/app/.env
     healthcheck:
       test:
         ["CMD", "curl", "--fail", "http://localhost:8000"]

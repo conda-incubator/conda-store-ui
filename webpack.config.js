@@ -16,6 +16,14 @@ const packageJson = require('./package.json');
 
 const isProd = process.env.NODE_ENV === "production";
 const ASSET_PATH = isProd ? "" : "/";
+// When STANDALONE is provided as an env var it signifies that conda store
+// ui will be running outside the context of the conda-store server. For
+// example, it may be served by the application defined in /server/serve.js.
+// When running in this mode, conda store ui must load runtime config from the
+// endpoint `/runtime-config.js`
+// When this setting is `true`, it will inject a line in the generated `index.html`
+// to load the `/runtime-config.js` script.
+const needsRuntimeConfig = process.env.STANDALONE || false ;
 const version = packageJson.version;
 
 // Calculate hash based on content, will be used when generating production
@@ -91,7 +99,13 @@ module.exports = {
     extensions: [".tsx", ".ts", ".jsx", ".js", ".less", ".css"],
   },
   plugins: [
-    new HtmlWebpackPlugin({ title: "conda-store" }),
+    new HtmlWebpackPlugin({
+      title: "conda-store",
+      template: "src/index.html",
+      templateParameters: {
+        needsRuntimeConfig: needsRuntimeConfig
+      }
+    }),
     new HtmlWebpackPlugin({
       filename: "memory-router-test.html",
       template: "test/playwright/memory-router-test.html",
