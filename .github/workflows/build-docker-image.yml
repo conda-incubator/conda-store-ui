@@ -1,0 +1,22 @@
+name: Build Docker image
+
+on:
+  pull_request:
+
+jobs:
+  build_docker_image:
+    name: "Build Docker Images 🛠"
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Checkout Repository 🛎"
+        uses: actions/checkout@v4
+
+      - name: "Set up Docker Buildx 🏗"
+        uses: docker/setup-buildx-action@v3
+
+      - name: "Build Docker image 🚀"
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          target: "prod"
+          push: false
