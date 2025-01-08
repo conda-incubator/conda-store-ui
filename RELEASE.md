@@ -4,6 +4,8 @@
 1. Create a new branch for the release `git checkout -b release-2024.9.1`
 1. Clean the branch `git clean -fxdq`
 1. Increment the version in `package.json` following our [version specification](https://conda.store/community/maintenance/release/#calver-details)
+
+## Part 1: Build and release the npm package
 1. Build the package locally:
 
    ```bash
@@ -34,6 +36,21 @@
    ```
 
 If the dry run looks good, continue with the release checklist items.
+
+## Part 2: Build and release the docker image
+
+1. Build the docker image:
+
+  ```bash
+  docker build -t conda-incubator/conda-store-ui:<release version - eg. 2024.11.1> --target prod . 
+  ```
+
+2. Push the image to [GitHub's container registry](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry#pushing-container-images)
+
+  ```bash
+  # ensure you are authenticated with github
+  docker push ghcr.io/conda-incubator/conda-store-ui:<release version - eg. 2024.11.1>
+  ```
 
 ## Troubleshooting notes
 
