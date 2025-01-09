@@ -14,6 +14,8 @@ on:
 env:
   FORCE_COLOR: "1"
   PACKAGE_FILE: "conda-store-ui.tgz"
+  GH_CONTAINER_REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
 
 jobs:
   # always build and verify
@@ -145,3 +147,64 @@ jobs:
           npm publish --verbose --access public ${{ env.PACKAGE_FILE }}
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+  build_and_push_docker_image:
+    name: "Push Docker Images 🛠"
+    if: github.repository_owner == 'conda-incubator' && github.event_name == 'release' && startsWith(github.ref, 'refs/tags/')
+    runs-on: ubuntu-latest
+    needs: release-to-npmjs
+    permissions:
+      id-token: write # IMPORTANT: this permission is mandatory for trusted publishing
+      contents: read
+      packages: write
+      attestations: write
+    steps:
+      - name: "Checkout Repository 🛎"
+        uses: actions/checkout@v4
+
+      - name: "Set up Docker Buildx 🏗"
+        uses: docker/setup-buildx-action@v3
+
+      - name: "Login to GH Container Registry 🐳"
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.GH_CONTAINER_REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: "Add Docker metadata 📝"
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: |
+            ${{ env.GH_CONTAINER_REGISTRY }}/${{ env.IMAGE_NAME }}
+          # ref: https://github.com/docker/metadata-action?tab=readme-ov-file#typeref
+          # create tags for:
+          #  * the GH tag (eg. 2025.1.8)
+          #  * the branch (eg. main)
+          #  * the commit sha (eg. sha-860c190)
+          tags: |
+            type=ref,event=tag
+            type=ref,event=branch
+            type=sha
+
+      - name: "Publish Docker image 🚀"
+        id: push
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          target: "prod"
+          tags: |
+            ${{ steps.meta.outputs.tags }}
+          push: true
+          labels: ${{ steps.meta.outputs.labels }}
+          # ref https://docs.docker.com/build/ci/github-actions/cache/
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+      
+      - name: Generate artifact attestation
+        uses: actions/attest-build-provenance@v2
+        with:
+          subject-name: ${{ env.GH_CONTAINER_REGISTRY }}/${{ env.IMAGE_NAME }}
+          subject-digest: ${{ steps.push.outputs.digest }}
+          push-to-registry: true
